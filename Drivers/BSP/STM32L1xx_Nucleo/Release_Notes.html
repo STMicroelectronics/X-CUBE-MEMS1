@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Release Notes for STM32L1xx_Nucleo Board Drivers</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="_htmresc/mini-st.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div class="row">
+<div class="col-sm-12 col-lg-4">
+<div class="card fluid">
+<div class="sectione dark">
+<center>
+<h1 id="release-notes-for-stm32l1xx_nucleo-board-drivers"><small>Release Notes for</small> <mark>STM32L1xx_Nucleo Board Drivers</mark></h1>
+<p>Copyright © 2017 STMicroelectronics<br />
+</p>
+<a href="https://www.st.com" class="logo"><img src="_htmresc/st_logo.png" alt="ST logo" /></a>
+</center>
+</div>
+</div>
+<h1 id="license">License</h1>
+<p>Licensed by ST under BSD 3-Clause license (the "License"). You may not use this package except in compliance with the License. You may obtain a copy of the License at:</p>
+<p><a href="https://opensource.org/licenses/BSD-3-Clause">https://opensource.org/licenses/BSD-3-Clause</a></p>
+<h1 id="purpose">Purpose</h1>
+<p>This directory contains the board drivers to demonstrate the capabilities of the STM32L1xx Nucleo Kit.</p>
+</div>
+<div class="col-sm-12 col-lg-8">
+<h1 id="update-history">Update History</h1>
+<div class="collapse">
+<input type="checkbox" id="collapse-section7" checked aria-hidden="true"> <label for="collapse-section7" aria-hidden="true">V1.1.3 / 05-April-2019</label>
+<div>
+<h2 id="main-changes">Main Changes</h2>
+<ul>
+<li>Update format of Release_Notes.html file.</li>
+<li>Update CHM User Manual for BSP/STM32L1xx_Nucleo.</li>
+</ul>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section6" aria-hidden="true"> <label for="collapse-section6" aria-hidden="true">V1.1.2 / 21-April-2017</label>
+<div>
+<h2 id="main-changes-1">Main Changes</h2>
+<ul>
+<li>Remove DATE and VERSION fields from header files.</li>
+<li>Update CHM User Manual for BSP/STM32L1xx_Nucleo.</li>
+</ul>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section5" aria-hidden="true"> <label for="collapse-section5" aria-hidden="true">V1.1.1 / 21-April-2017</label>
+<div>
+<h2 id="main-changes-2">Main Changes</h2>
+<ul>
+<li>Update CHM User Manual for BSP/STM32L1xx_Nucleo.</li>
+</ul>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section4" aria-hidden="true"> <label for="collapse-section4" aria-hidden="true">V1.1.0 / 04-March-2016</label>
+<div>
+<h2 id="main-changes-3">Main Changes</h2>
+<ul>
+<li>Rewrite driver to support 4 Gb micro sd card.</li>
+<li>Add functions:
+<ul>
+<li>BSP_LED_DeInit</li>
+<li>BSP_PB_DeInit</li>
+<li>BSP_JOY_DeInit</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section3" aria-hidden="true"> <label for="collapse-section3" aria-hidden="true">V1.0.2 / 09-October-2015</label>
+<div>
+<h2 id="main-changes-4">Main Changes</h2>
+<ul>
+<li>Added aliases to use either BUTTON_USER or BUTTON_KEY.</li>
+<li>The polling of ADC is improved inside BSP_JOY_GetState function.</li>
+<li>The LED GPIO is set to GPIO_NOPULL instead of GPIO_PULLUP to improve the power consumption.</li>
+<li>Added check on parameter given to :
+<ul>
+<li>LEDx_GPIO_CLK_ENABLE(<strong>LED</strong>)</li>
+<li>LEDx_GPIO_CLK_DISABLE(<strong>LED</strong>)</li>
+<li>BUTTONx_GPIO_CLK_ENABLE(<strong>BUTTON</strong>)</li>
+<li>BUTTONx_GPIO_CLK_DISABLE(<strong>BUTTON</strong>)</li>
+</ul></li>
+</ul>
+<h2 id="other-compatibilities">Other compatibilities</h2>
+<ul>
+<li>Due to changes in the gpio speed definition, this version requires <strong>STM32L1xx_HAL_Driver V1.1.2</strong></li>
+</ul>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section2" aria-hidden="true"> <label for="collapse-section2" aria-hidden="true">V1.0.1 / 31-March-2015</label>
+<div>
+<h2 id="main-changes-5">Main Changes</h2>
+<ul>
+<li>Alignment to latest changes done on HAL driver.</li>
+</ul>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section1" aria-hidden="true"> <label for="collapse-section1" aria-hidden="true">V1.0.0 / 05-September-2014</label>
+<div>
+<h2 id="main-changes-6">Main Changes</h2>
+<ul>
+<li>First official release dedicated to <strong>STM32CubeL1 based development</strong>. Supported devices is STM32L152RE.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<footer class="sticky">
+For complete documentation on <mark>STM32 Microcontrollers</mark> , visit: <a href="http://www.st.com/STM32">http://www.st.com/STM32</a>
+</footer>
+</body>
+</html>
