@@ -1,40 +1,40 @@
 /**
- ******************************************************************************
- * @file    lsm303agr.c
- * @author  MEMS Software Solutions Team
- * @brief   LSM303AGR driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lsm303agr.c
+  * @author  MEMS Software Solutions Team
+  * @brief   LSM303AGR driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "lsm303agr.h"
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LSM303AGR LSM303AGR
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LSM303AGR_Exported_Variables LSM303AGR Exported Variables
- * @{
- */
+  * @{
+  */
 
 LSM303AGR_ACC_CommonDrv_t LSM303AGR_ACC_COMMON_Driver =
 {
@@ -79,12 +79,12 @@ LSM303AGR_MAG_Drv_t LSM303AGR_MAG_Driver =
 };
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LSM303AGR_Private_Function_Prototypes LSM303AGR Private Function Prototypes
- * @{
- */
+  * @{
+  */
 
 static int32_t ReadAccRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
 static int32_t WriteAccRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
@@ -97,18 +97,18 @@ static int32_t LSM303AGR_ACC_SetOutputDataRate_When_Enabled(LSM303AGR_ACC_Object
 static int32_t LSM303AGR_ACC_SetOutputDataRate_When_Disabled(LSM303AGR_ACC_Object_t *pObj, float Odr);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LSM303AGR_Exported_Functions LSM303AGR Exported Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Register Component Bus IO operations
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Register Component Bus IO operations
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_ACC_RegisterBusIO(LSM303AGR_ACC_Object_t *pObj, LSM303AGR_IO_t *pIO)
 {
   int32_t ret = LSM303AGR_OK;
@@ -162,10 +162,10 @@ int32_t LSM303AGR_ACC_RegisterBusIO(LSM303AGR_ACC_Object_t *pObj, LSM303AGR_IO_t
 }
 
 /**
- * @brief  Initialize the LSM303AGR sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Initialize the LSM303AGR sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_ACC_Init(LSM303AGR_ACC_Object_t *pObj)
 {
   /* Enable BDU */
@@ -201,10 +201,10 @@ int32_t LSM303AGR_ACC_Init(LSM303AGR_ACC_Object_t *pObj)
 }
 
 /**
- * @brief  Deinitialize the LSM303AGR accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Deinitialize the LSM303AGR accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_ACC_DeInit(LSM303AGR_ACC_Object_t *pObj)
 {
   /* Disable the component */
@@ -221,11 +221,11 @@ int32_t LSM303AGR_ACC_DeInit(LSM303AGR_ACC_Object_t *pObj)
 }
 
 /**
- * @brief  Read component ID
- * @param  pObj the device pObj
- * @param  Id the WHO_AM_I value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Read component ID
+  * @param  pObj the device pObj
+  * @param  Id the WHO_AM_I value
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_ACC_ReadID(LSM303AGR_ACC_Object_t *pObj, uint8_t *Id)
 {
   if (lsm303agr_xl_device_id_get(&(pObj->Ctx), Id) != LSM303AGR_OK)
@@ -237,11 +237,11 @@ int32_t LSM303AGR_ACC_ReadID(LSM303AGR_ACC_Object_t *pObj, uint8_t *Id)
 }
 
 /**
- * @brief  Get LSM303AGR accelerometer sensor capabilities
- * @param  pObj Component object pointer
- * @param  Capabilities pointer to LSM303AGR accelerometer sensor capabilities
- * @retval Component status
- */
+  * @brief  Get LSM303AGR accelerometer sensor capabilities
+  * @param  pObj Component object pointer
+  * @param  Capabilities pointer to LSM303AGR accelerometer sensor capabilities
+  * @retval Component status
+  */
 int32_t LSM303AGR_ACC_GetCapabilities(LSM303AGR_ACC_Object_t *pObj, LSM303AGR_Capabilities_t *Capabilities)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -261,10 +261,10 @@ int32_t LSM303AGR_ACC_GetCapabilities(LSM303AGR_ACC_Object_t *pObj, LSM303AGR_Ca
 }
 
 /**
- * @brief  Enable the LSM303AGR accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the LSM303AGR accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_ACC_Enable(LSM303AGR_ACC_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -285,10 +285,10 @@ int32_t LSM303AGR_ACC_Enable(LSM303AGR_ACC_Object_t *pObj)
 }
 
 /**
- * @brief  Disable the LSM303AGR accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable the LSM303AGR accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_ACC_Disable(LSM303AGR_ACC_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -315,11 +315,11 @@ int32_t LSM303AGR_ACC_Disable(LSM303AGR_ACC_Object_t *pObj)
 }
 
 /**
- * @brief  Get the LSM303AGR accelerometer sensor sensitivity
- * @param  pObj the device pObj
- * @param  Sensitivity pointer
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR accelerometer sensor sensitivity
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_ACC_GetSensitivity(LSM303AGR_ACC_Object_t *pObj, float *Sensitivity)
 {
   int32_t ret = LSM303AGR_OK;
@@ -364,11 +364,11 @@ int32_t LSM303AGR_ACC_GetSensitivity(LSM303AGR_ACC_Object_t *pObj, float *Sensit
 }
 
 /**
- * @brief  Get the LSM303AGR accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_ACC_GetOutputDataRate(LSM303AGR_ACC_Object_t *pObj, float *Odr)
 {
   int32_t ret = LSM303AGR_OK;
@@ -486,11 +486,11 @@ int32_t LSM303AGR_ACC_GetOutputDataRate(LSM303AGR_ACC_Object_t *pObj, float *Odr
 }
 
 /**
- * @brief  Set the LSM303AGR accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LSM303AGR accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_ACC_SetOutputDataRate(LSM303AGR_ACC_Object_t *pObj, float Odr)
 {
   /* Check if the component is enabled */
@@ -505,11 +505,11 @@ int32_t LSM303AGR_ACC_SetOutputDataRate(LSM303AGR_ACC_Object_t *pObj, float Odr)
 }
 
 /**
- * @brief  Get the LSM303AGR accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale pointer where the full scale is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale pointer where the full scale is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_ACC_GetFullScale(LSM303AGR_ACC_Object_t *pObj, int32_t *FullScale)
 {
   int32_t ret = LSM303AGR_OK;
@@ -548,11 +548,11 @@ int32_t LSM303AGR_ACC_GetFullScale(LSM303AGR_ACC_Object_t *pObj, int32_t *FullSc
 }
 
 /**
- * @brief  Set the LSM303AGR accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale the functional full scale to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LSM303AGR accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale the functional full scale to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_ACC_SetFullScale(LSM303AGR_ACC_Object_t *pObj, int32_t FullScale)
 {
   lsm303agr_fs_a_t new_fs;
@@ -571,11 +571,11 @@ int32_t LSM303AGR_ACC_SetFullScale(LSM303AGR_ACC_Object_t *pObj, int32_t FullSca
 }
 
 /**
- * @brief  Get the LSM303AGR accelerometer sensor raw axes
- * @param  pObj the device pObj
- * @param  Value pointer where the raw values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR accelerometer sensor raw axes
+  * @param  pObj the device pObj
+  * @param  Value pointer where the raw values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_ACC_GetAxesRaw(LSM303AGR_ACC_Object_t *pObj, LSM303AGR_AxesRaw_t *Value)
 {
   int16_t divisor = 1;
@@ -629,11 +629,11 @@ int32_t LSM303AGR_ACC_GetAxesRaw(LSM303AGR_ACC_Object_t *pObj, LSM303AGR_AxesRaw
 }
 
 /**
- * @brief  Get the LSM303AGR accelerometer sensor axes
- * @param  pObj the device pObj
- * @param  Acceleration pointer where the values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR accelerometer sensor axes
+  * @param  pObj the device pObj
+  * @param  Acceleration pointer where the values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_ACC_GetAxes(LSM303AGR_ACC_Object_t *pObj, LSM303AGR_Axes_t *Acceleration)
 {
   LSM303AGR_AxesRaw_t data_raw;
@@ -660,12 +660,12 @@ int32_t LSM303AGR_ACC_GetAxes(LSM303AGR_ACC_Object_t *pObj, LSM303AGR_Axes_t *Ac
 }
 
 /**
- * @brief  Get the LSM303AGR register value for accelerometer sensor
- * @param  pObj the device pObj
- * @param  Reg address to be read
- * @param  Data pointer where the value is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR register value for accelerometer sensor
+  * @param  pObj the device pObj
+  * @param  Reg address to be read
+  * @param  Data pointer where the value is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_ACC_Read_Reg(LSM303AGR_ACC_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 {
   if (lsm303agr_read_reg(&(pObj->Ctx), Reg, Data, 1) != LSM303AGR_OK)
@@ -677,12 +677,12 @@ int32_t LSM303AGR_ACC_Read_Reg(LSM303AGR_ACC_Object_t *pObj, uint8_t Reg, uint8_
 }
 
 /**
- * @brief  Set the LSM303AGR register value for accelerometer sensor
- * @param  pObj the device pObj
- * @param  Reg address to be written
- * @param  Data value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LSM303AGR register value for accelerometer sensor
+  * @param  pObj the device pObj
+  * @param  Reg address to be written
+  * @param  Data value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_ACC_Write_Reg(LSM303AGR_ACC_Object_t *pObj, uint8_t Reg, uint8_t Data)
 {
   if (lsm303agr_write_reg(&(pObj->Ctx), Reg, &Data, 1) != LSM303AGR_OK)
@@ -694,11 +694,11 @@ int32_t LSM303AGR_ACC_Write_Reg(LSM303AGR_ACC_Object_t *pObj, uint8_t Reg, uint8
 }
 
 /**
- * @brief  Get the LSM303AGR ACC data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR ACC data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_ACC_Get_DRDY_Status(LSM303AGR_ACC_Object_t *pObj, uint8_t *Status)
 {
   if (lsm303agr_xl_data_ready_get(&(pObj->Ctx), Status) != LSM303AGR_OK)
@@ -710,11 +710,11 @@ int32_t LSM303AGR_ACC_Get_DRDY_Status(LSM303AGR_ACC_Object_t *pObj, uint8_t *Sta
 }
 
 /**
- * @brief  Get the LSM303AGR ACC initialization status
- * @param  pObj the device pObj
- * @param  Status 1 if initialized, 0 otherwise
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR ACC initialization status
+  * @param  pObj the device pObj
+  * @param  Status 1 if initialized, 0 otherwise
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_ACC_Get_Init_Status(LSM303AGR_ACC_Object_t *pObj, uint8_t *Status)
 {
   if (pObj == NULL)
@@ -728,10 +728,10 @@ int32_t LSM303AGR_ACC_Get_Init_Status(LSM303AGR_ACC_Object_t *pObj, uint8_t *Sta
 }
 
 /**
- * @brief  Register Component Bus IO operations
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Register Component Bus IO operations
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_MAG_RegisterBusIO(LSM303AGR_MAG_Object_t *pObj, LSM303AGR_IO_t *pIO)
 {
   int32_t ret = LSM303AGR_OK;
@@ -783,10 +783,10 @@ int32_t LSM303AGR_MAG_RegisterBusIO(LSM303AGR_MAG_Object_t *pObj, LSM303AGR_IO_t
 }
 
 /**
- * @brief  Initialize the LSM303AGR sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Initialize the LSM303AGR sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_MAG_Init(LSM303AGR_MAG_Object_t *pObj)
 {
   /* Enable BDU */
@@ -819,10 +819,10 @@ int32_t LSM303AGR_MAG_Init(LSM303AGR_MAG_Object_t *pObj)
 }
 
 /**
- * @brief  Deinitialize the LSM303AGR magnetometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Deinitialize the LSM303AGR magnetometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_MAG_DeInit(LSM303AGR_MAG_Object_t *pObj)
 {
   /* Disable the component */
@@ -837,11 +837,11 @@ int32_t LSM303AGR_MAG_DeInit(LSM303AGR_MAG_Object_t *pObj)
 }
 
 /**
- * @brief  Read component ID
- * @param  pObj the device pObj
- * @param  Id the WHO_AM_I value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Read component ID
+  * @param  pObj the device pObj
+  * @param  Id the WHO_AM_I value
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_MAG_ReadID(LSM303AGR_MAG_Object_t *pObj, uint8_t *Id)
 {
   if (lsm303agr_mag_device_id_get(&(pObj->Ctx), Id) != LSM303AGR_OK)
@@ -853,11 +853,11 @@ int32_t LSM303AGR_MAG_ReadID(LSM303AGR_MAG_Object_t *pObj, uint8_t *Id)
 }
 
 /**
- * @brief  Get LSM303AGR magnetometer sensor capabilities
- * @param  pObj Component object pointer
- * @param  Capabilities pointer to LSM303AGR magnetometer sensor capabilities
- * @retval Component status
- */
+  * @brief  Get LSM303AGR magnetometer sensor capabilities
+  * @param  pObj Component object pointer
+  * @param  Capabilities pointer to LSM303AGR magnetometer sensor capabilities
+  * @retval Component status
+  */
 int32_t LSM303AGR_MAG_GetCapabilities(LSM303AGR_MAG_Object_t *pObj, LSM303AGR_Capabilities_t *Capabilities)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -877,10 +877,10 @@ int32_t LSM303AGR_MAG_GetCapabilities(LSM303AGR_MAG_Object_t *pObj, LSM303AGR_Ca
 }
 
 /**
- * @brief Enable the LSM303AGR magnetometer sensor
- * @param pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief Enable the LSM303AGR magnetometer sensor
+  * @param pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_MAG_Enable(LSM303AGR_MAG_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -901,10 +901,10 @@ int32_t LSM303AGR_MAG_Enable(LSM303AGR_MAG_Object_t *pObj)
 }
 
 /**
- * @brief Disable the LSM303AGR magnetometer sensor
- * @param pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief Disable the LSM303AGR magnetometer sensor
+  * @param pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_MAG_Disable(LSM303AGR_MAG_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -925,11 +925,11 @@ int32_t LSM303AGR_MAG_Disable(LSM303AGR_MAG_Object_t *pObj)
 }
 
 /**
- * @brief  Get the LSM303AGR magnetometer sensor sensitivity
- * @param  pObj the device pObj
- * @param  Sensitivity pointer
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR magnetometer sensor sensitivity
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_MAG_GetSensitivity(LSM303AGR_MAG_Object_t *pObj, float *Sensitivity)
 {
   *Sensitivity = LSM303AGR_MAG_SENSITIVITY_FS_50GAUSS;
@@ -938,11 +938,11 @@ int32_t LSM303AGR_MAG_GetSensitivity(LSM303AGR_MAG_Object_t *pObj, float *Sensit
 }
 
 /**
- * @brief  Get the LSM303AGR magnetometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR magnetometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_MAG_GetOutputDataRate(LSM303AGR_MAG_Object_t *pObj, float *Odr)
 {
   int32_t ret = LSM303AGR_OK;
@@ -981,11 +981,11 @@ int32_t LSM303AGR_MAG_GetOutputDataRate(LSM303AGR_MAG_Object_t *pObj, float *Odr
 }
 
 /**
- * @brief  Set the LSM303AGR magnetometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LSM303AGR magnetometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_MAG_SetOutputDataRate(LSM303AGR_MAG_Object_t *pObj, float Odr)
 {
   lsm303agr_mg_odr_m_t new_odr;
@@ -1005,11 +1005,11 @@ int32_t LSM303AGR_MAG_SetOutputDataRate(LSM303AGR_MAG_Object_t *pObj, float Odr)
 
 
 /**
- * @brief  Get the LSM303AGR magnetometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale pointer where the full scale is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR magnetometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale pointer where the full scale is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_MAG_GetFullScale(LSM303AGR_MAG_Object_t *pObj, int32_t *FullScale)
 {
   *FullScale = 50;
@@ -1018,22 +1018,22 @@ int32_t LSM303AGR_MAG_GetFullScale(LSM303AGR_MAG_Object_t *pObj, int32_t *FullSc
 }
 
 /**
- * @brief  Set the LSM303AGR magnetometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale the functional full scale to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LSM303AGR magnetometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale the functional full scale to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_MAG_SetFullScale(LSM303AGR_MAG_Object_t *pObj, int32_t FullScale)
 {
   return LSM303AGR_OK;
 }
 
 /**
- * @brief  Get the LSM303AGR magnetometer sensor raw axes
- * @param  pObj the device pObj
- * @param  Value pointer where the raw values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR magnetometer sensor raw axes
+  * @param  pObj the device pObj
+  * @param  Value pointer where the raw values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_MAG_GetAxesRaw(LSM303AGR_MAG_Object_t *pObj, LSM303AGR_AxesRaw_t *Value)
 {
   lsm303agr_axis3bit16_t data_raw;
@@ -1053,11 +1053,11 @@ int32_t LSM303AGR_MAG_GetAxesRaw(LSM303AGR_MAG_Object_t *pObj, LSM303AGR_AxesRaw
 }
 
 /**
- * @brief  Get the LSM303AGR magnetometer sensor axes
- * @param  pObj the device pObj
- * @param  MagneticField pointer where the values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR magnetometer sensor axes
+  * @param  pObj the device pObj
+  * @param  MagneticField pointer where the values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_MAG_GetAxes(LSM303AGR_MAG_Object_t *pObj, LSM303AGR_Axes_t *MagneticField)
 {
   lsm303agr_axis3bit16_t data_raw;
@@ -1081,12 +1081,12 @@ int32_t LSM303AGR_MAG_GetAxes(LSM303AGR_MAG_Object_t *pObj, LSM303AGR_Axes_t *Ma
 }
 
 /**
- * @brief  Get the LSM303AGR register value for magnetic sensor
- * @param  pObj the device pObj
- * @param  Reg address to be read
- * @param  Data pointer where the value is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR register value for magnetic sensor
+  * @param  pObj the device pObj
+  * @param  Reg address to be read
+  * @param  Data pointer where the value is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_MAG_Read_Reg(LSM303AGR_MAG_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 {
   if (lsm303agr_read_reg(&(pObj->Ctx), Reg, Data, 1) != LSM303AGR_OK)
@@ -1098,12 +1098,12 @@ int32_t LSM303AGR_MAG_Read_Reg(LSM303AGR_MAG_Object_t *pObj, uint8_t Reg, uint8_
 }
 
 /**
- * @brief  Set the LSM303AGR register value for magnetic sensor
- * @param  pObj the device pObj
- * @param  Reg address to be written
- * @param  Data value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LSM303AGR register value for magnetic sensor
+  * @param  pObj the device pObj
+  * @param  Reg address to be written
+  * @param  Data value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_MAG_Write_Reg(LSM303AGR_MAG_Object_t *pObj, uint8_t Reg, uint8_t Data)
 {
   if (lsm303agr_write_reg(&(pObj->Ctx), Reg, &Data, 1) != LSM303AGR_OK)
@@ -1115,11 +1115,11 @@ int32_t LSM303AGR_MAG_Write_Reg(LSM303AGR_MAG_Object_t *pObj, uint8_t Reg, uint8
 }
 
 /**
- * @brief  Get the LSM303AGR MAG data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR MAG data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_MAG_Get_DRDY_Status(LSM303AGR_MAG_Object_t *pObj, uint8_t *Status)
 {
   if (lsm303agr_mag_data_ready_get(&(pObj->Ctx), Status) != LSM303AGR_OK)
@@ -1131,11 +1131,11 @@ int32_t LSM303AGR_MAG_Get_DRDY_Status(LSM303AGR_MAG_Object_t *pObj, uint8_t *Sta
 }
 
 /**
- * @brief  Get the LSM303AGR MAG initialization status
- * @param  pObj the device pObj
- * @param  Status 1 if initialized, 0 otherwise
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR MAG initialization status
+  * @param  pObj the device pObj
+  * @param  Status 1 if initialized, 0 otherwise
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM303AGR_MAG_Get_Init_Status(LSM303AGR_MAG_Object_t *pObj, uint8_t *Status)
 {
   if (pObj == NULL)
@@ -1149,19 +1149,19 @@ int32_t LSM303AGR_MAG_Get_Init_Status(LSM303AGR_MAG_Object_t *pObj, uint8_t *Sta
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LSM303AGR_Private_Functions LSM303AGR Private Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Get the LSM303AGR accelerometer sensor sensitivity for HR mode
- * @param  pObj the device pObj
- * @param  Sensitivity pointer to sensitivity
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR accelerometer sensor sensitivity for HR mode
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer to sensitivity
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LSM303AGR_ACC_GetSensitivityHR(LSM303AGR_ACC_Object_t *pObj, float *Sensitivity)
 {
   int32_t ret = LSM303AGR_OK;
@@ -1201,11 +1201,11 @@ static int32_t LSM303AGR_ACC_GetSensitivityHR(LSM303AGR_ACC_Object_t *pObj, floa
 }
 
 /**
- * @brief  Get the LSM303AGR accelerometer sensor sensitivity for NM mode
- * @param  pObj the device pObj
- * @param  Sensitivity pointer to sensitivity
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR accelerometer sensor sensitivity for NM mode
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer to sensitivity
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LSM303AGR_ACC_GetSensitivityNM(LSM303AGR_ACC_Object_t *pObj, float *Sensitivity)
 {
   int32_t ret = LSM303AGR_OK;
@@ -1245,11 +1245,11 @@ static int32_t LSM303AGR_ACC_GetSensitivityNM(LSM303AGR_ACC_Object_t *pObj, floa
 }
 
 /**
- * @brief  Get the LSM303AGR accelerometer sensor sensitivity for LP mode
- * @param  pObj the device pObj
- * @param  Sensitivity pointer to sensitivity
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM303AGR accelerometer sensor sensitivity for LP mode
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer to sensitivity
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LSM303AGR_ACC_GetSensitivityLP(LSM303AGR_ACC_Object_t *pObj, float *Sensitivity)
 {
   int32_t ret = LSM303AGR_OK;
@@ -1289,11 +1289,11 @@ static int32_t LSM303AGR_ACC_GetSensitivityLP(LSM303AGR_ACC_Object_t *pObj, floa
 }
 
 /**
- * @brief  Set the LSM303AGR accelerometer sensor output data rate when enabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LSM303AGR accelerometer sensor output data rate when enabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LSM303AGR_ACC_SetOutputDataRate_When_Enabled(LSM303AGR_ACC_Object_t *pObj, float Odr)
 {
   lsm303agr_odr_a_t new_odr;
@@ -1316,11 +1316,11 @@ static int32_t LSM303AGR_ACC_SetOutputDataRate_When_Enabled(LSM303AGR_ACC_Object
 }
 
 /**
- * @brief  Set the LSM303AGR accelerometer sensor output data rate when disabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LSM303AGR accelerometer sensor output data rate when disabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LSM303AGR_ACC_SetOutputDataRate_When_Disabled(LSM303AGR_ACC_Object_t *pObj, float Odr)
 {
   pObj->acc_odr = (Odr <=    1.0f) ? LSM303AGR_XL_ODR_1Hz
@@ -1335,13 +1335,13 @@ static int32_t LSM303AGR_ACC_SetOutputDataRate_When_Disabled(LSM303AGR_ACC_Objec
 }
 
 /**
- * @brief  Wrap Read register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Read register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ReadAccRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   LSM303AGR_ACC_Object_t *pObj = (LSM303AGR_ACC_Object_t *)Handle;
@@ -1359,13 +1359,13 @@ static int32_t ReadAccRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_
 }
 
 /**
- * @brief  Wrap Write register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Write register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t WriteAccRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   LSM303AGR_ACC_Object_t *pObj = (LSM303AGR_ACC_Object_t *)Handle;
@@ -1383,13 +1383,13 @@ static int32_t WriteAccRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16
 }
 
 /**
- * @brief  Wrap Read register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Read register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ReadMagRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   LSM303AGR_MAG_Object_t *pObj = (LSM303AGR_MAG_Object_t *)Handle;
@@ -1407,13 +1407,13 @@ static int32_t ReadMagRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_
 }
 
 /**
- * @brief  Wrap Write register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Write register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t WriteMagRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   LSM303AGR_MAG_Object_t *pObj = (LSM303AGR_MAG_Object_t *)Handle;

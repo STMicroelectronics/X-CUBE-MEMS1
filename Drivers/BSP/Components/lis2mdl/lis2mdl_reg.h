@@ -1,22 +1,22 @@
-/*
- ******************************************************************************
- * @file    lis2mdl_reg.h
- * @author  Sensors Software Solution Team
- * @brief   This file contains all the functions prototypes for the
- *          lis2mdl_reg.c driver.
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    lis2mdl_reg.h
+  * @author  Sensors Software Solution Team
+  * @brief   This file contains all the functions prototypes for the
+  *          lis2mdl_reg.c driver.
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LIS2MDL_REGS_H
@@ -75,7 +75,8 @@ extern "C" {
 #ifndef MEMS_SHARED_TYPES
 #define MEMS_SHARED_TYPES
 
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t bit0       : 1;
   uint8_t bit1       : 1;
@@ -108,12 +109,11 @@ typedef struct {
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *,
-                                    uint16_t);
-typedef int32_t (*stmdev_read_ptr) (void *, uint8_t, uint8_t *,
-                                    uint16_t);
+typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 
-typedef struct {
+typedef struct
+{
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
@@ -142,7 +142,8 @@ typedef struct {
   *
   */
 
-typedef struct {
+typedef struct
+{
   uint8_t address;
   uint8_t data;
 } ucf_line_t;
@@ -183,7 +184,8 @@ typedef struct {
 #define LIS2MDL_OFFSET_Z_REG_H          0x4AU
 #define LIS2MDL_WHO_AM_I                0x4FU
 #define LIS2MDL_CFG_REG_A               0x60U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t md                     : 2;
   uint8_t odr                    : 2;
@@ -202,7 +204,8 @@ typedef struct {
 } lis2mdl_cfg_reg_a_t;
 
 #define LIS2MDL_CFG_REG_B               0x61U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t lpf                    : 1;
   uint8_t set_rst                : 2; /* OFF_CANC + Set_FREQ */
@@ -219,7 +222,8 @@ typedef struct {
 } lis2mdl_cfg_reg_b_t;
 
 #define LIS2MDL_CFG_REG_C               0x62U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t drdy_on_pin            : 1;
   uint8_t self_test              : 1;
@@ -242,7 +246,8 @@ typedef struct {
 } lis2mdl_cfg_reg_c_t;
 
 #define LIS2MDL_INT_CRTL_REG            0x63U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ien                    : 1;
   uint8_t iel                    : 1;
@@ -263,7 +268,8 @@ typedef struct {
 } lis2mdl_int_crtl_reg_t;
 
 #define LIS2MDL_INT_SOURCE_REG          0x64U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t _int                   : 1;
   uint8_t mroi                   : 1;
@@ -288,7 +294,8 @@ typedef struct {
 #define LIS2MDL_INT_THS_L_REG           0x65U
 #define LIS2MDL_INT_THS_H_REG           0x66U
 #define LIS2MDL_STATUS_REG              0x67U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xda                    : 1;
   uint8_t yda                    : 1;
@@ -321,9 +328,9 @@ typedef struct {
 
 /**
   * @defgroup LIS2MDL_Register_Union
-  * @brief    This union group all the registers that has a bit-field
+  * @brief    This union group all the registers having a bit-field
   *           description.
-  *           This union is useful but not need by the driver.
+  *           This union is useful but it's not needed by the driver.
   *
   *           REMOVING this union you are compliant with:
   *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
@@ -331,7 +338,8 @@ typedef struct {
   * @{
   *
   */
-typedef union {
+typedef union
+{
   lis2mdl_cfg_reg_a_t            cfg_reg_a;
   lis2mdl_cfg_reg_b_t            cfg_reg_b;
   lis2mdl_cfg_reg_c_t            cfg_reg_c;
@@ -355,12 +363,14 @@ int32_t lis2mdl_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
                           uint16_t len);
 
 float_t lis2mdl_from_lsb_to_mgauss(int16_t lsb);
+
 float_t lis2mdl_from_lsb_to_celsius(int16_t lsb);
 
 int32_t lis2mdl_mag_user_offset_set(stmdev_ctx_t *ctx, int16_t *val);
 int32_t lis2mdl_mag_user_offset_get(stmdev_ctx_t *ctx, int16_t *val);
 
-typedef enum {
+typedef enum
+{
   LIS2MDL_CONTINUOUS_MODE  = 0,
   LIS2MDL_SINGLE_TRIGGER   = 1,
   LIS2MDL_POWER_DOWN       = 2,
@@ -370,7 +380,8 @@ int32_t lis2mdl_operating_mode_set(stmdev_ctx_t *ctx,
 int32_t lis2mdl_operating_mode_get(stmdev_ctx_t *ctx,
                                    lis2mdl_md_t *val);
 
-typedef enum {
+typedef enum
+{
   LIS2MDL_ODR_10Hz   = 0,
   LIS2MDL_ODR_20Hz   = 1,
   LIS2MDL_ODR_50Hz   = 2,
@@ -379,7 +390,8 @@ typedef enum {
 int32_t lis2mdl_data_rate_set(stmdev_ctx_t *ctx, lis2mdl_odr_t val);
 int32_t lis2mdl_data_rate_get(stmdev_ctx_t *ctx, lis2mdl_odr_t *val);
 
-typedef enum {
+typedef enum
+{
   LIS2MDL_HIGH_RESOLUTION  = 0,
   LIS2MDL_LOW_POWER        = 1,
 } lis2mdl_lp_t;
@@ -389,7 +401,8 @@ int32_t lis2mdl_power_mode_get(stmdev_ctx_t *ctx, lis2mdl_lp_t *val);
 int32_t lis2mdl_offset_temp_comp_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lis2mdl_offset_temp_comp_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   LIS2MDL_ODR_DIV_2  = 0,
   LIS2MDL_ODR_DIV_4  = 1,
 } lis2mdl_lpf_t;
@@ -398,7 +411,8 @@ int32_t lis2mdl_low_pass_bandwidth_set(stmdev_ctx_t *ctx,
 int32_t lis2mdl_low_pass_bandwidth_get(stmdev_ctx_t *ctx,
                                        lis2mdl_lpf_t *val);
 
-typedef enum {
+typedef enum
+{
   LIS2MDL_SET_SENS_ODR_DIV_63        = 0,
   LIS2MDL_SENS_OFF_CANC_EVERY_ODR    = 1,
   LIS2MDL_SET_SENS_ONLY_AT_POWER_ON  = 2,
@@ -436,7 +450,8 @@ int32_t lis2mdl_boot_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t lis2mdl_self_test_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lis2mdl_self_test_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   LIS2MDL_LSB_AT_LOW_ADD  = 0,
   LIS2MDL_MSB_AT_LOW_ADD  = 1,
 } lis2mdl_ble_t;
@@ -447,7 +462,8 @@ int32_t lis2mdl_data_format_get(stmdev_ctx_t *ctx,
 int32_t lis2mdl_status_get(stmdev_ctx_t *ctx,
                            lis2mdl_status_reg_t *val);
 
-typedef enum {
+typedef enum
+{
   LIS2MDL_CHECK_BEFORE  = 0,
   LIS2MDL_CHECK_AFTER   = 1,
 } lis2mdl_int_on_dataoff_t;
@@ -474,14 +490,16 @@ int32_t lis2mdl_int_gen_treshold_set(stmdev_ctx_t *ctx, uint16_t val);
 int32_t lis2mdl_int_gen_treshold_get(stmdev_ctx_t *ctx,
                                      uint16_t *val);
 
-typedef enum {
+typedef enum
+{
   LIS2MDL_SPI_4_WIRE   = 1,
   LIS2MDL_SPI_3_WIRE   = 0,
 } lis2mdl_sim_t;
 int32_t lis2mdl_spi_mode_set(stmdev_ctx_t *ctx, lis2mdl_sim_t val);
 int32_t lis2mdl_spi_mode_get(stmdev_ctx_t *ctx, lis2mdl_sim_t *val);
 
-typedef enum {
+typedef enum
+{
   LIS2MDL_I2C_ENABLE   = 0,
   LIS2MDL_I2C_DISABLE  = 1,
 } lis2mdl_i2c_dis_t;

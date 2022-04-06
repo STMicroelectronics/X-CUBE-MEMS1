@@ -1,51 +1,51 @@
 /**
- ******************************************************************************
- * @file    iks01a2_env_sensors.c
- * @author  MEMS Software Solutions Team
- * @brief   This file provides a set of functions needed to manage the environmental sensors
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    iks01a2_env_sensors.c
+  * @author  MEMS Software Solutions Team
+  * @brief   This file provides a set of functions needed to manage the environmental sensors
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "iks01a2_env_sensors.h"
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup IKS01A2 IKS01A2
- * @{
- */
+  * @{
+  */
 
 /** @defgroup IKS01A2_ENV_SENSORS IKS01A2 ENV SENSORS
- * @{
- */
+  * @{
+  */
 
 /** @defgroup IKS01A2_ENV_SENSORS_Exported_Variables IKS01A2 ENV SENSORS Exported Variables
- * @{
- */
+  * @{
+  */
 
 extern void *EnvCompObj[IKS01A2_ENV_INSTANCES_NBR]; /* This "redundant" line is here to fulfil MISRA C-2012 rule 8.4 */
 void *EnvCompObj[IKS01A2_ENV_INSTANCES_NBR];
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup IKS01A2_ENV_SENSORS_Private_Variables IKS01A2 ENV SENSORS Private Variables
- * @{
- */
+  * @{
+  */
 
 /* We define a jump table in order to get the correct index from the desired function. */
 /* This table should have a size equal to the maximum value of a function plus 1.      */
@@ -55,12 +55,12 @@ static ENV_SENSOR_CommonDrv_t *EnvDrv[IKS01A2_ENV_INSTANCES_NBR];
 static IKS01A2_ENV_SENSOR_Ctx_t EnvCtx[IKS01A2_ENV_INSTANCES_NBR];
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup IKS01A2_ENV_SENSORS_Private_Function_Prototypes IKS01A2 ENV SENSORS Private Function Prototypes
- * @{
- */
+  * @{
+  */
 
 #if (USE_IKS01A2_ENV_SENSOR_HTS221_0 == 1)
 static int32_t HTS221_0_Probe(uint32_t Functions);
@@ -83,21 +83,21 @@ static int32_t STTS22H_0_Probe(uint32_t Functions);
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup IKS01A2_ENV_SENSORS_Exported_Functions IKS01A2 ENV SENSOR Exported Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Initializes the environmental sensor
- * @param  Instance environmental sensor instance to be used
- * @param  Functions Environmental sensor functions. Could be :
- *         - ENV_TEMPERATURE and/or ENV_HUMIDITY for instance 0
- *         - ENV_TEMPERATURE and/or ENV_PRESSURE for instance 1
- * @retval BSP status
- */
+  * @brief  Initializes the environmental sensor
+  * @param  Instance environmental sensor instance to be used
+  * @param  Functions Environmental sensor functions. Could be :
+  *         - ENV_TEMPERATURE and/or ENV_HUMIDITY for instance 0
+  *         - ENV_TEMPERATURE and/or ENV_PRESSURE for instance 1
+  * @retval BSP status
+  */
 int32_t IKS01A2_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
 {
   int32_t ret = BSP_ERROR_NONE;
@@ -259,10 +259,10 @@ int32_t IKS01A2_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
 }
 
 /**
- * @brief  Deinitialize environmental sensor
- * @param  Instance environmental sensor instance to be used
- * @retval BSP status
- */
+  * @brief  Deinitialize environmental sensor
+  * @param  Instance environmental sensor instance to be used
+  * @retval BSP status
+  */
 int32_t IKS01A2_ENV_SENSOR_DeInit(uint32_t Instance)
 {
   int32_t ret;
@@ -284,11 +284,11 @@ int32_t IKS01A2_ENV_SENSOR_DeInit(uint32_t Instance)
 }
 
 /**
- * @brief  Get environmental sensor instance capabilities
- * @param  Instance Environmental sensor instance
- * @param  Capabilities pointer to Environmental sensor capabilities
- * @retval BSP status
- */
+  * @brief  Get environmental sensor instance capabilities
+  * @param  Instance Environmental sensor instance
+  * @param  Capabilities pointer to Environmental sensor capabilities
+  * @retval BSP status
+  */
 int32_t IKS01A2_ENV_SENSOR_GetCapabilities(uint32_t Instance, IKS01A2_ENV_SENSOR_Capabilities_t *Capabilities)
 {
   int32_t ret;
@@ -310,11 +310,11 @@ int32_t IKS01A2_ENV_SENSOR_GetCapabilities(uint32_t Instance, IKS01A2_ENV_SENSOR
 }
 
 /**
- * @brief  Get WHOAMI value
- * @param  Instance environmental sensor instance to be used
- * @param  Id WHOAMI value
- * @retval BSP status
- */
+  * @brief  Get WHOAMI value
+  * @param  Instance environmental sensor instance to be used
+  * @param  Id WHOAMI value
+  * @retval BSP status
+  */
 int32_t IKS01A2_ENV_SENSOR_ReadID(uint32_t Instance, uint8_t *Id)
 {
   int32_t ret;
@@ -336,13 +336,13 @@ int32_t IKS01A2_ENV_SENSOR_ReadID(uint32_t Instance, uint8_t *Id)
 }
 
 /**
- * @brief  Enable environmental sensor
- * @param  Instance environmental sensor instance to be used
- * @param  Function Environmental sensor function. Could be :
- *         - ENV_TEMPERATURE or ENV_HUMIDITY for instance 0
- *         - ENV_TEMPERATURE or ENV_PRESSURE for instance 1
- * @retval BSP status
- */
+  * @brief  Enable environmental sensor
+  * @param  Instance environmental sensor instance to be used
+  * @param  Function Environmental sensor function. Could be :
+  *         - ENV_TEMPERATURE or ENV_HUMIDITY for instance 0
+  *         - ENV_TEMPERATURE or ENV_PRESSURE for instance 1
+  * @retval BSP status
+  */
 int32_t IKS01A2_ENV_SENSOR_Enable(uint32_t Instance, uint32_t Function)
 {
   int32_t ret;
@@ -374,13 +374,13 @@ int32_t IKS01A2_ENV_SENSOR_Enable(uint32_t Instance, uint32_t Function)
 }
 
 /**
- * @brief  Disable environmental sensor
- * @param  Instance environmental sensor instance to be used
- * @param  Function Environmental sensor function. Could be :
- *         - ENV_TEMPERATURE or ENV_HUMIDITY for instance 0
- *         - ENV_TEMPERATURE or ENV_PRESSURE for instance 1
- * @retval BSP status
- */
+  * @brief  Disable environmental sensor
+  * @param  Instance environmental sensor instance to be used
+  * @param  Function Environmental sensor function. Could be :
+  *         - ENV_TEMPERATURE or ENV_HUMIDITY for instance 0
+  *         - ENV_TEMPERATURE or ENV_PRESSURE for instance 1
+  * @retval BSP status
+  */
 int32_t IKS01A2_ENV_SENSOR_Disable(uint32_t Instance, uint32_t Function)
 {
   int32_t ret;
@@ -412,14 +412,14 @@ int32_t IKS01A2_ENV_SENSOR_Disable(uint32_t Instance, uint32_t Function)
 }
 
 /**
- * @brief  Get environmental sensor Output Data Rate
- * @param  Instance environmental sensor instance to be used
- * @param  Function Environmental sensor function. Could be :
- *         - ENV_TEMPERATURE or ENV_HUMIDITY for instance 0
- *         - ENV_TEMPERATURE or ENV_PRESSURE for instance 1
- * @param  Odr pointer to Output Data Rate read value
- * @retval BSP status
- */
+  * @brief  Get environmental sensor Output Data Rate
+  * @param  Instance environmental sensor instance to be used
+  * @param  Function Environmental sensor function. Could be :
+  *         - ENV_TEMPERATURE or ENV_HUMIDITY for instance 0
+  *         - ENV_TEMPERATURE or ENV_PRESSURE for instance 1
+  * @param  Odr pointer to Output Data Rate read value
+  * @retval BSP status
+  */
 int32_t IKS01A2_ENV_SENSOR_GetOutputDataRate(uint32_t Instance, uint32_t Function, float *Odr)
 {
   int32_t ret;
@@ -451,14 +451,14 @@ int32_t IKS01A2_ENV_SENSOR_GetOutputDataRate(uint32_t Instance, uint32_t Functio
 }
 
 /**
- * @brief  Set environmental sensor Output Data Rate
- * @param  Instance environmental sensor instance to be used
- * @param  Function Environmental sensor function. Could be :
- *         - ENV_TEMPERATURE or ENV_HUMIDITY for instance 0
- *         - ENV_TEMPERATURE or ENV_PRESSURE for instance 1
- * @param  Odr Output Data Rate value to be set
- * @retval BSP status
- */
+  * @brief  Set environmental sensor Output Data Rate
+  * @param  Instance environmental sensor instance to be used
+  * @param  Function Environmental sensor function. Could be :
+  *         - ENV_TEMPERATURE or ENV_HUMIDITY for instance 0
+  *         - ENV_TEMPERATURE or ENV_PRESSURE for instance 1
+  * @param  Odr Output Data Rate value to be set
+  * @retval BSP status
+  */
 int32_t IKS01A2_ENV_SENSOR_SetOutputDataRate(uint32_t Instance, uint32_t Function, float Odr)
 {
   int32_t ret;
@@ -490,14 +490,14 @@ int32_t IKS01A2_ENV_SENSOR_SetOutputDataRate(uint32_t Instance, uint32_t Functio
 }
 
 /**
- * @brief  Get environmental sensor value
- * @param  Instance environmental sensor instance to be used
- * @param  Function Environmental sensor function. Could be :
- *         - ENV_TEMPERATURE or ENV_HUMIDITY for instance 0
- *         - ENV_TEMPERATURE or ENV_PRESSURE for instance 1
- * @param  Value pointer to environmental sensor value
- * @retval BSP status
- */
+  * @brief  Get environmental sensor value
+  * @param  Instance environmental sensor instance to be used
+  * @param  Function Environmental sensor function. Could be :
+  *         - ENV_TEMPERATURE or ENV_HUMIDITY for instance 0
+  *         - ENV_TEMPERATURE or ENV_PRESSURE for instance 1
+  * @param  Value pointer to environmental sensor value
+  * @retval BSP status
+  */
 int32_t IKS01A2_ENV_SENSOR_GetValue(uint32_t Instance, uint32_t Function, float *Value)
 {
   int32_t ret;
@@ -529,20 +529,20 @@ int32_t IKS01A2_ENV_SENSOR_GetValue(uint32_t Instance, uint32_t Function, float 
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup IKS01A2_ENV_SENSORS_Private_Functions IKS01A2 ENV SENSORS Private Functions
- * @{
- */
+  * @{
+  */
 
 #if (USE_IKS01A2_ENV_SENSOR_HTS221_0 == 1)
 /**
- * @brief  Register Bus IOs for instance 0 if component ID is OK
- * @param  Functions Environmental sensor functions. Could be :
- *         - ENV_TEMPERATURE and/or ENV_HUMIDITY
- * @retval BSP status
- */
+  * @brief  Register Bus IOs for instance 0 if component ID is OK
+  * @param  Functions Environmental sensor functions. Could be :
+  *         - ENV_TEMPERATURE and/or ENV_HUMIDITY
+  * @retval BSP status
+  */
 static int32_t HTS221_0_Probe(uint32_t Functions)
 {
   HTS221_IO_t            io_ctx;
@@ -623,11 +623,11 @@ static int32_t HTS221_0_Probe(uint32_t Functions)
 
 #if (USE_IKS01A2_ENV_SENSOR_LPS22HB_0 == 1)
 /**
- * @brief  Register Bus IOs for instance 1 if component ID is OK
- * @param  Functions Environmental sensor functions. Could be :
- *         - ENV_TEMPERATURE and/or ENV_PRESSURE
- * @retval BSP status
- */
+  * @brief  Register Bus IOs for instance 1 if component ID is OK
+  * @param  Functions Environmental sensor functions. Could be :
+  *         - ENV_TEMPERATURE and/or ENV_PRESSURE
+  * @retval BSP status
+  */
 static int32_t LPS22HB_0_Probe(uint32_t Functions)
 {
   LPS22HB_IO_t            io_ctx;
@@ -708,11 +708,11 @@ static int32_t LPS22HB_0_Probe(uint32_t Functions)
 
 #if (USE_IKS01A2_ENV_SENSOR_LPS33HW_0 == 1)
 /**
- * @brief  Register Bus IOs for instance 1 if component ID is OK
- * @param  Functions Environmental sensor functions. Could be :
- *         - ENV_TEMPERATURE and/or ENV_PRESSURE
- * @retval BSP status
- */
+  * @brief  Register Bus IOs for instance 1 if component ID is OK
+  * @param  Functions Environmental sensor functions. Could be :
+  *         - ENV_TEMPERATURE and/or ENV_PRESSURE
+  * @retval BSP status
+  */
 static int32_t LPS33HW_0_Probe(uint32_t Functions)
 {
   LPS33HW_IO_t            io_ctx;
@@ -793,11 +793,11 @@ static int32_t LPS33HW_0_Probe(uint32_t Functions)
 
 #if (USE_IKS01A2_ENV_SENSOR_LPS22HH_0 == 1)
 /**
- * @brief  Register Bus IOs for instance 1 if component ID is OK
- * @param  Functions Environmental sensor functions. Could be :
- *         - ENV_TEMPERATURE and/or ENV_PRESSURE
- * @retval BSP status
- */
+  * @brief  Register Bus IOs for instance 1 if component ID is OK
+  * @param  Functions Environmental sensor functions. Could be :
+  *         - ENV_TEMPERATURE and/or ENV_PRESSURE
+  * @retval BSP status
+  */
 static int32_t LPS22HH_0_Probe(uint32_t Functions)
 {
   LPS22HH_IO_t            io_ctx;
@@ -878,11 +878,11 @@ static int32_t LPS22HH_0_Probe(uint32_t Functions)
 
 #if (USE_IKS01A2_ENV_SENSOR_STTS22H_0 == 1)
 /**
- * @brief  Register Bus IOs for instance 2 if component ID is OK
- * @param  Functions Environmental sensor functions. Could be :
- *         - ENV_TEMPERATURE
- * @retval BSP status
- */
+  * @brief  Register Bus IOs for instance 2 if component ID is OK
+  * @param  Functions Environmental sensor functions. Could be :
+  *         - ENV_TEMPERATURE
+  * @retval BSP status
+  */
 static int32_t STTS22H_0_Probe(uint32_t Functions)
 {
   STTS22H_IO_t            io_ctx;
@@ -953,19 +953,19 @@ static int32_t STTS22H_0_Probe(uint32_t Functions)
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

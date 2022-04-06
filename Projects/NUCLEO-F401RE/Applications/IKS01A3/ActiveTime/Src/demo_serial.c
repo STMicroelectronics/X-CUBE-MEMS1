@@ -6,11 +6,11 @@
  ******************************************************************************
  * @attention
  *
- * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+ * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
  * All rights reserved.</center></h2>
  *
  * This software component is licensed by ST under Software License Agreement SLA0077,
- * the â€œLicenseâ€?. You may not use this component except in compliance with the
+ * the "License". You may not use this component except in compliance with the
  * License. You may obtain a copy of the License at:
  *                        www.st.com/sla0077
  *
@@ -108,8 +108,8 @@ void INIT_STREAMING_MSG(TMsg *Msg)
  * @retval 1 if the message is correctly handled, 0 otherwise
  */
 int HandleMSG(TMsg *Msg)
-/*  DestAddr | SouceAddr | CMD | PAYLOAD
- *      1          1        1       N
+/*  DestAddr | SourceAddr | CMD | PAYLOAD
+ *      1          1         1       N
  */
 {
   int ret = 1;

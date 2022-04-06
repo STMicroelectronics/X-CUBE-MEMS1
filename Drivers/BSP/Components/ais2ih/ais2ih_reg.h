@@ -1,22 +1,22 @@
-/*
- ******************************************************************************
- * @file    ais2ih_reg.h
- * @author  Sensors Software Solution Team
- * @brief   This file contains all the functions prototypes for the
- *          ais2ih_reg.c driver.
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    ais2ih_reg.h
+  * @author  Sensors Software Solution Team
+  * @brief   This file contains all the functions prototypes for the
+  *          ais2ih_reg.c driver.
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef AIS2IH_REGS_H
@@ -28,6 +28,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
+#include <stddef.h>
 #include <math.h>
 
 /** @addtogroup AIS2IH
@@ -74,7 +75,8 @@ extern "C" {
 #ifndef MEMS_SHARED_TYPES
 #define MEMS_SHARED_TYPES
 
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t bit0       : 1;
   uint8_t bit1       : 1;
@@ -107,12 +109,11 @@ typedef struct {
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *,
-                                    uint16_t);
-typedef int32_t (*stmdev_read_ptr) (void *, uint8_t, uint8_t *,
-                                    uint16_t);
+typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 
-typedef struct {
+typedef struct
+{
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
@@ -141,7 +142,8 @@ typedef struct {
   *
   */
 
-typedef struct {
+typedef struct
+{
   uint8_t address;
   uint8_t data;
 } ucf_line_t;
@@ -179,7 +181,8 @@ typedef struct {
 #define AIS2IH_OUT_T_H                     0x0EU
 #define AIS2IH_WHO_AM_I                    0x0FU
 #define AIS2IH_CTRL1                       0x20U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t lp_mode                    : 2;
   uint8_t mode                       : 2;
@@ -192,7 +195,8 @@ typedef struct {
 } ais2ih_ctrl1_t;
 
 #define AIS2IH_CTRL2                       0x21U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t sim                        : 1;
   uint8_t i2c_disable                : 1;
@@ -215,7 +219,8 @@ typedef struct {
 } ais2ih_ctrl2_t;
 
 #define AIS2IH_CTRL3                       0x22U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
 uint8_t slp_mode                   :
   2;  /* slp_mode_sel + slp_mode_1 */
@@ -236,7 +241,8 @@ uint8_t slp_mode                   :
 } ais2ih_ctrl3_t;
 
 #define AIS2IH_CTRL4_INT1_PAD_CTRL         0x23U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t int1_drdy                  : 1;
   uint8_t int1_fth                   : 1;
@@ -259,7 +265,8 @@ typedef struct {
 } ais2ih_ctrl4_int1_pad_ctrl_t;
 
 #define AIS2IH_CTRL5_INT2_PAD_CTRL         0x24U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t int2_drdy                  : 1;
   uint8_t int2_fth                   : 1;
@@ -282,7 +289,8 @@ typedef struct {
 } ais2ih_ctrl5_int2_pad_ctrl_t;
 
 #define AIS2IH_CTRL6                       0x25U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01                : 2;
   uint8_t low_noise                  : 1;
@@ -300,7 +308,8 @@ typedef struct {
 
 #define AIS2IH_OUT_T                       0x26U
 #define AIS2IH_STATUS                      0x27U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t drdy                       : 1;
   uint8_t ff_ia                      : 1;
@@ -329,7 +338,8 @@ typedef struct {
 #define AIS2IH_OUT_Z_L                     0x2CU
 #define AIS2IH_OUT_Z_H                     0x2DU
 #define AIS2IH_FIFO_CTRL                   0x2EU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t fth                        : 5;
   uint8_t fmode                      : 3;
@@ -340,7 +350,8 @@ typedef struct {
 } ais2ih_fifo_ctrl_t;
 
 #define AIS2IH_FIFO_SAMPLES                0x2FU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t diff                       : 6;
   uint8_t fifo_ovr                   : 1;
@@ -353,7 +364,8 @@ typedef struct {
 } ais2ih_fifo_samples_t;
 
 #define AIS2IH_TAP_THS_X                   0x30U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t tap_thsx                    : 5;
   uint8_t _6d_ths                     : 2;
@@ -366,7 +378,8 @@ typedef struct {
 } ais2ih_tap_ths_x_t;
 
 #define AIS2IH_TAP_THS_Y                   0x31U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t tap_thsy                   : 5;
   uint8_t tap_prior                  : 3;
@@ -377,7 +390,8 @@ typedef struct {
 } ais2ih_tap_ths_y_t;
 
 #define AIS2IH_TAP_THS_Z                   0x32U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t tap_thsz                   : 5;
   uint8_t tap_z_en                   : 1;
@@ -392,7 +406,8 @@ typedef struct {
 } ais2ih_tap_ths_z_t;
 
 #define AIS2IH_INT_DUR                     0x33U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t shock                      : 2;
   uint8_t quiet                      : 2;
@@ -405,7 +420,8 @@ typedef struct {
 } ais2ih_int_dur_t;
 
 #define AIS2IH_WAKE_UP_THS                 0x34U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t wk_ths                     : 6;
   uint8_t sleep_on                   : 1;
@@ -418,7 +434,8 @@ typedef struct {
 } ais2ih_wake_up_ths_t;
 
 #define AIS2IH_WAKE_UP_DUR                 0x35U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t sleep_dur                  : 4;
   uint8_t stationary                 : 1;
@@ -433,7 +450,8 @@ typedef struct {
 } ais2ih_wake_up_dur_t;
 
 #define AIS2IH_FREE_FALL                   0x36U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ff_ths                     : 3;
   uint8_t ff_dur                     : 5;
@@ -444,7 +462,8 @@ typedef struct {
 } ais2ih_free_fall_t;
 
 #define AIS2IH_STATUS_DUP                  0x37U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t drdy                       : 1;
   uint8_t ff_ia                      : 1;
@@ -467,7 +486,8 @@ typedef struct {
 } ais2ih_status_dup_t;
 
 #define AIS2IH_WAKE_UP_SRC                 0x38U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t z_wu                       : 1;
   uint8_t y_wu                       : 1;
@@ -488,7 +508,8 @@ typedef struct {
 } ais2ih_wake_up_src_t;
 
 #define AIS2IH_TAP_SRC                     0x39U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t z_tap                      : 1;
   uint8_t y_tap                      : 1;
@@ -511,7 +532,8 @@ typedef struct {
 } ais2ih_tap_src_t;
 
 #define AIS2IH_SIXD_SRC                    0x3AU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xl                         : 1;
   uint8_t xh                         : 1;
@@ -534,7 +556,8 @@ typedef struct {
 } ais2ih_sixd_src_t;
 
 #define AIS2IH_ALL_INT_SRC                 0x3BU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ff_ia                      : 1;
   uint8_t wu_ia                      : 1;
@@ -558,7 +581,8 @@ typedef struct {
 #define AIS2IH_Y_OFS_USR                   0x3DU
 #define AIS2IH_Z_OFS_USR                   0x3EU
 #define AIS2IH_CTRL_REG7                   0x3FU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t lpass_on6d                 : 1;
   uint8_t hp_ref_mode                : 1;
@@ -582,9 +606,9 @@ typedef struct {
 
 /**
   * @defgroup AIS2IH_Register_Union
-  * @brief    This union group all the registers that has a bitfield
+  * @brief    This union group all the registers having a bit-field
   *           description.
-  *           This union is useful but not need by the driver.
+  *           This union is useful but it's not needed by the driver.
   *
   *           REMOVING this union you are compliant with:
   *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
@@ -592,7 +616,8 @@ typedef struct {
   * @{
   *
   */
-typedef union {
+typedef union
+{
   ais2ih_ctrl1_t                   ctrl1;
   ais2ih_ctrl2_t                   ctrl2;
   ais2ih_ctrl3_t                   ctrl3;
@@ -640,7 +665,8 @@ float_t ais2ih_from_fs8_lp1_to_mg(int16_t lsb);
 float_t ais2ih_from_fs16_lp1_to_mg(int16_t lsb);
 float_t ais2ih_from_lsb_to_celsius(int16_t lsb);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_HIGH_PERFORMANCE                    = 0x04,
   AIS2IH_CONT_LOW_PWR_4                      = 0x03,
   AIS2IH_CONT_LOW_PWR_3                      = 0x02,
@@ -663,7 +689,8 @@ typedef enum {
 int32_t ais2ih_power_mode_set(stmdev_ctx_t *ctx, ais2ih_mode_t val);
 int32_t ais2ih_power_mode_get(stmdev_ctx_t *ctx, ais2ih_mode_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_XL_ODR_OFF            = 0x00,
   AIS2IH_XL_ODR_1Hz6_LP_ONLY   = 0x01,
   AIS2IH_XL_ODR_12Hz5          = 0x02,
@@ -683,7 +710,8 @@ int32_t ais2ih_data_rate_get(stmdev_ctx_t *ctx, ais2ih_odr_t *val);
 int32_t ais2ih_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t ais2ih_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_2g     = 0,
   AIS2IH_4g     = 1,
   AIS2IH_8g     = 2,
@@ -697,7 +725,8 @@ int32_t ais2ih_status_reg_get(stmdev_ctx_t *ctx,
 
 int32_t ais2ih_flag_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef struct {
+typedef struct
+{
   ais2ih_status_dup_t   status_dup;
   ais2ih_wake_up_src_t  wake_up_src;
   ais2ih_tap_src_t      tap_src;
@@ -716,7 +745,8 @@ int32_t ais2ih_usr_offset_y_get(stmdev_ctx_t *ctx, uint8_t *buff);
 int32_t ais2ih_usr_offset_z_set(stmdev_ctx_t *ctx, uint8_t *buff);
 int32_t ais2ih_usr_offset_z_get(stmdev_ctx_t *ctx, uint8_t *buff);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_LSb_977ug    = 0,
   AIS2IH_LSb_15mg6    = 1,
 } ais2ih_usr_off_w_t;
@@ -740,7 +770,8 @@ int32_t ais2ih_reset_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t ais2ih_boot_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t ais2ih_boot_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_XL_ST_DISABLE      = 0,
   AIS2IH_XL_ST_POSITIVE     = 1,
   AIS2IH_XL_ST_NEGATIVE     = 2,
@@ -748,7 +779,8 @@ typedef enum {
 int32_t ais2ih_self_test_set(stmdev_ctx_t *ctx, ais2ih_st_t val);
 int32_t ais2ih_self_test_get(stmdev_ctx_t *ctx, ais2ih_st_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_DRDY_LATCHED   = 0,
   AIS2IH_DRDY_PULSED    = 1,
 } ais2ih_drdy_pulsed_t;
@@ -757,7 +789,8 @@ int32_t ais2ih_data_ready_mode_set(stmdev_ctx_t *ctx,
 int32_t ais2ih_data_ready_mode_get(stmdev_ctx_t *ctx,
                                    ais2ih_drdy_pulsed_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_LPF_ON_OUT         = 0x00,
   AIS2IH_USER_OFFSET_ON_OUT  = 0x01,
   AIS2IH_HIGH_PASS_ON_OUT    = 0x10,
@@ -765,7 +798,8 @@ typedef enum {
 int32_t ais2ih_filter_path_set(stmdev_ctx_t *ctx, ais2ih_fds_t val);
 int32_t ais2ih_filter_path_get(stmdev_ctx_t *ctx, ais2ih_fds_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_ODR_DIV_2     = 0,
   AIS2IH_ODR_DIV_4     = 1,
   AIS2IH_ODR_DIV_10    = 2,
@@ -779,14 +813,16 @@ int32_t ais2ih_filter_bandwidth_get(stmdev_ctx_t *ctx,
 int32_t ais2ih_reference_mode_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t ais2ih_reference_mode_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_SPI_4_WIRE   = 0,
   AIS2IH_SPI_3_WIRE   = 1,
 } ais2ih_sim_t;
 int32_t ais2ih_spi_mode_set(stmdev_ctx_t *ctx, ais2ih_sim_t val);
 int32_t ais2ih_spi_mode_get(stmdev_ctx_t *ctx, ais2ih_sim_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_I2C_ENABLE    = 0,
   AIS2IH_I2C_DISABLE   = 1,
 } ais2ih_i2c_disable_t;
@@ -795,7 +831,8 @@ int32_t ais2ih_i2c_interface_set(stmdev_ctx_t *ctx,
 int32_t ais2ih_i2c_interface_get(stmdev_ctx_t *ctx,
                                  ais2ih_i2c_disable_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_PULL_UP_CONNECT     = 0,
   AIS2IH_PULL_UP_DISCONNECT  = 1,
 } ais2ih_cs_pu_disc_t;
@@ -804,7 +841,8 @@ int32_t ais2ih_cs_mode_set(stmdev_ctx_t *ctx,
 int32_t ais2ih_cs_mode_get(stmdev_ctx_t *ctx,
                            ais2ih_cs_pu_disc_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_ACTIVE_HIGH  = 0,
   AIS2IH_ACTIVE_LOW   = 1,
 } ais2ih_h_lactive_t;
@@ -813,7 +851,8 @@ int32_t ais2ih_pin_polarity_set(stmdev_ctx_t *ctx,
 int32_t ais2ih_pin_polarity_get(stmdev_ctx_t *ctx,
                                 ais2ih_h_lactive_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_INT_PULSED   = 0,
   AIS2IH_INT_LATCHED  = 1,
 } ais2ih_lir_t;
@@ -822,7 +861,8 @@ int32_t ais2ih_int_notification_set(stmdev_ctx_t *ctx,
 int32_t ais2ih_int_notification_get(stmdev_ctx_t *ctx,
                                     ais2ih_lir_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_PUSH_PULL   = 0,
   AIS2IH_OPEN_DRAIN  = 1,
 } ais2ih_pp_od_t;
@@ -848,7 +888,8 @@ int32_t ais2ih_wkup_threshold_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t ais2ih_wkup_dur_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t ais2ih_wkup_dur_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_HP_FEED           = 0,
   AIS2IH_USER_OFFSET_FEED  = 1,
 } ais2ih_usr_off_on_wu_t;
@@ -857,7 +898,8 @@ int32_t ais2ih_wkup_feed_data_set(stmdev_ctx_t *ctx,
 int32_t ais2ih_wkup_feed_data_get(stmdev_ctx_t *ctx,
                                   ais2ih_usr_off_on_wu_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_NO_DETECTION        = 0,
   AIS2IH_DETECT_ACT_INACT    = 1,
   AIS2IH_DETECT_STAT_MOTION  = 3,
@@ -875,7 +917,8 @@ int32_t ais2ih_tap_threshold_x_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t ais2ih_tap_threshold_y_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t ais2ih_tap_threshold_y_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_XYZ    = 0,
   AIS2IH_YXZ    = 1,
   AIS2IH_XZY    = 2,
@@ -912,7 +955,8 @@ int32_t ais2ih_tap_quiet_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t ais2ih_tap_dur_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t ais2ih_tap_dur_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_ONLY_SINGLE          = 0,
   AIS2IH_BOTH_SINGLE_DOUBLE   = 1,
 } ais2ih_single_double_tap_t;
@@ -931,7 +975,8 @@ int32_t ais2ih_4d_mode_get(stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t ais2ih_6d_src_get(stmdev_ctx_t *ctx, ais2ih_sixd_src_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_ODR_DIV_2_FEED   = 0,
   AIS2IH_LPF2_FEED        = 1,
 } ais2ih_lpass_on6d_t;
@@ -943,7 +988,8 @@ int32_t ais2ih_6d_feed_data_get(stmdev_ctx_t *ctx,
 int32_t ais2ih_ff_dur_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t ais2ih_ff_dur_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_FF_TSH_5LSb_FS2g  = 0,
   AIS2IH_FF_TSH_7LSb_FS2g  = 1,
   AIS2IH_FF_TSH_8LSb_FS2g  = 2,
@@ -961,7 +1007,8 @@ int32_t ais2ih_ff_threshold_get(stmdev_ctx_t *ctx,
 int32_t ais2ih_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t ais2ih_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   AIS2IH_BYPASS_MODE             = 0,
   AIS2IH_FIFO_MODE               = 1,
   AIS2IH_STREAM_TO_FIFO_MODE     = 3,

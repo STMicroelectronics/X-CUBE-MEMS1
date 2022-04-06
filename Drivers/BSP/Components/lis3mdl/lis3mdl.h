@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    lis3mdl.h
- * @author  MCD Application Team
- * @brief   LIS3MDL header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lis3mdl.h
+  * @author  MCD Application Team
+  * @brief   LIS3MDL header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LIS3MDL_H
@@ -43,8 +43,8 @@ extern "C"
   */
 
 /** @defgroup LIS3MDL_Exported_Types LIS3MDL Exported Types
- * @{
- */
+  * @{
+  */
 typedef int32_t (*LIS3MDL_Init_Func)(void);
 typedef int32_t (*LIS3MDL_DeInit_Func)(void);
 typedef int32_t (*LIS3MDL_GetTick_Func)(void);
@@ -120,22 +120,26 @@ typedef struct
   int32_t (*GetAxesRaw)(LIS3MDL_Object_t *, LIS3MDL_AxesRaw_t *);
 } LIS3MDL_MAG_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } lis3mdl_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } lis3mdl_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } lis3mdl_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } lis3mdl_axis1bit32_t;
@@ -145,8 +149,8 @@ typedef union{
   */
 
 /** @defgroup LIS3MDL_Exported_Constants LIS3MDL Exported Constants
- * @{
- */
+  * @{
+  */
 #define LIS3MDL_OK            0
 #define LIS3MDL_ERROR        -1
 
@@ -164,8 +168,8 @@ typedef union{
   */
 
 /** @addtogroup LIS3MDL_Exported_Functions
- * @{
- */
+  * @{
+  */
 int32_t LIS3MDL_RegisterBusIO(LIS3MDL_Object_t *pObj, LIS3MDL_IO_t *pIO);
 int32_t LIS3MDL_Init(LIS3MDL_Object_t *pObj);
 int32_t LIS3MDL_DeInit(LIS3MDL_Object_t *pObj);

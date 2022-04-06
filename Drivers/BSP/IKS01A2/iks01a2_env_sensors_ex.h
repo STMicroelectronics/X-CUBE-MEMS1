@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    iks01a2_env_sensors_ex.h
- * @author  MEMS Software Solutions Team
- * @brief   This file provides a set of extended functions needed to manage the environmental sensors
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    iks01a2_env_sensors_ex.h
+  * @author  MEMS Software Solutions Team
+  * @brief   This file provides a set of extended functions needed to manage the environmental sensors
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef IKS01A2_ENV_SENSOR_EX_H
@@ -29,20 +29,20 @@ extern "C" {
 #include "iks01a2_env_sensors.h"
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup IKS01A2 IKS01A2
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup IKS01A2_ENV_SENSOR_EX IKS01A2_ENV_SENSOR_EX
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup IKS01A2_ENV_SENSOR_EX_Exported_Functions IKS01A2_ENV_SENSOR_EX Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t IKS01A2_ENV_SENSOR_FIFO_Get_Data(uint32_t Instance, float *Press, float *Temp);
 int32_t IKS01A2_ENV_SENSOR_FIFO_Get_Fth_Status(uint32_t Instance, uint8_t *Status);
@@ -61,20 +61,20 @@ int32_t IKS01A2_ENV_SENSOR_Set_One_Shot(uint32_t Instance);
 int32_t IKS01A2_ENV_SENSOR_Get_One_Shot_Status(uint32_t Instance, uint8_t *Status);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }

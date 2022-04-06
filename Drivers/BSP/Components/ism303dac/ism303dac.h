@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    ism303dac.h
- * @author  MEMS Software Solutions Team
- * @brief   ISM303DAC header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    ism303dac.h
+  * @author  MEMS Software Solutions Team
+  * @brief   ISM303DAC header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef ISM303DAC_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup ISM303DAC ISM303DAC
- * @{
- */
+  * @{
+  */
 
 /** @defgroup ISM303DAC_Exported_Types ISM303DAC Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*ISM303DAC_Init_Func)(void);
 typedef int32_t (*ISM303DAC_DeInit_Func)(void);
@@ -151,33 +151,37 @@ typedef struct
   int32_t (*GetAxesRaw)(ISM303DAC_MAG_Object_t *, ISM303DAC_AxesRaw_t *);
 } ISM303DAC_MAG_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } ism303dac_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } ism303dac_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } ism303dac_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } ism303dac_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup ISM303DAC_Exported_Constants ISM303DAC Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define ISM303DAC_OK                     0
 #define ISM303DAC_ERROR                 -1
@@ -193,12 +197,12 @@ typedef union{
 #define ISM303DAC_MAG_SENSITIVITY_FS_50GAUSS  1.500f  /**< Sensitivity value for 50 gauss full scale [mgauss/LSB] */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup ISM303DAC_Exported_Functions ISM303DAC Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t ISM303DAC_ACC_RegisterBusIO(ISM303DAC_ACC_Object_t *pObj, ISM303DAC_IO_t *pIO);
 int32_t ISM303DAC_ACC_Init(ISM303DAC_ACC_Object_t *pObj);
@@ -245,12 +249,12 @@ int32_t ISM303DAC_MAG_Get_DRDY_Status(ISM303DAC_MAG_Object_t *pObj, uint8_t *sta
 int32_t ISM303DAC_MAG_Get_Init_Status(ISM303DAC_MAG_Object_t *pObj, uint8_t *status);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup ISM303DAC_Exported_Variables ISM303DAC Exported Variables
- * @{
- */
+  * @{
+  */
 
 extern ISM303DAC_ACC_CommonDrv_t ISM303DAC_ACC_COMMON_Driver;
 extern ISM303DAC_ACC_Drv_t ISM303DAC_ACC_Driver;
@@ -258,8 +262,8 @@ extern ISM303DAC_MAG_CommonDrv_t ISM303DAC_MAG_COMMON_Driver;
 extern ISM303DAC_MAG_Drv_t ISM303DAC_MAG_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -268,15 +272,15 @@ extern ISM303DAC_MAG_Drv_t ISM303DAC_MAG_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -1,61 +1,61 @@
 /**
- ******************************************************************************
- * @file    iks02a1_motion_sensors_ex.c
- * @author  MEMS Software Solutions Team
- * @brief   This file provides a set of extended functions needed to manage the motion sensors
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    iks02a1_motion_sensors_ex.c
+  * @author  MEMS Software Solutions Team
+  * @brief   This file provides a set of extended functions needed to manage the motion sensors
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "iks02a1_motion_sensors_ex.h"
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup IKS02A1 IKS02A1
- * @{
- */
+  * @{
+  */
 
 /** @defgroup IKS02A1_MOTION_SENSOR_EX IKS02A1 MOTION SENSOR EX
- * @{
- */
+  * @{
+  */
 
 /** @defgroup IKS02A1_MOTION_SENSOR_EX_Imported_Variables IKS02A1 MOTION SENSOR EX Imported Variables
- * @{
- */
+  * @{
+  */
 
 extern void *MotionCompObj[IKS02A1_MOTION_INSTANCES_NBR];
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup IKS02A1_MOTION_SENSOR_EX_Exported_Functions IKS02A1 MOTION SENSOR EX Exported Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Get the status of data ready bit (available only for ISM330DHCX, IIS2DLPC, IIS2MDC sensors)
- * @param  Instance the device instance
- * @param  Function Motion sensor function. Could be:
- *         - MOTION_ACCELERO or MOTION_GYRO for instance IKS02A1_ISM330DHCX_0
- *         - MOTION_ACCELERO for instance IKS02A1_IIS2DLPC_0
- *         - MOTION_MAGNETO for instance IKS02A1_IIS2MDC_0
- * @param  Status the pointer to the status
- * @retval BSP status
- */
+  * @brief  Get the status of data ready bit (available only for ISM330DHCX, IIS2DLPC, IIS2MDC sensors)
+  * @param  Instance the device instance
+  * @param  Function Motion sensor function. Could be:
+  *         - MOTION_ACCELERO or MOTION_GYRO for instance IKS02A1_ISM330DHCX_0
+  *         - MOTION_ACCELERO for instance IKS02A1_IIS2DLPC_0
+  *         - MOTION_MAGNETO for instance IKS02A1_IIS2MDC_0
+  * @param  Status the pointer to the status
+  * @retval BSP status
+  */
 int32_t IKS02A1_MOTION_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Function, uint8_t *Status)
 {
   int32_t ret;
@@ -162,12 +162,12 @@ int32_t IKS02A1_MOTION_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Functi
 }
 
 /**
- * @brief  Get the register value (available only for ISM330DHCX, IIS2DLPC, IIS2MDC sensors)
- * @param  Instance the device instance
- * @param  Reg address to be read
- * @param  Data pointer where the value is written to
- * @retval BSP status
- */
+  * @brief  Get the register value (available only for ISM330DHCX, IIS2DLPC, IIS2MDC sensors)
+  * @param  Instance the device instance
+  * @param  Reg address to be read
+  * @param  Data pointer where the value is written to
+  * @retval BSP status
+  */
 int32_t IKS02A1_MOTION_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint8_t *Data)
 {
   int32_t ret;
@@ -235,12 +235,12 @@ int32_t IKS02A1_MOTION_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint
 }
 
 /**
- * @brief  Set the register value (available only for ISM330DHCX, IIS2DLPC, IIS2MDC sensors)
- * @param  Instance the device instance
- * @param  Reg address to be read
- * @param  Data value to be written
- * @retval BSP status
- */
+  * @brief  Set the register value (available only for ISM330DHCX, IIS2DLPC, IIS2MDC sensors)
+  * @param  Instance the device instance
+  * @param  Reg address to be read
+  * @param  Data value to be written
+  * @retval BSP status
+  */
 int32_t IKS02A1_MOTION_SENSOR_Write_Register(uint32_t Instance, uint8_t Reg, uint8_t Data)
 {
   int32_t ret;
@@ -308,11 +308,11 @@ int32_t IKS02A1_MOTION_SENSOR_Write_Register(uint32_t Instance, uint8_t Reg, uin
 }
 
 /**
- * @brief  Get number of unread FIFO samples (available only for ISM330DHCX sensor)
- * @param  Instance the device instance
- * @param  NumSamples number of unread FIFO samples
- * @retval BSP status
- */
+  * @brief  Get number of unread FIFO samples (available only for ISM330DHCX sensor)
+  * @param  Instance the device instance
+  * @param  NumSamples number of unread FIFO samples
+  * @retval BSP status
+  */
 int32_t IKS02A1_MOTION_SENSOR_FIFO_Get_Num_Samples(uint32_t Instance, uint16_t *NumSamples)
 {
   int32_t ret;
@@ -341,13 +341,13 @@ int32_t IKS02A1_MOTION_SENSOR_FIFO_Get_Num_Samples(uint32_t Instance, uint16_t *
 }
 
 /**
- * @brief  Set FIFO BDR value (available only for ISM330DHCX sensor)
- * @param  Instance the device instance
- * @param  Function Motion sensor function. Could be:
- *         - MOTION_GYRO or MOTION_ACCELERO for instance IKS02A1_ISM330DHCX_0
- * @param  Bdr FIFO BDR value
- * @retval BSP status
- */
+  * @brief  Set FIFO BDR value (available only for ISM330DHCX sensor)
+  * @param  Instance the device instance
+  * @param  Function Motion sensor function. Could be:
+  *         - MOTION_GYRO or MOTION_ACCELERO for instance IKS02A1_ISM330DHCX_0
+  * @param  Bdr FIFO BDR value
+  * @retval BSP status
+  */
 int32_t IKS02A1_MOTION_SENSOR_FIFO_Set_BDR(uint32_t Instance, uint32_t Function, float Bdr)
 {
   int32_t ret;
@@ -394,11 +394,11 @@ int32_t IKS02A1_MOTION_SENSOR_FIFO_Set_BDR(uint32_t Instance, uint32_t Function,
 }
 
 /**
- * @brief  Set FIFO full interrupt on INT1 pin (available only for ISM330DHCX sensor)
- * @param  Instance the device instance
- * @param  Status FIFO full interrupt on INT1 pin
- * @retval BSP status
- */
+  * @brief  Set FIFO full interrupt on INT1 pin (available only for ISM330DHCX sensor)
+  * @param  Instance the device instance
+  * @param  Status FIFO full interrupt on INT1 pin
+  * @retval BSP status
+  */
 int32_t IKS02A1_MOTION_SENSOR_FIFO_Set_INT1_FIFO_Full(uint32_t Instance, uint8_t Status)
 {
   int32_t ret;
@@ -427,11 +427,11 @@ int32_t IKS02A1_MOTION_SENSOR_FIFO_Set_INT1_FIFO_Full(uint32_t Instance, uint8_t
 }
 
 /**
- * @brief  Set FIFO watermark level (available only for ISM330DHCX sensor)
- * @param  Instance the device instance
- * @param  Watermark FIFO watermark level
- * @retval BSP status
- */
+  * @brief  Set FIFO watermark level (available only for ISM330DHCX sensor)
+  * @param  Instance the device instance
+  * @param  Watermark FIFO watermark level
+  * @retval BSP status
+  */
 int32_t IKS02A1_MOTION_SENSOR_FIFO_Set_Watermark_Level(uint32_t Instance, uint16_t Watermark)
 {
   int32_t ret;
@@ -460,11 +460,11 @@ int32_t IKS02A1_MOTION_SENSOR_FIFO_Set_Watermark_Level(uint32_t Instance, uint16
 }
 
 /**
- * @brief  Set FIFO stop on watermark (available only for ISM330DHCX sensor)
- * @param  Instance the device instance
- * @param  Status FIFO stop on watermark status
- * @retval BSP status
- */
+  * @brief  Set FIFO stop on watermark (available only for ISM330DHCX sensor)
+  * @param  Instance the device instance
+  * @param  Status FIFO stop on watermark status
+  * @retval BSP status
+  */
 int32_t IKS02A1_MOTION_SENSOR_FIFO_Set_Stop_On_Fth(uint32_t Instance, uint8_t Status)
 {
   int32_t ret;
@@ -493,11 +493,11 @@ int32_t IKS02A1_MOTION_SENSOR_FIFO_Set_Stop_On_Fth(uint32_t Instance, uint8_t St
 }
 
 /**
- * @brief  Set FIFO mode (available only for ISM330DHCX sensor)
- * @param  Instance the device instance
- * @param  Mode FIFO mode
- * @retval BSP status
- */
+  * @brief  Set FIFO mode (available only for ISM330DHCX sensor)
+  * @param  Instance the device instance
+  * @param  Mode FIFO mode
+  * @retval BSP status
+  */
 int32_t IKS02A1_MOTION_SENSOR_FIFO_Set_Mode(uint32_t Instance, uint8_t Mode)
 {
   int32_t ret;
@@ -526,11 +526,11 @@ int32_t IKS02A1_MOTION_SENSOR_FIFO_Set_Mode(uint32_t Instance, uint8_t Mode)
 }
 
 /**
- * @brief  Get FIFO tag (available only for ISM330DHCX sensor)
- * @param  Instance the device instance
- * @param  Tag FIFO tag
- * @retval BSP status
- */
+  * @brief  Get FIFO tag (available only for ISM330DHCX sensor)
+  * @param  Instance the device instance
+  * @param  Tag FIFO tag
+  * @retval BSP status
+  */
 int32_t IKS02A1_MOTION_SENSOR_FIFO_Get_Tag(uint32_t Instance, uint8_t *Tag)
 {
   int32_t ret;
@@ -559,13 +559,13 @@ int32_t IKS02A1_MOTION_SENSOR_FIFO_Get_Tag(uint32_t Instance, uint8_t *Tag)
 }
 
 /**
- * @brief  Get FIFO axes data (available only for ISM330DHCX sensor)
- * @param  Instance the device instance
- * @param  Function Motion sensor function. Could be:
- *         - MOTION_GYRO or MOTION_ACCELERO for instance IKS02A1_ISM330DHCX_0
- * @param  Data FIFO axes data
- * @retval BSP status
- */
+  * @brief  Get FIFO axes data (available only for ISM330DHCX sensor)
+  * @param  Instance the device instance
+  * @param  Function Motion sensor function. Could be:
+  *         - MOTION_GYRO or MOTION_ACCELERO for instance IKS02A1_ISM330DHCX_0
+  * @param  Data FIFO axes data
+  * @retval BSP status
+  */
 int32_t IKS02A1_MOTION_SENSOR_FIFO_Get_Axes(uint32_t Instance, uint32_t Function, IKS02A1_MOTION_SENSOR_Axes_t *Data)
 {
   int32_t ret;
@@ -612,11 +612,11 @@ int32_t IKS02A1_MOTION_SENSOR_FIFO_Get_Axes(uint32_t Instance, uint32_t Function
 }
 
 /**
- * @brief  Set DRDY mode (available only for ISM330DHCX sensor)
- * @param  Instance the device instance
- * @param  Mode DRDY mode
- * @retval BSP status
- */
+  * @brief  Set DRDY mode (available only for ISM330DHCX sensor)
+  * @param  Instance the device instance
+  * @param  Mode DRDY mode
+  * @retval BSP status
+  */
 int32_t IKS02A1_MOTION_SENSOR_DRDY_Set_Mode(uint32_t Instance, uint8_t Mode)
 {
   int32_t ret;
@@ -645,14 +645,15 @@ int32_t IKS02A1_MOTION_SENSOR_DRDY_Set_Mode(uint32_t Instance, uint8_t Mode)
 }
 
 /**
- * @brief  Enable DRDY on selected interrupt pin (available only for ISM330DHCX sensor)
- * @param  Instance the device instance
- * @param  Function Motion sensor function. Could be:
- *         - MOTION_ACCELERO or MOTION_GYRO for instance IKS02A1_ISM330DHCX_0
- * @param  IntPin the interrupt pin to be used
- * @retval BSP status
- */
-int32_t IKS02A1_MOTION_SENSOR_DRDY_Enable_Interrupt(uint32_t Instance, uint32_t Function, IKS02A1_MOTION_SENSOR_IntPin_t IntPin)
+  * @brief  Enable DRDY on selected interrupt pin (available only for ISM330DHCX sensor)
+  * @param  Instance the device instance
+  * @param  Function Motion sensor function. Could be:
+  *         - MOTION_ACCELERO or MOTION_GYRO for instance IKS02A1_ISM330DHCX_0
+  * @param  IntPin the interrupt pin to be used
+  * @retval BSP status
+  */
+int32_t IKS02A1_MOTION_SENSOR_DRDY_Enable_Interrupt(uint32_t Instance, uint32_t Function,
+                                                    IKS02A1_MOTION_SENSOR_IntPin_t IntPin)
 {
   int32_t ret;
 
@@ -712,14 +713,15 @@ int32_t IKS02A1_MOTION_SENSOR_DRDY_Enable_Interrupt(uint32_t Instance, uint32_t 
 }
 
 /**
- * @brief  Disable DRDY on selected interrupt pin (available only for ISM330DHCX sensor)
- * @param  Instance the device instance
- * @param  Function Motion sensor function. Could be:
- *         - MOTION_ACCELERO or MOTION_GYRO for instance IKS02A1_ISM330DHCX_0
- * @param  IntPin the interrupt pin to be used
- * @retval BSP status
- */
-int32_t IKS02A1_MOTION_SENSOR_DRDY_Disable_Interrupt(uint32_t Instance, uint32_t Function, IKS02A1_MOTION_SENSOR_IntPin_t IntPin)
+  * @brief  Disable DRDY on selected interrupt pin (available only for ISM330DHCX sensor)
+  * @param  Instance the device instance
+  * @param  Function Motion sensor function. Could be:
+  *         - MOTION_ACCELERO or MOTION_GYRO for instance IKS02A1_ISM330DHCX_0
+  * @param  IntPin the interrupt pin to be used
+  * @retval BSP status
+  */
+int32_t IKS02A1_MOTION_SENSOR_DRDY_Disable_Interrupt(uint32_t Instance, uint32_t Function,
+                                                     IKS02A1_MOTION_SENSOR_IntPin_t IntPin)
 {
   int32_t ret;
 
@@ -779,19 +781,19 @@ int32_t IKS02A1_MOTION_SENSOR_DRDY_Disable_Interrupt(uint32_t Instance, uint32_t
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

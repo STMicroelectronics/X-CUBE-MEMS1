@@ -1,40 +1,40 @@
 /**
- ******************************************************************************
- * @file    ais2ih.c
- * @author  MEMS Software Solutions Team
- * @brief   AIS2IH driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    ais2ih.c
+  * @author  MEMS Software Solutions Team
+  * @brief   AIS2IH driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "ais2ih.h"
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @defgroup AIS2IH AIS2IH
- * @{
- */
+  * @{
+  */
 
 /** @defgroup AIS2IH_Exported_Variables AIS2IH Exported Variables
- * @{
- */
+  * @{
+  */
 
 AIS2IH_CommonDrv_t AIS2IH_COMMON_Driver =
 {
@@ -58,31 +58,33 @@ AIS2IH_ACC_Drv_t AIS2IH_ACC_Driver =
 };
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup AIS2IH_Private_Function_Prototypes AIS2IH Private Function Prototypes
- * @{
- */
+  * @{
+  */
 
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
-static int32_t AIS2IH_ACC_SetOutputDataRate_When_Enabled(AIS2IH_Object_t *pObj, float Odr, AIS2IH_Operating_Mode_t Mode, AIS2IH_Low_Noise_t Noise);
-static int32_t AIS2IH_ACC_SetOutputDataRate_When_Disabled(AIS2IH_Object_t *pObj, float Odr, AIS2IH_Operating_Mode_t Mode, AIS2IH_Low_Noise_t Noise);
+static int32_t AIS2IH_ACC_SetOutputDataRate_When_Enabled(AIS2IH_Object_t *pObj, float Odr, AIS2IH_Operating_Mode_t Mode,
+                                                         AIS2IH_Low_Noise_t Noise);
+static int32_t AIS2IH_ACC_SetOutputDataRate_When_Disabled(AIS2IH_Object_t *pObj, float Odr,
+                                                          AIS2IH_Operating_Mode_t Mode, AIS2IH_Low_Noise_t Noise);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup AIS2IH_Exported_Functions AIS2IH Exported Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Register Component Bus IO operations
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Register Component Bus IO operations
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_RegisterBusIO(AIS2IH_Object_t *pObj, AIS2IH_IO_t *pIO)
 {
   int32_t ret = AIS2IH_OK;
@@ -136,10 +138,10 @@ int32_t AIS2IH_RegisterBusIO(AIS2IH_Object_t *pObj, AIS2IH_IO_t *pIO)
 }
 
 /**
- * @brief  Initialize the AIS2IH sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Initialize the AIS2IH sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_Init(AIS2IH_Object_t *pObj)
 {
   /* Enable register address automatically incremented during a multiple byte
@@ -192,10 +194,10 @@ int32_t AIS2IH_Init(AIS2IH_Object_t *pObj)
 }
 
 /**
- * @brief  Deinitialize the AIS2IH sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Deinitialize the AIS2IH sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_DeInit(AIS2IH_Object_t *pObj)
 {
   /* Disable the component */
@@ -217,11 +219,11 @@ int32_t AIS2IH_DeInit(AIS2IH_Object_t *pObj)
 }
 
 /**
- * @brief  Read component ID
- * @param  pObj the device pObj
- * @param  Id the WHO_AM_I value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Read component ID
+  * @param  pObj the device pObj
+  * @param  Id the WHO_AM_I value
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ReadID(AIS2IH_Object_t *pObj, uint8_t *Id)
 {
   if (ais2ih_device_id_get(&(pObj->Ctx), Id) != AIS2IH_OK)
@@ -233,11 +235,11 @@ int32_t AIS2IH_ReadID(AIS2IH_Object_t *pObj, uint8_t *Id)
 }
 
 /**
- * @brief  Get AIS2IH sensor capabilities
- * @param  pObj Component object pointer
- * @param  Capabilities pointer to AIS2IH sensor capabilities
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get AIS2IH sensor capabilities
+  * @param  pObj Component object pointer
+  * @param  Capabilities pointer to AIS2IH sensor capabilities
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_GetCapabilities(AIS2IH_Object_t *pObj, AIS2IH_Capabilities_t *Capabilities)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -257,10 +259,10 @@ int32_t AIS2IH_GetCapabilities(AIS2IH_Object_t *pObj, AIS2IH_Capabilities_t *Cap
 }
 
 /**
- * @brief  Enable the AIS2IH accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the AIS2IH accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Enable(AIS2IH_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -270,7 +272,8 @@ int32_t AIS2IH_ACC_Enable(AIS2IH_Object_t *pObj)
   }
 
   /* Output data rate selection. */
-  if (AIS2IH_ACC_SetOutputDataRate_When_Enabled(pObj, pObj->acc_odr, pObj->acc_operating_mode, pObj->acc_low_noise) != AIS2IH_OK)
+  if (AIS2IH_ACC_SetOutputDataRate_When_Enabled(pObj, pObj->acc_odr, pObj->acc_operating_mode,
+                                                pObj->acc_low_noise) != AIS2IH_OK)
   {
     return AIS2IH_ERROR;
   }
@@ -281,10 +284,10 @@ int32_t AIS2IH_ACC_Enable(AIS2IH_Object_t *pObj)
 }
 
 /**
- * @brief  Disable the AIS2IH accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable the AIS2IH accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Disable(AIS2IH_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -305,11 +308,11 @@ int32_t AIS2IH_ACC_Disable(AIS2IH_Object_t *pObj)
 }
 
 /**
- * @brief  Get the AIS2IH accelerometer sensor sensitivity
- * @param  pObj the device pObj
- * @param  Sensitivity pointer
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the AIS2IH accelerometer sensor sensitivity
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_GetSensitivity(AIS2IH_Object_t *pObj, float *Sensitivity)
 {
   int32_t ret = AIS2IH_OK;
@@ -328,7 +331,7 @@ int32_t AIS2IH_ACC_GetSensitivity(AIS2IH_Object_t *pObj, float *Sensitivity)
     return AIS2IH_ERROR;
   }
 
-  switch(mode)
+  switch (mode)
   {
     case AIS2IH_CONT_LOW_PWR_12bit:
     case AIS2IH_SINGLE_LOW_PWR_12bit:
@@ -338,7 +341,7 @@ int32_t AIS2IH_ACC_GetSensitivity(AIS2IH_Object_t *pObj, float *Sensitivity)
       {
         case AIS2IH_2g:
           *Sensitivity = AIS2IH_ACC_SENSITIVITY_FOR_FS_2G_LOPOW1_MODE;
-           break;
+          break;
 
         case AIS2IH_4g:
           *Sensitivity = AIS2IH_ACC_SENSITIVITY_FOR_FS_4G_LOPOW1_MODE;
@@ -346,7 +349,7 @@ int32_t AIS2IH_ACC_GetSensitivity(AIS2IH_Object_t *pObj, float *Sensitivity)
 
         case AIS2IH_8g:
           *Sensitivity = AIS2IH_ACC_SENSITIVITY_FOR_FS_8G_LOPOW1_MODE;
-           break;
+          break;
 
         case AIS2IH_16g:
           *Sensitivity = AIS2IH_ACC_SENSITIVITY_FOR_FS_16G_LOPOW1_MODE;
@@ -377,7 +380,7 @@ int32_t AIS2IH_ACC_GetSensitivity(AIS2IH_Object_t *pObj, float *Sensitivity)
       {
         case AIS2IH_2g:
           *Sensitivity = AIS2IH_ACC_SENSITIVITY_FOR_FS_2G_OTHER_MODES;
-           break;
+          break;
 
         case AIS2IH_4g:
           *Sensitivity = AIS2IH_ACC_SENSITIVITY_FOR_FS_4G_OTHER_MODES;
@@ -385,7 +388,7 @@ int32_t AIS2IH_ACC_GetSensitivity(AIS2IH_Object_t *pObj, float *Sensitivity)
 
         case AIS2IH_8g:
           *Sensitivity = AIS2IH_ACC_SENSITIVITY_FOR_FS_8G_OTHER_MODES;
-           break;
+          break;
 
         case AIS2IH_16g:
           *Sensitivity = AIS2IH_ACC_SENSITIVITY_FOR_FS_16G_OTHER_MODES;
@@ -408,11 +411,11 @@ int32_t AIS2IH_ACC_GetSensitivity(AIS2IH_Object_t *pObj, float *Sensitivity)
 }
 
 /**
- * @brief  Get the AIS2IH accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the AIS2IH accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_GetOutputDataRate(AIS2IH_Object_t *pObj, float *Odr)
 {
   int32_t ret = AIS2IH_OK;
@@ -445,7 +448,7 @@ int32_t AIS2IH_ACC_GetOutputDataRate(AIS2IH_Object_t *pObj, float *Odr)
         case AIS2IH_HIGH_PERFORMANCE:
         case AIS2IH_HIGH_PERFORMANCE_LOW_NOISE:
           *Odr = 12.5f;
-           break;
+          break;
 
         case AIS2IH_CONT_LOW_PWR_4:
         case AIS2IH_CONT_LOW_PWR_3:
@@ -499,7 +502,7 @@ int32_t AIS2IH_ACC_GetOutputDataRate(AIS2IH_Object_t *pObj, float *Odr)
         case AIS2IH_HIGH_PERFORMANCE:
         case AIS2IH_HIGH_PERFORMANCE_LOW_NOISE:
           *Odr = 400.0f;
-           break;
+          break;
 
         case AIS2IH_CONT_LOW_PWR_4:
         case AIS2IH_CONT_LOW_PWR_3:
@@ -533,7 +536,7 @@ int32_t AIS2IH_ACC_GetOutputDataRate(AIS2IH_Object_t *pObj, float *Odr)
         case AIS2IH_HIGH_PERFORMANCE:
         case AIS2IH_HIGH_PERFORMANCE_LOW_NOISE:
           *Odr = 800.0f;
-           break;
+          break;
 
         case AIS2IH_CONT_LOW_PWR_4:
         case AIS2IH_CONT_LOW_PWR_3:
@@ -567,7 +570,7 @@ int32_t AIS2IH_ACC_GetOutputDataRate(AIS2IH_Object_t *pObj, float *Odr)
         case AIS2IH_HIGH_PERFORMANCE:
         case AIS2IH_HIGH_PERFORMANCE_LOW_NOISE:
           *Odr = 1600.0f;
-           break;
+          break;
 
         case AIS2IH_CONT_LOW_PWR_4:
         case AIS2IH_CONT_LOW_PWR_3:
@@ -605,11 +608,11 @@ int32_t AIS2IH_ACC_GetOutputDataRate(AIS2IH_Object_t *pObj, float *Odr)
 }
 
 /**
- * @brief  Set the AIS2IH accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the AIS2IH accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_SetOutputDataRate(AIS2IH_Object_t *pObj, float Odr)
 {
   /* By default we use High Performance mode and Low Noise disabled */
@@ -617,14 +620,15 @@ int32_t AIS2IH_ACC_SetOutputDataRate(AIS2IH_Object_t *pObj, float Odr)
 }
 
 /**
- * @brief  Set the AIS2IH accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @param  Mode the operating mode to be used
- * @param  Noise the low noise option
- * @retval 0 in case of success, an error code otherwise
- */
-int32_t AIS2IH_ACC_SetOutputDataRate_With_Mode(AIS2IH_Object_t *pObj, float Odr, AIS2IH_Operating_Mode_t Mode, AIS2IH_Low_Noise_t Noise)
+  * @brief  Set the AIS2IH accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @param  Mode the operating mode to be used
+  * @param  Noise the low noise option
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t AIS2IH_ACC_SetOutputDataRate_With_Mode(AIS2IH_Object_t *pObj, float Odr, AIS2IH_Operating_Mode_t Mode,
+                                               AIS2IH_Low_Noise_t Noise)
 {
   /* Check if the component is enabled */
   if (pObj->acc_is_enabled == 1U)
@@ -638,11 +642,11 @@ int32_t AIS2IH_ACC_SetOutputDataRate_With_Mode(AIS2IH_Object_t *pObj, float Odr,
 }
 
 /**
- * @brief  Get the AIS2IH accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale pointer where the full scale is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the AIS2IH accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale pointer where the full scale is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_GetFullScale(AIS2IH_Object_t *pObj, int32_t *FullScale)
 {
   int32_t ret = AIS2IH_OK;
@@ -682,11 +686,11 @@ int32_t AIS2IH_ACC_GetFullScale(AIS2IH_Object_t *pObj, int32_t *FullScale)
 }
 
 /**
- * @brief  Set the AIS2IH accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale the functional full scale to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the AIS2IH accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale the functional full scale to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_SetFullScale(AIS2IH_Object_t *pObj, int32_t FullScale)
 {
   ais2ih_fs_t new_fs;
@@ -694,9 +698,9 @@ int32_t AIS2IH_ACC_SetFullScale(AIS2IH_Object_t *pObj, int32_t FullScale)
   /* Seems like MISRA C-2012 rule 14.3a violation but only from single file statical analysis point of view because
      the parameter passed to the function is not known at the moment of analysis */
   new_fs = (FullScale <= 2) ? AIS2IH_2g
-         : (FullScale <= 4) ? AIS2IH_4g
-         : (FullScale <= 8) ? AIS2IH_8g
-         :                    AIS2IH_16g;
+           : (FullScale <= 4) ? AIS2IH_4g
+           : (FullScale <= 8) ? AIS2IH_8g
+           :                    AIS2IH_16g;
 
   if (ais2ih_full_scale_set(&(pObj->Ctx), new_fs) != AIS2IH_OK)
   {
@@ -707,11 +711,11 @@ int32_t AIS2IH_ACC_SetFullScale(AIS2IH_Object_t *pObj, int32_t FullScale)
 }
 
 /**
- * @brief  Get the AIS2IH accelerometer sensor raw axes
- * @param  pObj the device pObj
- * @param  Value pointer where the raw values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the AIS2IH accelerometer sensor raw axes
+  * @param  pObj the device pObj
+  * @param  Value pointer where the raw values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_GetAxesRaw(AIS2IH_Object_t *pObj, AIS2IH_AxesRaw_t *Value)
 {
   ais2ih_axis3bit16_t data_raw;
@@ -730,7 +734,7 @@ int32_t AIS2IH_ACC_GetAxesRaw(AIS2IH_Object_t *pObj, AIS2IH_AxesRaw_t *Value)
     return AIS2IH_ERROR;
   }
 
-  switch(mode)
+  switch (mode)
   {
     case AIS2IH_CONT_LOW_PWR_12bit:
     case AIS2IH_SINGLE_LOW_PWR_12bit:
@@ -771,11 +775,11 @@ int32_t AIS2IH_ACC_GetAxesRaw(AIS2IH_Object_t *pObj, AIS2IH_AxesRaw_t *Value)
 }
 
 /**
- * @brief  Get the AIS2IH accelerometer sensor axes
- * @param  pObj the device pObj
- * @param  Acceleration pointer where the values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the AIS2IH accelerometer sensor axes
+  * @param  pObj the device pObj
+  * @param  Acceleration pointer where the values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_GetAxes(AIS2IH_Object_t *pObj, AIS2IH_Axes_t *Acceleration)
 {
   AIS2IH_AxesRaw_t data_raw;
@@ -802,12 +806,12 @@ int32_t AIS2IH_ACC_GetAxes(AIS2IH_Object_t *pObj, AIS2IH_Axes_t *Acceleration)
 }
 
 /**
- * @brief  Get the AIS2IH register value
- * @param  pObj the device pObj
- * @param  Reg address to be read
- * @param  Data pointer where the value is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the AIS2IH register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be read
+  * @param  Data pointer where the value is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_Read_Reg(AIS2IH_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 {
   if (ais2ih_read_reg(&(pObj->Ctx), Reg, Data, 1) != AIS2IH_OK)
@@ -819,12 +823,12 @@ int32_t AIS2IH_Read_Reg(AIS2IH_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 }
 
 /**
- * @brief  Set the AIS2IH register value
- * @param  pObj the device pObj
- * @param  Reg address to be written
- * @param  Data value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the AIS2IH register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be written
+  * @param  Data value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_Write_Reg(AIS2IH_Object_t *pObj, uint8_t Reg, uint8_t Data)
 {
   if (ais2ih_write_reg(&(pObj->Ctx), Reg, &Data, 1) != AIS2IH_OK)
@@ -836,11 +840,11 @@ int32_t AIS2IH_Write_Reg(AIS2IH_Object_t *pObj, uint8_t Reg, uint8_t Data)
 }
 
 /**
- * @brief  Set the interrupt latch
- * @param  pObj the device pObj
- * @param  Status value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the interrupt latch
+  * @param  pObj the device pObj
+  * @param  Status value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_Set_Interrupt_Latch(AIS2IH_Object_t *pObj, uint8_t Status)
 {
   if (Status > 1U)
@@ -857,10 +861,10 @@ int32_t AIS2IH_Set_Interrupt_Latch(AIS2IH_Object_t *pObj, uint8_t Status)
 }
 
 /**
- * @brief  Enable DRDY interrupt mode
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable DRDY interrupt mode
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Enable_DRDY_Interrupt(AIS2IH_Object_t *pObj)
 {
   ais2ih_ctrl5_int2_pad_ctrl_t int2_pad_ctrl;
@@ -884,10 +888,10 @@ int32_t AIS2IH_ACC_Enable_DRDY_Interrupt(AIS2IH_Object_t *pObj)
 }
 
 /**
- * @brief  Disable DRDY interrupt mode
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable DRDY interrupt mode
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Disable_DRDY_Interrupt(AIS2IH_Object_t *pObj)
 {
   ais2ih_ctrl5_int2_pad_ctrl_t int2_pad_ctrl;
@@ -906,14 +910,14 @@ int32_t AIS2IH_ACC_Disable_DRDY_Interrupt(AIS2IH_Object_t *pObj)
 }
 
 /**
- * @brief  Set the filterMode value
- * @param  pObj the device pObj
- * @param  filterMode value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the filterMode value
+  * @param  pObj the device pObj
+  * @param  filterMode value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Set_Filter_Mode(AIS2IH_Object_t *pObj, uint8_t filterMode)
 {
-  if(ais2ih_filter_bandwidth_set(&(pObj->Ctx), (ais2ih_bw_filt_t)filterMode) != AIS2IH_OK)
+  if (ais2ih_filter_bandwidth_set(&(pObj->Ctx), (ais2ih_bw_filt_t)filterMode) != AIS2IH_OK)
   {
     return AIS2IH_ERROR;
   }
@@ -922,10 +926,10 @@ int32_t AIS2IH_ACC_Set_Filter_Mode(AIS2IH_Object_t *pObj, uint8_t filterMode)
 }
 
 /**
- * @brief  Enable wake up detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable wake up detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Enable_Wake_Up_Detection(AIS2IH_Object_t *pObj)
 {
   int32_t ret = AIS2IH_OK;
@@ -971,10 +975,10 @@ int32_t AIS2IH_ACC_Enable_Wake_Up_Detection(AIS2IH_Object_t *pObj)
 }
 
 /**
- * @brief  Disable wake up detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable wake up detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Disable_Wake_Up_Detection(AIS2IH_Object_t *pObj)
 {
   ais2ih_ctrl4_int1_pad_ctrl_t ctrl4_int1_reg;
@@ -1001,7 +1005,7 @@ int32_t AIS2IH_ACC_Disable_Wake_Up_Detection(AIS2IH_Object_t *pObj)
   }
 
   /*Disable Interrupts bit if none event is still enabled */
-  if(ctrl5_int2_reg.int2_sleep_chg == 0 && ctrl4_int1_reg.int1_wu == 0 && ctrl4_int1_reg.int1_6d == 0)
+  if (ctrl5_int2_reg.int2_sleep_chg == 0 && ctrl4_int1_reg.int1_wu == 0 && ctrl4_int1_reg.int1_6d == 0)
   {
     if (ais2ih_read_reg(&(pObj->Ctx), AIS2IH_CTRL_REG7, (uint8_t *)&ctrl_reg7, 1) != AIS2IH_OK)
     {
@@ -1032,11 +1036,11 @@ int32_t AIS2IH_ACC_Disable_Wake_Up_Detection(AIS2IH_Object_t *pObj)
 }
 
 /**
- * @brief  Set wake up threshold
- * @param  pObj the device pObj
- * @param  Threshold wake up detection threshold
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set wake up threshold
+  * @param  pObj the device pObj
+  * @param  Threshold wake up detection threshold
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Set_Wake_Up_Threshold(AIS2IH_Object_t *pObj, uint8_t Threshold)
 {
   /* Set wake up threshold. */
@@ -1049,11 +1053,11 @@ int32_t AIS2IH_ACC_Set_Wake_Up_Threshold(AIS2IH_Object_t *pObj, uint8_t Threshol
 }
 
 /**
- * @brief  Set wake up duration
- * @param  pObj the device pObj
- * @param  Duration wake up detection duration
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set wake up duration
+  * @param  pObj the device pObj
+  * @param  Duration wake up detection duration
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Set_Wake_Up_Duration(AIS2IH_Object_t *pObj, uint8_t Duration)
 {
   /* Set wake up duration. */
@@ -1066,10 +1070,10 @@ int32_t AIS2IH_ACC_Set_Wake_Up_Duration(AIS2IH_Object_t *pObj, uint8_t Duration)
 }
 
 /**
- * @brief  Enable inactivity detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable inactivity detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Enable_Inactivity_Detection(AIS2IH_Object_t *pObj)
 {
   int32_t ret = AIS2IH_OK;
@@ -1115,10 +1119,10 @@ int32_t AIS2IH_ACC_Enable_Inactivity_Detection(AIS2IH_Object_t *pObj)
 }
 
 /**
- * @brief  Disable inactivity detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable inactivity detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Disable_Inactivity_Detection(AIS2IH_Object_t *pObj)
 {
   ais2ih_ctrl4_int1_pad_ctrl_t ctrl4_int1_reg;
@@ -1145,7 +1149,7 @@ int32_t AIS2IH_ACC_Disable_Inactivity_Detection(AIS2IH_Object_t *pObj)
   }
 
   /*Disable Interrupts bit if none event is still enabled */
-  if(ctrl5_int2_reg.int2_sleep_chg == 0 && ctrl4_int1_reg.int1_wu == 0 && ctrl4_int1_reg.int1_6d == 0)
+  if (ctrl5_int2_reg.int2_sleep_chg == 0 && ctrl4_int1_reg.int1_wu == 0 && ctrl4_int1_reg.int1_6d == 0)
   {
     if (ais2ih_read_reg(&(pObj->Ctx), AIS2IH_CTRL_REG7, (uint8_t *)&ctrl_reg7, 1) != AIS2IH_OK)
     {
@@ -1176,11 +1180,11 @@ int32_t AIS2IH_ACC_Disable_Inactivity_Detection(AIS2IH_Object_t *pObj)
 }
 
 /**
- * @brief  Set sleep duration
- * @param  pObj the device pObj
- * @param  Duration wake up detection duration
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set sleep duration
+  * @param  pObj the device pObj
+  * @param  Duration wake up detection duration
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Set_Sleep_Duration(AIS2IH_Object_t *pObj, uint8_t Duration)
 {
   /* Set sleep duration. */
@@ -1193,10 +1197,10 @@ int32_t AIS2IH_ACC_Set_Sleep_Duration(AIS2IH_Object_t *pObj, uint8_t Duration)
 }
 
 /**
- * @brief  Enable 6D orientation detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable 6D orientation detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Enable_6D_Orientation(AIS2IH_Object_t *pObj)
 {
   int32_t ret = AIS2IH_OK;
@@ -1237,10 +1241,10 @@ int32_t AIS2IH_ACC_Enable_6D_Orientation(AIS2IH_Object_t *pObj)
 }
 
 /**
- * @brief  Disable 6D orientation detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable 6D orientation detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Disable_6D_Orientation(AIS2IH_Object_t *pObj)
 {
   ais2ih_ctrl4_int1_pad_ctrl_t ctrl4_int1_reg;
@@ -1267,7 +1271,7 @@ int32_t AIS2IH_ACC_Disable_6D_Orientation(AIS2IH_Object_t *pObj)
   }
 
   /*Disable Interrupts bit if none event is still enabled */
-  if(ctrl5_int2_reg.int2_sleep_chg == 0 && ctrl4_int1_reg.int1_wu == 0 && ctrl4_int1_reg.int1_6d == 0)
+  if (ctrl5_int2_reg.int2_sleep_chg == 0 && ctrl4_int1_reg.int1_wu == 0 && ctrl4_int1_reg.int1_6d == 0)
   {
     if (ais2ih_read_reg(&(pObj->Ctx), AIS2IH_CTRL_REG7, (uint8_t *)&ctrl_reg7, 1) != AIS2IH_OK)
     {
@@ -1292,14 +1296,14 @@ int32_t AIS2IH_ACC_Disable_6D_Orientation(AIS2IH_Object_t *pObj)
 }
 
 /**
- * @brief  Set 6D orientation threshold
- * @param  pObj the device pObj
- * @param  Threshold 6D orientation detection threshold
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set 6D orientation threshold
+  * @param  pObj the device pObj
+  * @param  Threshold 6D orientation detection threshold
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Set_6D_Orientation_Threshold(AIS2IH_Object_t *pObj, uint8_t Threshold)
 {
-  if(Threshold > 3)
+  if (Threshold > 3)
   {
     return AIS2IH_ERROR;
   }
@@ -1313,11 +1317,11 @@ int32_t AIS2IH_ACC_Set_6D_Orientation_Threshold(AIS2IH_Object_t *pObj, uint8_t T
 }
 
 /**
- * @brief  Get the status of XLow orientation
- * @param  pObj the device pObj
- * @param  XLow the status of XLow orientation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of XLow orientation
+  * @param  pObj the device pObj
+  * @param  XLow the status of XLow orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Get_6D_Orientation_XL(AIS2IH_Object_t *pObj, uint8_t *XLow)
 {
   ais2ih_sixd_src_t data;
@@ -1333,11 +1337,11 @@ int32_t AIS2IH_ACC_Get_6D_Orientation_XL(AIS2IH_Object_t *pObj, uint8_t *XLow)
 }
 
 /**
- * @brief  Get the status of XHigh orientation
- * @param  pObj the device pObj
- * @param  XHigh the status of XHigh orientation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of XHigh orientation
+  * @param  pObj the device pObj
+  * @param  XHigh the status of XHigh orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Get_6D_Orientation_XH(AIS2IH_Object_t *pObj, uint8_t *XHigh)
 {
   ais2ih_sixd_src_t data;
@@ -1353,11 +1357,11 @@ int32_t AIS2IH_ACC_Get_6D_Orientation_XH(AIS2IH_Object_t *pObj, uint8_t *XHigh)
 }
 
 /**
- * @brief  Get the status of YLow orientation
- * @param  pObj the device pObj
- * @param  YLow the status of YLow orientation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of YLow orientation
+  * @param  pObj the device pObj
+  * @param  YLow the status of YLow orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Get_6D_Orientation_YL(AIS2IH_Object_t *pObj, uint8_t *YLow)
 {
   ais2ih_sixd_src_t data;
@@ -1373,11 +1377,11 @@ int32_t AIS2IH_ACC_Get_6D_Orientation_YL(AIS2IH_Object_t *pObj, uint8_t *YLow)
 }
 
 /**
- * @brief  Get the status of YHigh orientation
- * @param  pObj the device pObj
- * @param  YHigh the status of YHigh orientation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of YHigh orientation
+  * @param  pObj the device pObj
+  * @param  YHigh the status of YHigh orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Get_6D_Orientation_YH(AIS2IH_Object_t *pObj, uint8_t *YHigh)
 {
   ais2ih_sixd_src_t data;
@@ -1393,11 +1397,11 @@ int32_t AIS2IH_ACC_Get_6D_Orientation_YH(AIS2IH_Object_t *pObj, uint8_t *YHigh)
 }
 
 /**
- * @brief  Get the status of ZLow orientation
- * @param  pObj the device pObj
- * @param  ZLow the status of ZLow orientation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of ZLow orientation
+  * @param  pObj the device pObj
+  * @param  ZLow the status of ZLow orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Get_6D_Orientation_ZL(AIS2IH_Object_t *pObj, uint8_t *ZLow)
 {
   ais2ih_sixd_src_t data;
@@ -1413,11 +1417,11 @@ int32_t AIS2IH_ACC_Get_6D_Orientation_ZL(AIS2IH_Object_t *pObj, uint8_t *ZLow)
 }
 
 /**
- * @brief  Get the status of ZHigh orientation
- * @param  pObj the device pObj
- * @param  ZHigh the status of ZHigh orientation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of ZHigh orientation
+  * @param  pObj the device pObj
+  * @param  ZHigh the status of ZHigh orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Get_6D_Orientation_ZH(AIS2IH_Object_t *pObj, uint8_t *ZHigh)
 {
   ais2ih_sixd_src_t data;
@@ -1433,11 +1437,11 @@ int32_t AIS2IH_ACC_Get_6D_Orientation_ZH(AIS2IH_Object_t *pObj, uint8_t *ZHigh)
 }
 
 /**
- * @brief  Get the status of all hardware events
- * @param  pObj the device pObj
- * @param  Status the status of all hardware events
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of all hardware events
+  * @param  pObj the device pObj
+  * @param  Status the status of all hardware events
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Get_Event_Status(AIS2IH_Object_t *pObj, AIS2IH_Event_Status_t *Status)
 {
   ais2ih_status_t status_reg;
@@ -1489,23 +1493,23 @@ int32_t AIS2IH_ACC_Get_Event_Status(AIS2IH_Object_t *pObj, AIS2IH_Event_Status_t
 }
 
 /**
- * @brief  Set self test
- * @param  pObj the device pObj
- * @param  Val the value of ST in reg CTRL3
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set self test
+  * @param  pObj the device pObj
+  * @param  Val the value of ST in reg CTRL3
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Set_SelfTest(AIS2IH_Object_t *pObj, uint8_t Val)
 {
   ais2ih_st_t reg;
 
-  if(Val > 2U)
+  if (Val > 2U)
   {
     return AIS2IH_ERROR;
   }
 
   reg = (Val == 0U)  ? AIS2IH_XL_ST_DISABLE
-      : (Val == 1U)  ? AIS2IH_XL_ST_POSITIVE
-      :                AIS2IH_XL_ST_NEGATIVE;
+        : (Val == 1U)  ? AIS2IH_XL_ST_POSITIVE
+        :                AIS2IH_XL_ST_NEGATIVE;
 
   if (ais2ih_self_test_set(&(pObj->Ctx), reg) != AIS2IH_OK)
   {
@@ -1516,11 +1520,11 @@ int32_t AIS2IH_ACC_Set_SelfTest(AIS2IH_Object_t *pObj, uint8_t Val)
 }
 
 /**
- * @brief  Get the AIS2IH ACC data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the AIS2IH ACC data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Get_DRDY_Status(AIS2IH_Object_t *pObj, uint8_t *Status)
 {
   if (ais2ih_flag_data_ready_get(&(pObj->Ctx), Status) != AIS2IH_OK)
@@ -1532,11 +1536,11 @@ int32_t AIS2IH_ACC_Get_DRDY_Status(AIS2IH_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Get the AIS2IH ACC initialization status
- * @param  pObj the device pObj
- * @param  Status 1 if initialized, 0 otherwise
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the AIS2IH ACC initialization status
+  * @param  pObj the device pObj
+  * @param  Status 1 if initialized, 0 otherwise
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_ACC_Get_Init_Status(AIS2IH_Object_t *pObj, uint8_t *Status)
 {
   if (pObj == NULL)
@@ -1550,11 +1554,11 @@ int32_t AIS2IH_ACC_Get_Init_Status(AIS2IH_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Get the number of samples contained into the FIFO
- * @param  pObj the device pObj
- * @param  NumSamples the number of samples contained into the FIFO
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the number of samples contained into the FIFO
+  * @param  pObj the device pObj
+  * @param  NumSamples the number of samples contained into the FIFO
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_FIFO_Get_Num_Samples(AIS2IH_Object_t *pObj, uint16_t *NumSamples)
 {
   ais2ih_fifo_samples_t FIFO_Samples;
@@ -1577,11 +1581,11 @@ int32_t AIS2IH_FIFO_Get_Num_Samples(AIS2IH_Object_t *pObj, uint16_t *NumSamples)
 }
 
 /**
- * @brief  Set the FIFO mode
- * @param  pObj the device pObj
- * @param  Mode FIFO mode
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the FIFO mode
+  * @param  pObj the device pObj
+  * @param  Mode FIFO mode
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS2IH_FIFO_Set_Mode(AIS2IH_Object_t *pObj, uint8_t Mode)
 {
   int32_t ret = AIS2IH_OK;
@@ -1615,22 +1619,23 @@ int32_t AIS2IH_FIFO_Set_Mode(AIS2IH_Object_t *pObj, uint8_t Mode)
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup AIS2IH_Private_Functions AIS2IH Private Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Set the AIS2IH accelerometer sensor output data rate when enabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @param  Mode the operating mode to be used
- * @param  Noise the low noise option
- * @retval 0 in case of success, an error code otherwise
- */
-static int32_t AIS2IH_ACC_SetOutputDataRate_When_Enabled(AIS2IH_Object_t *pObj, float Odr, AIS2IH_Operating_Mode_t Mode, AIS2IH_Low_Noise_t Noise)
+  * @brief  Set the AIS2IH accelerometer sensor output data rate when enabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @param  Mode the operating mode to be used
+  * @param  Noise the low noise option
+  * @retval 0 in case of success, an error code otherwise
+  */
+static int32_t AIS2IH_ACC_SetOutputDataRate_When_Enabled(AIS2IH_Object_t *pObj, float Odr, AIS2IH_Operating_Mode_t Mode,
+                                                         AIS2IH_Low_Noise_t Noise)
 {
   ais2ih_odr_t new_odr;
   ais2ih_mode_t new_power_mode;
@@ -1735,14 +1740,14 @@ static int32_t AIS2IH_ACC_SetOutputDataRate_When_Enabled(AIS2IH_Object_t *pObj, 
   }
 
   new_odr = (Odr <=    1.6f) ? AIS2IH_XL_ODR_1Hz6_LP_ONLY
-          : (Odr <=   12.5f) ? AIS2IH_XL_ODR_12Hz5
-          : (Odr <=   25.0f) ? AIS2IH_XL_ODR_25Hz
-          : (Odr <=   50.0f) ? AIS2IH_XL_ODR_50Hz
-          : (Odr <=  100.0f) ? AIS2IH_XL_ODR_100Hz
-          : (Odr <=  200.0f) ? AIS2IH_XL_ODR_200Hz
-          : (Odr <=  400.0f) ? AIS2IH_XL_ODR_400Hz
-          : (Odr <=  800.0f) ? AIS2IH_XL_ODR_800Hz
-          :                    AIS2IH_XL_ODR_1k6Hz;
+            : (Odr <=   12.5f) ? AIS2IH_XL_ODR_12Hz5
+            : (Odr <=   25.0f) ? AIS2IH_XL_ODR_25Hz
+            : (Odr <=   50.0f) ? AIS2IH_XL_ODR_50Hz
+            : (Odr <=  100.0f) ? AIS2IH_XL_ODR_100Hz
+            : (Odr <=  200.0f) ? AIS2IH_XL_ODR_200Hz
+            : (Odr <=  400.0f) ? AIS2IH_XL_ODR_400Hz
+            : (Odr <=  800.0f) ? AIS2IH_XL_ODR_800Hz
+            :                    AIS2IH_XL_ODR_1k6Hz;
 
   /* Output data rate selection. */
   if (ais2ih_data_rate_set(&(pObj->Ctx), new_odr) != AIS2IH_OK)
@@ -1765,40 +1770,41 @@ static int32_t AIS2IH_ACC_SetOutputDataRate_When_Enabled(AIS2IH_Object_t *pObj, 
 }
 
 /**
- * @brief  Set the AIS2IH accelerometer sensor output data rate when disabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @param  Mode the operating mode to be used
- * @param  Noise the low noise option
- * @retval 0 in case of success, an error code otherwise
- */
-static int32_t AIS2IH_ACC_SetOutputDataRate_When_Disabled(AIS2IH_Object_t *pObj, float Odr, AIS2IH_Operating_Mode_t Mode, AIS2IH_Low_Noise_t Noise)
+  * @brief  Set the AIS2IH accelerometer sensor output data rate when disabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @param  Mode the operating mode to be used
+  * @param  Noise the low noise option
+  * @retval 0 in case of success, an error code otherwise
+  */
+static int32_t AIS2IH_ACC_SetOutputDataRate_When_Disabled(AIS2IH_Object_t *pObj, float Odr,
+                                                          AIS2IH_Operating_Mode_t Mode, AIS2IH_Low_Noise_t Noise)
 {
   /* Store the new Odr, Mode and Noise values */
   pObj->acc_operating_mode = Mode;
   pObj->acc_low_noise = Noise;
 
   pObj->acc_odr = (Odr <=    1.6f) ?    1.6f
-                : (Odr <=   12.5f) ?   12.5f
-                : (Odr <=   25.0f) ?   25.0f
-                : (Odr <=   50.0f) ?   50.0f
-                : (Odr <=  100.0f) ?  100.0f
-                : (Odr <=  200.0f) ?  200.0f
-                : (Odr <=  400.0f) ?  400.0f
-                : (Odr <=  800.0f) ?  800.0f
-                :                    1600.0f;
+                  : (Odr <=   12.5f) ?   12.5f
+                  : (Odr <=   25.0f) ?   25.0f
+                  : (Odr <=   50.0f) ?   50.0f
+                  : (Odr <=  100.0f) ?  100.0f
+                  : (Odr <=  200.0f) ?  200.0f
+                  : (Odr <=  400.0f) ?  400.0f
+                  : (Odr <=  800.0f) ?  800.0f
+                  :                    1600.0f;
 
   return AIS2IH_OK;
 }
 
 /**
- * @brief  Wrap Read register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Read register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   AIS2IH_Object_t *pObj = (AIS2IH_Object_t *)Handle;
@@ -1807,13 +1813,13 @@ static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t L
 }
 
 /**
- * @brief  Wrap Write register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Write register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   AIS2IH_Object_t *pObj = (AIS2IH_Object_t *)Handle;

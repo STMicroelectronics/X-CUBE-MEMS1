@@ -1,40 +1,40 @@
 /**
- ******************************************************************************
- * @file    asm330lhh.c
- * @author  MEMS Software Solutions Team
- * @brief   ASM330LHH driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    asm330lhh.c
+  * @author  MEMS Software Solutions Team
+  * @brief   ASM330LHH driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "asm330lhh.h"
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @defgroup ASM330LHH ASM330LHH
- * @{
- */
+  * @{
+  */
 
 /** @defgroup ASM330LHH_Exported_Variables ASM330LHH Exported Variables
- * @{
- */
+  * @{
+  */
 
 ASM330LHH_CommonDrv_t ASM330LHH_COMMON_Driver =
 {
@@ -71,12 +71,12 @@ ASM330LHH_GYRO_Drv_t ASM330LHH_GYRO_Driver =
 };
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup ASM330LHH_Private_Function_Prototypes ASM330LHH Private Function Prototypes
- * @{
- */
+  * @{
+  */
 
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
@@ -86,18 +86,18 @@ static int32_t ASM330LHH_GYRO_SetOutputDataRate_When_Enabled(ASM330LHH_Object_t 
 static int32_t ASM330LHH_GYRO_SetOutputDataRate_When_Disabled(ASM330LHH_Object_t *pObj, float Odr);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup ASM330LHH_Exported_Functions ASM330LHH Exported Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Register Component Bus IO operations
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Register Component Bus IO operations
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_RegisterBusIO(ASM330LHH_Object_t *pObj, ASM330LHH_IO_t *pIO)
 {
   int32_t ret = ASM330LHH_OK;
@@ -151,10 +151,10 @@ int32_t ASM330LHH_RegisterBusIO(ASM330LHH_Object_t *pObj, ASM330LHH_IO_t *pIO)
 }
 
 /**
- * @brief  Initialize the ASM330LHH sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Initialize the ASM330LHH sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_Init(ASM330LHH_Object_t *pObj)
 {
   /* Set DEVICE_CONF bit */
@@ -218,10 +218,10 @@ int32_t ASM330LHH_Init(ASM330LHH_Object_t *pObj)
 }
 
 /**
- * @brief  Deinitialize the ASM330LHH sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Deinitialize the ASM330LHH sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_DeInit(ASM330LHH_Object_t *pObj)
 {
   /* Disable the component */
@@ -245,11 +245,11 @@ int32_t ASM330LHH_DeInit(ASM330LHH_Object_t *pObj)
 }
 
 /**
- * @brief  Read component ID
- * @param  pObj the device pObj
- * @param  Id the WHO_AM_I value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Read component ID
+  * @param  pObj the device pObj
+  * @param  Id the WHO_AM_I value
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_ReadID(ASM330LHH_Object_t *pObj, uint8_t *Id)
 {
   if (asm330lhh_device_id_get(&(pObj->Ctx), Id) != ASM330LHH_OK)
@@ -261,11 +261,11 @@ int32_t ASM330LHH_ReadID(ASM330LHH_Object_t *pObj, uint8_t *Id)
 }
 
 /**
- * @brief  Get ASM330LHH sensor capabilities
- * @param  pObj Component object pointer
- * @param  Capabilities pointer to ASM330LHH sensor capabilities
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get ASM330LHH sensor capabilities
+  * @param  pObj Component object pointer
+  * @param  Capabilities pointer to ASM330LHH sensor capabilities
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_GetCapabilities(ASM330LHH_Object_t *pObj, ASM330LHH_Capabilities_t *Capabilities)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -285,10 +285,10 @@ int32_t ASM330LHH_GetCapabilities(ASM330LHH_Object_t *pObj, ASM330LHH_Capabiliti
 }
 
 /**
- * @brief  Enable the ASM330LHH accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the ASM330LHH accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_ACC_Enable(ASM330LHH_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -309,10 +309,10 @@ int32_t ASM330LHH_ACC_Enable(ASM330LHH_Object_t *pObj)
 }
 
 /**
- * @brief  Disable the ASM330LHH accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable the ASM330LHH accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_ACC_Disable(ASM330LHH_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -339,11 +339,11 @@ int32_t ASM330LHH_ACC_Disable(ASM330LHH_Object_t *pObj)
 }
 
 /**
- * @brief  Get the ASM330LHH accelerometer sensor sensitivity
- * @param  pObj the device pObj
- * @param  Sensitivity pointer
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ASM330LHH accelerometer sensor sensitivity
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_ACC_GetSensitivity(ASM330LHH_Object_t *pObj, float *Sensitivity)
 {
   int32_t ret = ASM330LHH_OK;
@@ -383,11 +383,11 @@ int32_t ASM330LHH_ACC_GetSensitivity(ASM330LHH_Object_t *pObj, float *Sensitivit
 }
 
 /**
- * @brief  Get the ASM330LHH accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ASM330LHH accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_ACC_GetOutputDataRate(ASM330LHH_Object_t *pObj, float *Odr)
 {
   int32_t ret = ASM330LHH_OK;
@@ -403,10 +403,6 @@ int32_t ASM330LHH_ACC_GetOutputDataRate(ASM330LHH_Object_t *pObj, float *Odr)
   {
     case ASM330LHH_XL_ODR_OFF:
       *Odr = 0.0f;
-      break;
-
-    case ASM330LHH_XL_ODR_6Hz5:
-      *Odr = 6.5f;
       break;
 
     case ASM330LHH_XL_ODR_12Hz5:
@@ -429,8 +425,8 @@ int32_t ASM330LHH_ACC_GetOutputDataRate(ASM330LHH_Object_t *pObj, float *Odr)
       *Odr = 208.0f;
       break;
 
-    case ASM330LHH_XL_ODR_417Hz:
-      *Odr = 417.0f;
+    case ASM330LHH_XL_ODR_416Hz:
+      *Odr = 416.0f;
       break;
 
     case ASM330LHH_XL_ODR_833Hz:
@@ -458,11 +454,11 @@ int32_t ASM330LHH_ACC_GetOutputDataRate(ASM330LHH_Object_t *pObj, float *Odr)
 }
 
 /**
- * @brief  Set the ASM330LHH accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ASM330LHH accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_ACC_SetOutputDataRate(ASM330LHH_Object_t *pObj, float Odr)
 {
   /* Check if the component is enabled */
@@ -477,11 +473,11 @@ int32_t ASM330LHH_ACC_SetOutputDataRate(ASM330LHH_Object_t *pObj, float Odr)
 }
 
 /**
- * @brief  Get the ASM330LHH accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale pointer where the full scale is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ASM330LHH accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale pointer where the full scale is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_ACC_GetFullScale(ASM330LHH_Object_t *pObj, int32_t *FullScale)
 {
   int32_t ret = ASM330LHH_OK;
@@ -520,11 +516,11 @@ int32_t ASM330LHH_ACC_GetFullScale(ASM330LHH_Object_t *pObj, int32_t *FullScale)
 }
 
 /**
- * @brief  Set the ASM330LHH accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale the functional full scale to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ASM330LHH accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale the functional full scale to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_ACC_SetFullScale(ASM330LHH_Object_t *pObj, int32_t FullScale)
 {
   asm330lhh_fs_xl_t new_fs;
@@ -545,11 +541,11 @@ int32_t ASM330LHH_ACC_SetFullScale(ASM330LHH_Object_t *pObj, int32_t FullScale)
 }
 
 /**
- * @brief  Get the ASM330LHH accelerometer sensor raw axes
- * @param  pObj the device pObj
- * @param  Value pointer where the raw values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ASM330LHH accelerometer sensor raw axes
+  * @param  pObj the device pObj
+  * @param  Value pointer where the raw values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_ACC_GetAxesRaw(ASM330LHH_Object_t *pObj, ASM330LHH_AxesRaw_t *Value)
 {
   asm330lhh_axis3bit16_t data_raw;
@@ -569,11 +565,11 @@ int32_t ASM330LHH_ACC_GetAxesRaw(ASM330LHH_Object_t *pObj, ASM330LHH_AxesRaw_t *
 }
 
 /**
- * @brief  Get the ASM330LHH accelerometer sensor axes
- * @param  pObj the device pObj
- * @param  Acceleration pointer where the values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ASM330LHH accelerometer sensor axes
+  * @param  pObj the device pObj
+  * @param  Acceleration pointer where the values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_ACC_GetAxes(ASM330LHH_Object_t *pObj, ASM330LHH_Axes_t *Acceleration)
 {
   asm330lhh_axis3bit16_t data_raw;
@@ -600,10 +596,10 @@ int32_t ASM330LHH_ACC_GetAxes(ASM330LHH_Object_t *pObj, ASM330LHH_Axes_t *Accele
 }
 
 /**
- * @brief  Enable the ASM330LHH gyroscope sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the ASM330LHH gyroscope sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_GYRO_Enable(ASM330LHH_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -624,10 +620,10 @@ int32_t ASM330LHH_GYRO_Enable(ASM330LHH_Object_t *pObj)
 }
 
 /**
- * @brief  Disable the ASM330LHH gyroscope sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable the ASM330LHH gyroscope sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_GYRO_Disable(ASM330LHH_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -654,11 +650,11 @@ int32_t ASM330LHH_GYRO_Disable(ASM330LHH_Object_t *pObj)
 }
 
 /**
- * @brief  Get the ASM330LHH gyroscope sensor sensitivity
- * @param  pObj the device pObj
- * @param  Sensitivity pointer
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ASM330LHH gyroscope sensor sensitivity
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_GYRO_GetSensitivity(ASM330LHH_Object_t *pObj, float *Sensitivity)
 {
   int32_t ret = ASM330LHH_OK;
@@ -702,11 +698,11 @@ int32_t ASM330LHH_GYRO_GetSensitivity(ASM330LHH_Object_t *pObj, float *Sensitivi
 }
 
 /**
- * @brief  Get the ASM330LHH gyroscope sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ASM330LHH gyroscope sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_GYRO_GetOutputDataRate(ASM330LHH_Object_t *pObj, float *Odr)
 {
   int32_t ret = ASM330LHH_OK;
@@ -744,8 +740,8 @@ int32_t ASM330LHH_GYRO_GetOutputDataRate(ASM330LHH_Object_t *pObj, float *Odr)
       *Odr = 208.0f;
       break;
 
-    case ASM330LHH_GY_ODR_417Hz:
-      *Odr = 417.0f;
+    case ASM330LHH_GY_ODR_416Hz:
+      *Odr = 416.0f;
       break;
 
     case ASM330LHH_GY_ODR_833Hz:
@@ -773,11 +769,11 @@ int32_t ASM330LHH_GYRO_GetOutputDataRate(ASM330LHH_Object_t *pObj, float *Odr)
 }
 
 /**
- * @brief  Set the ASM330LHH gyroscope sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ASM330LHH gyroscope sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_GYRO_SetOutputDataRate(ASM330LHH_Object_t *pObj, float Odr)
 {
   /* Check if the component is enabled */
@@ -792,11 +788,11 @@ int32_t ASM330LHH_GYRO_SetOutputDataRate(ASM330LHH_Object_t *pObj, float Odr)
 }
 
 /**
- * @brief  Get the ASM330LHH gyroscope sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale pointer where the full scale is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ASM330LHH gyroscope sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale pointer where the full scale is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_GYRO_GetFullScale(ASM330LHH_Object_t *pObj, int32_t  *FullScale)
 {
   int32_t ret = ASM330LHH_OK;
@@ -843,11 +839,11 @@ int32_t ASM330LHH_GYRO_GetFullScale(ASM330LHH_Object_t *pObj, int32_t  *FullScal
 }
 
 /**
- * @brief  Set the ASM330LHH gyroscope sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale the functional full scale to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ASM330LHH gyroscope sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale the functional full scale to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_GYRO_SetFullScale(ASM330LHH_Object_t *pObj, int32_t FullScale)
 {
   asm330lhh_fs_g_t new_fs;
@@ -868,11 +864,11 @@ int32_t ASM330LHH_GYRO_SetFullScale(ASM330LHH_Object_t *pObj, int32_t FullScale)
 }
 
 /**
- * @brief  Get the ASM330LHH gyroscope sensor raw axes
- * @param  pObj the device pObj
- * @param  Value pointer where the raw values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ASM330LHH gyroscope sensor raw axes
+  * @param  pObj the device pObj
+  * @param  Value pointer where the raw values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_GYRO_GetAxesRaw(ASM330LHH_Object_t *pObj, ASM330LHH_AxesRaw_t *Value)
 {
   asm330lhh_axis3bit16_t data_raw;
@@ -892,11 +888,11 @@ int32_t ASM330LHH_GYRO_GetAxesRaw(ASM330LHH_Object_t *pObj, ASM330LHH_AxesRaw_t 
 }
 
 /**
- * @brief  Get the ASM330LHH gyroscope sensor axes
- * @param  pObj the device pObj
- * @param  AngularRate pointer where the values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ASM330LHH gyroscope sensor axes
+  * @param  pObj the device pObj
+  * @param  AngularRate pointer where the values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_GYRO_GetAxes(ASM330LHH_Object_t *pObj, ASM330LHH_Axes_t *AngularRate)
 {
   asm330lhh_axis3bit16_t data_raw;
@@ -923,12 +919,12 @@ int32_t ASM330LHH_GYRO_GetAxes(ASM330LHH_Object_t *pObj, ASM330LHH_Axes_t *Angul
 }
 
 /**
- * @brief  Get the ASM330LHH register value
- * @param  pObj the device pObj
- * @param  Reg address to be read
- * @param  Data pointer where the value is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ASM330LHH register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be read
+  * @param  Data pointer where the value is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_Read_Reg(ASM330LHH_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 {
   if (asm330lhh_read_reg(&(pObj->Ctx), Reg, Data, 1) != ASM330LHH_OK)
@@ -940,12 +936,12 @@ int32_t ASM330LHH_Read_Reg(ASM330LHH_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 }
 
 /**
- * @brief  Set the ASM330LHH register value
- * @param  pObj the device pObj
- * @param  Reg address to be written
- * @param  Data value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ASM330LHH register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be written
+  * @param  Data value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_Write_Reg(ASM330LHH_Object_t *pObj, uint8_t Reg, uint8_t Data)
 {
   if (asm330lhh_write_reg(&(pObj->Ctx), Reg, &Data, 1) != ASM330LHH_OK)
@@ -957,11 +953,11 @@ int32_t ASM330LHH_Write_Reg(ASM330LHH_Object_t *pObj, uint8_t Reg, uint8_t Data)
 }
 
 /**
- * @brief  Get the ASM330LHH ACC data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ASM330LHH ACC data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_ACC_Get_DRDY_Status(ASM330LHH_Object_t *pObj, uint8_t *Status)
 {
   if (asm330lhh_xl_flag_data_ready_get(&(pObj->Ctx), Status) != ASM330LHH_OK)
@@ -973,11 +969,11 @@ int32_t ASM330LHH_ACC_Get_DRDY_Status(ASM330LHH_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Get the ASM330LHH GYRO data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ASM330LHH GYRO data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ASM330LHH_GYRO_Get_DRDY_Status(ASM330LHH_Object_t *pObj, uint8_t *Status)
 {
   if (asm330lhh_gy_flag_data_ready_get(&(pObj->Ctx), Status) != ASM330LHH_OK)
@@ -989,33 +985,33 @@ int32_t ASM330LHH_GYRO_Get_DRDY_Status(ASM330LHH_Object_t *pObj, uint8_t *Status
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup ASM330LHH_Private_Functions ASM330LHH Private Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Set the ASM330LHH accelerometer sensor output data rate when enabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ASM330LHH accelerometer sensor output data rate when enabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ASM330LHH_ACC_SetOutputDataRate_When_Enabled(ASM330LHH_Object_t *pObj, float Odr)
 {
   asm330lhh_odr_xl_t new_odr;
 
   new_odr = (Odr <=   12.5f) ? ASM330LHH_XL_ODR_12Hz5
-          : (Odr <=   26.0f) ? ASM330LHH_XL_ODR_26Hz
-          : (Odr <=   52.0f) ? ASM330LHH_XL_ODR_52Hz
-          : (Odr <=  104.0f) ? ASM330LHH_XL_ODR_104Hz
-          : (Odr <=  208.0f) ? ASM330LHH_XL_ODR_208Hz
-          : (Odr <=  417.0f) ? ASM330LHH_XL_ODR_417Hz
-          : (Odr <=  833.0f) ? ASM330LHH_XL_ODR_833Hz
-          : (Odr <= 1667.0f) ? ASM330LHH_XL_ODR_1667Hz
-          : (Odr <= 3333.0f) ? ASM330LHH_XL_ODR_3333Hz
-          :                    ASM330LHH_XL_ODR_6667Hz;
+            : (Odr <=   26.0f) ? ASM330LHH_XL_ODR_26Hz
+            : (Odr <=   52.0f) ? ASM330LHH_XL_ODR_52Hz
+            : (Odr <=  104.0f) ? ASM330LHH_XL_ODR_104Hz
+            : (Odr <=  208.0f) ? ASM330LHH_XL_ODR_208Hz
+            : (Odr <=  416.0f) ? ASM330LHH_XL_ODR_416Hz
+            : (Odr <=  833.0f) ? ASM330LHH_XL_ODR_833Hz
+            : (Odr <= 1667.0f) ? ASM330LHH_XL_ODR_1667Hz
+            : (Odr <= 3333.0f) ? ASM330LHH_XL_ODR_3333Hz
+            :                    ASM330LHH_XL_ODR_6667Hz;
 
   /* Output data rate selection. */
   if (asm330lhh_xl_data_rate_set(&(pObj->Ctx), new_odr) != ASM330LHH_OK)
@@ -1027,47 +1023,47 @@ static int32_t ASM330LHH_ACC_SetOutputDataRate_When_Enabled(ASM330LHH_Object_t *
 }
 
 /**
- * @brief  Set the ASM330LHH accelerometer sensor output data rate when disabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ASM330LHH accelerometer sensor output data rate when disabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ASM330LHH_ACC_SetOutputDataRate_When_Disabled(ASM330LHH_Object_t *pObj, float Odr)
 {
   pObj->acc_odr = (Odr <=   12.5f) ? ASM330LHH_XL_ODR_12Hz5
-                : (Odr <=   26.0f) ? ASM330LHH_XL_ODR_26Hz
-                : (Odr <=   52.0f) ? ASM330LHH_XL_ODR_52Hz
-                : (Odr <=  104.0f) ? ASM330LHH_XL_ODR_104Hz
-                : (Odr <=  208.0f) ? ASM330LHH_XL_ODR_208Hz
-                : (Odr <=  417.0f) ? ASM330LHH_XL_ODR_417Hz
-                : (Odr <=  833.0f) ? ASM330LHH_XL_ODR_833Hz
-                : (Odr <= 1667.0f) ? ASM330LHH_XL_ODR_1667Hz
-                : (Odr <= 3333.0f) ? ASM330LHH_XL_ODR_3333Hz
-                :                    ASM330LHH_XL_ODR_6667Hz;
+                  : (Odr <=   26.0f) ? ASM330LHH_XL_ODR_26Hz
+                  : (Odr <=   52.0f) ? ASM330LHH_XL_ODR_52Hz
+                  : (Odr <=  104.0f) ? ASM330LHH_XL_ODR_104Hz
+                  : (Odr <=  208.0f) ? ASM330LHH_XL_ODR_208Hz
+                  : (Odr <=  416.0f) ? ASM330LHH_XL_ODR_416Hz
+                  : (Odr <=  833.0f) ? ASM330LHH_XL_ODR_833Hz
+                  : (Odr <= 1667.0f) ? ASM330LHH_XL_ODR_1667Hz
+                  : (Odr <= 3333.0f) ? ASM330LHH_XL_ODR_3333Hz
+                  :                    ASM330LHH_XL_ODR_6667Hz;
 
   return ASM330LHH_OK;
 }
 
 /**
- * @brief  Set the ASM330LHH gyroscope sensor output data rate when enabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ASM330LHH gyroscope sensor output data rate when enabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ASM330LHH_GYRO_SetOutputDataRate_When_Enabled(ASM330LHH_Object_t *pObj, float Odr)
 {
   asm330lhh_odr_g_t new_odr;
 
   new_odr = (Odr <=   12.5f) ? ASM330LHH_GY_ODR_12Hz5
-          : (Odr <=   26.0f) ? ASM330LHH_GY_ODR_26Hz
-          : (Odr <=   52.0f) ? ASM330LHH_GY_ODR_52Hz
-          : (Odr <=  104.0f) ? ASM330LHH_GY_ODR_104Hz
-          : (Odr <=  208.0f) ? ASM330LHH_GY_ODR_208Hz
-          : (Odr <=  417.0f) ? ASM330LHH_GY_ODR_417Hz
-          : (Odr <=  833.0f) ? ASM330LHH_GY_ODR_833Hz
-          : (Odr <= 1667.0f) ? ASM330LHH_GY_ODR_1667Hz
-          : (Odr <= 3333.0f) ? ASM330LHH_GY_ODR_3333Hz
-          :                    ASM330LHH_GY_ODR_6667Hz;
+            : (Odr <=   26.0f) ? ASM330LHH_GY_ODR_26Hz
+            : (Odr <=   52.0f) ? ASM330LHH_GY_ODR_52Hz
+            : (Odr <=  104.0f) ? ASM330LHH_GY_ODR_104Hz
+            : (Odr <=  208.0f) ? ASM330LHH_GY_ODR_208Hz
+            : (Odr <=  416.0f) ? ASM330LHH_GY_ODR_416Hz
+            : (Odr <=  833.0f) ? ASM330LHH_GY_ODR_833Hz
+            : (Odr <= 1667.0f) ? ASM330LHH_GY_ODR_1667Hz
+            : (Odr <= 3333.0f) ? ASM330LHH_GY_ODR_3333Hz
+            :                    ASM330LHH_GY_ODR_6667Hz;
 
   /* Output data rate selection. */
   if (asm330lhh_gy_data_rate_set(&(pObj->Ctx), new_odr) != ASM330LHH_OK)
@@ -1079,35 +1075,35 @@ static int32_t ASM330LHH_GYRO_SetOutputDataRate_When_Enabled(ASM330LHH_Object_t 
 }
 
 /**
- * @brief  Set the ASM330LHH gyroscope sensor output data rate when disabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ASM330LHH gyroscope sensor output data rate when disabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ASM330LHH_GYRO_SetOutputDataRate_When_Disabled(ASM330LHH_Object_t *pObj, float Odr)
 {
   pObj->gyro_odr = (Odr <=   12.5f) ? ASM330LHH_GY_ODR_12Hz5
-                 : (Odr <=   26.0f) ? ASM330LHH_GY_ODR_26Hz
-                 : (Odr <=   52.0f) ? ASM330LHH_GY_ODR_52Hz
-                 : (Odr <=  104.0f) ? ASM330LHH_GY_ODR_104Hz
-                 : (Odr <=  208.0f) ? ASM330LHH_GY_ODR_208Hz
-                 : (Odr <=  417.0f) ? ASM330LHH_GY_ODR_417Hz
-                 : (Odr <=  833.0f) ? ASM330LHH_GY_ODR_833Hz
-                 : (Odr <= 1667.0f) ? ASM330LHH_GY_ODR_1667Hz
-                 : (Odr <= 3333.0f) ? ASM330LHH_GY_ODR_3333Hz
-                 :                    ASM330LHH_GY_ODR_6667Hz;
+                   : (Odr <=   26.0f) ? ASM330LHH_GY_ODR_26Hz
+                   : (Odr <=   52.0f) ? ASM330LHH_GY_ODR_52Hz
+                   : (Odr <=  104.0f) ? ASM330LHH_GY_ODR_104Hz
+                   : (Odr <=  208.0f) ? ASM330LHH_GY_ODR_208Hz
+                   : (Odr <=  416.0f) ? ASM330LHH_GY_ODR_416Hz
+                   : (Odr <=  833.0f) ? ASM330LHH_GY_ODR_833Hz
+                   : (Odr <= 1667.0f) ? ASM330LHH_GY_ODR_1667Hz
+                   : (Odr <= 3333.0f) ? ASM330LHH_GY_ODR_3333Hz
+                   :                    ASM330LHH_GY_ODR_6667Hz;
 
   return ASM330LHH_OK;
 }
 
 /**
- * @brief  Wrap Read register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Read register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   ASM330LHH_Object_t *pObj = (ASM330LHH_Object_t *)Handle;
@@ -1116,13 +1112,13 @@ static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t L
 }
 
 /**
- * @brief  Wrap Write register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Write register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   ASM330LHH_Object_t *pObj = (ASM330LHH_Object_t *)Handle;

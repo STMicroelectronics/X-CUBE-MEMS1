@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    lps22df.h
- * @author  MEMS Software Solutions Team
- * @brief   LPS22DF header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lps22df.h
+  * @author  MEMS Software Solutions Team
+  * @brief   LPS22DF header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LPS22DF_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup LPS22DF LPS22DF
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LPS22DF_Exported_Types LPS22DF Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*LPS22DF_Init_Func)(void);
 typedef int32_t (*LPS22DF_DeInit_Func)(void);
@@ -110,33 +110,37 @@ typedef struct
   int32_t (*GetPressure)(LPS22DF_Object_t *, float *);
 } LPS22DF_PRESS_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } lps22df_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } lps22df_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } lps22df_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } lps22df_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LPS22DF_Exported_Constants LPS22DF Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define LPS22DF_OK                0
 #define LPS22DF_ERROR            -1
@@ -146,12 +150,12 @@ typedef union{
 #define LPS22DF_SPI_3WIRES_BUS   2U
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LPS22DF_Exported_Functions LPS22DF Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t LPS22DF_RegisterBusIO(LPS22DF_Object_t *pObj, LPS22DF_IO_t *pIO);
 int32_t LPS22DF_Init(LPS22DF_Object_t *pObj);
@@ -185,19 +189,19 @@ int32_t LPS22DF_Set_AVG(LPS22DF_Object_t *pObj, uint8_t avg);
 int32_t LPS22DF_Set_LPF(LPS22DF_Object_t *pObj, uint8_t lpf);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LPS22DF_Exported_Variables LPS22DF Exported Variables
- * @{
- */
+  * @{
+  */
 extern LPS22DF_CommonDrv_t LPS22DF_COMMON_Driver;
 extern LPS22DF_PRESS_Drv_t LPS22DF_PRESS_Driver;
 extern LPS22DF_TEMP_Drv_t LPS22DF_TEMP_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -206,15 +210,15 @@ extern LPS22DF_TEMP_Drv_t LPS22DF_TEMP_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

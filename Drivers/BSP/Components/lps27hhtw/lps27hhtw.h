@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    lps27hhtw.h
- * @author  MEMS Software Solutions Team
- * @brief   LPS27HHTW header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lps27hhtw.h
+  * @author  MEMS Software Solutions Team
+  * @brief   LPS27HHTW header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LPS27HHTW_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup LPS27HHTW LPS27HHTW
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LPS27HHTW_Exported_Types LPS27HHTW Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*LPS27HHTW_Init_Func)(void);
 typedef int32_t (*LPS27HHTW_DeInit_Func)(void);
@@ -120,33 +120,37 @@ typedef enum
   LPS27HHTW_FIFO_TRIGGER_BYPASSTOFIFO_MODE      = (uint8_t)0xE0     /*!< BYPASS mode until trigger deasserted, then FIFO MODE*/
 } LPS27HHTW_FifoMode;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } lps27hhtw_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } lps27hhtw_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } lps27hhtw_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } lps27hhtw_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LPS27HHTW_Exported_Constants LPS27HHTW Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define LPS27HHTW_OK                0
 #define LPS27HHTW_ERROR            -1
@@ -162,12 +166,12 @@ typedef union{
 #define LPS27HHTW_LOW_NOISE_EN       1
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LPS27HHTW_Exported_Functions LPS27HHTW Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t LPS27HHTW_RegisterBusIO(LPS27HHTW_Object_t *pObj, LPS27HHTW_IO_t *pIO);
 int32_t LPS27HHTW_Init(LPS27HHTW_Object_t *pObj);
@@ -215,19 +219,19 @@ int32_t LPS27HHTW_Set_Power_Mode(LPS27HHTW_Object_t *pObj, uint8_t powerMode);
 int32_t LPS27HHTW_Set_Filter_Mode(LPS27HHTW_Object_t *pObj, uint8_t filterMode);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LPS27HHTW_Exported_Variables LPS27HHTW Exported Variables
- * @{
- */
+  * @{
+  */
 extern LPS27HHTW_CommonDrv_t LPS27HHTW_COMMON_Driver;
 extern LPS27HHTW_PRESS_Drv_t LPS27HHTW_PRESS_Driver;
 extern LPS27HHTW_TEMP_Drv_t LPS27HHTW_TEMP_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -236,15 +240,15 @@ extern LPS27HHTW_TEMP_Drv_t LPS27HHTW_TEMP_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -1,22 +1,22 @@
-/*
- ******************************************************************************
- * @file    ism303dac_reg.h
- * @author  Sensors Software Solution Team
- * @brief   This file contains all the functions prototypes for the
- *          ism303dac_reg.c driver.
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    ism303dac_reg.h
+  * @author  Sensors Software Solution Team
+  * @brief   This file contains all the functions prototypes for the
+  *          ism303dac_reg.c driver.
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef ISM303DAC_REGS_H
@@ -75,7 +75,8 @@ extern "C" {
 #ifndef MEMS_SHARED_TYPES
 #define MEMS_SHARED_TYPES
 
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t bit0       : 1;
   uint8_t bit1       : 1;
@@ -108,12 +109,11 @@ typedef struct {
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *,
-                                    uint16_t);
-typedef int32_t (*stmdev_read_ptr) (void *, uint8_t, uint8_t *,
-                                    uint16_t);
+typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 
-typedef struct {
+typedef struct
+{
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
@@ -142,7 +142,8 @@ typedef struct {
   *
   */
 
-typedef struct {
+typedef struct
+{
   uint8_t address;
   uint8_t data;
 } ucf_line_t;
@@ -180,7 +181,8 @@ typedef struct {
 #define ISM303DAC_MODULE_8BIT_A           0x0CU
 #define ISM303DAC_WHO_AM_I_A              0x0FU
 #define ISM303DAC_CTRL1_A                 0x20U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t bdu                 : 1;
   uint8_t hf_odr              : 1;
@@ -195,7 +197,8 @@ typedef struct {
 } ism303dac_ctrl1_a_t;
 
 #define ISM303DAC_CTRL2_A                 0x21U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t sim                 : 1;
   uint8_t i2c_disable         : 1;
@@ -216,7 +219,8 @@ typedef struct {
 } ism303dac_ctrl2_a_t;
 
 #define ISM303DAC_CTRL3_A                 0x22U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t pp_od               : 1;
   uint8_t h_lactive           : 1;
@@ -237,7 +241,8 @@ typedef struct {
 } ism303dac_ctrl3_a_t;
 
 #define ISM303DAC_CTRL4_A                 0x23U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t int1_drdy           : 1;
   uint8_t int1_fth            : 1;
@@ -260,7 +265,8 @@ typedef struct {
 } ism303dac_ctrl4_a_t;
 
 #define ISM303DAC_CTRL5_A                 0x24U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t int2_drdy           : 1;
   uint8_t int2_fth            : 1;
@@ -279,7 +285,8 @@ typedef struct {
 } ism303dac_ctrl5_a_t;
 
 #define ISM303DAC_FIFO_CTRL_A             0x25U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t if_cs_pu_dis        : 1;
   uint8_t not_used_01         : 2;
@@ -297,7 +304,8 @@ typedef struct {
 
 #define ISM303DAC_OUT_T_A                 0x26U
 #define ISM303DAC_STATUS_A                0x27U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t drdy                : 1;
   uint8_t ff_ia               : 1;
@@ -327,7 +335,8 @@ typedef struct {
 #define ISM303DAC_OUT_Z_H_A               0x2DU
 #define ISM303DAC_FIFO_THS_A              0x2EU
 #define ISM303DAC_FIFO_SRC_A              0x2FU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01         : 5;
   uint8_t diff                : 1;
@@ -342,12 +351,14 @@ typedef struct {
 } ism303dac_fifo_src_a_t;
 
 #define ISM303DAC_FIFO_SAMPLES_A          0x30U
-typedef struct {
+typedef struct
+{
   uint8_t diff                : 8;
 } ism303dac_fifo_samples_a_t;
 
 #define ISM303DAC_TAP_6D_THS_A            0x31U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t tap_ths             : 5;
   uint8_t _6d_ths             : 2;
@@ -360,7 +371,8 @@ typedef struct {
 } ism303dac_tap_6d_ths_a_t;
 
 #define ISM303DAC_INT_DUR_A               0x32U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t shock               : 2;
   uint8_t quiet               : 2;
@@ -374,7 +386,8 @@ typedef struct {
 } ism303dac_int_dur_a_t;
 
 #define ISM303DAC_WAKE_UP_THS_A           0x33U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t wu_ths              : 6;
   uint8_t sleep_on            : 1;
@@ -388,7 +401,8 @@ typedef struct {
 } ism303dac_wake_up_ths_a_t;
 
 #define ISM303DAC_WAKE_UP_DUR_A           0x34U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t sleep_dur           : 4;
   uint8_t int1_fss7           : 1;
@@ -404,7 +418,8 @@ typedef struct {
 } ism303dac_wake_up_dur_a_t;
 
 #define ISM303DAC_FREE_FALL_A             0x35U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ff_ths              : 3;
   uint8_t ff_dur              : 5;
@@ -415,7 +430,8 @@ typedef struct {
 } ism303dac_free_fall_a_t;
 
 #define ISM303DAC_STATUS_DUP_A            0x36U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t drdy                : 1;
   uint8_t ff_ia               : 1;
@@ -438,7 +454,8 @@ typedef struct {
 } ism303dac_status_dup_a_t;
 
 #define ISM303DAC_WAKE_UP_SRC_A           0x37U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t z_wu                : 1;
   uint8_t y_wu                : 1;
@@ -459,7 +476,8 @@ typedef struct {
 } ism303dac_wake_up_src_a_t;
 
 #define ISM303DAC_TAP_SRC_A               0x38U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t z_tap               : 1;
   uint8_t y_tap               : 1;
@@ -482,7 +500,8 @@ typedef struct {
 } ism303dac_tap_src_a_t;
 
 #define ISM303DAC_6D_SRC_A                0x39U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xl                  : 1;
   uint8_t xh                  : 1;
@@ -505,7 +524,8 @@ typedef struct {
 } ism303dac_6d_src_a_t;
 
 #define ISM303DAC_FUNC_SRC_A              0x3EU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01         : 1;
   uint8_t module_ready        : 1;
@@ -518,7 +538,8 @@ typedef struct {
 } ism303dac_func_src_a_t;
 
 #define ISM303DAC_FUNC_CTRL_A             0x3FU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01         : 5;
   uint8_t module_on           : 1;
@@ -539,7 +560,8 @@ typedef struct {
 #define ISM303DAC_OFFSET_Z_REG_H_M          0x4AU
 #define ISM303DAC_WHO_AM_I_M                0x4FU
 #define ISM303DAC_CFG_REG_A_M               0x60U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t md                     : 2;
   uint8_t odr                    : 2;
@@ -559,7 +581,8 @@ typedef struct {
 } ism303dac_cfg_reg_a_m_t;
 
 #define ISM303DAC_CFG_REG_B_M               0x61U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t lpf                    : 1;
   uint8_t set_rst                : 2; /* off_canc + set_freq */
@@ -577,7 +600,8 @@ typedef struct {
 } ism303dac_cfg_reg_b_m_t;
 
 #define ISM303DAC_CFG_REG_C_M               0x62U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t int_mag                : 1;
   uint8_t self_test              : 1;
@@ -600,7 +624,8 @@ typedef struct {
 } ism303dac_cfg_reg_c_m_t;
 
 #define ISM303DAC_INT_CRTL_REG_M            0x63U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ien                    : 1;
   uint8_t iel                    : 1;
@@ -621,7 +646,8 @@ typedef struct {
 } ism303dac_int_crtl_reg_m_t;
 
 #define ISM303DAC_INT_SOURCE_REG_M          0x64U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t _int                   : 1;
   uint8_t mroi                   : 1;
@@ -646,7 +672,8 @@ typedef struct {
 #define ISM303DAC_INT_THS_L_REG_M           0x65U
 #define ISM303DAC_INT_THS_H_REG_M           0x66U
 #define ISM303DAC_STATUS_REG_M              0x67U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xda                    : 1;
   uint8_t yda                    : 1;
@@ -677,9 +704,9 @@ typedef struct {
 
 /**
   * @defgroup ISM303DAC_Register_Union
-  * @brief    This union group all the registers that has a bit-field
+  * @brief    This union group all the registers having a bit-field
   *           description.
-  *           This union is useful but not need by the driver.
+  *           This union is useful but it's not needed by the driver.
   *
   *           REMOVING this union you are compliant with:
   *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
@@ -687,7 +714,8 @@ typedef struct {
   * @{
   *
   */
-typedef union {
+typedef union
+{
   ism303dac_ctrl1_a_t                      ctrl1_a;
   ism303dac_ctrl2_a_t                      ctrl2_a;
   ism303dac_ctrl3_a_t                      ctrl3_a;
@@ -739,7 +767,8 @@ float_t ism303dac_from_lsb_to_mG(int16_t lsb);
 
 float_t ism303dac_from_lsb_to_celsius(int16_t lsb);
 
-typedef struct {
+typedef struct
+{
   ism303dac_fifo_src_a_t       fifo_src_a;
   ism303dac_status_dup_a_t     status_dup_a;
   ism303dac_wake_up_src_a_t    wake_up_src_a;
@@ -760,7 +789,8 @@ int32_t ism303dac_mg_block_data_update_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_mg_block_data_update_get(stmdev_ctx_t *ctx,
                                            uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_MG_LSB_AT_LOW_ADD  = 0,
   ISM303DAC_MG_MSB_AT_LOW_ADD  = 1,
 } ism303dac_mg_ble_t;
@@ -769,7 +799,8 @@ int32_t ism303dac_mg_data_format_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_mg_data_format_get(stmdev_ctx_t *ctx,
                                      ism303dac_mg_ble_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_XL_2g  = 0,
   ISM303DAC_XL_16g = 1,
   ISM303DAC_XL_4g  = 2,
@@ -780,7 +811,8 @@ int32_t ism303dac_xl_full_scale_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_xl_full_scale_get(stmdev_ctx_t *ctx,
                                     ism303dac_xl_fs_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_XL_ODR_OFF         = 0x00,
   ISM303DAC_XL_ODR_1Hz_LP      = 0x08,
   ISM303DAC_XL_ODR_12Hz5_LP    = 0x09,
@@ -823,7 +855,8 @@ int32_t ism303dac_mg_user_offset_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_mg_user_offset_get(stmdev_ctx_t *ctx,
                                      uint16_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_MG_CONTINUOUS_MODE  = 0,
   ISM303DAC_MG_SINGLE_TRIGGER   = 1,
   ISM303DAC_MG_POWER_DOWN       = 2,
@@ -833,7 +866,8 @@ int32_t ism303dac_mg_operating_mode_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_mg_operating_mode_get(stmdev_ctx_t *ctx,
                                         ism303dac_mg_md_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_MG_ODR_10Hz   = 0,
   ISM303DAC_MG_ODR_20Hz   = 1,
   ISM303DAC_MG_ODR_50Hz   = 2,
@@ -844,7 +878,8 @@ int32_t ism303dac_mg_data_rate_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_mg_data_rate_get(stmdev_ctx_t *ctx,
                                    ism303dac_mg_odr_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_MG_HIGH_RESOLUTION  = 0,
   ISM303DAC_MG_LOW_POWER        = 1,
 } ism303dac_mg_lp_t;
@@ -858,7 +893,8 @@ int32_t ism303dac_mg_offset_temp_comp_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_mg_offset_temp_comp_get(stmdev_ctx_t *ctx,
                                           uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_MG_SET_SENS_ODR_DIV_63        = 0,
   ISM303DAC_MG_SENS_OFF_CANC_EVERY_ODR    = 1,
   ISM303DAC_MG_SET_SENS_ONLY_AT_POWER_ON  = 2,
@@ -905,7 +941,8 @@ int32_t ism303dac_xl_boot_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t ism303dac_mg_boot_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t ism303dac_mg_boot_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_XL_ST_DISABLE     = 0,
   ISM303DAC_XL_ST_POSITIVE    = 1,
   ISM303DAC_XL_ST_NEGATIVE    = 2,
@@ -918,7 +955,8 @@ int32_t ism303dac_xl_self_test_get(stmdev_ctx_t *ctx,
 int32_t ism303dac_mg_self_test_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t ism303dac_mg_self_test_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_XL_DRDY_LATCHED   = 0,
   ISM303DAC_XL_DRDY_PULSED    = 1,
 } ism303dac_xl_drdy_pulsed_t;
@@ -927,7 +965,8 @@ int32_t ism303dac_xl_data_ready_mode_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_xl_data_ready_mode_get(stmdev_ctx_t *ctx,
                                          ism303dac_xl_drdy_pulsed_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_XL_HP_INTERNAL_ONLY  = 0,
   ISM303DAC_XL_HP_ON_OUTPUTS     = 1,
 } ism303dac_xl_fds_slope_t;
@@ -936,7 +975,8 @@ int32_t ism303dac_xl_hp_path_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_xl_hp_path_get(stmdev_ctx_t *ctx,
                                  ism303dac_xl_fds_slope_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_MG_ODR_DIV_2  = 0,
   ISM303DAC_MG_ODR_DIV_4  = 1,
 } ism303dac_mg_lpf_t;
@@ -945,7 +985,8 @@ int32_t ism303dac_mg_low_pass_bandwidth_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_mg_low_pass_bandwidth_get(stmdev_ctx_t *ctx,
                                             ism303dac_mg_lpf_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_XL_SPI_4_WIRE   = 0,
   ISM303DAC_XL_SPI_3_WIRE   = 1,
 } ism303dac_xl_sim_t;
@@ -954,7 +995,8 @@ int32_t ism303dac_xl_spi_mode_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_xl_spi_mode_get(stmdev_ctx_t *ctx,
                                   ism303dac_xl_sim_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_XL_I2C_ENABLE   = 0,
   ISM303DAC_XL_I2C_DISABLE  = 1,
 } ism303dac_xl_i2c_disable_t;
@@ -963,7 +1005,8 @@ int32_t ism303dac_xl_i2c_interface_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_xl_i2c_interface_get(stmdev_ctx_t *ctx,
                                        ism303dac_xl_i2c_disable_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_MG_I2C_ENABLE   = 0,
   ISM303DAC_MG_I2C_DISABLE  = 1,
 } ism303dac_mg_i2c_dis_t;
@@ -972,7 +1015,8 @@ int32_t ism303dac_mg_i2c_interface_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_mg_i2c_interface_get(stmdev_ctx_t *ctx,
                                        ism303dac_mg_i2c_dis_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_XL_PULL_UP_CONNECTED     = 0,
   ISM303DAC_XL_PULL_UP_DISCONNECTED  = 1,
 } ism303dac_xl_if_cs_pu_dis_t;
@@ -981,7 +1025,8 @@ int32_t ism303dac_xl_cs_mode_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_xl_cs_mode_get(stmdev_ctx_t *ctx,
                                  ism303dac_xl_if_cs_pu_dis_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_XL_PUSH_PULL   = 0,
   ISM303DAC_XL_OPEN_DRAIN  = 1,
 } ism303dac_xl_pp_od_t;
@@ -990,7 +1035,8 @@ int32_t ism303dac_xl_pin_mode_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_xl_pin_mode_get(stmdev_ctx_t *ctx,
                                   ism303dac_xl_pp_od_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_XL_ACTIVE_HIGH  = 0,
   ISM303DAC_XL_ACTIVE_LOW   = 1,
 } ism303dac_xl_h_lactive_t;
@@ -999,7 +1045,8 @@ int32_t ism303dac_xl_pin_polarity_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_xl_pin_polarity_get(stmdev_ctx_t *ctx,
                                       ism303dac_xl_h_lactive_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_XL_INT_PULSED   = 0,
   ISM303DAC_XL_INT_LATCHED  = 1,
 } ism303dac_xl_lir_t;
@@ -1008,7 +1055,8 @@ int32_t ism303dac_xl_int_notification_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_xl_int_notification_get(stmdev_ctx_t *ctx,
                                           ism303dac_xl_lir_t *val);
 
-typedef struct {
+typedef struct
+{
   uint8_t int1_drdy               : 1;
   uint8_t int1_fth                : 1;
   uint8_t int1_6d                 : 1;
@@ -1023,7 +1071,8 @@ int32_t ism303dac_xl_pin_int1_route_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_xl_pin_int1_route_get(stmdev_ctx_t *ctx,
                                         ism303dac_xl_pin_int1_route_t *val);
 
-typedef struct {
+typedef struct
+{
   uint8_t int2_boot               : 1;
   uint8_t int2_fth                : 1;
   uint8_t int2_drdy               : 1;
@@ -1055,7 +1104,8 @@ int32_t ism303dac_mg_int_gen_treshold_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_mg_int_gen_treshold_get(stmdev_ctx_t *ctx,
                                           uint16_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_MG_CHECK_BEFORE  = 0,
   ISM303DAC_MG_CHECK_AFTER   = 1,
 } ism303dac_mg_int_on_dataoff_t;
@@ -1109,7 +1159,8 @@ int32_t ism303dac_xl_tap_quiet_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t ism303dac_xl_tap_dur_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t ism303dac_xl_tap_dur_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_XL_ONLY_SINGLE  = 0,
   ISM303DAC_XL_ONLY_DOUBLE  = 1,
 } ism303dac_xl_single_double_tap_t;
@@ -1121,7 +1172,8 @@ int32_t ism303dac_xl_tap_mode_get(stmdev_ctx_t *ctx,
 int32_t ism303dac_xl_tap_src_get(stmdev_ctx_t *ctx,
                                  ism303dac_tap_src_a_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_XL_DEG_80   = 0,
   ISM303DAC_XL_DEG_70   = 1,
   ISM303DAC_XL_DEG_60   = 2,
@@ -1150,7 +1202,8 @@ int32_t ism303dac_xl_fifo_xl_module_batch_set(stmdev_ctx_t *ctx,
 int32_t ism303dac_xl_fifo_xl_module_batch_get(stmdev_ctx_t *ctx,
                                               uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   ISM303DAC_XL_BYPASS_MODE            = 0,
   ISM303DAC_XL_FIFO_MODE              = 1,
   ISM303DAC_XL_STREAM_TO_FIFO_MODE    = 3,

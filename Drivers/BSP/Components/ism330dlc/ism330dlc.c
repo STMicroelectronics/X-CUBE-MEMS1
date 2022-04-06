@@ -1,40 +1,40 @@
 /**
- ******************************************************************************
- * @file    ism330dlc.c
- * @author  MEMS Software Solutions Team
- * @brief   ISM330DLC driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    ism330dlc.c
+  * @author  MEMS Software Solutions Team
+  * @brief   ISM330DLC driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "ism330dlc.h"
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @defgroup ISM330DLC ISM330DLC
- * @{
- */
+  * @{
+  */
 
 /** @defgroup ISM330DLC_Exported_Variables ISM330DLC Exported Variables
- * @{
- */
+  * @{
+  */
 
 ISM330DLC_CommonDrv_t ISM330DLC_COMMON_Driver =
 {
@@ -71,12 +71,12 @@ ISM330DLC_GYRO_Drv_t ISM330DLC_GYRO_Driver =
 };
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup ISM330DLC_Private_Function_Prototypes ISM330DLC Private Function Prototypes
- * @{
- */
+  * @{
+  */
 
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
@@ -86,18 +86,18 @@ static int32_t ISM330DLC_GYRO_SetOutputDataRate_When_Enabled(ISM330DLC_Object_t 
 static int32_t ISM330DLC_GYRO_SetOutputDataRate_When_Disabled(ISM330DLC_Object_t *pObj, float Odr);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup ISM330DLC_Exported_Functions ISM330DLC Exported Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Register Component Bus IO operations
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Register Component Bus IO operations
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_RegisterBusIO(ISM330DLC_Object_t *pObj, ISM330DLC_IO_t *pIO)
 {
   int32_t ret = ISM330DLC_OK;
@@ -151,14 +151,14 @@ int32_t ISM330DLC_RegisterBusIO(ISM330DLC_Object_t *pObj, ISM330DLC_IO_t *pIO)
 }
 
 /**
- * @brief  Initialize the ISM330DLC sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Initialize the ISM330DLC sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_Init(ISM330DLC_Object_t *pObj)
 {
   /* Reset all the configuration registers in order to set correctly */
-  if (ism330dlc_reset_set(&(pObj->Ctx),PROPERTY_ENABLE) != ISM330DLC_OK)
+  if (ism330dlc_reset_set(&(pObj->Ctx), PROPERTY_ENABLE) != ISM330DLC_OK)
   {
     return ISM330DLC_ERROR;
   }
@@ -218,10 +218,10 @@ int32_t ISM330DLC_Init(ISM330DLC_Object_t *pObj)
 }
 
 /**
- * @brief  Deinitialize the ISM330DLC sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Deinitialize the ISM330DLC sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_DeInit(ISM330DLC_Object_t *pObj)
 {
   /* Disable the component */
@@ -245,11 +245,11 @@ int32_t ISM330DLC_DeInit(ISM330DLC_Object_t *pObj)
 }
 
 /**
- * @brief  Read component ID
- * @param  pObj the device pObj
- * @param  Id the WHO_AM_I value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Read component ID
+  * @param  pObj the device pObj
+  * @param  Id the WHO_AM_I value
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ReadID(ISM330DLC_Object_t *pObj, uint8_t *Id)
 {
   if (ism330dlc_device_id_get(&(pObj->Ctx), Id) != ISM330DLC_OK)
@@ -261,11 +261,11 @@ int32_t ISM330DLC_ReadID(ISM330DLC_Object_t *pObj, uint8_t *Id)
 }
 
 /**
- * @brief  Get ISM330DLC sensor capabilities
- * @param  pObj Component object pointer
- * @param  Capabilities pointer to ISM330DLC sensor capabilities
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get ISM330DLC sensor capabilities
+  * @param  pObj Component object pointer
+  * @param  Capabilities pointer to ISM330DLC sensor capabilities
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_GetCapabilities(ISM330DLC_Object_t *pObj, ISM330DLC_Capabilities_t *Capabilities)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -285,10 +285,10 @@ int32_t ISM330DLC_GetCapabilities(ISM330DLC_Object_t *pObj, ISM330DLC_Capabiliti
 }
 
 /**
- * @brief  Enable the ISM330DLC accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the ISM330DLC accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Enable(ISM330DLC_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -309,10 +309,10 @@ int32_t ISM330DLC_ACC_Enable(ISM330DLC_Object_t *pObj)
 }
 
 /**
- * @brief  Disable the ISM330DLC accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable the ISM330DLC accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Disable(ISM330DLC_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -339,11 +339,11 @@ int32_t ISM330DLC_ACC_Disable(ISM330DLC_Object_t *pObj)
 }
 
 /**
- * @brief  Get the ISM330DLC accelerometer sensor sensitivity
- * @param  pObj the device pObj
- * @param  Sensitivity pointer
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC accelerometer sensor sensitivity
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_GetSensitivity(ISM330DLC_Object_t *pObj, float *Sensitivity)
 {
   int32_t ret = ISM330DLC_OK;
@@ -383,11 +383,11 @@ int32_t ISM330DLC_ACC_GetSensitivity(ISM330DLC_Object_t *pObj, float *Sensitivit
 }
 
 /**
- * @brief  Get the ISM330DLC accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_GetOutputDataRate(ISM330DLC_Object_t *pObj, float *Odr)
 {
   int32_t ret = ISM330DLC_OK;
@@ -458,11 +458,11 @@ int32_t ISM330DLC_ACC_GetOutputDataRate(ISM330DLC_Object_t *pObj, float *Odr)
 }
 
 /**
- * @brief  Set the ISM330DLC accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_SetOutputDataRate(ISM330DLC_Object_t *pObj, float Odr)
 {
   /* Check if the component is enabled */
@@ -477,11 +477,11 @@ int32_t ISM330DLC_ACC_SetOutputDataRate(ISM330DLC_Object_t *pObj, float Odr)
 }
 
 /**
- * @brief  Get the ISM330DLC accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale pointer where the full scale is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale pointer where the full scale is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_GetFullScale(ISM330DLC_Object_t *pObj, int32_t *FullScale)
 {
   int32_t ret = ISM330DLC_OK;
@@ -520,11 +520,11 @@ int32_t ISM330DLC_ACC_GetFullScale(ISM330DLC_Object_t *pObj, int32_t *FullScale)
 }
 
 /**
- * @brief  Set the ISM330DLC accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale the functional full scale to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale the functional full scale to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_SetFullScale(ISM330DLC_Object_t *pObj, int32_t FullScale)
 {
   ism330dlc_fs_xl_t new_fs;
@@ -545,11 +545,11 @@ int32_t ISM330DLC_ACC_SetFullScale(ISM330DLC_Object_t *pObj, int32_t FullScale)
 }
 
 /**
- * @brief  Get the ISM330DLC accelerometer sensor raw axes
- * @param  pObj the device pObj
- * @param  Value pointer where the raw values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC accelerometer sensor raw axes
+  * @param  pObj the device pObj
+  * @param  Value pointer where the raw values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_GetAxesRaw(ISM330DLC_Object_t *pObj, ISM330DLC_AxesRaw_t *Value)
 {
   ism330dlc_axis3bit16_t data_raw;
@@ -569,11 +569,11 @@ int32_t ISM330DLC_ACC_GetAxesRaw(ISM330DLC_Object_t *pObj, ISM330DLC_AxesRaw_t *
 }
 
 /**
- * @brief  Get the ISM330DLC accelerometer sensor axes
- * @param  pObj the device pObj
- * @param  Acceleration pointer where the values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC accelerometer sensor axes
+  * @param  pObj the device pObj
+  * @param  Acceleration pointer where the values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_GetAxes(ISM330DLC_Object_t *pObj, ISM330DLC_Axes_t *Acceleration)
 {
   ism330dlc_axis3bit16_t data_raw;
@@ -600,10 +600,10 @@ int32_t ISM330DLC_ACC_GetAxes(ISM330DLC_Object_t *pObj, ISM330DLC_Axes_t *Accele
 }
 
 /**
- * @brief  Enable the ISM330DLC gyroscope sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the ISM330DLC gyroscope sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_GYRO_Enable(ISM330DLC_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -624,10 +624,10 @@ int32_t ISM330DLC_GYRO_Enable(ISM330DLC_Object_t *pObj)
 }
 
 /**
- * @brief  Disable the ISM330DLC gyroscope sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable the ISM330DLC gyroscope sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_GYRO_Disable(ISM330DLC_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -654,11 +654,11 @@ int32_t ISM330DLC_GYRO_Disable(ISM330DLC_Object_t *pObj)
 }
 
 /**
- * @brief  Get the ISM330DLC gyroscope sensor sensitivity
- * @param  pObj the device pObj
- * @param  Sensitivity pointer
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC gyroscope sensor sensitivity
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_GYRO_GetSensitivity(ISM330DLC_Object_t *pObj, float *Sensitivity)
 {
   int32_t ret = ISM330DLC_OK;
@@ -702,11 +702,11 @@ int32_t ISM330DLC_GYRO_GetSensitivity(ISM330DLC_Object_t *pObj, float *Sensitivi
 }
 
 /**
- * @brief  Get the ISM330DLC gyroscope sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC gyroscope sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_GYRO_GetOutputDataRate(ISM330DLC_Object_t *pObj, float *Odr)
 {
   int32_t ret = ISM330DLC_OK;
@@ -773,11 +773,11 @@ int32_t ISM330DLC_GYRO_GetOutputDataRate(ISM330DLC_Object_t *pObj, float *Odr)
 }
 
 /**
- * @brief  Set the ISM330DLC gyroscope sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC gyroscope sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_GYRO_SetOutputDataRate(ISM330DLC_Object_t *pObj, float Odr)
 {
   /* Check if the component is enabled */
@@ -792,11 +792,11 @@ int32_t ISM330DLC_GYRO_SetOutputDataRate(ISM330DLC_Object_t *pObj, float Odr)
 }
 
 /**
- * @brief  Get the ISM330DLC gyroscope sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale pointer where the full scale is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC gyroscope sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale pointer where the full scale is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_GYRO_GetFullScale(ISM330DLC_Object_t *pObj, int32_t  *FullScale)
 {
   int32_t ret = ISM330DLC_OK;
@@ -839,11 +839,11 @@ int32_t ISM330DLC_GYRO_GetFullScale(ISM330DLC_Object_t *pObj, int32_t  *FullScal
 }
 
 /**
- * @brief  Set the ISM330DLC gyroscope sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale the functional full scale to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC gyroscope sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale the functional full scale to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_GYRO_SetFullScale(ISM330DLC_Object_t *pObj, int32_t FullScale)
 {
   ism330dlc_fs_g_t new_fs;
@@ -863,11 +863,11 @@ int32_t ISM330DLC_GYRO_SetFullScale(ISM330DLC_Object_t *pObj, int32_t FullScale)
 }
 
 /**
- * @brief  Get the ISM330DLC gyroscope sensor raw axes
- * @param  pObj the device pObj
- * @param  Value pointer where the raw values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC gyroscope sensor raw axes
+  * @param  pObj the device pObj
+  * @param  Value pointer where the raw values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_GYRO_GetAxesRaw(ISM330DLC_Object_t *pObj, ISM330DLC_AxesRaw_t *Value)
 {
   ism330dlc_axis3bit16_t data_raw;
@@ -887,11 +887,11 @@ int32_t ISM330DLC_GYRO_GetAxesRaw(ISM330DLC_Object_t *pObj, ISM330DLC_AxesRaw_t 
 }
 
 /**
- * @brief  Get the ISM330DLC gyroscope sensor axes
- * @param  pObj the device pObj
- * @param  AngularRate pointer where the values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC gyroscope sensor axes
+  * @param  pObj the device pObj
+  * @param  AngularRate pointer where the values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_GYRO_GetAxes(ISM330DLC_Object_t *pObj, ISM330DLC_Axes_t *AngularRate)
 {
   ism330dlc_axis3bit16_t data_raw;
@@ -918,12 +918,12 @@ int32_t ISM330DLC_GYRO_GetAxes(ISM330DLC_Object_t *pObj, ISM330DLC_Axes_t *Angul
 }
 
 /**
- * @brief  Get the ISM330DLC register value
- * @param  pObj the device pObj
- * @param  Reg address to be read
- * @param  Data pointer where the value is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be read
+  * @param  Data pointer where the value is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_Read_Reg(ISM330DLC_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 {
   if (ism330dlc_read_reg(&(pObj->Ctx), Reg, Data, 1) != ISM330DLC_OK)
@@ -935,12 +935,12 @@ int32_t ISM330DLC_Read_Reg(ISM330DLC_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 }
 
 /**
- * @brief  Set the ISM330DLC register value
- * @param  pObj the device pObj
- * @param  Reg address to be written
- * @param  Data value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be written
+  * @param  Data value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_Write_Reg(ISM330DLC_Object_t *pObj, uint8_t Reg, uint8_t Data)
 {
   if (ism330dlc_write_reg(&(pObj->Ctx), Reg, &Data, 1) != ISM330DLC_OK)
@@ -952,11 +952,11 @@ int32_t ISM330DLC_Write_Reg(ISM330DLC_Object_t *pObj, uint8_t Reg, uint8_t Data)
 }
 
 /**
- * @brief  Set the interrupt latch
- * @param  pObj the device pObj
- * @param  Status value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the interrupt latch
+  * @param  pObj the device pObj
+  * @param  Status value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_Set_Interrupt_Latch(ISM330DLC_Object_t *pObj, uint8_t Status)
 {
   if (Status > 1U)
@@ -973,11 +973,11 @@ int32_t ISM330DLC_Set_Interrupt_Latch(ISM330DLC_Object_t *pObj, uint8_t Status)
 }
 
 /**
- * @brief  Set the ISM330DLC FIFO full interrupt on INT1 pin
- * @param  pObj the device pObj
- * @param  Status DRDY interrupt on INT1 pin status
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC FIFO full interrupt on INT1 pin
+  * @param  pObj the device pObj
+  * @param  Status DRDY interrupt on INT1 pin status
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_Set_INT1_Drdy(ISM330DLC_Object_t *pObj, uint8_t Status)
 {
   ism330dlc_reg_t reg;
@@ -998,14 +998,14 @@ int32_t ISM330DLC_Set_INT1_Drdy(ISM330DLC_Object_t *pObj, uint8_t Status)
 }
 
 /**
- * @brief  Set the dataready mode status
- * @param  pObj the device pObj
- * @param  Status DRDY mode status
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the dataready mode status
+  * @param  pObj the device pObj
+  * @param  Status DRDY mode status
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_Set_Drdy_Mode(ISM330DLC_Object_t *pObj, uint8_t Status)
 {
-  if (ism330dlc_data_ready_mode_set(&(pObj->Ctx),(ism330dlc_drdy_pulsed_t)Status) != ISM330DLC_OK)
+  if (ism330dlc_data_ready_mode_set(&(pObj->Ctx), (ism330dlc_drdy_pulsed_t)Status) != ISM330DLC_OK)
   {
     return ISM330DLC_ERROR;
   }
@@ -1013,11 +1013,11 @@ int32_t ISM330DLC_Set_Drdy_Mode(ISM330DLC_Object_t *pObj, uint8_t Status)
 }
 
 /**
- * @brief  Enable free fall detection
- * @param  pObj the device pObj
- * @param  IntPin interrupt pin line to be used
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable free fall detection
+  * @param  pObj the device pObj
+  * @param  IntPin interrupt pin line to be used
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Enable_Free_Fall_Detection(ISM330DLC_Object_t *pObj, ISM330DLC_SensorIntPin_t IntPin)
 {
   int32_t ret = ISM330DLC_OK;
@@ -1106,10 +1106,10 @@ int32_t ISM330DLC_ACC_Enable_Free_Fall_Detection(ISM330DLC_Object_t *pObj, ISM33
 }
 
 /**
- * @brief  Disable free fall detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable free fall detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Disable_Free_Fall_Detection(ISM330DLC_Object_t *pObj)
 {
   ism330dlc_int1_route_t val1;
@@ -1156,11 +1156,11 @@ int32_t ISM330DLC_ACC_Disable_Free_Fall_Detection(ISM330DLC_Object_t *pObj)
 }
 
 /**
- * @brief  Set free fall threshold
- * @param  pObj the device pObj
- * @param  Threshold free fall detection threshold
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set free fall threshold
+  * @param  pObj the device pObj
+  * @param  Threshold free fall detection threshold
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Set_Free_Fall_Threshold(ISM330DLC_Object_t *pObj, uint8_t Threshold)
 {
   if (ism330dlc_ff_threshold_set(&(pObj->Ctx), (ism330dlc_ff_ths_t)Threshold) != ISM330DLC_OK)
@@ -1172,11 +1172,11 @@ int32_t ISM330DLC_ACC_Set_Free_Fall_Threshold(ISM330DLC_Object_t *pObj, uint8_t 
 }
 
 /**
- * @brief  Set free fall duration
- * @param  pObj the device pObj
- * @param  Duration free fall detection duration
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set free fall duration
+  * @param  pObj the device pObj
+  * @param  Duration free fall detection duration
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Set_Free_Fall_Duration(ISM330DLC_Object_t *pObj, uint8_t Duration)
 {
   if (ism330dlc_ff_dur_set(&(pObj->Ctx), Duration) != ISM330DLC_OK)
@@ -1188,11 +1188,11 @@ int32_t ISM330DLC_ACC_Set_Free_Fall_Duration(ISM330DLC_Object_t *pObj, uint8_t D
 }
 
 /**
- * @brief  Enable tilt detection
- * @param  pObj the device pObj
- * @param  IntPin interrupt pin line to be used
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable tilt detection
+  * @param  pObj the device pObj
+  * @param  IntPin interrupt pin line to be used
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Enable_Tilt_Detection(ISM330DLC_Object_t *pObj, ISM330DLC_SensorIntPin_t IntPin)
 {
   int32_t ret = ISM330DLC_OK;
@@ -1264,10 +1264,10 @@ int32_t ISM330DLC_ACC_Enable_Tilt_Detection(ISM330DLC_Object_t *pObj, ISM330DLC_
 }
 
 /**
- * @brief  Disable tilt detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable tilt detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Disable_Tilt_Detection(ISM330DLC_Object_t *pObj)
 {
   ism330dlc_int1_route_t val1;
@@ -1314,11 +1314,11 @@ int32_t ISM330DLC_ACC_Disable_Tilt_Detection(ISM330DLC_Object_t *pObj)
 }
 
 /**
- * @brief  Enable wake up detection
- * @param  pObj the device pObj
- * @param  IntPin interrupt pin line to be used
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable wake up detection
+  * @param  pObj the device pObj
+  * @param  IntPin interrupt pin line to be used
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Enable_Wake_Up_Detection(ISM330DLC_Object_t *pObj, ISM330DLC_SensorIntPin_t IntPin)
 {
   int32_t ret = ISM330DLC_OK;
@@ -1389,10 +1389,10 @@ int32_t ISM330DLC_ACC_Enable_Wake_Up_Detection(ISM330DLC_Object_t *pObj, ISM330D
 }
 
 /**
- * @brief  Disable wake up detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable wake up detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Disable_Wake_Up_Detection(ISM330DLC_Object_t *pObj)
 {
   ism330dlc_int1_route_t val1;
@@ -1439,11 +1439,11 @@ int32_t ISM330DLC_ACC_Disable_Wake_Up_Detection(ISM330DLC_Object_t *pObj)
 }
 
 /**
- * @brief  Set wake up threshold
- * @param  pObj the device pObj
- * @param  Threshold wake up detection threshold
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set wake up threshold
+  * @param  pObj the device pObj
+  * @param  Threshold wake up detection threshold
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Set_Wake_Up_Threshold(ISM330DLC_Object_t *pObj, uint8_t Threshold)
 {
   /* Set wake up threshold. */
@@ -1456,11 +1456,11 @@ int32_t ISM330DLC_ACC_Set_Wake_Up_Threshold(ISM330DLC_Object_t *pObj, uint8_t Th
 }
 
 /**
- * @brief  Set wake up duration
- * @param  pObj the device pObj
- * @param  Duration wake up detection duration
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set wake up duration
+  * @param  pObj the device pObj
+  * @param  Duration wake up detection duration
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Set_Wake_Up_Duration(ISM330DLC_Object_t *pObj, uint8_t Duration)
 {
   /* Set wake up duration. */
@@ -1473,11 +1473,11 @@ int32_t ISM330DLC_ACC_Set_Wake_Up_Duration(ISM330DLC_Object_t *pObj, uint8_t Dur
 }
 
 /**
- * @brief  Enable single tap detection
- * @param  pObj the device pObj
- * @param  IntPin interrupt pin line to be used
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable single tap detection
+  * @param  pObj the device pObj
+  * @param  IntPin interrupt pin line to be used
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Enable_Single_Tap_Detection(ISM330DLC_Object_t *pObj, ISM330DLC_SensorIntPin_t IntPin)
 {
   int32_t ret = ISM330DLC_OK;
@@ -1576,10 +1576,10 @@ int32_t ISM330DLC_ACC_Enable_Single_Tap_Detection(ISM330DLC_Object_t *pObj, ISM3
 }
 
 /**
- * @brief  Disable single tap detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable single tap detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Disable_Single_Tap_Detection(ISM330DLC_Object_t *pObj)
 {
   ism330dlc_int1_route_t val1;
@@ -1650,11 +1650,11 @@ int32_t ISM330DLC_ACC_Disable_Single_Tap_Detection(ISM330DLC_Object_t *pObj)
 }
 
 /**
- * @brief  Enable double tap detection
- * @param  pObj the device pObj
- * @param  IntPin interrupt pin line to be used
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable double tap detection
+  * @param  pObj the device pObj
+  * @param  IntPin interrupt pin line to be used
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Enable_Double_Tap_Detection(ISM330DLC_Object_t *pObj, ISM330DLC_SensorIntPin_t IntPin)
 {
   int32_t ret = ISM330DLC_OK;
@@ -1761,10 +1761,10 @@ int32_t ISM330DLC_ACC_Enable_Double_Tap_Detection(ISM330DLC_Object_t *pObj, ISM3
 }
 
 /**
- * @brief  Disable double tap detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable double tap detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Disable_Double_Tap_Detection(ISM330DLC_Object_t *pObj)
 {
   ism330dlc_int1_route_t val1;
@@ -1847,11 +1847,11 @@ int32_t ISM330DLC_ACC_Disable_Double_Tap_Detection(ISM330DLC_Object_t *pObj)
 }
 
 /**
- * @brief  Set tap threshold
- * @param  pObj the device pObj
- * @param  Threshold tap threshold
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set tap threshold
+  * @param  pObj the device pObj
+  * @param  Threshold tap threshold
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Set_Tap_Threshold(ISM330DLC_Object_t *pObj, uint8_t Threshold)
 {
   /* Set tap threshold. */
@@ -1864,11 +1864,11 @@ int32_t ISM330DLC_ACC_Set_Tap_Threshold(ISM330DLC_Object_t *pObj, uint8_t Thresh
 }
 
 /**
- * @brief  Set tap shock time
- * @param  pObj the device pObj
- * @param  Time tap shock time
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set tap shock time
+  * @param  pObj the device pObj
+  * @param  Time tap shock time
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Set_Tap_Shock_Time(ISM330DLC_Object_t *pObj, uint8_t Time)
 {
   /* Set tap shock time window. */
@@ -1881,11 +1881,11 @@ int32_t ISM330DLC_ACC_Set_Tap_Shock_Time(ISM330DLC_Object_t *pObj, uint8_t Time)
 }
 
 /**
- * @brief  Set tap quiet time
- * @param  pObj the device pObj
- * @param  Time tap quiet time
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set tap quiet time
+  * @param  pObj the device pObj
+  * @param  Time tap quiet time
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Set_Tap_Quiet_Time(ISM330DLC_Object_t *pObj, uint8_t Time)
 {
   /* Set tap quiet time window. */
@@ -1898,11 +1898,11 @@ int32_t ISM330DLC_ACC_Set_Tap_Quiet_Time(ISM330DLC_Object_t *pObj, uint8_t Time)
 }
 
 /**
- * @brief  Set tap duration time
- * @param  pObj the device pObj
- * @param  Time tap duration time
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set tap duration time
+  * @param  pObj the device pObj
+  * @param  Time tap duration time
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Set_Tap_Duration_Time(ISM330DLC_Object_t *pObj, uint8_t Time)
 {
   /* Set tap duration time window. */
@@ -1915,11 +1915,11 @@ int32_t ISM330DLC_ACC_Set_Tap_Duration_Time(ISM330DLC_Object_t *pObj, uint8_t Ti
 }
 
 /**
- * @brief  Enable 6D orientation detection
- * @param  pObj the device pObj
- * @param  IntPin interrupt pin line to be used
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable 6D orientation detection
+  * @param  pObj the device pObj
+  * @param  IntPin interrupt pin line to be used
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Enable_6D_Orientation(ISM330DLC_Object_t *pObj, ISM330DLC_SensorIntPin_t IntPin)
 {
   int32_t ret = ISM330DLC_OK;
@@ -1984,10 +1984,10 @@ int32_t ISM330DLC_ACC_Enable_6D_Orientation(ISM330DLC_Object_t *pObj, ISM330DLC_
 }
 
 /**
- * @brief  Disable 6D orientation detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable 6D orientation detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Disable_6D_Orientation(ISM330DLC_Object_t *pObj)
 {
   ism330dlc_int1_route_t val1;
@@ -2028,11 +2028,11 @@ int32_t ISM330DLC_ACC_Disable_6D_Orientation(ISM330DLC_Object_t *pObj)
 }
 
 /**
- * @brief  Set 6D orientation threshold
- * @param  pObj the device pObj
- * @param  Threshold free fall detection threshold
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set 6D orientation threshold
+  * @param  pObj the device pObj
+  * @param  Threshold free fall detection threshold
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Set_6D_Orientation_Threshold(ISM330DLC_Object_t *pObj, uint8_t Threshold)
 {
   if (ism330dlc_6d_threshold_set(&(pObj->Ctx), (ism330dlc_sixd_ths_t)Threshold) != ISM330DLC_OK)
@@ -2044,11 +2044,11 @@ int32_t ISM330DLC_ACC_Set_6D_Orientation_Threshold(ISM330DLC_Object_t *pObj, uin
 }
 
 /**
- * @brief  Get the status of XLow orientation
- * @param  pObj the device pObj
- * @param  XLow the status of XLow orientation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of XLow orientation
+  * @param  pObj the device pObj
+  * @param  XLow the status of XLow orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Get_6D_Orientation_XL(ISM330DLC_Object_t *pObj, uint8_t *XLow)
 {
   ism330dlc_d6d_src_t data;
@@ -2064,11 +2064,11 @@ int32_t ISM330DLC_ACC_Get_6D_Orientation_XL(ISM330DLC_Object_t *pObj, uint8_t *X
 }
 
 /**
- * @brief  Get the status of XHigh orientation
- * @param  pObj the device pObj
- * @param  XHigh the status of XHigh orientation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of XHigh orientation
+  * @param  pObj the device pObj
+  * @param  XHigh the status of XHigh orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Get_6D_Orientation_XH(ISM330DLC_Object_t *pObj, uint8_t *XHigh)
 {
   ism330dlc_d6d_src_t data;
@@ -2084,11 +2084,11 @@ int32_t ISM330DLC_ACC_Get_6D_Orientation_XH(ISM330DLC_Object_t *pObj, uint8_t *X
 }
 
 /**
- * @brief  Get the status of YLow orientation
- * @param  pObj the device pObj
- * @param  YLow the status of YLow orientation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of YLow orientation
+  * @param  pObj the device pObj
+  * @param  YLow the status of YLow orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Get_6D_Orientation_YL(ISM330DLC_Object_t *pObj, uint8_t *YLow)
 {
   ism330dlc_d6d_src_t data;
@@ -2104,11 +2104,11 @@ int32_t ISM330DLC_ACC_Get_6D_Orientation_YL(ISM330DLC_Object_t *pObj, uint8_t *Y
 }
 
 /**
- * @brief  Get the status of YHigh orientation
- * @param  pObj the device pObj
- * @param  YHigh the status of YHigh orientation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of YHigh orientation
+  * @param  pObj the device pObj
+  * @param  YHigh the status of YHigh orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Get_6D_Orientation_YH(ISM330DLC_Object_t *pObj, uint8_t *YHigh)
 {
   ism330dlc_d6d_src_t data;
@@ -2124,11 +2124,11 @@ int32_t ISM330DLC_ACC_Get_6D_Orientation_YH(ISM330DLC_Object_t *pObj, uint8_t *Y
 }
 
 /**
- * @brief  Get the status of ZLow orientation
- * @param  pObj the device pObj
- * @param  ZLow the status of ZLow orientation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of ZLow orientation
+  * @param  pObj the device pObj
+  * @param  ZLow the status of ZLow orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Get_6D_Orientation_ZL(ISM330DLC_Object_t *pObj, uint8_t *ZLow)
 {
   ism330dlc_d6d_src_t data;
@@ -2144,11 +2144,11 @@ int32_t ISM330DLC_ACC_Get_6D_Orientation_ZL(ISM330DLC_Object_t *pObj, uint8_t *Z
 }
 
 /**
- * @brief  Get the status of ZHigh orientation
- * @param  pObj the device pObj
- * @param  ZHigh the status of ZHigh orientation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of ZHigh orientation
+  * @param  pObj the device pObj
+  * @param  ZHigh the status of ZHigh orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Get_6D_Orientation_ZH(ISM330DLC_Object_t *pObj, uint8_t *ZHigh)
 {
   ism330dlc_d6d_src_t data;
@@ -2164,11 +2164,11 @@ int32_t ISM330DLC_ACC_Get_6D_Orientation_ZH(ISM330DLC_Object_t *pObj, uint8_t *Z
 }
 
 /**
- * @brief  Get the status of all hardware events
- * @param  pObj the device pObj
- * @param  Status the status of all hardware events
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of all hardware events
+  * @param  pObj the device pObj
+  * @param  Status the status of all hardware events
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Get_Event_Status(ISM330DLC_Object_t *pObj, ISM330DLC_Event_Status_t *Status)
 {
   ism330dlc_wake_up_src_t wake_up_src;
@@ -2276,11 +2276,11 @@ int32_t ISM330DLC_ACC_Get_Event_Status(ISM330DLC_Object_t *pObj, ISM330DLC_Event
 }
 
 /**
- * @brief  Set self test
- * @param  pObj the device pObj
- * @param  val the value of st_xl in reg CTRL5_C
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set self test
+  * @param  pObj the device pObj
+  * @param  val the value of st_xl in reg CTRL5_C
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Set_SelfTest(ISM330DLC_Object_t *pObj, uint8_t val)
 {
   ism330dlc_st_xl_t reg;
@@ -2299,11 +2299,11 @@ int32_t ISM330DLC_ACC_Set_SelfTest(ISM330DLC_Object_t *pObj, uint8_t val)
 }
 
 /**
- * @brief  Get the ISM330DLC ACC data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC ACC data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Get_DRDY_Status(ISM330DLC_Object_t *pObj, uint8_t *Status)
 {
   if (ism330dlc_xl_flag_data_ready_get(&(pObj->Ctx), Status) != ISM330DLC_OK)
@@ -2315,11 +2315,11 @@ int32_t ISM330DLC_ACC_Get_DRDY_Status(ISM330DLC_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Get the ISM330DLC ACC initialization status
- * @param  pObj the device pObj
- * @param  Status 1 if initialized, 0 otherwise
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC ACC initialization status
+  * @param  pObj the device pObj
+  * @param  Status 1 if initialized, 0 otherwise
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Get_Init_Status(ISM330DLC_Object_t *pObj, uint8_t *Status)
 {
   if (pObj == NULL)
@@ -2333,11 +2333,11 @@ int32_t ISM330DLC_ACC_Get_Init_Status(ISM330DLC_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Set HP filter
- * @param  pObj the device pObj
- * @param  CutOff frequency
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set HP filter
+  * @param  pObj the device pObj
+  * @param  CutOff frequency
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_ACC_Enable_HP_Filter(ISM330DLC_Object_t *pObj, ism330dlc_hpcf_xl_t CutOff)
 {
 
@@ -2349,11 +2349,11 @@ int32_t ISM330DLC_ACC_Enable_HP_Filter(ISM330DLC_Object_t *pObj, ism330dlc_hpcf_
 }
 
 /**
- * @brief  Set self test
- * @param  pObj the device pObj
- * @param  val the value of st_xl in reg CTRL5_C
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set self test
+  * @param  pObj the device pObj
+  * @param  val the value of st_xl in reg CTRL5_C
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_GYRO_Set_SelfTest(ISM330DLC_Object_t *pObj, uint8_t val)
 {
   ism330dlc_st_g_t reg;
@@ -2372,11 +2372,11 @@ int32_t ISM330DLC_GYRO_Set_SelfTest(ISM330DLC_Object_t *pObj, uint8_t val)
 }
 
 /**
- * @brief  Get the ISM330DLC GYRO data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC GYRO data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_GYRO_Get_DRDY_Status(ISM330DLC_Object_t *pObj, uint8_t *Status)
 {
   if (ism330dlc_gy_flag_data_ready_get(&(pObj->Ctx), Status) != ISM330DLC_OK)
@@ -2388,11 +2388,11 @@ int32_t ISM330DLC_GYRO_Get_DRDY_Status(ISM330DLC_Object_t *pObj, uint8_t *Status
 }
 
 /**
- * @brief  Get the ISM330DLC GYRO initialization status
- * @param  pObj the device pObj
- * @param  Status 1 if initialized, 0 otherwise
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC GYRO initialization status
+  * @param  pObj the device pObj
+  * @param  Status 1 if initialized, 0 otherwise
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_GYRO_Get_Init_Status(ISM330DLC_Object_t *pObj, uint8_t *Status)
 {
   if (pObj == NULL)
@@ -2406,11 +2406,11 @@ int32_t ISM330DLC_GYRO_Get_Init_Status(ISM330DLC_Object_t *pObj, uint8_t *Status
 }
 
 /**
- * @brief  Get the ISM330DLC FIFO number of samples
- * @param  pObj the device pObj
- * @param  NumSamples number of samples
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC FIFO number of samples
+  * @param  pObj the device pObj
+  * @param  NumSamples number of samples
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_FIFO_Get_Num_Samples(ISM330DLC_Object_t *pObj, uint16_t *NumSamples)
 {
   if (ism330dlc_fifo_data_level_get(&(pObj->Ctx), NumSamples) != ISM330DLC_OK)
@@ -2422,11 +2422,11 @@ int32_t ISM330DLC_FIFO_Get_Num_Samples(ISM330DLC_Object_t *pObj, uint16_t *NumSa
 }
 
 /**
- * @brief  Get the ISM330DLC FIFO full status
- * @param  pObj the device pObj
- * @param  Status FIFO full status
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC FIFO full status
+  * @param  pObj the device pObj
+  * @param  Status FIFO full status
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_FIFO_Get_Full_Status(ISM330DLC_Object_t *pObj, uint8_t *Status)
 {
   ism330dlc_reg_t reg;
@@ -2442,11 +2442,11 @@ int32_t ISM330DLC_FIFO_Get_Full_Status(ISM330DLC_Object_t *pObj, uint8_t *Status
 }
 
 /**
- * @brief  Set the ISM330DLC FIFO ODR value
- * @param  pObj the device pObj
- * @param  Odr FIFO ODR value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC FIFO ODR value
+  * @param  pObj the device pObj
+  * @param  Odr FIFO ODR value
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_FIFO_Set_ODR_Value(ISM330DLC_Object_t *pObj, float Odr)
 {
   ism330dlc_odr_fifo_t new_odr;
@@ -2471,11 +2471,11 @@ int32_t ISM330DLC_FIFO_Set_ODR_Value(ISM330DLC_Object_t *pObj, float Odr)
 }
 
 /**
- * @brief  Set the ISM330DLC FIFO full interrupt on INT1 pin
- * @param  pObj the device pObj
- * @param  Status FIFO full interrupt on INT1 pin status
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC FIFO full interrupt on INT1 pin
+  * @param  pObj the device pObj
+  * @param  Status FIFO full interrupt on INT1 pin status
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_FIFO_Set_INT1_FIFO_Full(ISM330DLC_Object_t *pObj, uint8_t Status)
 {
   ism330dlc_reg_t reg;
@@ -2496,11 +2496,11 @@ int32_t ISM330DLC_FIFO_Set_INT1_FIFO_Full(ISM330DLC_Object_t *pObj, uint8_t Stat
 }
 
 /**
- * @brief  Set the ISM330DLC FIFO full interrupt on INT2 pin
- * @param  pObj the device pObj
- * @param  Status FIFO full interrupt on INT1 pin status
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC FIFO full interrupt on INT2 pin
+  * @param  pObj the device pObj
+  * @param  Status FIFO full interrupt on INT1 pin status
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_FIFO_Set_INT2_FIFO_Full(ISM330DLC_Object_t *pObj, uint8_t Status)
 {
   ism330dlc_reg_t reg;
@@ -2521,11 +2521,11 @@ int32_t ISM330DLC_FIFO_Set_INT2_FIFO_Full(ISM330DLC_Object_t *pObj, uint8_t Stat
 }
 
 /**
- * @brief  Set the ISM330DLC FIFO watermark level
- * @param  pObj the device pObj
- * @param  Watermark FIFO watermark level
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC FIFO watermark level
+  * @param  pObj the device pObj
+  * @param  Watermark FIFO watermark level
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_FIFO_Set_Watermark_Level(ISM330DLC_Object_t *pObj, uint16_t Watermark)
 {
   if (ism330dlc_fifo_watermark_set(&(pObj->Ctx), Watermark) != ISM330DLC_OK)
@@ -2537,11 +2537,11 @@ int32_t ISM330DLC_FIFO_Set_Watermark_Level(ISM330DLC_Object_t *pObj, uint16_t Wa
 }
 
 /**
- * @brief  Set the ISM330DLC FIFO stop on watermark
- * @param  pObj the device pObj
- * @param  Status FIFO stop on watermark status
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC FIFO stop on watermark
+  * @param  pObj the device pObj
+  * @param  Status FIFO stop on watermark status
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_FIFO_Set_Stop_On_Fth(ISM330DLC_Object_t *pObj, uint8_t Status)
 {
   if (ism330dlc_fifo_stop_on_wtm_set(&(pObj->Ctx), Status) != ISM330DLC_OK)
@@ -2553,11 +2553,11 @@ int32_t ISM330DLC_FIFO_Set_Stop_On_Fth(ISM330DLC_Object_t *pObj, uint8_t Status)
 }
 
 /**
- * @brief  Set the ISM330DLC FIFO mode
- * @param  pObj the device pObj
- * @param  Mode FIFO mode
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC FIFO mode
+  * @param  pObj the device pObj
+  * @param  Mode FIFO mode
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_FIFO_Set_Mode(ISM330DLC_Object_t *pObj, uint8_t Mode)
 {
   int32_t ret = ISM330DLC_OK;
@@ -2591,11 +2591,11 @@ int32_t ISM330DLC_FIFO_Set_Mode(ISM330DLC_Object_t *pObj, uint8_t Mode)
 }
 
 /**
- * @brief  Get the ISM330DLC FIFO pattern
- * @param  pObj the device pObj
- * @param  Pattern FIFO pattern
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC FIFO pattern
+  * @param  pObj the device pObj
+  * @param  Pattern FIFO pattern
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_FIFO_Get_Pattern(ISM330DLC_Object_t *pObj, uint16_t *Pattern)
 {
   if (ism330dlc_fifo_pattern_get(&(pObj->Ctx), Pattern) != ISM330DLC_OK)
@@ -2607,11 +2607,11 @@ int32_t ISM330DLC_FIFO_Get_Pattern(ISM330DLC_Object_t *pObj, uint16_t *Pattern)
 }
 
 /**
- * @brief  Get the ISM330DLC FIFO raw data
- * @param  pObj the device pObj
- * @param  Data FIFO raw data array [2]
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC FIFO raw data
+  * @param  pObj the device pObj
+  * @param  Data FIFO raw data array [2]
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_FIFO_Get_Data(ISM330DLC_Object_t *pObj, uint8_t *Data)
 {
   if (ism330dlc_read_reg(&(pObj->Ctx), ISM330DLC_FIFO_DATA_OUT_L, Data, 2) != ISM330DLC_OK)
@@ -2623,11 +2623,11 @@ int32_t ISM330DLC_FIFO_Get_Data(ISM330DLC_Object_t *pObj, uint8_t *Data)
 }
 
 /**
- * @brief  Set the ISM330DLC FIFO full interrupt on INT1 pin
- * @param  pObj the device pObj
- * @param  Status FIFO full interrupt on INT1 pin status
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC FIFO full interrupt on INT1 pin
+  * @param  pObj the device pObj
+  * @param  Status FIFO full interrupt on INT1 pin status
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_FIFO_Full_Set_INT1(ISM330DLC_Object_t *pObj, uint8_t Status)
 {
   ism330dlc_reg_t reg;
@@ -2648,11 +2648,11 @@ int32_t ISM330DLC_FIFO_Full_Set_INT1(ISM330DLC_Object_t *pObj, uint8_t Status)
 }
 
 /**
- * @brief  Set the ISM330DLC FIFO accelero decimation
- * @param  pObj the device pObj
- * @param  Decimation FIFO accelero decimation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC FIFO accelero decimation
+  * @param  pObj the device pObj
+  * @param  Decimation FIFO accelero decimation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_FIFO_ACC_Set_Decimation(ISM330DLC_Object_t *pObj, uint8_t Decimation)
 {
   int32_t ret = ISM330DLC_OK;
@@ -2689,11 +2689,11 @@ int32_t ISM330DLC_FIFO_ACC_Set_Decimation(ISM330DLC_Object_t *pObj, uint8_t Deci
 }
 
 /**
- * @brief  Get the ISM330DLC FIFO accelero single sample (16-bit data) and calculate acceleration [mg]
- * @param  pObj the device pObj
- * @param  Acceleration FIFO single accelero axis [mg]
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC FIFO accelero single sample (16-bit data) and calculate acceleration [mg]
+  * @param  pObj the device pObj
+  * @param  Acceleration FIFO single accelero axis [mg]
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_FIFO_ACC_Get_Axis(ISM330DLC_Object_t *pObj, int32_t *Acceleration)
 {
   uint8_t data[2];
@@ -2720,11 +2720,11 @@ int32_t ISM330DLC_FIFO_ACC_Get_Axis(ISM330DLC_Object_t *pObj, int32_t *Accelerat
 }
 
 /**
- * @brief  Get the ISM330DLC FIFO accelero single word (16-bit data)
- * @param  pObj the device pObj
- * @param  Acceleration FIFO single data
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC FIFO accelero single word (16-bit data)
+  * @param  pObj the device pObj
+  * @param  Acceleration FIFO single data
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_FIFO_Get_Data_Word(ISM330DLC_Object_t *pObj, int16_t *data_raw)
 {
   uint8_t data[2];
@@ -2734,17 +2734,17 @@ int32_t ISM330DLC_FIFO_Get_Data_Word(ISM330DLC_Object_t *pObj, int16_t *data_raw
     return ISM330DLC_ERROR;
   }
 
-  *data_raw = ((((int16_t)data[1])<<8)+(int16_t)data[0]);
+  *data_raw = ((((int16_t)data[1]) << 8) + (int16_t)data[0]);
 
   return ISM330DLC_OK;
 }
 
 /**
- * @brief  Set the ISM330DLC FIFO gyro decimation
- * @param  pObj the device pObj
- * @param  Decimation FIFO gyro decimation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC FIFO gyro decimation
+  * @param  pObj the device pObj
+  * @param  Decimation FIFO gyro decimation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_FIFO_GYRO_Set_Decimation(ISM330DLC_Object_t *pObj, uint8_t Decimation)
 {
   int32_t ret = ISM330DLC_OK;
@@ -2781,11 +2781,11 @@ int32_t ISM330DLC_FIFO_GYRO_Set_Decimation(ISM330DLC_Object_t *pObj, uint8_t Dec
 }
 
 /**
- * @brief  Get the ISM330DLC FIFO gyro single sample (16-bit data) and calculate angular velocity [mDPS]
- * @param  pObj the device pObj
- * @param  AngularVelocity FIFO single gyro axis [mDPS]
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM330DLC FIFO gyro single sample (16-bit data) and calculate angular velocity [mDPS]
+  * @param  pObj the device pObj
+  * @param  AngularVelocity FIFO single gyro axis [mDPS]
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_FIFO_GYRO_Get_Axis(ISM330DLC_Object_t *pObj, int32_t *AngularVelocity)
 {
   uint8_t data[2];
@@ -2812,33 +2812,33 @@ int32_t ISM330DLC_FIFO_GYRO_Get_Axis(ISM330DLC_Object_t *pObj, int32_t *AngularV
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup ISM330DLC_Private_Functions ISM330DLC Private Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Set the ISM330DLC accelerometer sensor output data rate when enabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC accelerometer sensor output data rate when enabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ISM330DLC_ACC_SetOutputDataRate_When_Enabled(ISM330DLC_Object_t *pObj, float Odr)
 {
   ism330dlc_odr_xl_t new_odr;
 
   new_odr = (Odr <=   12.5f) ? ISM330DLC_XL_ODR_12Hz5
-          : (Odr <=   26.0f) ? ISM330DLC_XL_ODR_26Hz
-          : (Odr <=   52.0f) ? ISM330DLC_XL_ODR_52Hz
-          : (Odr <=  104.0f) ? ISM330DLC_XL_ODR_104Hz
-          : (Odr <=  208.0f) ? ISM330DLC_XL_ODR_208Hz
-          : (Odr <=  416.0f) ? ISM330DLC_XL_ODR_416Hz
-          : (Odr <=  833.0f) ? ISM330DLC_XL_ODR_833Hz
-          : (Odr <= 1660.0f) ? ISM330DLC_XL_ODR_1k66Hz
-          : (Odr <= 3330.0f) ? ISM330DLC_XL_ODR_3k33Hz
-          :                    ISM330DLC_XL_ODR_6k66Hz;
+            : (Odr <=   26.0f) ? ISM330DLC_XL_ODR_26Hz
+            : (Odr <=   52.0f) ? ISM330DLC_XL_ODR_52Hz
+            : (Odr <=  104.0f) ? ISM330DLC_XL_ODR_104Hz
+            : (Odr <=  208.0f) ? ISM330DLC_XL_ODR_208Hz
+            : (Odr <=  416.0f) ? ISM330DLC_XL_ODR_416Hz
+            : (Odr <=  833.0f) ? ISM330DLC_XL_ODR_833Hz
+            : (Odr <= 1660.0f) ? ISM330DLC_XL_ODR_1k66Hz
+            : (Odr <= 3330.0f) ? ISM330DLC_XL_ODR_3k33Hz
+            :                    ISM330DLC_XL_ODR_6k66Hz;
 
   /* Output data rate selection. */
   if (ism330dlc_xl_data_rate_set(&(pObj->Ctx), new_odr) != ISM330DLC_OK)
@@ -2850,47 +2850,47 @@ static int32_t ISM330DLC_ACC_SetOutputDataRate_When_Enabled(ISM330DLC_Object_t *
 }
 
 /**
- * @brief  Set the ISM330DLC accelerometer sensor output data rate when disabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC accelerometer sensor output data rate when disabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ISM330DLC_ACC_SetOutputDataRate_When_Disabled(ISM330DLC_Object_t *pObj, float Odr)
 {
   pObj->acc_odr = (Odr <=   12.5f) ? ISM330DLC_XL_ODR_12Hz5
-                : (Odr <=   26.0f) ? ISM330DLC_XL_ODR_26Hz
-                : (Odr <=   52.0f) ? ISM330DLC_XL_ODR_52Hz
-                : (Odr <=  104.0f) ? ISM330DLC_XL_ODR_104Hz
-                : (Odr <=  208.0f) ? ISM330DLC_XL_ODR_208Hz
-                : (Odr <=  416.0f) ? ISM330DLC_XL_ODR_416Hz
-                : (Odr <=  833.0f) ? ISM330DLC_XL_ODR_833Hz
-                : (Odr <= 1660.0f) ? ISM330DLC_XL_ODR_1k66Hz
-                : (Odr <= 3330.0f) ? ISM330DLC_XL_ODR_3k33Hz
-                :                    ISM330DLC_XL_ODR_6k66Hz;
+                  : (Odr <=   26.0f) ? ISM330DLC_XL_ODR_26Hz
+                  : (Odr <=   52.0f) ? ISM330DLC_XL_ODR_52Hz
+                  : (Odr <=  104.0f) ? ISM330DLC_XL_ODR_104Hz
+                  : (Odr <=  208.0f) ? ISM330DLC_XL_ODR_208Hz
+                  : (Odr <=  416.0f) ? ISM330DLC_XL_ODR_416Hz
+                  : (Odr <=  833.0f) ? ISM330DLC_XL_ODR_833Hz
+                  : (Odr <= 1660.0f) ? ISM330DLC_XL_ODR_1k66Hz
+                  : (Odr <= 3330.0f) ? ISM330DLC_XL_ODR_3k33Hz
+                  :                    ISM330DLC_XL_ODR_6k66Hz;
 
   return ISM330DLC_OK;
 }
 
 /**
- * @brief  Set the ISM330DLC gyroscope sensor output data rate when enabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC gyroscope sensor output data rate when enabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ISM330DLC_GYRO_SetOutputDataRate_When_Enabled(ISM330DLC_Object_t *pObj, float Odr)
 {
   ism330dlc_odr_g_t new_odr;
 
   new_odr = (Odr <=   12.5f) ? ISM330DLC_GY_ODR_12Hz5
-          : (Odr <=   26.0f) ? ISM330DLC_GY_ODR_26Hz
-          : (Odr <=   52.0f) ? ISM330DLC_GY_ODR_52Hz
-          : (Odr <=  104.0f) ? ISM330DLC_GY_ODR_104Hz
-          : (Odr <=  208.0f) ? ISM330DLC_GY_ODR_208Hz
-          : (Odr <=  416.0f) ? ISM330DLC_GY_ODR_416Hz
-          : (Odr <=  833.0f) ? ISM330DLC_GY_ODR_833Hz
-          : (Odr <= 1660.0f) ? ISM330DLC_GY_ODR_1k66Hz
-          : (Odr <= 3330.0f) ? ISM330DLC_GY_ODR_3k33Hz
-          :                    ISM330DLC_GY_ODR_6k66Hz;
+            : (Odr <=   26.0f) ? ISM330DLC_GY_ODR_26Hz
+            : (Odr <=   52.0f) ? ISM330DLC_GY_ODR_52Hz
+            : (Odr <=  104.0f) ? ISM330DLC_GY_ODR_104Hz
+            : (Odr <=  208.0f) ? ISM330DLC_GY_ODR_208Hz
+            : (Odr <=  416.0f) ? ISM330DLC_GY_ODR_416Hz
+            : (Odr <=  833.0f) ? ISM330DLC_GY_ODR_833Hz
+            : (Odr <= 1660.0f) ? ISM330DLC_GY_ODR_1k66Hz
+            : (Odr <= 3330.0f) ? ISM330DLC_GY_ODR_3k33Hz
+            :                    ISM330DLC_GY_ODR_6k66Hz;
 
   /* Output data rate selection. */
   if (ism330dlc_gy_data_rate_set(&(pObj->Ctx), new_odr) != ISM330DLC_OK)
@@ -2902,33 +2902,33 @@ static int32_t ISM330DLC_GYRO_SetOutputDataRate_When_Enabled(ISM330DLC_Object_t 
 }
 
 /**
- * @brief  Set the ISM330DLC gyroscope sensor output data rate when disabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC gyroscope sensor output data rate when disabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ISM330DLC_GYRO_SetOutputDataRate_When_Disabled(ISM330DLC_Object_t *pObj, float Odr)
 {
   pObj->gyro_odr = (Odr <=   12.5f) ? ISM330DLC_GY_ODR_12Hz5
-                 : (Odr <=   26.0f) ? ISM330DLC_GY_ODR_26Hz
-                 : (Odr <=   52.0f) ? ISM330DLC_GY_ODR_52Hz
-                 : (Odr <=  104.0f) ? ISM330DLC_GY_ODR_104Hz
-                 : (Odr <=  208.0f) ? ISM330DLC_GY_ODR_208Hz
-                 : (Odr <=  416.0f) ? ISM330DLC_GY_ODR_416Hz
-                 : (Odr <=  833.0f) ? ISM330DLC_GY_ODR_833Hz
-                 : (Odr <= 1660.0f) ? ISM330DLC_GY_ODR_1k66Hz
-                 : (Odr <= 3330.0f) ? ISM330DLC_GY_ODR_3k33Hz
-                 :                    ISM330DLC_GY_ODR_6k66Hz;
+                   : (Odr <=   26.0f) ? ISM330DLC_GY_ODR_26Hz
+                   : (Odr <=   52.0f) ? ISM330DLC_GY_ODR_52Hz
+                   : (Odr <=  104.0f) ? ISM330DLC_GY_ODR_104Hz
+                   : (Odr <=  208.0f) ? ISM330DLC_GY_ODR_208Hz
+                   : (Odr <=  416.0f) ? ISM330DLC_GY_ODR_416Hz
+                   : (Odr <=  833.0f) ? ISM330DLC_GY_ODR_833Hz
+                   : (Odr <= 1660.0f) ? ISM330DLC_GY_ODR_1k66Hz
+                   : (Odr <= 3330.0f) ? ISM330DLC_GY_ODR_3k33Hz
+                   :                    ISM330DLC_GY_ODR_6k66Hz;
 
   return ISM330DLC_OK;
 }
 
 /**
- * @brief  Set the ISM330DLC FIFO full interrupt on INT2 pin
- * @param  pObj the device pObj
- * @param  Status FIFO full interrupt on INT2 pin status
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC FIFO full interrupt on INT2 pin
+  * @param  pObj the device pObj
+  * @param  Status FIFO full interrupt on INT2 pin status
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_FIFO_Set_INT2_Drdy(ISM330DLC_Object_t *pObj, uint8_t Status)
 {
   ism330dlc_reg_t reg;
@@ -2949,11 +2949,11 @@ int32_t ISM330DLC_FIFO_Set_INT2_Drdy(ISM330DLC_Object_t *pObj, uint8_t Status)
 }
 
 /**
- * @brief  Set the ISM330DLC FIFO full interrupt on INT2 pin
- * @param  pObj the device pObj
- * @param  Status DRDY interrupt on INT2 pin status
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM330DLC FIFO full interrupt on INT2 pin
+  * @param  pObj the device pObj
+  * @param  Status DRDY interrupt on INT2 pin status
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM330DLC_Set_INT2_Drdy(ISM330DLC_Object_t *pObj, uint8_t Status)
 {
   ism330dlc_reg_t reg;
@@ -2975,13 +2975,13 @@ int32_t ISM330DLC_Set_INT2_Drdy(ISM330DLC_Object_t *pObj, uint8_t Status)
 
 
 /**
- * @brief  Wrap Read register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Read register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   ISM330DLC_Object_t *pObj = (ISM330DLC_Object_t *)Handle;
@@ -2990,13 +2990,13 @@ static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t L
 }
 
 /**
- * @brief  Wrap Write register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Write register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   ISM330DLC_Object_t *pObj = (ISM330DLC_Object_t *)Handle;

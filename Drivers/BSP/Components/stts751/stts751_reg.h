@@ -1,22 +1,22 @@
-/*
- ******************************************************************************
- * @file    stts751_reg.h
- * @author  Sensors Software Solution Team
- * @brief   This file contains all the functions prototypes for the
- *          stts751_reg.c driver.
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    stts751_reg.h
+  * @author  Sensors Software Solution Team
+  * @brief   This file contains all the functions prototypes for the
+  *          stts751_reg.c driver.
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef STTS751_REGS_H
@@ -28,6 +28,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
+#include <stddef.h>
 #include <math.h>
 
 /** @addtogroup STTS751
@@ -74,7 +75,8 @@ extern "C" {
 #ifndef MEMS_SHARED_TYPES
 #define MEMS_SHARED_TYPES
 
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t bit0       : 1;
   uint8_t bit1       : 1;
@@ -107,12 +109,11 @@ typedef struct {
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *,
-                                    uint16_t);
-typedef int32_t (*stmdev_read_ptr) (void *, uint8_t, uint8_t *,
-                                    uint16_t);
+typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 
-typedef struct {
+typedef struct
+{
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
@@ -141,7 +142,8 @@ typedef struct {
   *
   */
 
-typedef struct {
+typedef struct
+{
   uint8_t address;
   uint8_t data;
 } ucf_line_t;
@@ -190,7 +192,8 @@ typedef struct {
 
 #define STTS751_TEMPERATURE_HIGH            0x00U
 #define STTS751_STATUS                      0x01U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t thrm                       : 1;
   uint8_t not_used_01                : 4;
@@ -208,7 +211,8 @@ typedef struct {
 
 #define STTS751_TEMPERATURE_LOW             0x02U
 #define STTS751_CONFIGURATION               0x03U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01                : 2;
   uint8_t tres                       : 2;
@@ -225,7 +229,8 @@ typedef struct {
 } stts751_configuration_t;
 
 #define STTS751_CONVERSION_RATE             0x04U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t conv                       : 4;
   uint8_t not_used_01                : 4;
@@ -243,7 +248,8 @@ typedef struct {
 #define STTS751_THERM_LIMIT                 0x20U
 #define STTS751_THERM_HYSTERESIS            0x21U
 #define STTS751_SMBUS_TIMEOUT               0x22U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01                : 7;
   uint8_t timeout                    : 1;
@@ -259,9 +265,9 @@ typedef struct {
 
 /**
   * @defgroup STTS751_Register_Union
-  * @brief    This union group all the registers that has a bitfield
+  * @brief    This union group all the registers having a bit-field
   *           description.
-  *           This union is useful but not need by the driver.
+  *           This union is useful but it's not needed by the driver.
   *
   *           REMOVING this union you are compliant with:
   *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
@@ -269,7 +275,8 @@ typedef struct {
   * @{
   *
   */
-typedef union {
+typedef union
+{
   stts751_status_t                       status;
   stts751_configuration_t                configuration;
   stts751_conversion_rate_t              conversion_rate;
@@ -290,10 +297,11 @@ int32_t stts751_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
                           uint8_t *data,
                           uint16_t len);
 
-float stts751_from_lsb_to_celsius(int16_t lsb);
-int16_t stts751_from_celsius_to_lsb(float celsius);
+float_t stts751_from_lsb_to_celsius(int16_t lsb);
+int16_t stts751_from_celsius_to_lsb(float_t celsius);
 
-typedef enum {
+typedef enum
+{
   STTS751_TEMP_ODR_OFF        = 0x80,
   STTS751_TEMP_ODR_ONE_SHOT   = 0x90,
   STTS751_TEMP_ODR_62mHz5     = 0x00,
@@ -312,7 +320,8 @@ int32_t stts751_temp_data_rate_set(stmdev_ctx_t *ctx,
 int32_t stts751_temp_data_rate_get(stmdev_ctx_t *ctx,
                                    stts751_odr_t *val);
 
-typedef enum {
+typedef enum
+{
   STTS751_9bit      = 2,
   STTS751_10bit     = 0,
   STTS751_11bit     = 1,
@@ -352,7 +361,8 @@ int32_t stts751_ota_thermal_hyst_get(stmdev_ctx_t *ctx, int8_t *val);
 int32_t stts751_smbus_timeout_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t stts751_smbus_timeout_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef struct {
+typedef struct
+{
   uint8_t product_id;
   uint8_t manufacturer_id;
   uint8_t revision_id;

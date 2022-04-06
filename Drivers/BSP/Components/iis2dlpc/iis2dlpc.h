@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    iis2dlpc.h
- * @author  MEMS Software Solutions Team
- * @brief   IIS2DLPC header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    iis2dlpc.h
+  * @author  MEMS Software Solutions Team
+  * @brief   IIS2DLPC header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef IIS2DLPC_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup IIS2DLPC IIS2DLPC
- * @{
- */
+  * @{
+  */
 
 /** @defgroup IIS2DLPC_Exported_Types IIS2DLPC Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*IIS2DLPC_Init_Func)(void);
 typedef int32_t (*IIS2DLPC_DeInit_Func)(void);
@@ -157,33 +157,37 @@ typedef struct
   int32_t (*GetAxesRaw)(IIS2DLPC_Object_t *, IIS2DLPC_AxesRaw_t *);
 } IIS2DLPC_ACC_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } iis2dlpc_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } iis2dlpc_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } iis2dlpc_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } iis2dlpc_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup IIS2DLPC_Exported_Constants IIS2DLPC Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define IIS2DLPC_OK                       0
 #define IIS2DLPC_ERROR                   -1
@@ -205,12 +209,12 @@ typedef union{
 #define IIS2DLPC_ACC_SENSITIVITY_FOR_FS_16G_OTHER_MODES  1.952f  /**< Sensitivity value for 16g full scale, all other modes except Low-power1 [mg/LSB] */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup IIS2DLPC_Exported_Functions IIS2DLPC Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t IIS2DLPC_RegisterBusIO(IIS2DLPC_Object_t *pObj, IIS2DLPC_IO_t *pIO);
 int32_t IIS2DLPC_Init(IIS2DLPC_Object_t *pObj);
@@ -223,7 +227,8 @@ int32_t IIS2DLPC_ACC_Disable(IIS2DLPC_Object_t *pObj);
 int32_t IIS2DLPC_ACC_GetSensitivity(IIS2DLPC_Object_t *pObj, float *Sensitivity);
 int32_t IIS2DLPC_ACC_GetOutputDataRate(IIS2DLPC_Object_t *pObj, float *Odr);
 int32_t IIS2DLPC_ACC_SetOutputDataRate(IIS2DLPC_Object_t *pObj, float Odr);
-int32_t IIS2DLPC_ACC_SetOutputDataRate_With_Mode(IIS2DLPC_Object_t *pObj, float Odr, IIS2DLPC_Operating_Mode_t Mode, IIS2DLPC_Low_Noise_t Noise);
+int32_t IIS2DLPC_ACC_SetOutputDataRate_With_Mode(IIS2DLPC_Object_t *pObj, float Odr, IIS2DLPC_Operating_Mode_t Mode,
+                                                 IIS2DLPC_Low_Noise_t Noise);
 int32_t IIS2DLPC_ACC_GetFullScale(IIS2DLPC_Object_t *pObj, int32_t *FullScale);
 int32_t IIS2DLPC_ACC_SetFullScale(IIS2DLPC_Object_t *pObj, int32_t FullScale);
 int32_t IIS2DLPC_ACC_GetAxesRaw(IIS2DLPC_Object_t *pObj, IIS2DLPC_AxesRaw_t *Value);
@@ -235,19 +240,19 @@ int32_t IIS2DLPC_Write_Reg(IIS2DLPC_Object_t *pObj, uint8_t reg, uint8_t Data);
 int32_t IIS2DLPC_ACC_Get_DRDY_Status(IIS2DLPC_Object_t *pObj, uint8_t *Status);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup IIS2DLPC_Exported_Variables IIS2DLPC Exported Variables
- * @{
- */
+  * @{
+  */
 
 extern IIS2DLPC_CommonDrv_t IIS2DLPC_COMMON_Driver;
 extern IIS2DLPC_ACC_Drv_t IIS2DLPC_ACC_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -256,15 +261,15 @@ extern IIS2DLPC_ACC_Drv_t IIS2DLPC_ACC_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

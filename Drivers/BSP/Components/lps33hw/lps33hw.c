@@ -1,40 +1,40 @@
 /**
- ******************************************************************************
- * @file    lps33hw.c
- * @author  MEMS Software Solutions Team
- * @brief   LPS33HW driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lps33hw.c
+  * @author  MEMS Software Solutions Team
+  * @brief   LPS33HW driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "lps33hw.h"
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LPS33HW LPS33HW
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LPS33HW_Exported_Variables LPS33HW Exported Variables
- * @{
- */
+  * @{
+  */
 
 LPS33HW_CommonDrv_t LPS33HW_COMMON_Driver =
 {
@@ -63,12 +63,12 @@ LPS33HW_TEMP_Drv_t LPS33HW_TEMP_Driver =
 };
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LPS33HW_Private_Function_Prototypes LPS33HW Private Function Prototypes
- * @{
- */
+  * @{
+  */
 
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
@@ -78,18 +78,18 @@ static int32_t LPS33HW_SetOutputDataRate_When_Disabled(LPS33HW_Object_t *pObj, f
 static int32_t LPS33HW_Initialize(LPS33HW_Object_t *pObj);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LPS33HW_Exported_Functions LPS33HW Exported Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Register Component Bus IO operations
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Register Component Bus IO operations
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_RegisterBusIO(LPS33HW_Object_t *pObj, LPS33HW_IO_t *pIO)
 {
   int32_t ret = LPS33HW_OK;
@@ -143,10 +143,10 @@ int32_t LPS33HW_RegisterBusIO(LPS33HW_Object_t *pObj, LPS33HW_IO_t *pIO)
 }
 
 /**
- * @brief  Initialize the LPS33HW sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Initialize the LPS33HW sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_Init(LPS33HW_Object_t *pObj)
 {
   if (pObj->is_initialized == 0U)
@@ -163,10 +163,10 @@ int32_t LPS33HW_Init(LPS33HW_Object_t *pObj)
 }
 
 /**
- * @brief  Deinitialize the LPS33HW sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Deinitialize the LPS33HW sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_DeInit(LPS33HW_Object_t *pObj)
 {
   if (pObj->is_initialized == 1U)
@@ -188,11 +188,11 @@ int32_t LPS33HW_DeInit(LPS33HW_Object_t *pObj)
 }
 
 /**
- * @brief  Get WHO_AM_I value
- * @param  pObj the device pObj
- * @param  Id the WHO_AM_I value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get WHO_AM_I value
+  * @param  pObj the device pObj
+  * @param  Id the WHO_AM_I value
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_ReadID(LPS33HW_Object_t *pObj, uint8_t *Id)
 {
   if (lps33hw_device_id_get(&(pObj->Ctx), Id) != LPS33HW_OK)
@@ -204,11 +204,11 @@ int32_t LPS33HW_ReadID(LPS33HW_Object_t *pObj, uint8_t *Id)
 }
 
 /**
- * @brief  Get LPS33HW sensor capabilities
- * @param  pObj Component object pointer
- * @param  Capabilities pointer to LPS33HW sensor capabilities
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get LPS33HW sensor capabilities
+  * @param  pObj Component object pointer
+  * @param  Capabilities pointer to LPS33HW sensor capabilities
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_GetCapabilities(LPS33HW_Object_t *pObj, LPS33HW_Capabilities_t *Capabilities)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -225,11 +225,11 @@ int32_t LPS33HW_GetCapabilities(LPS33HW_Object_t *pObj, LPS33HW_Capabilities_t *
 }
 
 /**
- * @brief  Get the LPS33HW initialization status
- * @param  pObj the device pObj
- * @param  Status 1 if initialized, 0 otherwise
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS33HW initialization status
+  * @param  pObj the device pObj
+  * @param  Status 1 if initialized, 0 otherwise
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_Get_Init_Status(LPS33HW_Object_t *pObj, uint8_t *Status)
 {
   if (pObj == NULL)
@@ -243,10 +243,10 @@ int32_t LPS33HW_Get_Init_Status(LPS33HW_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Enable the LPS33HW pressure sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the LPS33HW pressure sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_PRESS_Enable(LPS33HW_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -267,10 +267,10 @@ int32_t LPS33HW_PRESS_Enable(LPS33HW_Object_t *pObj)
 }
 
 /**
- * @brief  Disable the LPS33HW pressure sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable the LPS33HW pressure sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_PRESS_Disable(LPS33HW_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -302,22 +302,22 @@ int32_t LPS33HW_PRESS_Disable(LPS33HW_Object_t *pObj)
 }
 
 /**
- * @brief  Get the LPS33HW pressure sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS33HW pressure sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_PRESS_GetOutputDataRate(LPS33HW_Object_t *pObj, float *Odr)
 {
   return LPS33HW_GetOutputDataRate(pObj, Odr);
 }
 
 /**
- * @brief  Set the LPS33HW pressure sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LPS33HW pressure sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_PRESS_SetOutputDataRate(LPS33HW_Object_t *pObj, float Odr)
 {
   /* Check if the component is enabled */
@@ -332,11 +332,11 @@ int32_t LPS33HW_PRESS_SetOutputDataRate(LPS33HW_Object_t *pObj, float Odr)
 }
 
 /**
- * @brief  Get the LPS33HW pressure value
- * @param  pObj the device pObj
- * @param  Value pointer where the pressure value is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS33HW pressure value
+  * @param  pObj the device pObj
+  * @param  Value pointer where the pressure value is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_PRESS_GetPressure(LPS33HW_Object_t *pObj, float *Value)
 {
   lps33hw_axis1bit32_t data_raw_pressure;
@@ -353,11 +353,11 @@ int32_t LPS33HW_PRESS_GetPressure(LPS33HW_Object_t *pObj, float *Value)
 }
 
 /**
- * @brief  Get the LPS33HW pressure data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS33HW pressure data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_PRESS_Get_DRDY_Status(LPS33HW_Object_t *pObj, uint8_t *Status)
 {
   if (lps33hw_press_data_ready_get(&(pObj->Ctx), Status) != LPS33HW_OK)
@@ -369,10 +369,10 @@ int32_t LPS33HW_PRESS_Get_DRDY_Status(LPS33HW_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Enable the LPS33HW temperature sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the LPS33HW temperature sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_TEMP_Enable(LPS33HW_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -393,10 +393,10 @@ int32_t LPS33HW_TEMP_Enable(LPS33HW_Object_t *pObj)
 }
 
 /**
- * @brief  Disable the LPS33HW temperature sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable the LPS33HW temperature sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_TEMP_Disable(LPS33HW_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -428,22 +428,22 @@ int32_t LPS33HW_TEMP_Disable(LPS33HW_Object_t *pObj)
 }
 
 /**
- * @brief  Get the LPS33HW temperature sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS33HW temperature sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_TEMP_GetOutputDataRate(LPS33HW_Object_t *pObj, float *Odr)
 {
   return LPS33HW_GetOutputDataRate(pObj, Odr);
 }
 
 /**
- * @brief  Set the LPS33HW temperature sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LPS33HW temperature sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_TEMP_SetOutputDataRate(LPS33HW_Object_t *pObj, float Odr)
 {
   /* Check if the component is enabled */
@@ -458,11 +458,11 @@ int32_t LPS33HW_TEMP_SetOutputDataRate(LPS33HW_Object_t *pObj, float Odr)
 }
 
 /**
- * @brief  Get the LPS33HW temperature value
- * @param  pObj the device pObj
- * @param  Value pointer where the temperature value is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS33HW temperature value
+  * @param  pObj the device pObj
+  * @param  Value pointer where the temperature value is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_TEMP_GetTemperature(LPS33HW_Object_t *pObj, float *Value)
 {
   lps33hw_axis1bit16_t data_raw_temperature;
@@ -479,11 +479,11 @@ int32_t LPS33HW_TEMP_GetTemperature(LPS33HW_Object_t *pObj, float *Value)
 }
 
 /**
- * @brief  Get the LPS33HW temperature data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS33HW temperature data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_TEMP_Get_DRDY_Status(LPS33HW_Object_t *pObj, uint8_t *Status)
 {
   if (lps33hw_temp_data_ready_get(&(pObj->Ctx), Status) != LPS33HW_OK)
@@ -495,11 +495,11 @@ int32_t LPS33HW_TEMP_Get_DRDY_Status(LPS33HW_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Get the LPS33HW FIFO data level
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS33HW FIFO data level
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_FIFO_Get_Data(LPS33HW_Object_t *pObj, float *Press, float *Temp)
 {
   if (LPS33HW_PRESS_GetPressure(pObj, Press) != LPS33HW_OK)
@@ -516,11 +516,11 @@ int32_t LPS33HW_FIFO_Get_Data(LPS33HW_Object_t *pObj, float *Press, float *Temp)
 }
 
 /**
- * @brief  Get the LPS33HW FIFO threshold
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS33HW FIFO threshold
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_FIFO_Get_FTh_Status(LPS33HW_Object_t *pObj, uint8_t *Status)
 {
   if (lps33hw_fifo_fth_flag_get(&(pObj->Ctx), Status) != LPS33HW_OK)
@@ -532,11 +532,11 @@ int32_t LPS33HW_FIFO_Get_FTh_Status(LPS33HW_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Get the LPS33HW FIFO full status
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS33HW FIFO full status
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_FIFO_Get_Full_Status(LPS33HW_Object_t *pObj, uint8_t *Status)
 {
   if (lps33hw_fifo_data_level_get(&(pObj->Ctx), Status) != LPS33HW_OK)
@@ -553,11 +553,11 @@ int32_t LPS33HW_FIFO_Get_Full_Status(LPS33HW_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Get the LPS33HW FIFO data level
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS33HW FIFO data level
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_FIFO_Get_Level(LPS33HW_Object_t *pObj, uint8_t *Status)
 {
   if (lps33hw_fifo_data_level_get(&(pObj->Ctx), Status) != LPS33HW_OK)
@@ -569,11 +569,11 @@ int32_t LPS33HW_FIFO_Get_Level(LPS33HW_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Get the LPS33HW FIFO OVR status
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS33HW FIFO OVR status
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_FIFO_Get_Ovr_Status(LPS33HW_Object_t *pObj, uint8_t *Status)
 {
   if (lps33hw_fifo_ovr_flag_get(&(pObj->Ctx), Status) != LPS33HW_OK)
@@ -585,11 +585,11 @@ int32_t LPS33HW_FIFO_Get_Ovr_Status(LPS33HW_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Reset the FIFO interrupt
- * @param  pObj the device pObj
- * @param  interrupt The FIFO interrupt to be reset; values: 0 = FTH; 1 = FULL; 2 = OVR
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Reset the FIFO interrupt
+  * @param  pObj the device pObj
+  * @param  interrupt The FIFO interrupt to be reset; values: 0 = FTH; 1 = FULL; 2 = OVR
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_FIFO_Reset_Interrupt(LPS33HW_Object_t *pObj, uint8_t interrupt)
 {
   switch (interrupt)
@@ -620,11 +620,11 @@ int32_t LPS33HW_FIFO_Reset_Interrupt(LPS33HW_Object_t *pObj, uint8_t interrupt)
 }
 
 /**
- * @brief  Set the FIFO interrupt
- * @param  pObj the device pObj
- * @param  interrupt The FIFO interrupt to be reset; values: 0 = FTH; 1 = FULL; 2 = OVR
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the FIFO interrupt
+  * @param  pObj the device pObj
+  * @param  interrupt The FIFO interrupt to be reset; values: 0 = FTH; 1 = FULL; 2 = OVR
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_FIFO_Set_Interrupt(LPS33HW_Object_t *pObj, uint8_t interrupt)
 {
   switch (interrupt)
@@ -655,11 +655,11 @@ int32_t LPS33HW_FIFO_Set_Interrupt(LPS33HW_Object_t *pObj, uint8_t interrupt)
 }
 
 /**
- * @brief  Set the FIFO mode
- * @param  pObj the device pObj
- * @param  Mode the FIFO mode to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the FIFO mode
+  * @param  pObj the device pObj
+  * @param  Mode the FIFO mode to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_FIFO_Set_Mode(LPS33HW_Object_t *pObj, uint8_t Mode)
 {
   /* Verify that the passed parameter contains one of the valid values */
@@ -686,11 +686,11 @@ int32_t LPS33HW_FIFO_Set_Mode(LPS33HW_Object_t *pObj, uint8_t Mode)
 }
 
 /**
- * @brief  Set the LPS33HW FIFO data level
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LPS33HW FIFO data level
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_FIFO_Set_Watermark_Level(LPS33HW_Object_t *pObj, uint8_t Watermark)
 {
   if (lps33hw_fifo_watermark_set(&(pObj->Ctx), Watermark) != LPS33HW_OK)
@@ -702,11 +702,11 @@ int32_t LPS33HW_FIFO_Set_Watermark_Level(LPS33HW_Object_t *pObj, uint8_t Waterma
 }
 
 /**
- * @brief  Set the LPS33HW stop on watermark function
- * @param  pObj the device pObj
- * @param  Stop the state of stop on watermark function
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LPS33HW stop on watermark function
+  * @param  pObj the device pObj
+  * @param  Stop the state of stop on watermark function
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_FIFO_Stop_On_Watermark(LPS33HW_Object_t *pObj, uint8_t Stop)
 {
   if (lps33hw_stop_on_fifo_threshold_set(&(pObj->Ctx), Stop) != LPS33HW_OK)
@@ -718,11 +718,11 @@ int32_t LPS33HW_FIFO_Stop_On_Watermark(LPS33HW_Object_t *pObj, uint8_t Stop)
 }
 
 /**
- * @brief  Enable the FIFO usage
- * @param  pObj the device pObj
- * @param  Status the FIFO disabled/enabled state to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the FIFO usage
+  * @param  pObj the device pObj
+  * @param  Status the FIFO disabled/enabled state to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_FIFO_Usage(LPS33HW_Object_t *pObj, uint8_t Status)
 {
   if (lps33hw_fifo_set(&(pObj->Ctx), Status) != LPS33HW_OK)
@@ -734,12 +734,12 @@ int32_t LPS33HW_FIFO_Usage(LPS33HW_Object_t *pObj, uint8_t Status)
 }
 
 /**
- * @brief  Get the LPS33HW register value
- * @param  pObj the device pObj
- * @param  Reg address to be written
- * @param  Data value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS33HW register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be written
+  * @param  Data value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_Read_Reg(LPS33HW_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 {
   if (lps33hw_read_reg(&(pObj->Ctx), Reg, Data, 1) != LPS33HW_OK)
@@ -751,12 +751,12 @@ int32_t LPS33HW_Read_Reg(LPS33HW_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 }
 
 /**
- * @brief  Set the LPS33HW register value
- * @param  pObj the device pObj
- * @param  Reg address to be written
- * @param  Data value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LPS33HW register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be written
+  * @param  Data value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_Write_Reg(LPS33HW_Object_t *pObj, uint8_t Reg, uint8_t Data)
 {
   if (lps33hw_write_reg(&(pObj->Ctx), Reg, &Data, 1) != LPS33HW_OK)
@@ -768,19 +768,19 @@ int32_t LPS33HW_Write_Reg(LPS33HW_Object_t *pObj, uint8_t Reg, uint8_t Data)
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LPS33HW_Private_Functions LPS33HW Private Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Get output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LPS33HW_GetOutputDataRate(LPS33HW_Object_t *pObj, float *Odr)
 {
   int32_t ret = LPS33HW_OK;
@@ -826,20 +826,20 @@ static int32_t LPS33HW_GetOutputDataRate(LPS33HW_Object_t *pObj, float *Odr)
 }
 
 /**
- * @brief  Set output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LPS33HW_SetOutputDataRate_When_Enabled(LPS33HW_Object_t *pObj, float Odr)
 {
   lps33hw_odr_t new_odr;
 
   new_odr = (Odr <=  1.0f) ? LPS33HW_ODR_1_Hz
-          : (Odr <= 10.0f) ? LPS33HW_ODR_10_Hz
-          : (Odr <= 25.0f) ? LPS33HW_ODR_25_Hz
-          : (Odr <= 50.0f) ? LPS33HW_ODR_50_Hz
-          :                  LPS33HW_ODR_75_Hz;
+            : (Odr <= 10.0f) ? LPS33HW_ODR_10_Hz
+            : (Odr <= 25.0f) ? LPS33HW_ODR_25_Hz
+            : (Odr <= 50.0f) ? LPS33HW_ODR_50_Hz
+            :                  LPS33HW_ODR_75_Hz;
 
   if (lps33hw_data_rate_set(&(pObj->Ctx), new_odr) != LPS33HW_OK)
   {
@@ -855,27 +855,27 @@ static int32_t LPS33HW_SetOutputDataRate_When_Enabled(LPS33HW_Object_t *pObj, fl
 }
 
 /**
- * @brief  Set output data rate when disabled
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set output data rate when disabled
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LPS33HW_SetOutputDataRate_When_Disabled(LPS33HW_Object_t *pObj, float Odr)
 {
   pObj->last_odr = (Odr <=  1.0f) ? LPS33HW_ODR_1_Hz
-                 : (Odr <= 10.0f) ? LPS33HW_ODR_10_Hz
-                 : (Odr <= 25.0f) ? LPS33HW_ODR_25_Hz
-                 : (Odr <= 50.0f) ? LPS33HW_ODR_50_Hz
-                 :                  LPS33HW_ODR_75_Hz;
+                   : (Odr <= 10.0f) ? LPS33HW_ODR_10_Hz
+                   : (Odr <= 25.0f) ? LPS33HW_ODR_25_Hz
+                   : (Odr <= 50.0f) ? LPS33HW_ODR_50_Hz
+                   :                  LPS33HW_ODR_75_Hz;
 
   return LPS33HW_OK;
 }
 
 /**
- * @brief  Initialize the LPS33HW sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Initialize the LPS33HW sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LPS33HW_Initialize(LPS33HW_Object_t *pObj)
 {
   /* Power down the device */
@@ -914,10 +914,10 @@ static int32_t LPS33HW_Initialize(LPS33HW_Object_t *pObj)
 }
 
 /**
- * @brief  Set the LPS33HW One Shot Mode
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LPS33HW One Shot Mode
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_Set_One_Shot(LPS33HW_Object_t *pObj)
 {
   /* Set ODR */
@@ -936,11 +936,11 @@ int32_t LPS33HW_Set_One_Shot(LPS33HW_Object_t *pObj)
 }
 
 /**
- * @brief  Get the LPS33HW One Shot Status
- * @param  pObj the device pObj
- * @param  Status pointer to the one shot status (1 means measurements available, 0 means measurements not available yet)
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS33HW One Shot Status
+  * @param  pObj the device pObj
+  * @param  Status pointer to the one shot status (1 means measurements available, 0 means measurements not available yet)
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS33HW_Get_One_Shot_Status(LPS33HW_Object_t *pObj, uint8_t *Status)
 {
   uint8_t p_da;
@@ -971,13 +971,13 @@ int32_t LPS33HW_Get_One_Shot_Status(LPS33HW_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Wrap Read register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Read register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   LPS33HW_Object_t *pObj = (LPS33HW_Object_t *)Handle;
@@ -986,13 +986,13 @@ static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t L
 }
 
 /**
- * @brief  Wrap Write register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Write register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   LPS33HW_Object_t *pObj = (LPS33HW_Object_t *)Handle;
@@ -1001,19 +1001,19 @@ static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t 
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -1,40 +1,40 @@
 /**
- ******************************************************************************
- * @file    lsm6dso32.c
- * @author  MEMS Software Solutions Team
- * @brief   LSM6DSO32 driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lsm6dso32.c
+  * @author  MEMS Software Solutions Team
+  * @brief   LSM6DSO32 driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "lsm6dso32.h"
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LSM6DSO32 LSM6DSO32
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LSM6DSO32_Exported_Variables LSM6DSO32 Exported Variables
- * @{
- */
+  * @{
+  */
 
 LSM6DSO32_CommonDrv_t LSM6DSO32_COMMON_Driver =
 {
@@ -71,12 +71,12 @@ LSM6DSO32_GYRO_Drv_t LSM6DSO32_GYRO_Driver =
 };
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LSM6DSO32_Private_Function_Prototypes LSM6DSO32 Private Function Prototypes
- * @{
- */
+  * @{
+  */
 
 static int32_t LSM6DSO32_ACC_SetOutputDataRate_When_Enabled(LSM6DSO32_Object_t *pObj, float_t Odr);
 static int32_t LSM6DSO32_ACC_SetOutputDataRate_When_Disabled(LSM6DSO32_Object_t *pObj, float_t Odr);
@@ -86,18 +86,18 @@ static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t L
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LSM6DSO32_Exported_Functions LSM6DSO32 Exported Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Register Component Bus IO operations
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Register Component Bus IO operations
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_RegisterBusIO(LSM6DSO32_Object_t *pObj, LSM6DSO32_IO_t *pIO)
 {
   int32_t ret = LSM6DSO32_OK;
@@ -151,10 +151,10 @@ int32_t LSM6DSO32_RegisterBusIO(LSM6DSO32_Object_t *pObj, LSM6DSO32_IO_t *pIO)
 }
 
 /**
- * @brief  Initialize the LSM6DSO32 sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Initialize the LSM6DSO32 sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_Init(LSM6DSO32_Object_t *pObj)
 {
   /* Disable I3C */
@@ -218,10 +218,10 @@ int32_t LSM6DSO32_Init(LSM6DSO32_Object_t *pObj)
 }
 
 /**
- * @brief  Deinitialize the LSM6DSO32 sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Deinitialize the LSM6DSO32 sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_DeInit(LSM6DSO32_Object_t *pObj)
 {
   /* Disable the component */
@@ -245,11 +245,11 @@ int32_t LSM6DSO32_DeInit(LSM6DSO32_Object_t *pObj)
 }
 
 /**
- * @brief  Read component ID
- * @param  pObj the device pObj
- * @param  Id the WHO_AM_I value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Read component ID
+  * @param  pObj the device pObj
+  * @param  Id the WHO_AM_I value
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_ReadID(LSM6DSO32_Object_t *pObj, uint8_t *Id)
 {
   if (lsm6dso32_device_id_get(&(pObj->Ctx), Id) != LSM6DSO32_OK)
@@ -261,11 +261,11 @@ int32_t LSM6DSO32_ReadID(LSM6DSO32_Object_t *pObj, uint8_t *Id)
 }
 
 /**
- * @brief  Get LSM6DSO32 sensor capabilities
- * @param  pObj Component object pointer
- * @param  Capabilities pointer to LSM6DSO32 sensor capabilities
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get LSM6DSO32 sensor capabilities
+  * @param  pObj Component object pointer
+  * @param  Capabilities pointer to LSM6DSO32 sensor capabilities
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_GetCapabilities(LSM6DSO32_Object_t *pObj, LSM6DSO32_Capabilities_t *Capabilities)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -285,10 +285,10 @@ int32_t LSM6DSO32_GetCapabilities(LSM6DSO32_Object_t *pObj, LSM6DSO32_Capabiliti
 }
 
 /**
- * @brief  Enable the LSM6DSO32 accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the LSM6DSO32 accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_ACC_Enable(LSM6DSO32_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -309,10 +309,10 @@ int32_t LSM6DSO32_ACC_Enable(LSM6DSO32_Object_t *pObj)
 }
 
 /**
- * @brief  Disable the LSM6DSO32 accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable the LSM6DSO32 accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_ACC_Disable(LSM6DSO32_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -339,11 +339,11 @@ int32_t LSM6DSO32_ACC_Disable(LSM6DSO32_Object_t *pObj)
 }
 
 /**
- * @brief  Get the LSM6DSO32 accelerometer sensor sensitivity
- * @param  pObj the device pObj
- * @param  Sensitivity pointer
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM6DSO32 accelerometer sensor sensitivity
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_ACC_GetSensitivity(LSM6DSO32_Object_t *pObj, float_t *Sensitivity)
 {
   int32_t ret = LSM6DSO32_OK;
@@ -383,11 +383,11 @@ int32_t LSM6DSO32_ACC_GetSensitivity(LSM6DSO32_Object_t *pObj, float_t *Sensitiv
 }
 
 /**
- * @brief  Get the LSM6DSO32 accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM6DSO32 accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_ACC_GetOutputDataRate(LSM6DSO32_Object_t *pObj, float_t *Odr)
 {
   int32_t ret = LSM6DSO32_OK;
@@ -469,25 +469,26 @@ int32_t LSM6DSO32_ACC_GetOutputDataRate(LSM6DSO32_Object_t *pObj, float_t *Odr)
 }
 
 /**
- * @brief  Set the LSM6DSO32 accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LSM6DSO32 accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_ACC_SetOutputDataRate(LSM6DSO32_Object_t *pObj, float_t Odr)
 {
   return LSM6DSO32_ACC_SetOutputDataRate_With_Mode(pObj, Odr, LSM6DSO32_ACC_HIGH_PERFORMANCE_MODE);
 }
 
 /**
- * @brief  Set the LSM6DSO32 accelerometer sensor output data rate with operating mode
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @param  Mode the accelerometer operating mode
- * @note   This function switches off the gyroscope if Ultra Low Power Mode is set
- * @retval 0 in case of success, an error code otherwise
- */
-int32_t LSM6DSO32_ACC_SetOutputDataRate_With_Mode(LSM6DSO32_Object_t *pObj, float_t Odr, LSM6DSO32_ACC_Operating_Mode_t Mode)
+  * @brief  Set the LSM6DSO32 accelerometer sensor output data rate with operating mode
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @param  Mode the accelerometer operating mode
+  * @note   This function switches off the gyroscope if Ultra Low Power Mode is set
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LSM6DSO32_ACC_SetOutputDataRate_With_Mode(LSM6DSO32_Object_t *pObj, float_t Odr,
+                                                  LSM6DSO32_ACC_Operating_Mode_t Mode)
 {
   int32_t ret = LSM6DSO32_OK;
   float_t newOdr = Odr;
@@ -682,11 +683,11 @@ int32_t LSM6DSO32_ACC_SetOutputDataRate_With_Mode(LSM6DSO32_Object_t *pObj, floa
 }
 
 /**
- * @brief  Get the LSM6DSO32 accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale pointer where the full scale is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM6DSO32 accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale pointer where the full scale is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_ACC_GetFullScale(LSM6DSO32_Object_t *pObj, int32_t *FullScale)
 {
   int32_t ret = LSM6DSO32_OK;
@@ -725,11 +726,11 @@ int32_t LSM6DSO32_ACC_GetFullScale(LSM6DSO32_Object_t *pObj, int32_t *FullScale)
 }
 
 /**
- * @brief  Set the LSM6DSO32 accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale the functional full scale to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LSM6DSO32 accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale the functional full scale to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_ACC_SetFullScale(LSM6DSO32_Object_t *pObj, int32_t FullScale)
 {
   lsm6dso32_fs_xl_t new_fs;
@@ -737,9 +738,9 @@ int32_t LSM6DSO32_ACC_SetFullScale(LSM6DSO32_Object_t *pObj, int32_t FullScale)
   /* Seems like MISRA C-2012 rule 14.3a violation but only from single file statical analysis point of view because
      the parameter passed to the function is not known at the moment of analysis */
   new_fs = (FullScale <=  4) ? LSM6DSO32_4g
-         : (FullScale <=  8) ? LSM6DSO32_8g
-         : (FullScale <= 16) ? LSM6DSO32_16g
-         :                     LSM6DSO32_32g;
+           : (FullScale <=  8) ? LSM6DSO32_8g
+           : (FullScale <= 16) ? LSM6DSO32_16g
+           :                     LSM6DSO32_32g;
 
   if (lsm6dso32_xl_full_scale_set(&(pObj->Ctx), new_fs) != LSM6DSO32_OK)
   {
@@ -750,11 +751,11 @@ int32_t LSM6DSO32_ACC_SetFullScale(LSM6DSO32_Object_t *pObj, int32_t FullScale)
 }
 
 /**
- * @brief  Get the LSM6DSO32 accelerometer sensor raw axes
- * @param  pObj the device pObj
- * @param  Value pointer where the raw values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM6DSO32 accelerometer sensor raw axes
+  * @param  pObj the device pObj
+  * @param  Value pointer where the raw values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_ACC_GetAxesRaw(LSM6DSO32_Object_t *pObj, LSM6DSO32_AxesRaw_t *Value)
 {
   lsm6dso32_axis3bit16_t data_raw;
@@ -774,11 +775,11 @@ int32_t LSM6DSO32_ACC_GetAxesRaw(LSM6DSO32_Object_t *pObj, LSM6DSO32_AxesRaw_t *
 }
 
 /**
- * @brief  Get the LSM6DSO32 accelerometer sensor axes
- * @param  pObj the device pObj
- * @param  Acceleration pointer where the values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM6DSO32 accelerometer sensor axes
+  * @param  pObj the device pObj
+  * @param  Acceleration pointer where the values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_ACC_GetAxes(LSM6DSO32_Object_t *pObj, LSM6DSO32_Axes_t *Acceleration)
 {
   lsm6dso32_axis3bit16_t data_raw;
@@ -805,10 +806,10 @@ int32_t LSM6DSO32_ACC_GetAxes(LSM6DSO32_Object_t *pObj, LSM6DSO32_Axes_t *Accele
 }
 
 /**
- * @brief  Enable the LSM6DSO32 gyroscope sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the LSM6DSO32 gyroscope sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_GYRO_Enable(LSM6DSO32_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -829,10 +830,10 @@ int32_t LSM6DSO32_GYRO_Enable(LSM6DSO32_Object_t *pObj)
 }
 
 /**
- * @brief  Disable the LSM6DSO32 gyroscope sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable the LSM6DSO32 gyroscope sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_GYRO_Disable(LSM6DSO32_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -859,11 +860,11 @@ int32_t LSM6DSO32_GYRO_Disable(LSM6DSO32_Object_t *pObj)
 }
 
 /**
- * @brief  Get the LSM6DSO32 gyroscope sensor sensitivity
- * @param  pObj the device pObj
- * @param  Sensitivity pointer
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM6DSO32 gyroscope sensor sensitivity
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_GYRO_GetSensitivity(LSM6DSO32_Object_t *pObj, float_t *Sensitivity)
 {
   int32_t ret = LSM6DSO32_OK;
@@ -907,11 +908,11 @@ int32_t LSM6DSO32_GYRO_GetSensitivity(LSM6DSO32_Object_t *pObj, float_t *Sensiti
 }
 
 /**
- * @brief  Get the LSM6DSO32 gyroscope sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM6DSO32 gyroscope sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_GYRO_GetOutputDataRate(LSM6DSO32_Object_t *pObj, float_t *Odr)
 {
   int32_t ret = LSM6DSO32_OK;
@@ -983,24 +984,25 @@ int32_t LSM6DSO32_GYRO_GetOutputDataRate(LSM6DSO32_Object_t *pObj, float_t *Odr)
 }
 
 /**
- * @brief  Set the LSM6DSO32 gyroscope sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LSM6DSO32 gyroscope sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_GYRO_SetOutputDataRate(LSM6DSO32_Object_t *pObj, float_t Odr)
 {
   return LSM6DSO32_GYRO_SetOutputDataRate_With_Mode(pObj, Odr, LSM6DSO32_GYRO_HIGH_PERFORMANCE_MODE);
 }
 
 /**
- * @brief  Set the LSM6DSO32 gyroscope sensor output data rate with operating mode
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @param  Mode the gyroscope operating mode
- * @retval 0 in case of success, an error code otherwise
- */
-int32_t LSM6DSO32_GYRO_SetOutputDataRate_With_Mode(LSM6DSO32_Object_t *pObj, float_t Odr, LSM6DSO32_GYRO_Operating_Mode_t Mode)
+  * @brief  Set the LSM6DSO32 gyroscope sensor output data rate with operating mode
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @param  Mode the gyroscope operating mode
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LSM6DSO32_GYRO_SetOutputDataRate_With_Mode(LSM6DSO32_Object_t *pObj, float_t Odr,
+                                                   LSM6DSO32_GYRO_Operating_Mode_t Mode)
 {
   int32_t ret = LSM6DSO32_OK;
   float_t newOdr = Odr;
@@ -1078,11 +1080,11 @@ int32_t LSM6DSO32_GYRO_SetOutputDataRate_With_Mode(LSM6DSO32_Object_t *pObj, flo
 }
 
 /**
- * @brief  Get the LSM6DSO32 gyroscope sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale pointer where the full scale is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM6DSO32 gyroscope sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale pointer where the full scale is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_GYRO_GetFullScale(LSM6DSO32_Object_t *pObj, int32_t  *FullScale)
 {
   int32_t ret = LSM6DSO32_OK;
@@ -1125,20 +1127,20 @@ int32_t LSM6DSO32_GYRO_GetFullScale(LSM6DSO32_Object_t *pObj, int32_t  *FullScal
 }
 
 /**
- * @brief  Set the LSM6DSO32 gyroscope sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale the functional full scale to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LSM6DSO32 gyroscope sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale the functional full scale to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_GYRO_SetFullScale(LSM6DSO32_Object_t *pObj, int32_t FullScale)
 {
   lsm6dso32_fs_g_t new_fs;
 
   new_fs = (FullScale <= 125)  ? LSM6DSO32_125dps
-         : (FullScale <= 250)  ? LSM6DSO32_250dps
-         : (FullScale <= 500)  ? LSM6DSO32_500dps
-         : (FullScale <= 1000) ? LSM6DSO32_1000dps
-         :                       LSM6DSO32_2000dps;
+           : (FullScale <= 250)  ? LSM6DSO32_250dps
+           : (FullScale <= 500)  ? LSM6DSO32_500dps
+           : (FullScale <= 1000) ? LSM6DSO32_1000dps
+           :                       LSM6DSO32_2000dps;
 
   if (lsm6dso32_gy_full_scale_set(&(pObj->Ctx), new_fs) != LSM6DSO32_OK)
   {
@@ -1149,11 +1151,11 @@ int32_t LSM6DSO32_GYRO_SetFullScale(LSM6DSO32_Object_t *pObj, int32_t FullScale)
 }
 
 /**
- * @brief  Get the LSM6DSO32 gyroscope sensor raw axes
- * @param  pObj the device pObj
- * @param  Value pointer where the raw values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM6DSO32 gyroscope sensor raw axes
+  * @param  pObj the device pObj
+  * @param  Value pointer where the raw values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_GYRO_GetAxesRaw(LSM6DSO32_Object_t *pObj, LSM6DSO32_AxesRaw_t *Value)
 {
   lsm6dso32_axis3bit16_t data_raw;
@@ -1173,11 +1175,11 @@ int32_t LSM6DSO32_GYRO_GetAxesRaw(LSM6DSO32_Object_t *pObj, LSM6DSO32_AxesRaw_t 
 }
 
 /**
- * @brief  Get the LSM6DSO32 gyroscope sensor axes
- * @param  pObj the device pObj
- * @param  AngularRate pointer where the values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM6DSO32 gyroscope sensor axes
+  * @param  pObj the device pObj
+  * @param  AngularRate pointer where the values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_GYRO_GetAxes(LSM6DSO32_Object_t *pObj, LSM6DSO32_Axes_t *AngularRate)
 {
   lsm6dso32_axis3bit16_t data_raw;
@@ -1204,12 +1206,12 @@ int32_t LSM6DSO32_GYRO_GetAxes(LSM6DSO32_Object_t *pObj, LSM6DSO32_Axes_t *Angul
 }
 
 /**
- * @brief  Get the LSM6DSO32 register value
- * @param  pObj the device pObj
- * @param  Reg address to be read
- * @param  Data pointer where the value is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM6DSO32 register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be read
+  * @param  Data pointer where the value is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_Read_Reg(LSM6DSO32_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 {
   if (lsm6dso32_read_reg(&(pObj->Ctx), Reg, Data, 1) != LSM6DSO32_OK)
@@ -1221,12 +1223,12 @@ int32_t LSM6DSO32_Read_Reg(LSM6DSO32_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 }
 
 /**
- * @brief  Set the LSM6DSO32 register value
- * @param  pObj the device pObj
- * @param  Reg address to be written
- * @param  Data value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LSM6DSO32 register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be written
+  * @param  Data value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_Write_Reg(LSM6DSO32_Object_t *pObj, uint8_t Reg, uint8_t Data)
 {
   if (lsm6dso32_write_reg(&(pObj->Ctx), Reg, &Data, 1) != LSM6DSO32_OK)
@@ -1238,11 +1240,11 @@ int32_t LSM6DSO32_Write_Reg(LSM6DSO32_Object_t *pObj, uint8_t Reg, uint8_t Data)
 }
 
 /**
- * @brief  Get the LSM6DSO32 ACC data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM6DSO32 ACC data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_ACC_Get_DRDY_Status(LSM6DSO32_Object_t *pObj, uint8_t *Status)
 {
   if (lsm6dso32_xl_flag_data_ready_get(&(pObj->Ctx), Status) != LSM6DSO32_OK)
@@ -1254,11 +1256,11 @@ int32_t LSM6DSO32_ACC_Get_DRDY_Status(LSM6DSO32_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Get the LSM6DSO32 GYRO data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LSM6DSO32 GYRO data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LSM6DSO32_GYRO_Get_DRDY_Status(LSM6DSO32_Object_t *pObj, uint8_t *Status)
 {
   if (lsm6dso32_gy_flag_data_ready_get(&(pObj->Ctx), Status) != LSM6DSO32_OK)
@@ -1270,33 +1272,33 @@ int32_t LSM6DSO32_GYRO_Get_DRDY_Status(LSM6DSO32_Object_t *pObj, uint8_t *Status
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LSM6DSO32_Private_Functions LSM6DSO32 Private Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Set the LSM6DSO32 accelerometer sensor output data rate when enabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LSM6DSO32 accelerometer sensor output data rate when enabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LSM6DSO32_ACC_SetOutputDataRate_When_Enabled(LSM6DSO32_Object_t *pObj, float_t Odr)
 {
   lsm6dso32_odr_xl_t new_odr;
 
   new_odr = (Odr <=   12.5f) ? LSM6DSO32_XL_ODR_12Hz5_HIGH_PERF
-          : (Odr <=   26.0f) ? LSM6DSO32_XL_ODR_26Hz_HIGH_PERF
-          : (Odr <=   52.0f) ? LSM6DSO32_XL_ODR_52Hz_HIGH_PERF
-          : (Odr <=  104.0f) ? LSM6DSO32_XL_ODR_104Hz_HIGH_PERF
-          : (Odr <=  208.0f) ? LSM6DSO32_XL_ODR_208Hz_HIGH_PERF
-          : (Odr <=  417.0f) ? LSM6DSO32_XL_ODR_417Hz_HIGH_PERF
-          : (Odr <=  833.0f) ? LSM6DSO32_XL_ODR_833Hz_HIGH_PERF
-          : (Odr <= 1667.0f) ? LSM6DSO32_XL_ODR_1667Hz_HIGH_PERF
-          : (Odr <= 3333.0f) ? LSM6DSO32_XL_ODR_3333Hz_HIGH_PERF
-          :                    LSM6DSO32_XL_ODR_6667Hz_HIGH_PERF;
+            : (Odr <=   26.0f) ? LSM6DSO32_XL_ODR_26Hz_HIGH_PERF
+            : (Odr <=   52.0f) ? LSM6DSO32_XL_ODR_52Hz_HIGH_PERF
+            : (Odr <=  104.0f) ? LSM6DSO32_XL_ODR_104Hz_HIGH_PERF
+            : (Odr <=  208.0f) ? LSM6DSO32_XL_ODR_208Hz_HIGH_PERF
+            : (Odr <=  417.0f) ? LSM6DSO32_XL_ODR_417Hz_HIGH_PERF
+            : (Odr <=  833.0f) ? LSM6DSO32_XL_ODR_833Hz_HIGH_PERF
+            : (Odr <= 1667.0f) ? LSM6DSO32_XL_ODR_1667Hz_HIGH_PERF
+            : (Odr <= 3333.0f) ? LSM6DSO32_XL_ODR_3333Hz_HIGH_PERF
+            :                    LSM6DSO32_XL_ODR_6667Hz_HIGH_PERF;
 
   /* Output data rate selection. */
   if (lsm6dso32_xl_data_rate_set(&(pObj->Ctx), new_odr) != LSM6DSO32_OK)
@@ -1308,47 +1310,47 @@ static int32_t LSM6DSO32_ACC_SetOutputDataRate_When_Enabled(LSM6DSO32_Object_t *
 }
 
 /**
- * @brief  Set the LSM6DSO32 accelerometer sensor output data rate when disabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LSM6DSO32 accelerometer sensor output data rate when disabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LSM6DSO32_ACC_SetOutputDataRate_When_Disabled(LSM6DSO32_Object_t *pObj, float_t Odr)
 {
   pObj->acc_odr = (Odr <=   12.5f) ? LSM6DSO32_XL_ODR_12Hz5_HIGH_PERF
-                : (Odr <=   26.0f) ? LSM6DSO32_XL_ODR_26Hz_HIGH_PERF
-                : (Odr <=   52.0f) ? LSM6DSO32_XL_ODR_52Hz_HIGH_PERF
-                : (Odr <=  104.0f) ? LSM6DSO32_XL_ODR_104Hz_HIGH_PERF
-                : (Odr <=  208.0f) ? LSM6DSO32_XL_ODR_208Hz_HIGH_PERF
-                : (Odr <=  417.0f) ? LSM6DSO32_XL_ODR_417Hz_HIGH_PERF
-                : (Odr <=  833.0f) ? LSM6DSO32_XL_ODR_833Hz_HIGH_PERF
-                : (Odr <= 1667.0f) ? LSM6DSO32_XL_ODR_1667Hz_HIGH_PERF
-                : (Odr <= 3333.0f) ? LSM6DSO32_XL_ODR_3333Hz_HIGH_PERF
-                :                    LSM6DSO32_XL_ODR_6667Hz_HIGH_PERF;
+                  : (Odr <=   26.0f) ? LSM6DSO32_XL_ODR_26Hz_HIGH_PERF
+                  : (Odr <=   52.0f) ? LSM6DSO32_XL_ODR_52Hz_HIGH_PERF
+                  : (Odr <=  104.0f) ? LSM6DSO32_XL_ODR_104Hz_HIGH_PERF
+                  : (Odr <=  208.0f) ? LSM6DSO32_XL_ODR_208Hz_HIGH_PERF
+                  : (Odr <=  417.0f) ? LSM6DSO32_XL_ODR_417Hz_HIGH_PERF
+                  : (Odr <=  833.0f) ? LSM6DSO32_XL_ODR_833Hz_HIGH_PERF
+                  : (Odr <= 1667.0f) ? LSM6DSO32_XL_ODR_1667Hz_HIGH_PERF
+                  : (Odr <= 3333.0f) ? LSM6DSO32_XL_ODR_3333Hz_HIGH_PERF
+                  :                    LSM6DSO32_XL_ODR_6667Hz_HIGH_PERF;
 
   return LSM6DSO32_OK;
 }
 
 /**
- * @brief  Set the LSM6DSO32 gyroscope sensor output data rate when enabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LSM6DSO32 gyroscope sensor output data rate when enabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LSM6DSO32_GYRO_SetOutputDataRate_When_Enabled(LSM6DSO32_Object_t *pObj, float_t Odr)
 {
   lsm6dso32_odr_g_t new_odr;
 
   new_odr = (Odr <=   12.5f) ? LSM6DSO32_GY_ODR_12Hz5_HIGH_PERF
-          : (Odr <=   26.0f) ? LSM6DSO32_GY_ODR_26Hz_HIGH_PERF
-          : (Odr <=   52.0f) ? LSM6DSO32_GY_ODR_52Hz_HIGH_PERF
-          : (Odr <=  104.0f) ? LSM6DSO32_GY_ODR_104Hz_HIGH_PERF
-          : (Odr <=  208.0f) ? LSM6DSO32_GY_ODR_208Hz_HIGH_PERF
-          : (Odr <=  417.0f) ? LSM6DSO32_GY_ODR_417Hz_HIGH_PERF
-          : (Odr <=  833.0f) ? LSM6DSO32_GY_ODR_833Hz_HIGH_PERF
-          : (Odr <= 1667.0f) ? LSM6DSO32_GY_ODR_1667Hz_HIGH_PERF
-          : (Odr <= 3333.0f) ? LSM6DSO32_GY_ODR_3333Hz_HIGH_PERF
-          :                    LSM6DSO32_GY_ODR_6667Hz_HIGH_PERF;
+            : (Odr <=   26.0f) ? LSM6DSO32_GY_ODR_26Hz_HIGH_PERF
+            : (Odr <=   52.0f) ? LSM6DSO32_GY_ODR_52Hz_HIGH_PERF
+            : (Odr <=  104.0f) ? LSM6DSO32_GY_ODR_104Hz_HIGH_PERF
+            : (Odr <=  208.0f) ? LSM6DSO32_GY_ODR_208Hz_HIGH_PERF
+            : (Odr <=  417.0f) ? LSM6DSO32_GY_ODR_417Hz_HIGH_PERF
+            : (Odr <=  833.0f) ? LSM6DSO32_GY_ODR_833Hz_HIGH_PERF
+            : (Odr <= 1667.0f) ? LSM6DSO32_GY_ODR_1667Hz_HIGH_PERF
+            : (Odr <= 3333.0f) ? LSM6DSO32_GY_ODR_3333Hz_HIGH_PERF
+            :                    LSM6DSO32_GY_ODR_6667Hz_HIGH_PERF;
 
   /* Output data rate selection. */
   if (lsm6dso32_gy_data_rate_set(&(pObj->Ctx), new_odr) != LSM6DSO32_OK)
@@ -1360,35 +1362,35 @@ static int32_t LSM6DSO32_GYRO_SetOutputDataRate_When_Enabled(LSM6DSO32_Object_t 
 }
 
 /**
- * @brief  Set the LSM6DSO32 gyroscope sensor output data rate when disabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LSM6DSO32 gyroscope sensor output data rate when disabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LSM6DSO32_GYRO_SetOutputDataRate_When_Disabled(LSM6DSO32_Object_t *pObj, float_t Odr)
 {
   pObj->gyro_odr = (Odr <=   12.5f) ? LSM6DSO32_GY_ODR_12Hz5_HIGH_PERF
-                 : (Odr <=   26.0f) ? LSM6DSO32_GY_ODR_26Hz_HIGH_PERF
-                 : (Odr <=   52.0f) ? LSM6DSO32_GY_ODR_52Hz_HIGH_PERF
-                 : (Odr <=  104.0f) ? LSM6DSO32_GY_ODR_104Hz_HIGH_PERF
-                 : (Odr <=  208.0f) ? LSM6DSO32_GY_ODR_208Hz_HIGH_PERF
-                 : (Odr <=  417.0f) ? LSM6DSO32_GY_ODR_417Hz_HIGH_PERF
-                 : (Odr <=  833.0f) ? LSM6DSO32_GY_ODR_833Hz_HIGH_PERF
-                 : (Odr <= 1667.0f) ? LSM6DSO32_GY_ODR_1667Hz_HIGH_PERF
-                 : (Odr <= 3333.0f) ? LSM6DSO32_GY_ODR_3333Hz_HIGH_PERF
-                 :                    LSM6DSO32_GY_ODR_6667Hz_HIGH_PERF;
+                   : (Odr <=   26.0f) ? LSM6DSO32_GY_ODR_26Hz_HIGH_PERF
+                   : (Odr <=   52.0f) ? LSM6DSO32_GY_ODR_52Hz_HIGH_PERF
+                   : (Odr <=  104.0f) ? LSM6DSO32_GY_ODR_104Hz_HIGH_PERF
+                   : (Odr <=  208.0f) ? LSM6DSO32_GY_ODR_208Hz_HIGH_PERF
+                   : (Odr <=  417.0f) ? LSM6DSO32_GY_ODR_417Hz_HIGH_PERF
+                   : (Odr <=  833.0f) ? LSM6DSO32_GY_ODR_833Hz_HIGH_PERF
+                   : (Odr <= 1667.0f) ? LSM6DSO32_GY_ODR_1667Hz_HIGH_PERF
+                   : (Odr <= 3333.0f) ? LSM6DSO32_GY_ODR_3333Hz_HIGH_PERF
+                   :                    LSM6DSO32_GY_ODR_6667Hz_HIGH_PERF;
 
   return LSM6DSO32_OK;
 }
 
 /**
- * @brief  Wrap Read register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Read register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   LSM6DSO32_Object_t *pObj = (LSM6DSO32_Object_t *)Handle;
@@ -1397,13 +1399,13 @@ static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t L
 }
 
 /**
- * @brief  Wrap Write register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Write register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   LSM6DSO32_Object_t *pObj = (LSM6DSO32_Object_t *)Handle;

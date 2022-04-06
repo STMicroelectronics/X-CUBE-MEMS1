@@ -1,21 +1,20 @@
 /**
- ******************************************************************************
- * @file    lps22hh.h
- * @author  MEMS Software Solutions Team
- * @brief   LPS22HH header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lps22hh.h
+  * @author  MEMS Software Solutions Team
+  * @brief   LPS22HH header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LPS22HH_H
@@ -31,20 +30,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup LPS22HH LPS22HH
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LPS22HH_Exported_Types LPS22HH Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*LPS22HH_Init_Func)(void);
 typedef int32_t (*LPS22HH_DeInit_Func)(void);
@@ -120,33 +119,37 @@ typedef enum
   LPS22HH_FIFO_TRIGGER_BYPASSTOFIFO_MODE      = (uint8_t)0xE0     /*!< BYPASS mode until trigger deasserted, then FIFO MODE*/
 } LPS22HH_FifoMode;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } lps22hh_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } lps22hh_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } lps22hh_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } lps22hh_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LPS22HH_Exported_Constants LPS22HH Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define LPS22HH_OK                0
 #define LPS22HH_ERROR            -1
@@ -162,12 +165,12 @@ typedef union{
 #define LPS22HH_LOW_NOISE_EN       1
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LPS22HH_Exported_Functions LPS22HH Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t LPS22HH_RegisterBusIO(LPS22HH_Object_t *pObj, LPS22HH_IO_t *pIO);
 int32_t LPS22HH_Init(LPS22HH_Object_t *pObj);
@@ -215,19 +218,19 @@ int32_t LPS22HH_Set_Power_Mode(LPS22HH_Object_t *pObj, uint8_t powerMode);
 int32_t LPS22HH_Set_Filter_Mode(LPS22HH_Object_t *pObj, uint8_t filterMode);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LPS22HH_Exported_Variables LPS22HH Exported Variables
- * @{
- */
+  * @{
+  */
 extern LPS22HH_CommonDrv_t LPS22HH_COMMON_Driver;
 extern LPS22HH_PRESS_Drv_t LPS22HH_PRESS_Driver;
 extern LPS22HH_TEMP_Drv_t LPS22HH_TEMP_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -236,15 +239,13 @@ extern LPS22HH_TEMP_Drv_t LPS22HH_TEMP_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  * @}
+  */

@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    lsm303agr.h
- * @author  MEMS Software Solutions Team
- * @brief   LSM303AGR header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lsm303agr.h
+  * @author  MEMS Software Solutions Team
+  * @brief   LSM303AGR header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LSM303AGR_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup LSM303AGR LSM303AGR
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LSM303AGR_Exported_Types LSM303AGR Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*LSM303AGR_Init_Func)(void);
 typedef int32_t (*LSM303AGR_DeInit_Func)(void);
@@ -151,33 +151,37 @@ typedef struct
   int32_t (*GetAxesRaw)(LSM303AGR_MAG_Object_t *, LSM303AGR_AxesRaw_t *);
 } LSM303AGR_MAG_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } lsm303agr_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } lsm303agr_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } lsm303agr_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } lsm303agr_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LSM303AGR_Exported_Constants LSM303AGR Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define LSM303AGR_OK                     0
 #define LSM303AGR_ERROR                 -1
@@ -201,12 +205,12 @@ typedef union{
 #define LSM303AGR_MAG_SENSITIVITY_FS_50GAUSS  1.500f  /**< Sensitivity value for 50 gauss full scale [mgauss/LSB] */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LSM303AGR_Exported_Functions LSM303AGR Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t LSM303AGR_ACC_RegisterBusIO(LSM303AGR_ACC_Object_t *pObj, LSM303AGR_IO_t *pIO);
 int32_t LSM303AGR_ACC_Init(LSM303AGR_ACC_Object_t *pObj);
@@ -253,12 +257,12 @@ int32_t LSM303AGR_MAG_Get_DRDY_Status(LSM303AGR_MAG_Object_t *pObj, uint8_t *sta
 int32_t LSM303AGR_MAG_Get_Init_Status(LSM303AGR_MAG_Object_t *pObj, uint8_t *status);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LSM303AGR_Exported_Variables LSM303AGR Exported Variables
- * @{
- */
+  * @{
+  */
 
 extern LSM303AGR_ACC_CommonDrv_t LSM303AGR_ACC_COMMON_Driver;
 extern LSM303AGR_ACC_Drv_t LSM303AGR_ACC_Driver;
@@ -266,8 +270,8 @@ extern LSM303AGR_MAG_CommonDrv_t LSM303AGR_MAG_COMMON_Driver;
 extern LSM303AGR_MAG_Drv_t LSM303AGR_MAG_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -276,15 +280,15 @@ extern LSM303AGR_MAG_Drv_t LSM303AGR_MAG_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

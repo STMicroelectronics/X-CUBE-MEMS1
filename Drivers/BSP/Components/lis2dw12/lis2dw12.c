@@ -1,40 +1,40 @@
 /**
- ******************************************************************************
- * @file    lis2dw12.c
- * @author  MEMS Software Solutions Team
- * @brief   LIS2DW12 driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lis2dw12.c
+  * @author  MEMS Software Solutions Team
+  * @brief   LIS2DW12 driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "lis2dw12.h"
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LIS2DW12 LIS2DW12
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LIS2DW12_Exported_Variables LIS2DW12 Exported Variables
- * @{
- */
+  * @{
+  */
 
 LIS2DW12_CommonDrv_t LIS2DW12_COMMON_Driver =
 {
@@ -58,31 +58,33 @@ LIS2DW12_ACC_Drv_t LIS2DW12_ACC_Driver =
 };
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LIS2DW12_Private_Function_Prototypes LIS2DW12 Private Function Prototypes
- * @{
- */
+  * @{
+  */
 
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
-static int32_t LIS2DW12_ACC_SetOutputDataRate_When_Enabled(LIS2DW12_Object_t *pObj, float Odr, LIS2DW12_Operating_Mode_t Mode, LIS2DW12_Low_Noise_t Noise);
-static int32_t LIS2DW12_ACC_SetOutputDataRate_When_Disabled(LIS2DW12_Object_t *pObj, float Odr, LIS2DW12_Operating_Mode_t Mode, LIS2DW12_Low_Noise_t Noise);
+static int32_t LIS2DW12_ACC_SetOutputDataRate_When_Enabled(LIS2DW12_Object_t *pObj, float Odr,
+                                                           LIS2DW12_Operating_Mode_t Mode, LIS2DW12_Low_Noise_t Noise);
+static int32_t LIS2DW12_ACC_SetOutputDataRate_When_Disabled(LIS2DW12_Object_t *pObj, float Odr,
+                                                            LIS2DW12_Operating_Mode_t Mode, LIS2DW12_Low_Noise_t Noise);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LIS2DW12_Exported_Functions LIS2DW12 Exported Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Register Component Bus IO operations
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Register Component Bus IO operations
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_RegisterBusIO(LIS2DW12_Object_t *pObj, LIS2DW12_IO_t *pIO)
 {
   int32_t ret = LIS2DW12_OK;
@@ -136,10 +138,10 @@ int32_t LIS2DW12_RegisterBusIO(LIS2DW12_Object_t *pObj, LIS2DW12_IO_t *pIO)
 }
 
 /**
- * @brief  Initialize the LIS2DW12 sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Initialize the LIS2DW12 sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_Init(LIS2DW12_Object_t *pObj)
 {
   /* Enable register address automatically incremented during a multiple byte
@@ -192,10 +194,10 @@ int32_t LIS2DW12_Init(LIS2DW12_Object_t *pObj)
 }
 
 /**
- * @brief  Deinitialize the LIS2DW12 sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Deinitialize the LIS2DW12 sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_DeInit(LIS2DW12_Object_t *pObj)
 {
   /* Disable the component */
@@ -217,11 +219,11 @@ int32_t LIS2DW12_DeInit(LIS2DW12_Object_t *pObj)
 }
 
 /**
- * @brief  Read component ID
- * @param  pObj the device pObj
- * @param  Id the WHO_AM_I value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Read component ID
+  * @param  pObj the device pObj
+  * @param  Id the WHO_AM_I value
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ReadID(LIS2DW12_Object_t *pObj, uint8_t *Id)
 {
   if (lis2dw12_device_id_get(&(pObj->Ctx), Id) != LIS2DW12_OK)
@@ -233,11 +235,11 @@ int32_t LIS2DW12_ReadID(LIS2DW12_Object_t *pObj, uint8_t *Id)
 }
 
 /**
- * @brief  Get LIS2DW12 sensor capabilities
- * @param  pObj Component object pointer
- * @param  Capabilities pointer to LIS2DW12 sensor capabilities
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get LIS2DW12 sensor capabilities
+  * @param  pObj Component object pointer
+  * @param  Capabilities pointer to LIS2DW12 sensor capabilities
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_GetCapabilities(LIS2DW12_Object_t *pObj, LIS2DW12_Capabilities_t *Capabilities)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -257,10 +259,10 @@ int32_t LIS2DW12_GetCapabilities(LIS2DW12_Object_t *pObj, LIS2DW12_Capabilities_
 }
 
 /**
- * @brief  Enable the LIS2DW12 accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the LIS2DW12 accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Enable(LIS2DW12_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -270,7 +272,8 @@ int32_t LIS2DW12_ACC_Enable(LIS2DW12_Object_t *pObj)
   }
 
   /* Output data rate selection. */
-  if (LIS2DW12_ACC_SetOutputDataRate_When_Enabled(pObj, pObj->acc_odr, pObj->acc_operating_mode, pObj->acc_low_noise) != LIS2DW12_OK)
+  if (LIS2DW12_ACC_SetOutputDataRate_When_Enabled(pObj, pObj->acc_odr, pObj->acc_operating_mode,
+                                                  pObj->acc_low_noise) != LIS2DW12_OK)
   {
     return LIS2DW12_ERROR;
   }
@@ -281,10 +284,10 @@ int32_t LIS2DW12_ACC_Enable(LIS2DW12_Object_t *pObj)
 }
 
 /**
- * @brief  Disable the LIS2DW12 accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable the LIS2DW12 accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Disable(LIS2DW12_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -305,11 +308,11 @@ int32_t LIS2DW12_ACC_Disable(LIS2DW12_Object_t *pObj)
 }
 
 /**
- * @brief  Get the LIS2DW12 accelerometer sensor sensitivity
- * @param  pObj the device pObj
- * @param  Sensitivity pointer
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DW12 accelerometer sensor sensitivity
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_GetSensitivity(LIS2DW12_Object_t *pObj, float *Sensitivity)
 {
   int32_t ret = LIS2DW12_OK;
@@ -328,7 +331,7 @@ int32_t LIS2DW12_ACC_GetSensitivity(LIS2DW12_Object_t *pObj, float *Sensitivity)
     return LIS2DW12_ERROR;
   }
 
-  switch(mode)
+  switch (mode)
   {
     case LIS2DW12_CONT_LOW_PWR_12bit:
     case LIS2DW12_SINGLE_LOW_PWR_12bit:
@@ -338,7 +341,7 @@ int32_t LIS2DW12_ACC_GetSensitivity(LIS2DW12_Object_t *pObj, float *Sensitivity)
       {
         case LIS2DW12_2g:
           *Sensitivity = LIS2DW12_ACC_SENSITIVITY_FOR_FS_2G_LOPOW1_MODE;
-           break;
+          break;
 
         case LIS2DW12_4g:
           *Sensitivity = LIS2DW12_ACC_SENSITIVITY_FOR_FS_4G_LOPOW1_MODE;
@@ -346,7 +349,7 @@ int32_t LIS2DW12_ACC_GetSensitivity(LIS2DW12_Object_t *pObj, float *Sensitivity)
 
         case LIS2DW12_8g:
           *Sensitivity = LIS2DW12_ACC_SENSITIVITY_FOR_FS_8G_LOPOW1_MODE;
-           break;
+          break;
 
         case LIS2DW12_16g:
           *Sensitivity = LIS2DW12_ACC_SENSITIVITY_FOR_FS_16G_LOPOW1_MODE;
@@ -377,7 +380,7 @@ int32_t LIS2DW12_ACC_GetSensitivity(LIS2DW12_Object_t *pObj, float *Sensitivity)
       {
         case LIS2DW12_2g:
           *Sensitivity = LIS2DW12_ACC_SENSITIVITY_FOR_FS_2G_OTHER_MODES;
-           break;
+          break;
 
         case LIS2DW12_4g:
           *Sensitivity = LIS2DW12_ACC_SENSITIVITY_FOR_FS_4G_OTHER_MODES;
@@ -385,7 +388,7 @@ int32_t LIS2DW12_ACC_GetSensitivity(LIS2DW12_Object_t *pObj, float *Sensitivity)
 
         case LIS2DW12_8g:
           *Sensitivity = LIS2DW12_ACC_SENSITIVITY_FOR_FS_8G_OTHER_MODES;
-           break;
+          break;
 
         case LIS2DW12_16g:
           *Sensitivity = LIS2DW12_ACC_SENSITIVITY_FOR_FS_16G_OTHER_MODES;
@@ -408,11 +411,11 @@ int32_t LIS2DW12_ACC_GetSensitivity(LIS2DW12_Object_t *pObj, float *Sensitivity)
 }
 
 /**
- * @brief  Get the LIS2DW12 accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DW12 accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_GetOutputDataRate(LIS2DW12_Object_t *pObj, float *Odr)
 {
   int32_t ret = LIS2DW12_OK;
@@ -445,7 +448,7 @@ int32_t LIS2DW12_ACC_GetOutputDataRate(LIS2DW12_Object_t *pObj, float *Odr)
         case LIS2DW12_HIGH_PERFORMANCE:
         case LIS2DW12_HIGH_PERFORMANCE_LOW_NOISE:
           *Odr = 12.5f;
-           break;
+          break;
 
         case LIS2DW12_CONT_LOW_PWR_4:
         case LIS2DW12_CONT_LOW_PWR_3:
@@ -499,7 +502,7 @@ int32_t LIS2DW12_ACC_GetOutputDataRate(LIS2DW12_Object_t *pObj, float *Odr)
         case LIS2DW12_HIGH_PERFORMANCE:
         case LIS2DW12_HIGH_PERFORMANCE_LOW_NOISE:
           *Odr = 400.0f;
-           break;
+          break;
 
         case LIS2DW12_CONT_LOW_PWR_4:
         case LIS2DW12_CONT_LOW_PWR_3:
@@ -533,7 +536,7 @@ int32_t LIS2DW12_ACC_GetOutputDataRate(LIS2DW12_Object_t *pObj, float *Odr)
         case LIS2DW12_HIGH_PERFORMANCE:
         case LIS2DW12_HIGH_PERFORMANCE_LOW_NOISE:
           *Odr = 800.0f;
-           break;
+          break;
 
         case LIS2DW12_CONT_LOW_PWR_4:
         case LIS2DW12_CONT_LOW_PWR_3:
@@ -567,7 +570,7 @@ int32_t LIS2DW12_ACC_GetOutputDataRate(LIS2DW12_Object_t *pObj, float *Odr)
         case LIS2DW12_HIGH_PERFORMANCE:
         case LIS2DW12_HIGH_PERFORMANCE_LOW_NOISE:
           *Odr = 1600.0f;
-           break;
+          break;
 
         case LIS2DW12_CONT_LOW_PWR_4:
         case LIS2DW12_CONT_LOW_PWR_3:
@@ -605,11 +608,11 @@ int32_t LIS2DW12_ACC_GetOutputDataRate(LIS2DW12_Object_t *pObj, float *Odr)
 }
 
 /**
- * @brief  Set the LIS2DW12 accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LIS2DW12 accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_SetOutputDataRate(LIS2DW12_Object_t *pObj, float Odr)
 {
   /* By default we use High Performance mode and Low Noise disabled */
@@ -617,14 +620,15 @@ int32_t LIS2DW12_ACC_SetOutputDataRate(LIS2DW12_Object_t *pObj, float Odr)
 }
 
 /**
- * @brief  Set the LIS2DW12 accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @param  Mode the operating mode to be used
- * @param  Noise the low noise option
- * @retval 0 in case of success, an error code otherwise
- */
-int32_t LIS2DW12_ACC_SetOutputDataRate_With_Mode(LIS2DW12_Object_t *pObj, float Odr, LIS2DW12_Operating_Mode_t Mode, LIS2DW12_Low_Noise_t Noise)
+  * @brief  Set the LIS2DW12 accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @param  Mode the operating mode to be used
+  * @param  Noise the low noise option
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LIS2DW12_ACC_SetOutputDataRate_With_Mode(LIS2DW12_Object_t *pObj, float Odr, LIS2DW12_Operating_Mode_t Mode,
+                                                 LIS2DW12_Low_Noise_t Noise)
 {
   /* Check if the component is enabled */
   if (pObj->acc_is_enabled == 1U)
@@ -638,11 +642,11 @@ int32_t LIS2DW12_ACC_SetOutputDataRate_With_Mode(LIS2DW12_Object_t *pObj, float 
 }
 
 /**
- * @brief  Get the LIS2DW12 accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale pointer where the full scale is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DW12 accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale pointer where the full scale is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_GetFullScale(LIS2DW12_Object_t *pObj, int32_t *FullScale)
 {
   int32_t ret = LIS2DW12_OK;
@@ -682,11 +686,11 @@ int32_t LIS2DW12_ACC_GetFullScale(LIS2DW12_Object_t *pObj, int32_t *FullScale)
 }
 
 /**
- * @brief  Set the LIS2DW12 accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale the functional full scale to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LIS2DW12 accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale the functional full scale to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_SetFullScale(LIS2DW12_Object_t *pObj, int32_t FullScale)
 {
   lis2dw12_fs_t new_fs;
@@ -694,9 +698,9 @@ int32_t LIS2DW12_ACC_SetFullScale(LIS2DW12_Object_t *pObj, int32_t FullScale)
   /* Seems like MISRA C-2012 rule 14.3a violation but only from single file statical analysis point of view because
      the parameter passed to the function is not known at the moment of analysis */
   new_fs = (FullScale <= 2) ? LIS2DW12_2g
-         : (FullScale <= 4) ? LIS2DW12_4g
-         : (FullScale <= 8) ? LIS2DW12_8g
-         :                    LIS2DW12_16g;
+           : (FullScale <= 4) ? LIS2DW12_4g
+           : (FullScale <= 8) ? LIS2DW12_8g
+           :                    LIS2DW12_16g;
 
   if (lis2dw12_full_scale_set(&(pObj->Ctx), new_fs) != LIS2DW12_OK)
   {
@@ -707,11 +711,11 @@ int32_t LIS2DW12_ACC_SetFullScale(LIS2DW12_Object_t *pObj, int32_t FullScale)
 }
 
 /**
- * @brief  Get the LIS2DW12 accelerometer sensor raw axes
- * @param  pObj the device pObj
- * @param  Value pointer where the raw values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DW12 accelerometer sensor raw axes
+  * @param  pObj the device pObj
+  * @param  Value pointer where the raw values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_GetAxesRaw(LIS2DW12_Object_t *pObj, LIS2DW12_AxesRaw_t *Value)
 {
   lis2dw12_axis3bit16_t data_raw;
@@ -730,7 +734,7 @@ int32_t LIS2DW12_ACC_GetAxesRaw(LIS2DW12_Object_t *pObj, LIS2DW12_AxesRaw_t *Val
     return LIS2DW12_ERROR;
   }
 
-  switch(mode)
+  switch (mode)
   {
     case LIS2DW12_CONT_LOW_PWR_12bit:
     case LIS2DW12_SINGLE_LOW_PWR_12bit:
@@ -771,11 +775,11 @@ int32_t LIS2DW12_ACC_GetAxesRaw(LIS2DW12_Object_t *pObj, LIS2DW12_AxesRaw_t *Val
 }
 
 /**
- * @brief  Get the LIS2DW12 accelerometer sensor axes
- * @param  pObj the device pObj
- * @param  Acceleration pointer where the values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DW12 accelerometer sensor axes
+  * @param  pObj the device pObj
+  * @param  Acceleration pointer where the values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_GetAxes(LIS2DW12_Object_t *pObj, LIS2DW12_Axes_t *Acceleration)
 {
   LIS2DW12_AxesRaw_t data_raw;
@@ -802,12 +806,12 @@ int32_t LIS2DW12_ACC_GetAxes(LIS2DW12_Object_t *pObj, LIS2DW12_Axes_t *Accelerat
 }
 
 /**
- * @brief  Get the LIS2DW12 register value
- * @param  pObj the device pObj
- * @param  Reg address to be read
- * @param  Data pointer where the value is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DW12 register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be read
+  * @param  Data pointer where the value is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_Read_Reg(LIS2DW12_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 {
   if (lis2dw12_read_reg(&(pObj->Ctx), Reg, Data, 1) != LIS2DW12_OK)
@@ -819,12 +823,12 @@ int32_t LIS2DW12_Read_Reg(LIS2DW12_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 }
 
 /**
- * @brief  Set the LIS2DW12 register value
- * @param  pObj the device pObj
- * @param  Reg address to be written
- * @param  Data value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LIS2DW12 register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be written
+  * @param  Data value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_Write_Reg(LIS2DW12_Object_t *pObj, uint8_t Reg, uint8_t Data)
 {
   if (lis2dw12_write_reg(&(pObj->Ctx), Reg, &Data, 1) != LIS2DW12_OK)
@@ -836,11 +840,11 @@ int32_t LIS2DW12_Write_Reg(LIS2DW12_Object_t *pObj, uint8_t Reg, uint8_t Data)
 }
 
 /**
- * @brief  Set the interrupt latch
- * @param  pObj the device pObj
- * @param  Status value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the interrupt latch
+  * @param  pObj the device pObj
+  * @param  Status value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_Set_Interrupt_Latch(LIS2DW12_Object_t *pObj, uint8_t Status)
 {
   if (Status > 1U)
@@ -857,10 +861,10 @@ int32_t LIS2DW12_Set_Interrupt_Latch(LIS2DW12_Object_t *pObj, uint8_t Status)
 }
 
 /**
- * @brief  Enable DRDY interrupt mode
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable DRDY interrupt mode
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Enable_DRDY_Interrupt(LIS2DW12_Object_t *pObj)
 {
   lis2dw12_ctrl5_int2_pad_ctrl_t int2_pad_ctrl;
@@ -884,10 +888,10 @@ int32_t LIS2DW12_ACC_Enable_DRDY_Interrupt(LIS2DW12_Object_t *pObj)
 }
 
 /**
- * @brief  Disable DRDY interrupt mode
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable DRDY interrupt mode
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Disable_DRDY_Interrupt(LIS2DW12_Object_t *pObj)
 {
   lis2dw12_ctrl5_int2_pad_ctrl_t int2_pad_ctrl;
@@ -906,14 +910,14 @@ int32_t LIS2DW12_ACC_Disable_DRDY_Interrupt(LIS2DW12_Object_t *pObj)
 }
 
 /**
- * @brief  Set the filterMode value
- * @param  pObj the device pObj
- * @param  filterMode value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the filterMode value
+  * @param  pObj the device pObj
+  * @param  filterMode value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Set_Filter_Mode(LIS2DW12_Object_t *pObj, uint8_t filterMode)
 {
-  if(lis2dw12_filter_bandwidth_set(&(pObj->Ctx), (lis2dw12_bw_filt_t)filterMode) != LIS2DW12_OK)
+  if (lis2dw12_filter_bandwidth_set(&(pObj->Ctx), (lis2dw12_bw_filt_t)filterMode) != LIS2DW12_OK)
   {
     return LIS2DW12_ERROR;
   }
@@ -922,10 +926,10 @@ int32_t LIS2DW12_ACC_Set_Filter_Mode(LIS2DW12_Object_t *pObj, uint8_t filterMode
 }
 
 /**
- * @brief  Enable wake up detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable wake up detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Enable_Wake_Up_Detection(LIS2DW12_Object_t *pObj)
 {
   int32_t ret = LIS2DW12_OK;
@@ -971,10 +975,10 @@ int32_t LIS2DW12_ACC_Enable_Wake_Up_Detection(LIS2DW12_Object_t *pObj)
 }
 
 /**
- * @brief  Disable wake up detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable wake up detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Disable_Wake_Up_Detection(LIS2DW12_Object_t *pObj)
 {
   lis2dw12_ctrl4_int1_pad_ctrl_t ctrl4_int1_reg;
@@ -1001,7 +1005,7 @@ int32_t LIS2DW12_ACC_Disable_Wake_Up_Detection(LIS2DW12_Object_t *pObj)
   }
 
   /*Disable Interrupts bit if none event is still enabled */
-  if(ctrl5_int2_reg.int2_sleep_chg == 0 && ctrl4_int1_reg.int1_wu == 0 && ctrl4_int1_reg.int1_6d == 0)
+  if (ctrl5_int2_reg.int2_sleep_chg == 0 && ctrl4_int1_reg.int1_wu == 0 && ctrl4_int1_reg.int1_6d == 0)
   {
     if (lis2dw12_read_reg(&(pObj->Ctx), LIS2DW12_CTRL_REG7, (uint8_t *)&ctrl_reg7, 1) != LIS2DW12_OK)
     {
@@ -1032,11 +1036,11 @@ int32_t LIS2DW12_ACC_Disable_Wake_Up_Detection(LIS2DW12_Object_t *pObj)
 }
 
 /**
- * @brief  Set wake up threshold
- * @param  pObj the device pObj
- * @param  Threshold wake up detection threshold
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set wake up threshold
+  * @param  pObj the device pObj
+  * @param  Threshold wake up detection threshold
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Set_Wake_Up_Threshold(LIS2DW12_Object_t *pObj, uint8_t Threshold)
 {
   /* Set wake up threshold. */
@@ -1049,11 +1053,11 @@ int32_t LIS2DW12_ACC_Set_Wake_Up_Threshold(LIS2DW12_Object_t *pObj, uint8_t Thre
 }
 
 /**
- * @brief  Set wake up duration
- * @param  pObj the device pObj
- * @param  Duration wake up detection duration
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set wake up duration
+  * @param  pObj the device pObj
+  * @param  Duration wake up detection duration
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Set_Wake_Up_Duration(LIS2DW12_Object_t *pObj, uint8_t Duration)
 {
   /* Set wake up duration. */
@@ -1066,10 +1070,10 @@ int32_t LIS2DW12_ACC_Set_Wake_Up_Duration(LIS2DW12_Object_t *pObj, uint8_t Durat
 }
 
 /**
- * @brief  Enable inactivity detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable inactivity detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Enable_Inactivity_Detection(LIS2DW12_Object_t *pObj)
 {
   int32_t ret = LIS2DW12_OK;
@@ -1115,10 +1119,10 @@ int32_t LIS2DW12_ACC_Enable_Inactivity_Detection(LIS2DW12_Object_t *pObj)
 }
 
 /**
- * @brief  Disable inactivity detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable inactivity detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Disable_Inactivity_Detection(LIS2DW12_Object_t *pObj)
 {
   lis2dw12_ctrl4_int1_pad_ctrl_t ctrl4_int1_reg;
@@ -1145,7 +1149,7 @@ int32_t LIS2DW12_ACC_Disable_Inactivity_Detection(LIS2DW12_Object_t *pObj)
   }
 
   /*Disable Interrupts bit if none event is still enabled */
-  if(ctrl5_int2_reg.int2_sleep_chg == 0 && ctrl4_int1_reg.int1_wu == 0 && ctrl4_int1_reg.int1_6d == 0)
+  if (ctrl5_int2_reg.int2_sleep_chg == 0 && ctrl4_int1_reg.int1_wu == 0 && ctrl4_int1_reg.int1_6d == 0)
   {
     if (lis2dw12_read_reg(&(pObj->Ctx), LIS2DW12_CTRL_REG7, (uint8_t *)&ctrl_reg7, 1) != LIS2DW12_OK)
     {
@@ -1176,11 +1180,11 @@ int32_t LIS2DW12_ACC_Disable_Inactivity_Detection(LIS2DW12_Object_t *pObj)
 }
 
 /**
- * @brief  Set sleep duration
- * @param  pObj the device pObj
- * @param  Duration wake up detection duration
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set sleep duration
+  * @param  pObj the device pObj
+  * @param  Duration wake up detection duration
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Set_Sleep_Duration(LIS2DW12_Object_t *pObj, uint8_t Duration)
 {
   /* Set sleep duration. */
@@ -1193,10 +1197,10 @@ int32_t LIS2DW12_ACC_Set_Sleep_Duration(LIS2DW12_Object_t *pObj, uint8_t Duratio
 }
 
 /**
- * @brief  Enable 6D orientation detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable 6D orientation detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Enable_6D_Orientation(LIS2DW12_Object_t *pObj)
 {
   int32_t ret = LIS2DW12_OK;
@@ -1237,10 +1241,10 @@ int32_t LIS2DW12_ACC_Enable_6D_Orientation(LIS2DW12_Object_t *pObj)
 }
 
 /**
- * @brief  Disable 6D orientation detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable 6D orientation detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Disable_6D_Orientation(LIS2DW12_Object_t *pObj)
 {
   lis2dw12_ctrl4_int1_pad_ctrl_t ctrl4_int1_reg;
@@ -1267,7 +1271,7 @@ int32_t LIS2DW12_ACC_Disable_6D_Orientation(LIS2DW12_Object_t *pObj)
   }
 
   /*Disable Interrupts bit if none event is still enabled */
-  if(ctrl5_int2_reg.int2_sleep_chg == 0 && ctrl4_int1_reg.int1_wu == 0 && ctrl4_int1_reg.int1_6d == 0)
+  if (ctrl5_int2_reg.int2_sleep_chg == 0 && ctrl4_int1_reg.int1_wu == 0 && ctrl4_int1_reg.int1_6d == 0)
   {
     if (lis2dw12_read_reg(&(pObj->Ctx), LIS2DW12_CTRL_REG7, (uint8_t *)&ctrl_reg7, 1) != LIS2DW12_OK)
     {
@@ -1292,14 +1296,14 @@ int32_t LIS2DW12_ACC_Disable_6D_Orientation(LIS2DW12_Object_t *pObj)
 }
 
 /**
- * @brief  Set 6D orientation threshold
- * @param  pObj the device pObj
- * @param  Threshold 6D orientation detection threshold
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set 6D orientation threshold
+  * @param  pObj the device pObj
+  * @param  Threshold 6D orientation detection threshold
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Set_6D_Orientation_Threshold(LIS2DW12_Object_t *pObj, uint8_t Threshold)
 {
-  if(Threshold > 3)
+  if (Threshold > 3)
   {
     return LIS2DW12_ERROR;
   }
@@ -1313,11 +1317,11 @@ int32_t LIS2DW12_ACC_Set_6D_Orientation_Threshold(LIS2DW12_Object_t *pObj, uint8
 }
 
 /**
- * @brief  Get the status of XLow orientation
- * @param  pObj the device pObj
- * @param  XLow the status of XLow orientation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of XLow orientation
+  * @param  pObj the device pObj
+  * @param  XLow the status of XLow orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Get_6D_Orientation_XL(LIS2DW12_Object_t *pObj, uint8_t *XLow)
 {
   lis2dw12_sixd_src_t data;
@@ -1333,11 +1337,11 @@ int32_t LIS2DW12_ACC_Get_6D_Orientation_XL(LIS2DW12_Object_t *pObj, uint8_t *XLo
 }
 
 /**
- * @brief  Get the status of XHigh orientation
- * @param  pObj the device pObj
- * @param  XHigh the status of XHigh orientation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of XHigh orientation
+  * @param  pObj the device pObj
+  * @param  XHigh the status of XHigh orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Get_6D_Orientation_XH(LIS2DW12_Object_t *pObj, uint8_t *XHigh)
 {
   lis2dw12_sixd_src_t data;
@@ -1353,11 +1357,11 @@ int32_t LIS2DW12_ACC_Get_6D_Orientation_XH(LIS2DW12_Object_t *pObj, uint8_t *XHi
 }
 
 /**
- * @brief  Get the status of YLow orientation
- * @param  pObj the device pObj
- * @param  YLow the status of YLow orientation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of YLow orientation
+  * @param  pObj the device pObj
+  * @param  YLow the status of YLow orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Get_6D_Orientation_YL(LIS2DW12_Object_t *pObj, uint8_t *YLow)
 {
   lis2dw12_sixd_src_t data;
@@ -1373,11 +1377,11 @@ int32_t LIS2DW12_ACC_Get_6D_Orientation_YL(LIS2DW12_Object_t *pObj, uint8_t *YLo
 }
 
 /**
- * @brief  Get the status of YHigh orientation
- * @param  pObj the device pObj
- * @param  YHigh the status of YHigh orientation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of YHigh orientation
+  * @param  pObj the device pObj
+  * @param  YHigh the status of YHigh orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Get_6D_Orientation_YH(LIS2DW12_Object_t *pObj, uint8_t *YHigh)
 {
   lis2dw12_sixd_src_t data;
@@ -1393,11 +1397,11 @@ int32_t LIS2DW12_ACC_Get_6D_Orientation_YH(LIS2DW12_Object_t *pObj, uint8_t *YHi
 }
 
 /**
- * @brief  Get the status of ZLow orientation
- * @param  pObj the device pObj
- * @param  ZLow the status of ZLow orientation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of ZLow orientation
+  * @param  pObj the device pObj
+  * @param  ZLow the status of ZLow orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Get_6D_Orientation_ZL(LIS2DW12_Object_t *pObj, uint8_t *ZLow)
 {
   lis2dw12_sixd_src_t data;
@@ -1413,11 +1417,11 @@ int32_t LIS2DW12_ACC_Get_6D_Orientation_ZL(LIS2DW12_Object_t *pObj, uint8_t *ZLo
 }
 
 /**
- * @brief  Get the status of ZHigh orientation
- * @param  pObj the device pObj
- * @param  ZHigh the status of ZHigh orientation
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of ZHigh orientation
+  * @param  pObj the device pObj
+  * @param  ZHigh the status of ZHigh orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Get_6D_Orientation_ZH(LIS2DW12_Object_t *pObj, uint8_t *ZHigh)
 {
   lis2dw12_sixd_src_t data;
@@ -1433,11 +1437,11 @@ int32_t LIS2DW12_ACC_Get_6D_Orientation_ZH(LIS2DW12_Object_t *pObj, uint8_t *ZHi
 }
 
 /**
- * @brief  Get the status of all hardware events
- * @param  pObj the device pObj
- * @param  Status the status of all hardware events
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of all hardware events
+  * @param  pObj the device pObj
+  * @param  Status the status of all hardware events
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Get_Event_Status(LIS2DW12_Object_t *pObj, LIS2DW12_Event_Status_t *Status)
 {
   lis2dw12_status_t status_reg;
@@ -1489,23 +1493,23 @@ int32_t LIS2DW12_ACC_Get_Event_Status(LIS2DW12_Object_t *pObj, LIS2DW12_Event_St
 }
 
 /**
- * @brief  Set self test
- * @param  pObj the device pObj
- * @param  Val the value of ST in reg CTRL3
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set self test
+  * @param  pObj the device pObj
+  * @param  Val the value of ST in reg CTRL3
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Set_SelfTest(LIS2DW12_Object_t *pObj, uint8_t Val)
 {
   lis2dw12_st_t reg;
 
-  if(Val > 2U)
+  if (Val > 2U)
   {
     return LIS2DW12_ERROR;
   }
 
   reg = (Val == 0U)  ? LIS2DW12_XL_ST_DISABLE
-      : (Val == 1U)  ? LIS2DW12_XL_ST_POSITIVE
-      :                LIS2DW12_XL_ST_NEGATIVE;
+        : (Val == 1U)  ? LIS2DW12_XL_ST_POSITIVE
+        :                LIS2DW12_XL_ST_NEGATIVE;
 
   if (lis2dw12_self_test_set(&(pObj->Ctx), reg) != LIS2DW12_OK)
   {
@@ -1516,11 +1520,11 @@ int32_t LIS2DW12_ACC_Set_SelfTest(LIS2DW12_Object_t *pObj, uint8_t Val)
 }
 
 /**
- * @brief  Get the LIS2DW12 ACC data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DW12 ACC data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Get_DRDY_Status(LIS2DW12_Object_t *pObj, uint8_t *Status)
 {
   if (lis2dw12_flag_data_ready_get(&(pObj->Ctx), Status) != LIS2DW12_OK)
@@ -1532,11 +1536,11 @@ int32_t LIS2DW12_ACC_Get_DRDY_Status(LIS2DW12_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Get the LIS2DW12 ACC initialization status
- * @param  pObj the device pObj
- * @param  Status 1 if initialized, 0 otherwise
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DW12 ACC initialization status
+  * @param  pObj the device pObj
+  * @param  Status 1 if initialized, 0 otherwise
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_ACC_Get_Init_Status(LIS2DW12_Object_t *pObj, uint8_t *Status)
 {
   if (pObj == NULL)
@@ -1550,11 +1554,11 @@ int32_t LIS2DW12_ACC_Get_Init_Status(LIS2DW12_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Get the number of samples contained into the FIFO
- * @param  pObj the device pObj
- * @param  NumSamples the number of samples contained into the FIFO
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the number of samples contained into the FIFO
+  * @param  pObj the device pObj
+  * @param  NumSamples the number of samples contained into the FIFO
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_FIFO_Get_Num_Samples(LIS2DW12_Object_t *pObj, uint16_t *NumSamples)
 {
   lis2dw12_fifo_samples_t FIFO_Samples;
@@ -1564,7 +1568,7 @@ int32_t LIS2DW12_FIFO_Get_Num_Samples(LIS2DW12_Object_t *pObj, uint16_t *NumSamp
     return LIS2DW12_ERROR;
   }
 
-  if(FIFO_Samples.diff == 0x20)
+  if (FIFO_Samples.diff == 0x20)
   {
     *NumSamples = 32;
   }
@@ -1577,11 +1581,11 @@ int32_t LIS2DW12_FIFO_Get_Num_Samples(LIS2DW12_Object_t *pObj, uint16_t *NumSamp
 }
 
 /**
- * @brief  Set the FIFO mode
- * @param  pObj the device pObj
- * @param  Mode FIFO mode
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the FIFO mode
+  * @param  pObj the device pObj
+  * @param  Mode FIFO mode
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DW12_FIFO_Set_Mode(LIS2DW12_Object_t *pObj, uint8_t Mode)
 {
   int32_t ret = LIS2DW12_OK;
@@ -1615,22 +1619,23 @@ int32_t LIS2DW12_FIFO_Set_Mode(LIS2DW12_Object_t *pObj, uint8_t Mode)
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LIS2DW12_Private_Functions LIS2DW12 Private Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Set the LIS2DW12 accelerometer sensor output data rate when enabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @param  Mode the operating mode to be used
- * @param  Noise the low noise option
- * @retval 0 in case of success, an error code otherwise
- */
-static int32_t LIS2DW12_ACC_SetOutputDataRate_When_Enabled(LIS2DW12_Object_t *pObj, float Odr, LIS2DW12_Operating_Mode_t Mode, LIS2DW12_Low_Noise_t Noise)
+  * @brief  Set the LIS2DW12 accelerometer sensor output data rate when enabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @param  Mode the operating mode to be used
+  * @param  Noise the low noise option
+  * @retval 0 in case of success, an error code otherwise
+  */
+static int32_t LIS2DW12_ACC_SetOutputDataRate_When_Enabled(LIS2DW12_Object_t *pObj, float Odr,
+                                                           LIS2DW12_Operating_Mode_t Mode, LIS2DW12_Low_Noise_t Noise)
 {
   lis2dw12_odr_t new_odr;
   lis2dw12_mode_t new_power_mode;
@@ -1651,7 +1656,7 @@ static int32_t LIS2DW12_ACC_SetOutputDataRate_When_Enabled(LIS2DW12_Object_t *pO
       }
 
       /* If High Performance mode minimum ODR is 12.5Hz */
-      if(Odr < 12.5f)
+      if (Odr < 12.5f)
       {
         Odr = 12.5f;
       }
@@ -1669,7 +1674,7 @@ static int32_t LIS2DW12_ACC_SetOutputDataRate_When_Enabled(LIS2DW12_Object_t *pO
       }
 
       /* If Low Power mode maximum ODR is 200Hz */
-      if(Odr > 200.0f)
+      if (Odr > 200.0f)
       {
         Odr = 200.0f;
       }
@@ -1687,7 +1692,7 @@ static int32_t LIS2DW12_ACC_SetOutputDataRate_When_Enabled(LIS2DW12_Object_t *pO
       }
 
       /* If Low Power mode maximum ODR is 200Hz */
-      if(Odr > 200.0f)
+      if (Odr > 200.0f)
       {
         Odr = 200.0f;
       }
@@ -1705,7 +1710,7 @@ static int32_t LIS2DW12_ACC_SetOutputDataRate_When_Enabled(LIS2DW12_Object_t *pO
       }
 
       /* If Low Power mode maximum ODR is 200Hz */
-      if(Odr > 200.0f)
+      if (Odr > 200.0f)
       {
         Odr = 200.0f;
       }
@@ -1723,7 +1728,7 @@ static int32_t LIS2DW12_ACC_SetOutputDataRate_When_Enabled(LIS2DW12_Object_t *pO
       }
 
       /* If Low Power mode maximum ODR is 200Hz */
-      if(Odr > 200.0f)
+      if (Odr > 200.0f)
       {
         Odr = 200.0f;
       }
@@ -1731,14 +1736,14 @@ static int32_t LIS2DW12_ACC_SetOutputDataRate_When_Enabled(LIS2DW12_Object_t *pO
   }
 
   new_odr = (Odr <=    1.6f) ? LIS2DW12_XL_ODR_1Hz6_LP_ONLY
-          : (Odr <=   12.5f) ? LIS2DW12_XL_ODR_12Hz5
-          : (Odr <=   25.0f) ? LIS2DW12_XL_ODR_25Hz
-          : (Odr <=   50.0f) ? LIS2DW12_XL_ODR_50Hz
-          : (Odr <=  100.0f) ? LIS2DW12_XL_ODR_100Hz
-          : (Odr <=  200.0f) ? LIS2DW12_XL_ODR_200Hz
-          : (Odr <=  400.0f) ? LIS2DW12_XL_ODR_400Hz
-          : (Odr <=  800.0f) ? LIS2DW12_XL_ODR_800Hz
-          :                    LIS2DW12_XL_ODR_1k6Hz;
+            : (Odr <=   12.5f) ? LIS2DW12_XL_ODR_12Hz5
+            : (Odr <=   25.0f) ? LIS2DW12_XL_ODR_25Hz
+            : (Odr <=   50.0f) ? LIS2DW12_XL_ODR_50Hz
+            : (Odr <=  100.0f) ? LIS2DW12_XL_ODR_100Hz
+            : (Odr <=  200.0f) ? LIS2DW12_XL_ODR_200Hz
+            : (Odr <=  400.0f) ? LIS2DW12_XL_ODR_400Hz
+            : (Odr <=  800.0f) ? LIS2DW12_XL_ODR_800Hz
+            :                    LIS2DW12_XL_ODR_1k6Hz;
 
   /* Output data rate selection. */
   if (lis2dw12_data_rate_set(&(pObj->Ctx), new_odr) != LIS2DW12_OK)
@@ -1761,40 +1766,41 @@ static int32_t LIS2DW12_ACC_SetOutputDataRate_When_Enabled(LIS2DW12_Object_t *pO
 }
 
 /**
- * @brief  Set the LIS2DW12 accelerometer sensor output data rate when disabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @param  Mode the operating mode to be used
- * @param  Noise the low noise option
- * @retval 0 in case of success, an error code otherwise
- */
-static int32_t LIS2DW12_ACC_SetOutputDataRate_When_Disabled(LIS2DW12_Object_t *pObj, float Odr, LIS2DW12_Operating_Mode_t Mode, LIS2DW12_Low_Noise_t Noise)
+  * @brief  Set the LIS2DW12 accelerometer sensor output data rate when disabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @param  Mode the operating mode to be used
+  * @param  Noise the low noise option
+  * @retval 0 in case of success, an error code otherwise
+  */
+static int32_t LIS2DW12_ACC_SetOutputDataRate_When_Disabled(LIS2DW12_Object_t *pObj, float Odr,
+                                                            LIS2DW12_Operating_Mode_t Mode, LIS2DW12_Low_Noise_t Noise)
 {
   /* Store the new Odr, Mode and Noise values */
   pObj->acc_operating_mode = Mode;
   pObj->acc_low_noise = Noise;
 
   pObj->acc_odr = (Odr <=    1.6f) ?    1.6f
-                : (Odr <=   12.5f) ?   12.5f
-                : (Odr <=   25.0f) ?   25.0f
-                : (Odr <=   50.0f) ?   50.0f
-                : (Odr <=  100.0f) ?  100.0f
-                : (Odr <=  200.0f) ?  200.0f
-                : (Odr <=  400.0f) ?  400.0f
-                : (Odr <=  800.0f) ?  800.0f
-                :                    1600.0f;
+                  : (Odr <=   12.5f) ?   12.5f
+                  : (Odr <=   25.0f) ?   25.0f
+                  : (Odr <=   50.0f) ?   50.0f
+                  : (Odr <=  100.0f) ?  100.0f
+                  : (Odr <=  200.0f) ?  200.0f
+                  : (Odr <=  400.0f) ?  400.0f
+                  : (Odr <=  800.0f) ?  800.0f
+                  :                    1600.0f;
 
   return LIS2DW12_OK;
 }
 
 /**
- * @brief  Wrap Read register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Read register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   LIS2DW12_Object_t *pObj = (LIS2DW12_Object_t *)Handle;
@@ -1803,13 +1809,13 @@ static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t L
 }
 
 /**
- * @brief  Wrap Write register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Write register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   LIS2DW12_Object_t *pObj = (LIS2DW12_Object_t *)Handle;

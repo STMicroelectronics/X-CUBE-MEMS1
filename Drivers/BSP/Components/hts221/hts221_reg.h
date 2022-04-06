@@ -1,22 +1,21 @@
-/*
- ******************************************************************************
- * @file    hts221_reg.h
- * @author  Sensors Software Solution Team
- * @brief   This file contains all the functions prototypes for the
- *          hts221_reg.c driver.
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    hts221_reg.h
+  * @author  Sensors Software Solution Team
+  * @brief   This file contains all the functions prototypes for the
+  *          hts221_reg.c driver.
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2014-2018 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef HTS221_REGS_H
@@ -28,6 +27,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
+#include <stddef.h>
 #include <math.h>
 
 /** @addtogroup HTS221
@@ -74,7 +74,8 @@ extern "C" {
 #ifndef MEMS_SHARED_TYPES
 #define MEMS_SHARED_TYPES
 
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t bit0       : 1;
   uint8_t bit1       : 1;
@@ -107,12 +108,11 @@ typedef struct {
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *,
-                                    uint16_t);
-typedef int32_t (*stmdev_read_ptr) (void *, uint8_t, uint8_t *,
-                                    uint16_t);
+typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 
-typedef struct {
+typedef struct
+{
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
@@ -141,7 +141,8 @@ typedef struct {
   *
   */
 
-typedef struct {
+typedef struct
+{
   uint8_t address;
   uint8_t data;
 } ucf_line_t;
@@ -176,7 +177,8 @@ typedef struct {
 
 #define HTS221_WHO_AM_I            0x0FU
 #define HTS221_AV_CONF             0x10U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t avgh                 : 3;
   uint8_t avgt                 : 3;
@@ -189,7 +191,8 @@ typedef struct {
 } hts221_av_conf_t;
 
 #define HTS221_CTRL_REG1           0x20U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t odr                  : 2;
   uint8_t bdu                  : 1;
@@ -204,7 +207,8 @@ typedef struct {
 } hts221_ctrl_reg1_t;
 
 #define HTS221_CTRL_REG2           0x21U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t one_shot             : 1;
   uint8_t heater               : 1;
@@ -219,7 +223,8 @@ typedef struct {
 } hts221_ctrl_reg2_t;
 
 #define HTS221_CTRL_REG3           0x22U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01          : 2;
   uint8_t drdy                 : 1;
@@ -236,7 +241,8 @@ typedef struct {
 } hts221_ctrl_reg3_t;
 
 #define HTS221_STATUS_REG          0x27U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t t_da                 : 1;
   uint8_t h_da                 : 1;
@@ -257,7 +263,8 @@ typedef struct {
 #define HTS221_T0_DEGC_X8          0x32U
 #define HTS221_T1_DEGC_X8          0x33U
 #define HTS221_T1_T0_MSB           0x35U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t t0_msb               : 2;
   uint8_t t1_msb               : 2;
@@ -280,9 +287,9 @@ typedef struct {
 
 /**
   * @defgroup HTS221_Register_Union
-  * @brief    This union group all the registers that has a bitfield
+  * @brief    This union group all the registers having a bit-field
   *           description.
-  *           This union is useful but not need by the driver.
+  *           This union is useful but it's not needed by the driver.
   *
   *           REMOVING this union you are compliant with:
   *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
@@ -290,7 +297,8 @@ typedef struct {
   * @{
   *
   */
-typedef union {
+typedef union
+{
   hts221_av_conf_t        av_conf;
   hts221_ctrl_reg1_t      ctrl_reg1;
   hts221_ctrl_reg2_t      ctrl_reg2;
@@ -312,7 +320,8 @@ int32_t hts221_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
                          uint8_t *data,
                          uint16_t len);
 
-typedef enum {
+typedef enum
+{
   HTS221_H_AVG_4    = 0,
   HTS221_H_AVG_8    = 1,
   HTS221_H_AVG_16   = 2,
@@ -327,7 +336,8 @@ int32_t hts221_humidity_avg_set(stmdev_ctx_t *ctx, hts221_avgh_t val);
 int32_t hts221_humidity_avg_get(stmdev_ctx_t *ctx,
                                 hts221_avgh_t *val);
 
-typedef enum {
+typedef enum
+{
   HTS221_T_AVG_2   = 0,
   HTS221_T_AVG_4   = 1,
   HTS221_T_AVG_8   = 2,
@@ -343,7 +353,8 @@ int32_t hts221_temperature_avg_set(stmdev_ctx_t *ctx,
 int32_t hts221_temperature_avg_get(stmdev_ctx_t *ctx,
                                    hts221_avgt_t *val);
 
-typedef enum {
+typedef enum
+{
   HTS221_ONE_SHOT  = 0,
   HTS221_ODR_1Hz   = 1,
   HTS221_ODR_7Hz   = 2,
@@ -385,7 +396,8 @@ int32_t hts221_status_get(stmdev_ctx_t *ctx,
 int32_t hts221_drdy_on_int_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t hts221_drdy_on_int_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   HTS221_PUSH_PULL   = 0,
   HTS221_OPEN_DRAIN  = 1,
   HTS221_PIN_MODE_ND = 2,
@@ -393,7 +405,8 @@ typedef enum {
 int32_t hts221_pin_mode_set(stmdev_ctx_t *ctx, hts221_pp_od_t val);
 int32_t hts221_pin_mode_get(stmdev_ctx_t *ctx, hts221_pp_od_t *val);
 
-typedef enum {
+typedef enum
+{
   HTS221_ACTIVE_HIGH = 0,
   HTS221_ACTIVE_LOW  = 1,
   HTS221_ACTIVE_ND   = 2,
@@ -425,5 +438,3 @@ int32_t hts221_temp_adc_point_1_get(stmdev_ctx_t *ctx, float_t *val);
 #endif
 
 #endif /*HTS221_REGS_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

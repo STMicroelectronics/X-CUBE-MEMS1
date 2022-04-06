@@ -1,22 +1,22 @@
-/*
- ******************************************************************************
- * @file    lps33k_reg.h
- * @author  Sensors Software Solution Team
- * @brief   This file contains all the functions prototypes for the
- *          lps33k_reg.c driver.
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    lps33k_reg.h
+  * @author  Sensors Software Solution Team
+  * @brief   This file contains all the functions prototypes for the
+  *          lps33k_reg.c driver.
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LPS33K_REGS_H
@@ -28,6 +28,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
+#include <stddef.h>
 #include <math.h>
 
 /** @addtogroup LPS33K
@@ -74,7 +75,8 @@ extern "C" {
 #ifndef MEMS_SHARED_TYPES
 #define MEMS_SHARED_TYPES
 
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t bit0       : 1;
   uint8_t bit1       : 1;
@@ -107,12 +109,11 @@ typedef struct {
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *,
-                                    uint16_t);
-typedef int32_t (*stmdev_read_ptr) (void *, uint8_t, uint8_t *,
-                                    uint16_t);
+typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 
-typedef struct {
+typedef struct
+{
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
@@ -141,7 +142,8 @@ typedef struct {
   *
   */
 
-typedef struct {
+typedef struct
+{
   uint8_t address;
   uint8_t data;
 } ucf_line_t;
@@ -177,7 +179,8 @@ typedef struct {
 
 #define LPS33K_WHO_AM_I       0x0FU
 #define LPS33K_CTRL_REG1      0x10U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01      : 1;
   uint8_t bdu              : 1;
@@ -194,7 +197,8 @@ typedef struct {
 } lps33k_ctrl_reg1_t;
 
 #define LPS33K_CTRL_REG2      0x11U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t one_shot         : 1;
   uint8_t not_used_01      : 1;
@@ -218,7 +222,8 @@ typedef struct {
 #define LPS33K_RPDS_H         0x19U
 
 #define LPS33K_RES_CONF       0x1AU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t lc_en            : 1;
   uint8_t not_used_01      : 7;
@@ -229,7 +234,8 @@ typedef struct {
 } lps33k_res_conf_t;
 
 #define LPS33K_STATUS         0x27U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t p_da             : 1;
   uint8_t t_da             : 1;
@@ -256,9 +262,9 @@ typedef struct {
 
 /**
   * @defgroup LPS33K_Register_Union
-  * @brief    This union group all the registers that has a bit-field
+  * @brief    This union group all the registers having a bit-field
   *           description.
-  *           This union is useful but not need by the driver.
+  *           This union is useful but it's not needed by the driver.
   *
   *           REMOVING this union you are compliant with:
   *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
@@ -267,7 +273,8 @@ typedef struct {
   *
   */
 
-typedef union {
+typedef union
+{
   lps33k_ctrl_reg1_t          ctrl_reg1;
   lps33k_ctrl_reg2_t          ctrl_reg2;
   lps33k_res_conf_t           res_conf;
@@ -288,12 +295,14 @@ int32_t lps33k_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
                          uint16_t len);
 
 float_t lps33k_from_lsb_to_hpa(int32_t lsb);
+
 float_t lps33k_from_lsb_to_degc(int16_t lsb);
 
 int32_t lps33k_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lps33k_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   LPS33K_LPF_ODR_DIV_2  = 0,
   LPS33K_LPF_ODR_DIV_9  = 2,
   LPS33K_LPF_ODR_DIV_20 = 3,
@@ -303,7 +312,8 @@ int32_t lps33k_low_pass_filter_mode_set(stmdev_ctx_t *ctx,
 int32_t lps33k_low_pass_filter_mode_get(stmdev_ctx_t *ctx,
                                         lps33k_lpfp_t *val);
 
-typedef enum {
+typedef enum
+{
   LPS33K_POWER_DOWN  = 0,
   LPS33K_ODR_1_Hz    = 1,
   LPS33K_ODR_10_Hz   = 2,

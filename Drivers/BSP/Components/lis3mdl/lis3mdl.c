@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    lis3mdl.c
- * @author  MCD Application Team
- * @brief   lis3mdl driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lis3mdl.c
+  * @author  MCD Application Team
+  * @brief   lis3mdl driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "lis3mdl.h"
@@ -164,10 +164,10 @@ int32_t LIS3MDL_Init(LIS3MDL_Object_t *pObj)
 }
 
 /**
- * @brief Deinitialize the LIS3MDL sensor
- * @param pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief Deinitialize the LIS3MDL sensor
+  * @param pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS3MDL_DeInit(LIS3MDL_Object_t *pObj)
 {
   /* Disable the component */
@@ -222,10 +222,10 @@ int32_t LIS3MDL_GetCapabilities(LIS3MDL_Object_t *pObj, LIS3MDL_Capabilities_t *
 }
 
 /**
- * @brief Enable the LIS3MDL accelerometer sensor
- * @param pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief Enable the LIS3MDL accelerometer sensor
+  * @param pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS3MDL_MAG_Enable(LIS3MDL_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -246,10 +246,10 @@ int32_t LIS3MDL_MAG_Enable(LIS3MDL_Object_t *pObj)
 }
 
 /**
- * @brief Disable the LIS3MDL accelerometer sensor
- * @param pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief Disable the LIS3MDL accelerometer sensor
+  * @param pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS3MDL_MAG_Disable(LIS3MDL_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -270,11 +270,11 @@ int32_t LIS3MDL_MAG_Disable(LIS3MDL_Object_t *pObj)
 }
 
 /**
- * @brief Get the LIS3MDL accelerometer sensor sensitivity
- * @param pObj the device pObj
- * @param Sensitivity pointer to Sensitivity value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief Get the LIS3MDL accelerometer sensor sensitivity
+  * @param pObj the device pObj
+  * @param Sensitivity pointer to Sensitivity value
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS3MDL_MAG_GetSensitivity(LIS3MDL_Object_t *pObj, float *Sensitivity)
 {
   lis3mdl_fs_t full_scale;
@@ -308,11 +308,11 @@ int32_t LIS3MDL_MAG_GetSensitivity(LIS3MDL_Object_t *pObj, float *Sensitivity)
 }
 
 /**
- * @brief Get the LIS3MDL accelerometer sensor output data rate
- * @param pObj the device pObj
- * @param Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief Get the LIS3MDL accelerometer sensor output data rate
+  * @param pObj the device pObj
+  * @param Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS3MDL_MAG_GetOutputDataRate(LIS3MDL_Object_t *pObj, float *Odr)
 {
   lis3mdl_om_t odr_low_level;
@@ -390,11 +390,11 @@ int32_t LIS3MDL_MAG_GetOutputDataRate(LIS3MDL_Object_t *pObj, float *Odr)
 }
 
 /**
- * @brief Set the LIS3MDL accelerometer sensor output data rate
- * @param pObj the device pObj
- * @param Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief Set the LIS3MDL accelerometer sensor output data rate
+  * @param pObj the device pObj
+  * @param Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS3MDL_MAG_SetOutputDataRate(LIS3MDL_Object_t *pObj, float Odr)
 {
   lis3mdl_om_t new_odr;
@@ -417,11 +417,11 @@ int32_t LIS3MDL_MAG_SetOutputDataRate(LIS3MDL_Object_t *pObj, float Odr)
 }
 
 /**
- * @brief Get the LIS3MDL accelerometer sensor full scale
- * @param pObj the device pObj
- * @param FullScale pointer where the full scale is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief Get the LIS3MDL accelerometer sensor full scale
+  * @param pObj the device pObj
+  * @param FullScale pointer where the full scale is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS3MDL_MAG_GetFullScale(LIS3MDL_Object_t *pObj, int32_t  *FullScale)
 {
   lis3mdl_fs_t fs_low_level;
@@ -454,11 +454,11 @@ int32_t LIS3MDL_MAG_GetFullScale(LIS3MDL_Object_t *pObj, int32_t  *FullScale)
 }
 
 /**
- * @brief Set the LIS3MDL accelerometer sensor full scale
- * @param pObj the device pObj
- * @param FullScale the functional full scale to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief Set the LIS3MDL accelerometer sensor full scale
+  * @param pObj the device pObj
+  * @param FullScale the functional full scale to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS3MDL_MAG_SetFullScale(LIS3MDL_Object_t *pObj, int32_t FullScale)
 {
   lis3mdl_fs_t new_fs;
@@ -477,11 +477,11 @@ int32_t LIS3MDL_MAG_SetFullScale(LIS3MDL_Object_t *pObj, int32_t FullScale)
 }
 
 /**
- * @brief Get the LIS3MDL magnetic sensor raw axes
- * @param pObj the device pObj
- * @param Value pointer where the raw values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief Get the LIS3MDL magnetic sensor raw axes
+  * @param pObj the device pObj
+  * @param Value pointer where the raw values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS3MDL_MAG_GetAxesRaw(LIS3MDL_Object_t *pObj, LIS3MDL_AxesRaw_t *Value)
 {
   lis3mdl_axis3bit16_t data_raw;
@@ -501,11 +501,11 @@ int32_t LIS3MDL_MAG_GetAxesRaw(LIS3MDL_Object_t *pObj, LIS3MDL_AxesRaw_t *Value)
 }
 
 /**
- * @brief Get the LIS3MDL magnetic sensor axes
- * @param pObj the device pObj
- * @param MagneticField pointer where the values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief Get the LIS3MDL magnetic sensor axes
+  * @param pObj the device pObj
+  * @param MagneticField pointer where the values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS3MDL_MAG_GetAxes(LIS3MDL_Object_t *pObj, LIS3MDL_Axes_t *MagneticField)
 {
   lis3mdl_axis3bit16_t data_raw;
@@ -532,12 +532,12 @@ int32_t LIS3MDL_MAG_GetAxes(LIS3MDL_Object_t *pObj, LIS3MDL_Axes_t *MagneticFiel
 }
 
 /**
- * @brief Get the LIS3MDL register value
- * @param pObj the device pObj
- * @param Reg address to be read
- * @param pData pointer where the value is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief Get the LIS3MDL register value
+  * @param pObj the device pObj
+  * @param Reg address to be read
+  * @param pData pointer where the value is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS3MDL_Read_Reg(LIS3MDL_Object_t *pObj, uint8_t Reg, uint8_t *pData)
 {
   if (lis3mdl_read_reg(&(pObj->Ctx), Reg, pData, 1) != LIS3MDL_OK)
@@ -549,12 +549,12 @@ int32_t LIS3MDL_Read_Reg(LIS3MDL_Object_t *pObj, uint8_t Reg, uint8_t *pData)
 }
 
 /**
- * @brief Set the LIS3MDL register value
- * @param pObj the device pObj
- * @param Reg address to be written
- * @param Data value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief Set the LIS3MDL register value
+  * @param pObj the device pObj
+  * @param Reg address to be written
+  * @param Data value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS3MDL_Write_Reg(LIS3MDL_Object_t *pObj, uint8_t Reg, uint8_t Data)
 {
   if (lis3mdl_write_reg(&(pObj->Ctx), Reg, &Data, 1) != LIS3MDL_OK)
@@ -566,11 +566,11 @@ int32_t LIS3MDL_Write_Reg(LIS3MDL_Object_t *pObj, uint8_t Reg, uint8_t Data)
 }
 
 /**
- * @brief  Get the LIS3MDL data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS3MDL data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS3MDL_MAG_Get_DRDY_Status(LIS3MDL_Object_t *pObj, uint8_t *Status)
 {
   if (lis3mdl_mag_data_ready_get(&(pObj->Ctx), Status) != LIS3MDL_OK)

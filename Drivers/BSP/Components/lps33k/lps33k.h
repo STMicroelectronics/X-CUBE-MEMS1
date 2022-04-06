@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    lps33k.h
- * @author  MEMS Software Solutions Team
- * @brief   LPS33K header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lps33k.h
+  * @author  MEMS Software Solutions Team
+  * @brief   LPS33K header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LPS33K_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup LPS33K LPS33K
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LPS33K_Exported_Types LPS33K Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*LPS33K_Init_Func)(void);
 typedef int32_t (*LPS33K_DeInit_Func)(void);
@@ -110,33 +110,37 @@ typedef struct
   int32_t (*GetPressure)(LPS33K_Object_t *, float *);
 } LPS33K_PRESS_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } lps33k_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } lps33k_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } lps33k_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } lps33k_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LPS33K_Exported_Constants LPS33K Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define LPS33K_OK                0
 #define LPS33K_ERROR            -1
@@ -144,12 +148,12 @@ typedef union{
 #define LPS33K_I2C_BUS          0U
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LPS33K_Exported_Functions LPS33K Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t LPS33K_RegisterBusIO(LPS33K_Object_t *pObj, LPS33K_IO_t *pIO);
 int32_t LPS33K_Init(LPS33K_Object_t *pObj);
@@ -182,19 +186,19 @@ int32_t LPS33K_Set_One_Shot(LPS33K_Object_t *pObj);
 int32_t LPS33K_Get_One_Shot_Status(LPS33K_Object_t *pObj, uint8_t *Status);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LPS33K_Exported_Variables LPS33K Exported Variables
- * @{
- */
+  * @{
+  */
 extern LPS33K_CommonDrv_t LPS33K_COMMON_Driver;
 extern LPS33K_PRESS_Drv_t LPS33K_PRESS_Driver;
 extern LPS33K_TEMP_Drv_t LPS33K_TEMP_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -203,15 +207,15 @@ extern LPS33K_TEMP_Drv_t LPS33K_TEMP_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

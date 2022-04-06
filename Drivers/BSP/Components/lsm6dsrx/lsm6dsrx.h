@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    lsm6dsrx.h
- * @author  MEMS Software Solutions Team
- * @brief   LSM6DSRX header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lsm6dsrx.h
+  * @author  MEMS Software Solutions Team
+  * @brief   LSM6DSRX header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LSM6DSRX_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup LSM6DSRX LSM6DSRX
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LSM6DSRX_Exported_Types LSM6DSRX Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*LSM6DSRX_Init_Func)(void);
 typedef int32_t (*LSM6DSRX_DeInit_Func)(void);
@@ -155,33 +155,37 @@ typedef struct
   int32_t (*GetAxesRaw)(LSM6DSRX_Object_t *, LSM6DSRX_AxesRaw_t *);
 } LSM6DSRX_GYRO_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } lsm6dsrx_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } lsm6dsrx_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } lsm6dsrx_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } lsm6dsrx_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LSM6DSRX_Exported_Constants LSM6DSRX Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define LSM6DSRX_OK                       0
 #define LSM6DSRX_ERROR                   -1
@@ -203,12 +207,12 @@ typedef union{
 #define LSM6DSRX_GYRO_SENSITIVITY_FS_4000DPS  140.000f
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LSM6DSRX_Exported_Functions LSM6DSRX Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t LSM6DSRX_RegisterBusIO(LSM6DSRX_Object_t *pObj, LSM6DSRX_IO_t *pIO);
 int32_t LSM6DSRX_Init(LSM6DSRX_Object_t *pObj);
@@ -300,20 +304,20 @@ int32_t LSM6DSRX_FIFO_GYRO_Get_Axes(LSM6DSRX_Object_t *pObj, LSM6DSRX_Axes_t *An
 int32_t LSM6DSRX_FIFO_GYRO_Set_BDR(LSM6DSRX_Object_t *pObj, float Bdr);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LSM6DSRX_Exported_Variables LSM6DSRX Exported Variables
- * @{
- */
+  * @{
+  */
 
 extern LSM6DSRX_CommonDrv_t LSM6DSRX_COMMON_Driver;
 extern LSM6DSRX_ACC_Drv_t LSM6DSRX_ACC_Driver;
 extern LSM6DSRX_GYRO_Drv_t LSM6DSRX_GYRO_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -322,15 +326,15 @@ extern LSM6DSRX_GYRO_Drv_t LSM6DSRX_GYRO_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

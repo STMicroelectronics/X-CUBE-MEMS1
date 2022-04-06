@@ -6,11 +6,11 @@
  ******************************************************************************
  * @attention
  *
- * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+ * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
  * All rights reserved.</center></h2>
  *
  * This software component is licensed by ST under Software License Agreement SLA0077,
- * the â€œLicenseâ€?. You may not use this component except in compliance with the
+ * the "License". You may not use this component except in compliance with the
  * License. You may obtain a copy of the License at:
  *                        www.st.com/sla0077
  *
@@ -56,6 +56,10 @@ extern "C" {
 #define AIS2IH_UNICLEO_ID           26
 #define LSM6DSO32X_UNICLEO_ID       27
 #define LIS2DTW12_UNICLEO_ID_ACC    28
+#define ISM330IS_UNICLEO_ID         29
+#define LIS2DU12_UNICLEO_ID         30
+#define RESERVED_UNICLEO_ID         31
+#define LSM6DSO16IS_UNICLEO_ID      32
 
 #define LIS3MDL_UNICLEO_ID          1
 #define LSM303AGR_UNICLEO_ID_MAG    2
@@ -72,6 +76,9 @@ extern "C" {
 #define LPS22CH_UNICLEO_ID          7
 #define LPS27HHTW_UNICLEO_ID        8
 #define LPS22DF_UNICLEO_ID          9
+#define ILPS22QS_UNICLEO_ID         10
+#define ILPS28QSW_UNICLEO_ID        11
+#define LPS28DFW_UNICLEO_ID         12
 
 #define HTS221_UNICLEO_ID           1
 #define STTS751_UNICLEO_ID          2

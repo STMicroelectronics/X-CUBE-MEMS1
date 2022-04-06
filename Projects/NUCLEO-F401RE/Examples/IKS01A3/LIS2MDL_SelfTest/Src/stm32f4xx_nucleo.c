@@ -1,3 +1,4 @@
+/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * @file  : stm32f4xx_nucleo.c
@@ -5,16 +6,16 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2022 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0044
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
 */
+/* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_nucleo.h"
@@ -546,11 +547,30 @@ int32_t BSP_COM_SelectLogPort(COM_TypeDef COM)
   return BSP_ERROR_NONE;
 }
 
+#if defined(__CC_ARM) /* For arm compiler 5 */
+#if !defined(__MICROLIB) /* If not Microlib */
+
+struct __FILE
+{
+  int dummyVar; //Just for the sake of redefining __FILE, we won't we using it anyways ;)
+};
+
+FILE __stdout;
+
+#endif /* If not Microlib */
+#elif defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050) /* For arm compiler 6 */
+#if !defined(__MICROLIB) /* If not Microlib */
+
+FILE __stdout;
+
+#endif /* If not Microlib */
+#endif /* For arm compiler 5 */
+
 #if defined(__ICCARM__) || defined(__CC_ARM) || (defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)) /* For IAR and ARM Compiler 5 and 6*/
  int fputc (int ch, FILE *f)
 #else /* For GCC Toolchains */
  int __io_putchar (int ch)
-#endif /* __GNUC__ */
+#endif /* For IAR and ARM Compiler 5 and 6 */
 {
   (void)HAL_UART_Transmit(&hcom_uart[COM_ActiveLogPort], (uint8_t *)&ch, 1, COM_POLL_TIMEOUT);
   return ch;
@@ -631,5 +651,4 @@ static void USART2_MspDeInit(UART_HandleTypeDef* uartHandle)
 /**
  * @}
  */
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 

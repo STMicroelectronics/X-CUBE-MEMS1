@@ -41,7 +41,7 @@ volatile uint8_t DataLoggerActive;
 extern TIM_HandleTypeDef htim3;
 
 /* Private variables ---------------------------------------------------------*/
-static uint8_t PresentationString[] = {"MEMS shield demo,101,9.1.0,0.0.0,IKS01A3"};
+static uint8_t PresentationString[] = {"MEMS shield demo,101,9.2.0,0.0.0,IKS01A3"};
 static volatile uint8_t DataStreamingDest = 1;
 
 /* Private function prototypes -----------------------------------------------*/

@@ -1,40 +1,40 @@
 /**
- ******************************************************************************
- * @file    lis2dh12.c
- * @author  MEMS Software Solutions Team
- * @brief   LIS2DH12 driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lis2dh12.c
+  * @author  MEMS Software Solutions Team
+  * @brief   LIS2DH12 driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "lis2dh12.h"
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LIS2DH12 LIS2DH12
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LIS2DH12_Exported_Variables LIS2DH12 Exported Variables
- * @{
- */
+  * @{
+  */
 
 LIS2DH12_CommonDrv_t LIS2DH12_COMMON_Driver =
 {
@@ -58,12 +58,12 @@ LIS2DH12_Drv_t LIS2DH12_Driver =
 };
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LIS2DH12_Private_Function_Prototypes LIS2DH12 Private Function Prototypes
- * @{
- */
+  * @{
+  */
 
 static int32_t ReadAccRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
 static int32_t WriteAccRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
@@ -74,18 +74,18 @@ static int32_t LIS2DH12_SetOutputDataRate_When_Enabled(LIS2DH12_Object_t *pObj, 
 static int32_t LIS2DH12_SetOutputDataRate_When_Disabled(LIS2DH12_Object_t *pObj, float Odr);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LIS2DH12_Exported_Functions LIS2DH12 Exported Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Register Component Bus IO operations
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Register Component Bus IO operations
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DH12_RegisterBusIO(LIS2DH12_Object_t *pObj, LIS2DH12_IO_t *pIO)
 {
   int32_t ret = LIS2DH12_OK;
@@ -139,10 +139,10 @@ int32_t LIS2DH12_RegisterBusIO(LIS2DH12_Object_t *pObj, LIS2DH12_IO_t *pIO)
 }
 
 /**
- * @brief  Initialize the LIS2DH12 sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Initialize the LIS2DH12 sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DH12_Init(LIS2DH12_Object_t *pObj)
 {
   /* Enable BDU */
@@ -178,10 +178,10 @@ int32_t LIS2DH12_Init(LIS2DH12_Object_t *pObj)
 }
 
 /**
- * @brief  Deinitialize the LIS2DH12 accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Deinitialize the LIS2DH12 accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DH12_DeInit(LIS2DH12_Object_t *pObj)
 {
   /* Disable the component */
@@ -198,11 +198,11 @@ int32_t LIS2DH12_DeInit(LIS2DH12_Object_t *pObj)
 }
 
 /**
- * @brief  Read component ID
- * @param  pObj the device pObj
- * @param  Id the WHO_AM_I value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Read component ID
+  * @param  pObj the device pObj
+  * @param  Id the WHO_AM_I value
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DH12_ReadID(LIS2DH12_Object_t *pObj, uint8_t *Id)
 {
   if (lis2dh12_device_id_get(&(pObj->Ctx), Id) != LIS2DH12_OK)
@@ -214,11 +214,11 @@ int32_t LIS2DH12_ReadID(LIS2DH12_Object_t *pObj, uint8_t *Id)
 }
 
 /**
- * @brief  Get LIS2DH12 accelerometer sensor capabilities
- * @param  pObj Component object pointer
- * @param  Capabilities pointer to LIS2DH12 accelerometer sensor capabilities
- * @retval Component status
- */
+  * @brief  Get LIS2DH12 accelerometer sensor capabilities
+  * @param  pObj Component object pointer
+  * @param  Capabilities pointer to LIS2DH12 accelerometer sensor capabilities
+  * @retval Component status
+  */
 int32_t LIS2DH12_GetCapabilities(LIS2DH12_Object_t *pObj, LIS2DH12_Capabilities_t *Capabilities)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -238,10 +238,10 @@ int32_t LIS2DH12_GetCapabilities(LIS2DH12_Object_t *pObj, LIS2DH12_Capabilities_
 }
 
 /**
- * @brief  Enable the LIS2DH12 accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the LIS2DH12 accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DH12_Enable(LIS2DH12_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -262,10 +262,10 @@ int32_t LIS2DH12_Enable(LIS2DH12_Object_t *pObj)
 }
 
 /**
- * @brief  Disable the LIS2DH12 accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable the LIS2DH12 accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DH12_Disable(LIS2DH12_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -292,11 +292,11 @@ int32_t LIS2DH12_Disable(LIS2DH12_Object_t *pObj)
 }
 
 /**
- * @brief  Get the LIS2DH12 accelerometer sensor sensitivity
- * @param  pObj the device pObj
- * @param  Sensitivity pointer
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DH12 accelerometer sensor sensitivity
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DH12_GetSensitivity(LIS2DH12_Object_t *pObj, float *Sensitivity)
 {
   int32_t ret = LIS2DH12_OK;
@@ -341,11 +341,11 @@ int32_t LIS2DH12_GetSensitivity(LIS2DH12_Object_t *pObj, float *Sensitivity)
 }
 
 /**
- * @brief  Get the LIS2DH12 accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DH12 accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DH12_GetOutputDataRate(LIS2DH12_Object_t *pObj, float *Odr)
 {
   int32_t ret = LIS2DH12_OK;
@@ -467,11 +467,11 @@ int32_t LIS2DH12_GetOutputDataRate(LIS2DH12_Object_t *pObj, float *Odr)
 }
 
 /**
- * @brief  Set the LIS2DH12 accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LIS2DH12 accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DH12_SetOutputDataRate(LIS2DH12_Object_t *pObj, float Odr)
 {
   /* Check if the component is enabled */
@@ -486,11 +486,11 @@ int32_t LIS2DH12_SetOutputDataRate(LIS2DH12_Object_t *pObj, float Odr)
 }
 
 /**
- * @brief  Get the LIS2DH12 accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale pointer where the full scale is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DH12 accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale pointer where the full scale is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DH12_GetFullScale(LIS2DH12_Object_t *pObj, int32_t *FullScale)
 {
   int32_t ret = LIS2DH12_OK;
@@ -529,11 +529,11 @@ int32_t LIS2DH12_GetFullScale(LIS2DH12_Object_t *pObj, int32_t *FullScale)
 }
 
 /**
- * @brief  Set the LIS2DH12 accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale the functional full scale to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LIS2DH12 accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale the functional full scale to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DH12_SetFullScale(LIS2DH12_Object_t *pObj, int32_t FullScale)
 {
   lis2dh12_fs_t new_fs;
@@ -552,11 +552,11 @@ int32_t LIS2DH12_SetFullScale(LIS2DH12_Object_t *pObj, int32_t FullScale)
 }
 
 /**
- * @brief  Get the LIS2DH12 accelerometer sensor raw axes
- * @param  pObj the device pObj
- * @param  Value pointer where the raw values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DH12 accelerometer sensor raw axes
+  * @param  pObj the device pObj
+  * @param  Value pointer where the raw values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DH12_GetAxesRaw(LIS2DH12_Object_t *pObj, LIS2DH12_AxesRaw_t *Value)
 {
   int16_t divisor = 1;
@@ -610,11 +610,11 @@ int32_t LIS2DH12_GetAxesRaw(LIS2DH12_Object_t *pObj, LIS2DH12_AxesRaw_t *Value)
 }
 
 /**
- * @brief  Get the LIS2DH12 accelerometer sensor axes
- * @param  pObj the device pObj
- * @param  Acceleration pointer where the values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DH12 accelerometer sensor axes
+  * @param  pObj the device pObj
+  * @param  Acceleration pointer where the values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DH12_GetAxes(LIS2DH12_Object_t *pObj, LIS2DH12_Axes_t *Acceleration)
 {
   LIS2DH12_AxesRaw_t data_raw;
@@ -641,12 +641,12 @@ int32_t LIS2DH12_GetAxes(LIS2DH12_Object_t *pObj, LIS2DH12_Axes_t *Acceleration)
 }
 
 /**
- * @brief  Get the LIS2DH12 register value for accelerometer sensor
- * @param  pObj the device pObj
- * @param  Reg address to be read
- * @param  Data pointer where the value is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DH12 register value for accelerometer sensor
+  * @param  pObj the device pObj
+  * @param  Reg address to be read
+  * @param  Data pointer where the value is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DH12_Read_Reg(LIS2DH12_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 {
   if (lis2dh12_read_reg(&(pObj->Ctx), Reg, Data, 1) != LIS2DH12_OK)
@@ -658,12 +658,12 @@ int32_t LIS2DH12_Read_Reg(LIS2DH12_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 }
 
 /**
- * @brief  Set the LIS2DH12 register value for accelerometer sensor
- * @param  pObj the device pObj
- * @param  Reg address to be written
- * @param  Data value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LIS2DH12 register value for accelerometer sensor
+  * @param  pObj the device pObj
+  * @param  Reg address to be written
+  * @param  Data value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DH12_Write_Reg(LIS2DH12_Object_t *pObj, uint8_t Reg, uint8_t Data)
 {
   if (lis2dh12_write_reg(&(pObj->Ctx), Reg, &Data, 1) != LIS2DH12_OK)
@@ -675,11 +675,11 @@ int32_t LIS2DH12_Write_Reg(LIS2DH12_Object_t *pObj, uint8_t Reg, uint8_t Data)
 }
 
 /**
- * @brief  Get the LIS2DH12 ACC data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DH12 ACC data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DH12_Get_DRDY_Status(LIS2DH12_Object_t *pObj, uint8_t *Status)
 {
   if (lis2dh12_xl_data_ready_get(&(pObj->Ctx), Status) != LIS2DH12_OK)
@@ -691,11 +691,11 @@ int32_t LIS2DH12_Get_DRDY_Status(LIS2DH12_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Get the LIS2DH12 ACC initialization status
- * @param  pObj the device pObj
- * @param  Status 1 if initialized, 0 otherwise
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DH12 ACC initialization status
+  * @param  pObj the device pObj
+  * @param  Status 1 if initialized, 0 otherwise
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LIS2DH12_Get_Init_Status(LIS2DH12_Object_t *pObj, uint8_t *Status)
 {
   if (pObj == NULL)
@@ -709,19 +709,19 @@ int32_t LIS2DH12_Get_Init_Status(LIS2DH12_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LIS2DH12_Private_Functions LIS2DH12 Private Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Get the LIS2DH12 accelerometer sensor sensitivity for HR mode
- * @param  pObj the device pObj
- * @param  Sensitivity pointer to sensitivity
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DH12 accelerometer sensor sensitivity for HR mode
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer to sensitivity
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LIS2DH12_GetSensitivityHR(LIS2DH12_Object_t *pObj, float *Sensitivity)
 {
   int32_t ret = LIS2DH12_OK;
@@ -761,11 +761,11 @@ static int32_t LIS2DH12_GetSensitivityHR(LIS2DH12_Object_t *pObj, float *Sensiti
 }
 
 /**
- * @brief  Get the LIS2DH12 accelerometer sensor sensitivity for NM mode
- * @param  pObj the device pObj
- * @param  Sensitivity pointer to sensitivity
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DH12 accelerometer sensor sensitivity for NM mode
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer to sensitivity
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LIS2DH12_GetSensitivityNM(LIS2DH12_Object_t *pObj, float *Sensitivity)
 {
   int32_t ret = LIS2DH12_OK;
@@ -805,11 +805,11 @@ static int32_t LIS2DH12_GetSensitivityNM(LIS2DH12_Object_t *pObj, float *Sensiti
 }
 
 /**
- * @brief  Get the LIS2DH12 accelerometer sensor sensitivity for LP mode
- * @param  pObj the device pObj
- * @param  Sensitivity pointer to sensitivity
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LIS2DH12 accelerometer sensor sensitivity for LP mode
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer to sensitivity
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LIS2DH12_GetSensitivityLP(LIS2DH12_Object_t *pObj, float *Sensitivity)
 {
   int32_t ret = LIS2DH12_OK;
@@ -849,11 +849,11 @@ static int32_t LIS2DH12_GetSensitivityLP(LIS2DH12_Object_t *pObj, float *Sensiti
 }
 
 /**
- * @brief  Set the LIS2DH12 accelerometer sensor output data rate when enabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LIS2DH12 accelerometer sensor output data rate when enabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LIS2DH12_SetOutputDataRate_When_Enabled(LIS2DH12_Object_t *pObj, float Odr)
 {
   lis2dh12_odr_t new_odr;
@@ -876,11 +876,11 @@ static int32_t LIS2DH12_SetOutputDataRate_When_Enabled(LIS2DH12_Object_t *pObj, 
 }
 
 /**
- * @brief  Set the LIS2DH12 accelerometer sensor output data rate when disabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LIS2DH12 accelerometer sensor output data rate when disabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LIS2DH12_SetOutputDataRate_When_Disabled(LIS2DH12_Object_t *pObj, float Odr)
 {
   pObj->acc_odr = (Odr <=    1.0f) ? LIS2DH12_ODR_1Hz
@@ -895,13 +895,13 @@ static int32_t LIS2DH12_SetOutputDataRate_When_Disabled(LIS2DH12_Object_t *pObj,
 }
 
 /**
- * @brief  Wrap Read register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Read register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ReadAccRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   LIS2DH12_Object_t *pObj = (LIS2DH12_Object_t *)Handle;
@@ -919,13 +919,13 @@ static int32_t ReadAccRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_
 }
 
 /**
- * @brief  Wrap Write register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Write register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t WriteAccRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   LIS2DH12_Object_t *pObj = (LIS2DH12_Object_t *)Handle;

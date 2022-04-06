@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    lis2mdl.h
- * @author  MEMS Software Solutions Team
- * @brief   LIS2MDL header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lis2mdl.h
+  * @author  MEMS Software Solutions Team
+  * @brief   LIS2MDL header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LIS2MDL_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup LIS2MDL LIS2MDL
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LIS2MDL_Exported_Types LIS2MDL Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*LIS2MDL_Init_Func)(void);
 typedef int32_t (*LIS2MDL_DeInit_Func)(void);
@@ -121,37 +121,41 @@ typedef struct
   int32_t (*GetAxesRaw)(LIS2MDL_Object_t *, LIS2MDL_AxesRaw_t *);
 } LIS2MDL_MAG_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } lis2mdl_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } lis2mdl_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } lis2mdl_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } lis2mdl_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LIS2MDL_Exported_Constants LIS2MDL Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define LIS2MDL_OK                           0
 #define LIS2MDL_ERROR                       -1
-                                            
+
 #define LIS2MDL_I2C_BUS                     0U
 #define LIS2MDL_SPI_4WIRES_BUS              1U /* NOTE: if you use the component in SPI 4-Wires mode, you lose the DRDY pin */
 #define LIS2MDL_SPI_3WIRES_BUS              2U
@@ -160,12 +164,12 @@ typedef union{
 #define LIS2MDL_MAG_SENSITIVITY_FS_50GAUSS  1.500f  /**< Sensitivity value for 50 gauss full scale [mgauss/LSB] */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LIS2MDL_Exported_Functions LIS2MDL Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t LIS2MDL_RegisterBusIO(LIS2MDL_Object_t *pObj, LIS2MDL_IO_t *pIO);
 int32_t LIS2MDL_Init(LIS2MDL_Object_t *pObj);
@@ -194,19 +198,19 @@ int32_t LIS2MDL_MAG_Set_Filter_Mode(LIS2MDL_Object_t *pObj, uint8_t FilterMode);
 int32_t LIS2MDL_MAG_Set_Power_Mode(LIS2MDL_Object_t *pObj, uint8_t PowerMode);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LIS2MDL_Exported_Variables LIS2MDL Exported Variables
- * @{
- */
+  * @{
+  */
 
 extern LIS2MDL_CommonDrv_t LIS2MDL_COMMON_Driver;
 extern LIS2MDL_MAG_Drv_t LIS2MDL_MAG_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -215,15 +219,15 @@ extern LIS2MDL_MAG_Drv_t LIS2MDL_MAG_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

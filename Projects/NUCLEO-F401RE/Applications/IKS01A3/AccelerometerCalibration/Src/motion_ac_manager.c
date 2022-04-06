@@ -6,11 +6,11 @@
  ******************************************************************************
  * @attention
  *
- * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+ * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
  * All rights reserved.</center></h2>
  *
  * This software component is licensed by ST under Software License Agreement SLA0077,
- * the â€œLicenseâ€?. You may not use this component except in compliance with the
+ * the "License". You may not use this component except in compliance with the
  * License. You may obtain a copy of the License at:
  *                        www.st.com/sla0077
  *
@@ -30,11 +30,11 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Exported function prototypes ----------------------------------------------*/
-/* TODO: Must be implemented for each platform separately, because its implementation is platform dependent.
+/* NOTE: Must be implemented for each platform separately, because its implementation is platform dependent.
          No need to call this function, library call this function automatically */
 char MotionAC_LoadCalFromNVM(unsigned short int dataSize, unsigned int *data);
 
-/* TODO: Must be implemented for each platform separately, because its implementation is platform dependent.
+/* NOTE: Must be implemented for each platform separately, because its implementation is platform dependent.
          No need to call this function, library call this function automatically */
 char MotionAC_SaveCalInNVM(unsigned short int dataSize, unsigned int *data);
 
@@ -140,7 +140,7 @@ int16_t acc_bias_to_mg(float acc_bias)
   }
 }
 
-/* TODO: Must be implemented for each platform separately, because its implementation is platform dependent.
+/* NOTE: Must be implemented for each platform separately, because its implementation is platform dependent.
          No need to call this function, library call this function automatically */
 /**
  * @brief  Load the calibration parameters from storage
@@ -153,7 +153,7 @@ char MotionAC_LoadCalFromNVM(unsigned short int data_size, unsigned int *data)
   return (char)1; /* FAILURE: Read from NVM not implemented. */
 }
 
-/* TODO: Must be implemented for each platform separately, because its implementation is platform dependent.
+/* NOTE: Must be implemented for each platform separately, because its implementation is platform dependent.
          No need to call this function, library call this function automatically */
 /**
  * @brief  Save the calibration parameters in storage

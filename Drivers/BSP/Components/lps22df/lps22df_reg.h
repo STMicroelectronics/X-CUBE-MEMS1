@@ -485,7 +485,7 @@ typedef union
   lps22df_status_t           status;
   bitwise_t                  bitwise;
   uint8_t                    byte;
-} lis2du12_reg_t;
+} lps22df_reg_t;
 
 int32_t lps22df_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
                          uint8_t *data, uint16_t len);

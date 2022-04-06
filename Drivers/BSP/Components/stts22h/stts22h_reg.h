@@ -1,22 +1,21 @@
-/*
- ******************************************************************************
- * @file    stts22h_reg.h
- * @author  Sensors Software Solution Team
- * @brief   This file contains all the functions prototypes for the
- *          stts22h_reg.c driver.
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    stts22h_reg.h
+  * @author  Sensors Software Solution Team
+  * @brief   This file contains all the functions prototypes for the
+  *          stts22h_reg.c driver.
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef STTS22H_REGS_H
@@ -28,6 +27,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
+#include <stddef.h>
 #include <math.h>
 
 /** @addtogroup STTS22H
@@ -74,7 +74,8 @@ extern "C" {
 #ifndef MEMS_SHARED_TYPES
 #define MEMS_SHARED_TYPES
 
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t bit0       : 1;
   uint8_t bit1       : 1;
@@ -107,12 +108,11 @@ typedef struct {
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *,
-                                    uint16_t);
-typedef int32_t (*stmdev_read_ptr) (void *, uint8_t, uint8_t *,
-                                    uint16_t);
+typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 
-typedef struct {
+typedef struct
+{
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
@@ -141,7 +141,8 @@ typedef struct {
   *
   */
 
-typedef struct {
+typedef struct
+{
   uint8_t address;
   uint8_t data;
 } ucf_line_t;
@@ -177,17 +178,20 @@ typedef struct {
 
 #define STTS22H_WHOAMI                       0x01U
 #define STTS22H_TEMP_H_LIMIT                 0x02U
-typedef struct {
+typedef struct
+{
   uint8_t thl                 : 8;
 } stts22h_temp_h_limit_t;
 
 #define STTS22H_TEMP_L_LIMIT                 0x03U
-typedef struct {
+typedef struct
+{
   uint8_t tll                 : 8;
 } stts22h_temp_l_limit_t;
 
 #define STTS22H_CTRL                         0x04U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t one_shot            : 1;
   uint8_t time_out_dis        : 1;
@@ -208,7 +212,8 @@ typedef struct {
 } stts22h_ctrl_t;
 
 #define STTS22H_STATUS                       0x05U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t busy                : 1;
   uint8_t over_thh            : 1;
@@ -225,7 +230,8 @@ typedef struct {
 #define STTS22H_TEMP_L_OUT                   0x06U
 #define STTS22H_TEMP_H_OUT                   0x07U
 #define STTS22H_SOFTWARE_RESET               0x0CU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01         : 1;
   uint8_t sw_reset            : 1;
@@ -244,9 +250,9 @@ typedef struct {
 
 /**
   * @defgroup STTS22H_Register_Union
-  * @brief    This union group all the registers that has a bit-field
+  * @brief    This union group all the registers having a bit-field
   *           description.
-  *           This union is useful but not need by the driver.
+  *           This union is useful but it's not needed by the driver.
   *
   *           REMOVING this union you are compliant with:
   *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
@@ -254,7 +260,8 @@ typedef struct {
   * @{
   *
   */
-typedef union {
+typedef union
+{
   stts22h_temp_h_limit_t      temp_h_limit;
   stts22h_temp_l_limit_t      temp_l_limit;
   stts22h_ctrl_t              ctrl;
@@ -278,7 +285,8 @@ int32_t stts22h_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
 
 float_t stts22h_from_lsb_to_celsius(int16_t lsb);
 
-typedef enum {
+typedef enum
+{
   STTS22H_POWER_DOWN   = 0x00,
   STTS22H_ONE_SHOT     = 0x01,
   STTS22H_1Hz          = 0x04,
@@ -303,13 +311,15 @@ int32_t stts22h_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val);
 
 int32_t stts22h_dev_id_get(stmdev_ctx_t *ctx, uint8_t *buff);
 
-typedef struct {
+typedef struct
+{
   uint8_t busy             : 1;
 } stts22h_dev_status_t;
 int32_t stts22h_dev_status_get(stmdev_ctx_t *ctx,
                                stts22h_dev_status_t *val);
 
-typedef enum {
+typedef enum
+{
   STTS22H_SMBUS_TIMEOUT_ENABLE    = 0,
   STTS22H_SMBUS_TIMEOUT_DISABLE   = 1,
 } stts22h_smbus_md_t;
@@ -327,7 +337,8 @@ int32_t stts22h_temp_trshld_high_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t stts22h_temp_trshld_low_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t stts22h_temp_trshld_low_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef struct {
+typedef struct
+{
   uint8_t under_thl             : 1;
   uint8_t over_thh              : 1;
 } stts22h_temp_trlhd_src_t;
@@ -344,5 +355,3 @@ int32_t stts22h_temp_trshld_src_get(stmdev_ctx_t *ctx,
 #endif
 
 #endif /* STTS22H_REGS_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    ais2ih.h
- * @author  MEMS Software Solutions Team
- * @brief   AIS2IH header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    ais2ih.h
+  * @author  MEMS Software Solutions Team
+  * @brief   AIS2IH header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef AIS2IH_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup AIS2IH AIS2IH
- * @{
- */
+  * @{
+  */
 
 /** @defgroup AIS2IH_Exported_Types AIS2IH Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*AIS2IH_Init_Func)(void);
 typedef int32_t (*AIS2IH_DeInit_Func)(void);
@@ -157,33 +157,37 @@ typedef struct
   int32_t (*GetAxesRaw)(AIS2IH_Object_t *, AIS2IH_AxesRaw_t *);
 } AIS2IH_ACC_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } ais2ih_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } ais2ih_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } ais2ih_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } ais2ih_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup AIS2IH_Exported_Constants AIS2IH Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define AIS2IH_OK                       0
 #define AIS2IH_ERROR                   -1
@@ -205,12 +209,12 @@ typedef union{
 #define AIS2IH_ACC_SENSITIVITY_FOR_FS_16G_OTHER_MODES  1.952f  /**< Sensitivity value for 16g full scale, all other modes except Low-power1 [mg/LSB] */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup AIS2IH_Exported_Functions AIS2IH Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t AIS2IH_RegisterBusIO(AIS2IH_Object_t *pObj, AIS2IH_IO_t *pIO);
 int32_t AIS2IH_Init(AIS2IH_Object_t *pObj);
@@ -223,7 +227,8 @@ int32_t AIS2IH_ACC_Disable(AIS2IH_Object_t *pObj);
 int32_t AIS2IH_ACC_GetSensitivity(AIS2IH_Object_t *pObj, float *Sensitivity);
 int32_t AIS2IH_ACC_GetOutputDataRate(AIS2IH_Object_t *pObj, float *Odr);
 int32_t AIS2IH_ACC_SetOutputDataRate(AIS2IH_Object_t *pObj, float Odr);
-int32_t AIS2IH_ACC_SetOutputDataRate_With_Mode(AIS2IH_Object_t *pObj, float Odr, AIS2IH_Operating_Mode_t Mode, AIS2IH_Low_Noise_t Noise);
+int32_t AIS2IH_ACC_SetOutputDataRate_With_Mode(AIS2IH_Object_t *pObj, float Odr, AIS2IH_Operating_Mode_t Mode,
+                                               AIS2IH_Low_Noise_t Noise);
 int32_t AIS2IH_ACC_GetFullScale(AIS2IH_Object_t *pObj, int32_t *FullScale);
 int32_t AIS2IH_ACC_SetFullScale(AIS2IH_Object_t *pObj, int32_t FullScale);
 int32_t AIS2IH_ACC_GetAxesRaw(AIS2IH_Object_t *pObj, AIS2IH_AxesRaw_t *Value);
@@ -266,19 +271,19 @@ int32_t AIS2IH_FIFO_Get_Num_Samples(AIS2IH_Object_t *pObj, uint16_t *NumSamples)
 int32_t AIS2IH_FIFO_Set_Mode(AIS2IH_Object_t *pObj, uint8_t Mode);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup AIS2IH_Exported_Variables AIS2IH Exported Variables
- * @{
- */
+  * @{
+  */
 
 extern AIS2IH_CommonDrv_t AIS2IH_COMMON_Driver;
 extern AIS2IH_ACC_Drv_t AIS2IH_ACC_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -287,15 +292,15 @@ extern AIS2IH_ACC_Drv_t AIS2IH_ACC_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

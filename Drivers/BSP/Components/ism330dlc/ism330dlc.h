@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    ism330dlc.h
- * @author  MEMS Software Solutions Team
- * @brief   ISM330DLC header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    ism330dlc.h
+  * @author  MEMS Software Solutions Team
+  * @brief   ISM330DLC header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef ISM330DLC_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup ISM330DLC ISM330DLC
- * @{
- */
+  * @{
+  */
 
 /** @defgroup ISM330DLC_Exported_Types ISM330DLC Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*ISM330DLC_Init_Func)(void);
 typedef int32_t (*ISM330DLC_DeInit_Func)(void);
@@ -154,33 +154,37 @@ typedef struct
   int32_t (*GetAxesRaw)(ISM330DLC_Object_t *, ISM330DLC_AxesRaw_t *);
 } ISM330DLC_GYRO_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } ism330dlc_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } ism330dlc_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } ism330dlc_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } ism330dlc_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup ISM330DLC_Exported_Constants ISM330DLC Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define ISM330DLC_OK                       0
 #define ISM330DLC_ERROR                   -1
@@ -201,12 +205,12 @@ typedef union{
 #define ISM330DLC_GYRO_SENSITIVITY_FS_2000DPS  70.000f
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup ISM330DLC_Exported_Functions ISM330DLC Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t ISM330DLC_RegisterBusIO(ISM330DLC_Object_t *pObj, ISM330DLC_IO_t *pIO);
 int32_t ISM330DLC_Init(ISM330DLC_Object_t *pObj);
@@ -294,7 +298,8 @@ int32_t ISM330DLC_FIFO_Set_Mode(ISM330DLC_Object_t *pObj, uint8_t Mode);
 int32_t ISM330DLC_FIFO_Get_Pattern(ISM330DLC_Object_t *pObj, uint16_t *Pattern);
 int32_t ISM330DLC_FIFO_Get_Data(ISM330DLC_Object_t *pObj, uint8_t *Data);
 int32_t ISM330DLC_FIFO_Full_Set_INT1(ISM330DLC_Object_t *pObj, uint8_t Status);
-int32_t ISM330DLC_FIFO_Set_INT2_Drdy(ISM330DLC_Object_t *pObj, uint8_t Status);int32_t ISM330DLC_FIFO_ACC_Set_Decimation(ISM330DLC_Object_t *pObj, uint8_t Decimation);
+int32_t ISM330DLC_FIFO_Set_INT2_Drdy(ISM330DLC_Object_t *pObj, uint8_t Status);
+int32_t ISM330DLC_FIFO_ACC_Set_Decimation(ISM330DLC_Object_t *pObj, uint8_t Decimation);
 int32_t ISM330DLC_FIFO_ACC_Set_Decimation(ISM330DLC_Object_t *pObj, uint8_t Decimation);
 int32_t ISM330DLC_FIFO_Get_Data_Word(ISM330DLC_Object_t *pObj, int16_t *data_raw);
 int32_t ISM330DLC_FIFO_ACC_Get_Axis(ISM330DLC_Object_t *pObj, int32_t *Acceleration);
@@ -302,20 +307,20 @@ int32_t ISM330DLC_FIFO_GYRO_Set_Decimation(ISM330DLC_Object_t *pObj, uint8_t Dec
 int32_t ISM330DLC_FIFO_GYRO_Get_Axis(ISM330DLC_Object_t *pObj, int32_t *AngularVelocity);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup ISM330DLC_Exported_Variables ISM330DLC Exported Variables
- * @{
- */
+  * @{
+  */
 
 extern ISM330DLC_CommonDrv_t ISM330DLC_COMMON_Driver;
 extern ISM330DLC_ACC_Drv_t ISM330DLC_ACC_Driver;
 extern ISM330DLC_GYRO_Drv_t ISM330DLC_GYRO_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -324,15 +329,15 @@ extern ISM330DLC_GYRO_Drv_t ISM330DLC_GYRO_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

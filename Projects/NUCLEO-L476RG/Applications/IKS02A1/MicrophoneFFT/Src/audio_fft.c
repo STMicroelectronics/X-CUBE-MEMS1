@@ -196,12 +196,11 @@ int32_t AUDIO_FFT_Process(AUDIO_FFT_instance_t* AUDIO_FFT_instance, float * outp
     float * fftOut = AUDIO_FFT_instance->context.fftOut;
     arm_rfft_fast_f32(&AUDIO_FFT_instance->context.S, fftIn, fftOut, 0);
     arm_cmplx_mag_f32(fftOut, output, AUDIO_FFT_instance->FFT_len / 2);
-    //  arm_scale_f32(fDataAccDMic, 4.0f/(float)((float)nAcc *(FFT_LEN_AMIC)), fDataAccDMic, FFT_LEN_DMIC/2); TODO: check normalization
   }
 
     if(AUDIO_FFT_instance->output == PHASE)
   {
-//  TODO
+    // NOTE: To be implemented by user if needed
   }
 
   return 0;

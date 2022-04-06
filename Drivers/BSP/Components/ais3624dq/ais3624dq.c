@@ -1,40 +1,40 @@
 /**
- ******************************************************************************
- * @file    ais3624dq.c
- * @author  MEMS Software Solutions Team
- * @brief   AIS3624DQ driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    ais3624dq.c
+  * @author  MEMS Software Solutions Team
+  * @brief   AIS3624DQ driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "ais3624dq.h"
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @defgroup AIS3624DQ AIS3624DQ
- * @{
- */
+  * @{
+  */
 
 /** @defgroup AIS3624DQ_Exported_Variables AIS3624DQ Exported Variables
- * @{
- */
+  * @{
+  */
 
 AIS3624DQ_CommonDrv_t AIS3624DQ_COMMON_Driver =
 {
@@ -58,12 +58,12 @@ AIS3624DQ_ACC_Drv_t AIS3624DQ_ACC_Driver =
 };
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup AIS3624DQ_Private_Function_Prototypes AIS3624DQ Private Function Prototypes
- * @{
- */
+  * @{
+  */
 
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
@@ -71,18 +71,18 @@ static int32_t AIS3624DQ_ACC_SetOutputDataRate_When_Enabled(AIS3624DQ_Object_t *
 static int32_t AIS3624DQ_ACC_SetOutputDataRate_When_Disabled(AIS3624DQ_Object_t *pObj, float Odr);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup AIS3624DQ_Exported_Functions AIS3624DQ Exported Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Register Component Bus IO operations
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Register Component Bus IO operations
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS3624DQ_RegisterBusIO(AIS3624DQ_Object_t *pObj, AIS3624DQ_IO_t *pIO)
 {
   int32_t ret = AIS3624DQ_OK;
@@ -134,10 +134,10 @@ int32_t AIS3624DQ_RegisterBusIO(AIS3624DQ_Object_t *pObj, AIS3624DQ_IO_t *pIO)
 }
 
 /**
- * @brief  Initialize the AIS3624DQ sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Initialize the AIS3624DQ sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS3624DQ_Init(AIS3624DQ_Object_t *pObj)
 {
   /* Enable BDU */
@@ -167,10 +167,10 @@ int32_t AIS3624DQ_Init(AIS3624DQ_Object_t *pObj)
 }
 
 /**
- * @brief  Deinitialize the AIS3624DQ sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Deinitialize the AIS3624DQ sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS3624DQ_DeInit(AIS3624DQ_Object_t *pObj)
 {
   /* Disable the component */
@@ -188,11 +188,11 @@ int32_t AIS3624DQ_DeInit(AIS3624DQ_Object_t *pObj)
 }
 
 /**
- * @brief  Read component ID
- * @param  pObj the device pObj
- * @param  Id the WHO_AM_I value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Read component ID
+  * @param  pObj the device pObj
+  * @param  Id the WHO_AM_I value
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS3624DQ_ReadID(AIS3624DQ_Object_t *pObj, uint8_t *Id)
 {
   if (ais3624dq_device_id_get(&(pObj->Ctx), Id) != AIS3624DQ_OK)
@@ -204,11 +204,11 @@ int32_t AIS3624DQ_ReadID(AIS3624DQ_Object_t *pObj, uint8_t *Id)
 }
 
 /**
- * @brief  Get AIS3624DQ sensor capabilities
- * @param  pObj Component object pointer
- * @param  Capabilities pointer to AIS3624DQ sensor capabilities
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get AIS3624DQ sensor capabilities
+  * @param  pObj Component object pointer
+  * @param  Capabilities pointer to AIS3624DQ sensor capabilities
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS3624DQ_GetCapabilities(AIS3624DQ_Object_t *pObj, AIS3624DQ_Capabilities_t *Capabilities)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -228,10 +228,10 @@ int32_t AIS3624DQ_GetCapabilities(AIS3624DQ_Object_t *pObj, AIS3624DQ_Capabiliti
 }
 
 /**
- * @brief  Enable the AIS3624DQ accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the AIS3624DQ accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS3624DQ_ACC_Enable(AIS3624DQ_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -252,10 +252,10 @@ int32_t AIS3624DQ_ACC_Enable(AIS3624DQ_Object_t *pObj)
 }
 
 /**
- * @brief  Disable the AIS3624DQ accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable the AIS3624DQ accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS3624DQ_ACC_Disable(AIS3624DQ_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -282,11 +282,11 @@ int32_t AIS3624DQ_ACC_Disable(AIS3624DQ_Object_t *pObj)
 }
 
 /**
- * @brief  Get the AIS3624DQ accelerometer sensor sensitivity
- * @param  pObj the device pObj
- * @param  Sensitivity pointer
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the AIS3624DQ accelerometer sensor sensitivity
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS3624DQ_ACC_GetSensitivity(AIS3624DQ_Object_t *pObj, float *Sensitivity)
 {
   int32_t ret = AIS3624DQ_OK;
@@ -302,7 +302,7 @@ int32_t AIS3624DQ_ACC_GetSensitivity(AIS3624DQ_Object_t *pObj, float *Sensitivit
   {
     case AIS3624DQ_6g:
       *Sensitivity = AIS3624DQ_ACC_SENSITIVITY_FOR_FS_6G;
-       break;
+      break;
 
     case AIS3624DQ_12g:
       *Sensitivity = AIS3624DQ_ACC_SENSITIVITY_FOR_FS_12G;
@@ -322,11 +322,11 @@ int32_t AIS3624DQ_ACC_GetSensitivity(AIS3624DQ_Object_t *pObj, float *Sensitivit
 }
 
 /**
- * @brief  Get the AIS3624DQ accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the AIS3624DQ accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS3624DQ_ACC_GetOutputDataRate(AIS3624DQ_Object_t *pObj, float *Odr)
 {
   int32_t ret = AIS3624DQ_OK;
@@ -390,11 +390,11 @@ int32_t AIS3624DQ_ACC_GetOutputDataRate(AIS3624DQ_Object_t *pObj, float *Odr)
 }
 
 /**
- * @brief  Set the AIS3624DQ accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the AIS3624DQ accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS3624DQ_ACC_SetOutputDataRate(AIS3624DQ_Object_t *pObj, float Odr)
 {
   /* Check if the component is enabled */
@@ -409,11 +409,11 @@ int32_t AIS3624DQ_ACC_SetOutputDataRate(AIS3624DQ_Object_t *pObj, float Odr)
 }
 
 /**
- * @brief  Get the AIS3624DQ accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale pointer where the full scale is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the AIS3624DQ accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale pointer where the full scale is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS3624DQ_ACC_GetFullScale(AIS3624DQ_Object_t *pObj, int32_t *FullScale)
 {
   int32_t ret = AIS3624DQ_OK;
@@ -449,11 +449,11 @@ int32_t AIS3624DQ_ACC_GetFullScale(AIS3624DQ_Object_t *pObj, int32_t *FullScale)
 }
 
 /**
- * @brief  Set the AIS3624DQ accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale the functional full scale to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the AIS3624DQ accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale the functional full scale to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS3624DQ_ACC_SetFullScale(AIS3624DQ_Object_t *pObj, int32_t FullScale)
 {
   ais3624dq_fs_t new_fs;
@@ -461,8 +461,8 @@ int32_t AIS3624DQ_ACC_SetFullScale(AIS3624DQ_Object_t *pObj, int32_t FullScale)
   /* Seems like MISRA C-2012 rule 14.3a violation but only from single file statical analysis point of view because
      the parameter passed to the function is not known at the moment of analysis */
   new_fs = (FullScale <=  6) ? AIS3624DQ_6g
-         : (FullScale <= 12) ? AIS3624DQ_12g
-         :                     AIS3624DQ_24g;
+           : (FullScale <= 12) ? AIS3624DQ_12g
+           :                     AIS3624DQ_24g;
 
   if (ais3624dq_full_scale_set(&(pObj->Ctx), new_fs) != AIS3624DQ_OK)
   {
@@ -473,11 +473,11 @@ int32_t AIS3624DQ_ACC_SetFullScale(AIS3624DQ_Object_t *pObj, int32_t FullScale)
 }
 
 /**
- * @brief  Get the AIS3624DQ accelerometer sensor raw axes
- * @param  pObj the device pObj
- * @param  Value pointer where the raw values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the AIS3624DQ accelerometer sensor raw axes
+  * @param  pObj the device pObj
+  * @param  Value pointer where the raw values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS3624DQ_ACC_GetAxesRaw(AIS3624DQ_Object_t *pObj, AIS3624DQ_AxesRaw_t *Value)
 {
   ais3624dq_axis3bit16_t data_raw;
@@ -485,9 +485,9 @@ int32_t AIS3624DQ_ACC_GetAxesRaw(AIS3624DQ_Object_t *pObj, AIS3624DQ_AxesRaw_t *
 
   /* Read raw data values. */
   multi_read = (pObj->IO.BusType == AIS3624DQ_I2C_BUS)        ? 0x80
-             : (pObj->IO.BusType == AIS3624DQ_SPI_4WIRES_BUS) ? 0x40
-             : (pObj->IO.BusType == AIS3624DQ_SPI_3WIRES_BUS) ? 0x40
-             :                                                  0x00;
+               : (pObj->IO.BusType == AIS3624DQ_SPI_4WIRES_BUS) ? 0x40
+               : (pObj->IO.BusType == AIS3624DQ_SPI_3WIRES_BUS) ? 0x40
+               :                                                  0x00;
 
   if (ais3624dq_read_reg(&(pObj->Ctx), AIS3624DQ_OUT_X_L | multi_read, data_raw.u8bit, 6) != AIS3624DQ_OK)
   {
@@ -503,11 +503,11 @@ int32_t AIS3624DQ_ACC_GetAxesRaw(AIS3624DQ_Object_t *pObj, AIS3624DQ_AxesRaw_t *
 }
 
 /**
- * @brief  Get the AIS3624DQ accelerometer sensor axes
- * @param  pObj the device pObj
- * @param  Acceleration pointer where the values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the AIS3624DQ accelerometer sensor axes
+  * @param  pObj the device pObj
+  * @param  Acceleration pointer where the values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS3624DQ_ACC_GetAxes(AIS3624DQ_Object_t *pObj, AIS3624DQ_Axes_t *Acceleration)
 {
   AIS3624DQ_AxesRaw_t data_raw;
@@ -534,12 +534,12 @@ int32_t AIS3624DQ_ACC_GetAxes(AIS3624DQ_Object_t *pObj, AIS3624DQ_Axes_t *Accele
 }
 
 /**
- * @brief  Get the AIS3624DQ register value
- * @param  pObj the device pObj
- * @param  Reg address to be read
- * @param  Data pointer where the value is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the AIS3624DQ register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be read
+  * @param  Data pointer where the value is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS3624DQ_Read_Reg(AIS3624DQ_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 {
   if (ais3624dq_read_reg(&(pObj->Ctx), Reg, Data, 1) != AIS3624DQ_OK)
@@ -551,12 +551,12 @@ int32_t AIS3624DQ_Read_Reg(AIS3624DQ_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 }
 
 /**
- * @brief  Set the AIS3624DQ register value
- * @param  pObj the device pObj
- * @param  Reg address to be written
- * @param  Data value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the AIS3624DQ register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be written
+  * @param  Data value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS3624DQ_Write_Reg(AIS3624DQ_Object_t *pObj, uint8_t Reg, uint8_t Data)
 {
   if (ais3624dq_write_reg(&(pObj->Ctx), Reg, &Data, 1) != AIS3624DQ_OK)
@@ -568,11 +568,11 @@ int32_t AIS3624DQ_Write_Reg(AIS3624DQ_Object_t *pObj, uint8_t Reg, uint8_t Data)
 }
 
 /**
- * @brief  Get the AIS3624DQ ACC data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the AIS3624DQ ACC data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t AIS3624DQ_ACC_Get_DRDY_Status(AIS3624DQ_Object_t *pObj, uint8_t *Status)
 {
   if (ais3624dq_flag_data_ready_get(&(pObj->Ctx), Status) != AIS3624DQ_OK)
@@ -584,32 +584,32 @@ int32_t AIS3624DQ_ACC_Get_DRDY_Status(AIS3624DQ_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup AIS3624DQ_Private_Functions AIS3624DQ Private Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Set the AIS3624DQ accelerometer sensor output data rate when enabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the AIS3624DQ accelerometer sensor output data rate when enabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t AIS3624DQ_ACC_SetOutputDataRate_When_Enabled(AIS3624DQ_Object_t *pObj, float Odr)
 {
   ais3624dq_dr_t new_odr;
 
   new_odr = (Odr <=   0.5f) ? AIS3624DQ_ODR_Hz5
-          : (Odr <=   1.0f) ? AIS3624DQ_ODR_1Hz
-          : (Odr <=   2.0f) ? AIS3624DQ_ODR_5Hz2
-          : (Odr <=   5.0f) ? AIS3624DQ_ODR_5Hz
-          : (Odr <=  10.0f) ? AIS3624DQ_ODR_10Hz
-          : (Odr <=  50.0f) ? AIS3624DQ_ODR_50Hz
-          : (Odr <= 100.0f) ? AIS3624DQ_ODR_100Hz
-          : (Odr <= 400.0f) ? AIS3624DQ_ODR_400Hz
-          :                   AIS3624DQ_ODR_1kHz;
+            : (Odr <=   1.0f) ? AIS3624DQ_ODR_1Hz
+            : (Odr <=   2.0f) ? AIS3624DQ_ODR_5Hz2
+            : (Odr <=   5.0f) ? AIS3624DQ_ODR_5Hz
+            : (Odr <=  10.0f) ? AIS3624DQ_ODR_10Hz
+            : (Odr <=  50.0f) ? AIS3624DQ_ODR_50Hz
+            : (Odr <= 100.0f) ? AIS3624DQ_ODR_100Hz
+            : (Odr <= 400.0f) ? AIS3624DQ_ODR_400Hz
+            :                   AIS3624DQ_ODR_1kHz;
 
   /* Output data rate selection. */
   if (ais3624dq_data_rate_set(&(pObj->Ctx), new_odr) != AIS3624DQ_OK)
@@ -624,35 +624,35 @@ static int32_t AIS3624DQ_ACC_SetOutputDataRate_When_Enabled(AIS3624DQ_Object_t *
 }
 
 /**
- * @brief  Set the AIS3624DQ accelerometer sensor output data rate when disabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the AIS3624DQ accelerometer sensor output data rate when disabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t AIS3624DQ_ACC_SetOutputDataRate_When_Disabled(AIS3624DQ_Object_t *pObj, float Odr)
 {
   /* Store the new output data rate value */
   pObj->acc_odr = (Odr <=   0.5f) ? AIS3624DQ_ODR_Hz5
-                : (Odr <=   1.0f) ? AIS3624DQ_ODR_1Hz
-                : (Odr <=   2.0f) ? AIS3624DQ_ODR_5Hz2
-                : (Odr <=   5.0f) ? AIS3624DQ_ODR_5Hz
-                : (Odr <=  10.0f) ? AIS3624DQ_ODR_10Hz
-                : (Odr <=  50.0f) ? AIS3624DQ_ODR_50Hz
-                : (Odr <= 100.0f) ? AIS3624DQ_ODR_100Hz
-                : (Odr <= 400.0f) ? AIS3624DQ_ODR_400Hz
-                :                   AIS3624DQ_ODR_1kHz;
+                  : (Odr <=   1.0f) ? AIS3624DQ_ODR_1Hz
+                  : (Odr <=   2.0f) ? AIS3624DQ_ODR_5Hz2
+                  : (Odr <=   5.0f) ? AIS3624DQ_ODR_5Hz
+                  : (Odr <=  10.0f) ? AIS3624DQ_ODR_10Hz
+                  : (Odr <=  50.0f) ? AIS3624DQ_ODR_50Hz
+                  : (Odr <= 100.0f) ? AIS3624DQ_ODR_100Hz
+                  : (Odr <= 400.0f) ? AIS3624DQ_ODR_400Hz
+                  :                   AIS3624DQ_ODR_1kHz;
 
   return AIS3624DQ_OK;
 }
 
 /**
- * @brief  Wrap Read register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Read register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   AIS3624DQ_Object_t *pObj = (AIS3624DQ_Object_t *)Handle;
@@ -661,13 +661,13 @@ static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t L
 }
 
 /**
- * @brief  Wrap Write register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Write register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   AIS3624DQ_Object_t *pObj = (AIS3624DQ_Object_t *)Handle;

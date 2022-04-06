@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    iis2iclx.h
- * @author  MEMS Software Solutions Team
- * @brief   IIS2ICLX header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    iis2iclx.h
+  * @author  MEMS Software Solutions Team
+  * @brief   IIS2ICLX header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef IIS2ICLX_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup IIS2ICLX IIS2ICLX
- * @{
- */
+  * @{
+  */
 
 /** @defgroup IIS2ICLX_Exported_Types IIS2ICLX Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*IIS2ICLX_Init_Func)(void);
 typedef int32_t (*IIS2ICLX_DeInit_Func)(void);
@@ -139,33 +139,37 @@ typedef struct
   int32_t (*GetAxesRaw)(IIS2ICLX_Object_t *, IIS2ICLX_AxesRaw_t *);
 } IIS2ICLX_ACC_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } iis2iclx_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } iis2iclx_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } iis2iclx_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } iis2iclx_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup IIS2ICLX_Exported_Constants IIS2ICLX Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define IIS2ICLX_OK                       0
 #define IIS2ICLX_ERROR                   -1
@@ -180,12 +184,12 @@ typedef union{
 #define IIS2ICLX_ACC_SENSITIVITY_FS_3G   0.122f
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup IIS2ICLX_Exported_Functions IIS2ICLX Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t IIS2ICLX_RegisterBusIO(IIS2ICLX_Object_t *pObj, IIS2ICLX_IO_t *pIO);
 int32_t IIS2ICLX_Init(IIS2ICLX_Object_t *pObj);
@@ -244,19 +248,19 @@ int32_t IIS2ICLX_ACC_Set_Filter_Mode(IIS2ICLX_Object_t *pObj, uint8_t LowHighPas
 int32_t IIS2ICLX_ACC_Set_Sleep_Duration(IIS2ICLX_Object_t *pObj, uint8_t Duration);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup IIS2ICLX_Exported_Variables IIS2ICLX Exported Variables
- * @{
- */
+  * @{
+  */
 
 extern IIS2ICLX_CommonDrv_t IIS2ICLX_COMMON_Driver;
 extern IIS2ICLX_ACC_Drv_t IIS2ICLX_ACC_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -265,15 +269,15 @@ extern IIS2ICLX_ACC_Drv_t IIS2ICLX_ACC_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

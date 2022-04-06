@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    a3g4250d.h
- * @author  MEMS Software Solutions Team
- * @brief   A3G4250D header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    a3g4250d.h
+  * @author  MEMS Software Solutions Team
+  * @brief   A3G4250D header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef A3G4250D_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup A3G4250D A3G4250D
- * @{
- */
+  * @{
+  */
 
 /** @defgroup A3G4250D_Exported_Types A3G4250D Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*A3G4250D_Init_Func)(void);
 typedef int32_t (*A3G4250D_DeInit_Func)(void);
@@ -127,33 +127,37 @@ typedef struct
   int32_t (*GetAxesRaw)(A3G4250D_Object_t *, A3G4250D_AxesRaw_t *);
 } A3G4250D_GYRO_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } a3g4250d_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } a3g4250d_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } a3g4250d_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } a3g4250d_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup A3G4250D_Exported_Constants A3G4250D Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define A3G4250D_OK                       0
 #define A3G4250D_ERROR                   -1
@@ -165,12 +169,12 @@ typedef union{
 #define A3G4250D_GYRO_SENSITIVITY    8.750f
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup A3G4250D_Exported_Functions A3G4250D Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t A3G4250D_RegisterBusIO(A3G4250D_Object_t *pObj, A3G4250D_IO_t *pIO);
 int32_t A3G4250D_Init(A3G4250D_Object_t *pObj);
@@ -194,19 +198,19 @@ int32_t A3G4250D_Write_Reg(A3G4250D_Object_t *pObj, uint8_t reg, uint8_t Data);
 int32_t A3G4250D_GYRO_Get_DRDY_Status(A3G4250D_Object_t *pObj, uint8_t *Status);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup A3G4250D_Exported_Variables A3G4250D Exported Variables
- * @{
- */
+  * @{
+  */
 
 extern A3G4250D_CommonDrv_t A3G4250D_COMMON_Driver;
 extern A3G4250D_GYRO_Drv_t A3G4250D_GYRO_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -215,15 +219,15 @@ extern A3G4250D_GYRO_Drv_t A3G4250D_GYRO_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

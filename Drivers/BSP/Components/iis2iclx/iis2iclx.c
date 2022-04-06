@@ -1,40 +1,40 @@
 /**
- ******************************************************************************
- * @file    iis2iclx.c
- * @author  MEMS Software Solutions Team
- * @brief   IIS2ICLX driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    iis2iclx.c
+  * @author  MEMS Software Solutions Team
+  * @brief   IIS2ICLX driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "iis2iclx.h"
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @defgroup IIS2ICLX IIS2ICLX
- * @{
- */
+  * @{
+  */
 
 /** @defgroup IIS2ICLX_Exported_Variables IIS2ICLX Exported Variables
- * @{
- */
+  * @{
+  */
 
 IIS2ICLX_CommonDrv_t IIS2ICLX_COMMON_Driver =
 {
@@ -58,12 +58,12 @@ IIS2ICLX_ACC_Drv_t IIS2ICLX_ACC_Driver =
 };
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup IIS2ICLX_Private_Function_Prototypes IIS2ICLX Private Function Prototypes
- * @{
- */
+  * @{
+  */
 
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
@@ -71,18 +71,18 @@ static int32_t IIS2ICLX_ACC_SetOutputDataRate_When_Enabled(IIS2ICLX_Object_t *pO
 static int32_t IIS2ICLX_ACC_SetOutputDataRate_When_Disabled(IIS2ICLX_Object_t *pObj, float Odr);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup IIS2ICLX_Exported_Functions IIS2ICLX Exported Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Register Component Bus IO operations
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Register Component Bus IO operations
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_RegisterBusIO(IIS2ICLX_Object_t *pObj, IIS2ICLX_IO_t *pIO)
 {
   int32_t ret = IIS2ICLX_OK;
@@ -136,10 +136,10 @@ int32_t IIS2ICLX_RegisterBusIO(IIS2ICLX_Object_t *pObj, IIS2ICLX_IO_t *pIO)
 }
 
 /**
- * @brief  Initialize the IIS2ICLX sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Initialize the IIS2ICLX sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_Init(IIS2ICLX_Object_t *pObj)
 {
   /* Set DEVICE_CONF bit */
@@ -188,10 +188,10 @@ int32_t IIS2ICLX_Init(IIS2ICLX_Object_t *pObj)
 }
 
 /**
- * @brief  Deinitialize the IIS2ICLX sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Deinitialize the IIS2ICLX sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_DeInit(IIS2ICLX_Object_t *pObj)
 {
   /* Disable the component */
@@ -209,11 +209,11 @@ int32_t IIS2ICLX_DeInit(IIS2ICLX_Object_t *pObj)
 }
 
 /**
- * @brief  Read component ID
- * @param  pObj the device pObj
- * @param  Id the WHO_AM_I value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Read component ID
+  * @param  pObj the device pObj
+  * @param  Id the WHO_AM_I value
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ReadID(IIS2ICLX_Object_t *pObj, uint8_t *Id)
 {
   if (iis2iclx_device_id_get(&(pObj->Ctx), Id) != IIS2ICLX_OK)
@@ -225,11 +225,11 @@ int32_t IIS2ICLX_ReadID(IIS2ICLX_Object_t *pObj, uint8_t *Id)
 }
 
 /**
- * @brief  Get IIS2ICLX sensor capabilities
- * @param  pObj Component object pointer
- * @param  Capabilities pointer to IIS2ICLX sensor capabilities
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get IIS2ICLX sensor capabilities
+  * @param  pObj Component object pointer
+  * @param  Capabilities pointer to IIS2ICLX sensor capabilities
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_GetCapabilities(IIS2ICLX_Object_t *pObj, IIS2ICLX_Capabilities_t *Capabilities)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -249,10 +249,10 @@ int32_t IIS2ICLX_GetCapabilities(IIS2ICLX_Object_t *pObj, IIS2ICLX_Capabilities_
 }
 
 /**
- * @brief  Enable the IIS2ICLX accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the IIS2ICLX accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Enable(IIS2ICLX_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -273,10 +273,10 @@ int32_t IIS2ICLX_ACC_Enable(IIS2ICLX_Object_t *pObj)
 }
 
 /**
- * @brief  Disable the IIS2ICLX accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable the IIS2ICLX accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Disable(IIS2ICLX_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -303,11 +303,11 @@ int32_t IIS2ICLX_ACC_Disable(IIS2ICLX_Object_t *pObj)
 }
 
 /**
- * @brief  Get the IIS2ICLX accelerometer sensor sensitivity
- * @param  pObj the device pObj
- * @param  Sensitivity pointer
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the IIS2ICLX accelerometer sensor sensitivity
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_GetSensitivity(IIS2ICLX_Object_t *pObj, float *Sensitivity)
 {
   int32_t ret = IIS2ICLX_OK;
@@ -347,11 +347,11 @@ int32_t IIS2ICLX_ACC_GetSensitivity(IIS2ICLX_Object_t *pObj, float *Sensitivity)
 }
 
 /**
- * @brief  Get the IIS2ICLX accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the IIS2ICLX accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_GetOutputDataRate(IIS2ICLX_Object_t *pObj, float *Odr)
 {
   int32_t ret = IIS2ICLX_OK;
@@ -406,11 +406,11 @@ int32_t IIS2ICLX_ACC_GetOutputDataRate(IIS2ICLX_Object_t *pObj, float *Odr)
 }
 
 /**
- * @brief  Set the IIS2ICLX accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the IIS2ICLX accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_SetOutputDataRate(IIS2ICLX_Object_t *pObj, float Odr)
 {
   /* Check if the component is enabled */
@@ -425,11 +425,11 @@ int32_t IIS2ICLX_ACC_SetOutputDataRate(IIS2ICLX_Object_t *pObj, float Odr)
 }
 
 /**
- * @brief  Get the IIS2ICLX accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale pointer where the full scale is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the IIS2ICLX accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale pointer where the full scale is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_GetFullScale(IIS2ICLX_Object_t *pObj, int32_t *FullScale)
 {
   int32_t ret = IIS2ICLX_OK;
@@ -468,11 +468,11 @@ int32_t IIS2ICLX_ACC_GetFullScale(IIS2ICLX_Object_t *pObj, int32_t *FullScale)
 }
 
 /**
- * @brief  Set the IIS2ICLX accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale the functional full scale to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the IIS2ICLX accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale the functional full scale to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_SetFullScale(IIS2ICLX_Object_t *pObj, int32_t FullScale)
 {
   iis2iclx_fs_xl_t new_fs;
@@ -480,9 +480,9 @@ int32_t IIS2ICLX_ACC_SetFullScale(IIS2ICLX_Object_t *pObj, int32_t FullScale)
   /* Seems like MISRA C-2012 rule 14.3a violation but only from single file statical analysis point of view because
      the parameter passed to the function is not known at the moment of analysis */
   new_fs = (FullScale <=  500 /* [mg] */) ? IIS2ICLX_500mg
-         : (FullScale <= 1000 /* [mg] */) ? IIS2ICLX_1g
-         : (FullScale <= 2000 /* [mg] */) ? IIS2ICLX_2g
-         :                                  IIS2ICLX_3g;
+           : (FullScale <= 1000 /* [mg] */) ? IIS2ICLX_1g
+           : (FullScale <= 2000 /* [mg] */) ? IIS2ICLX_2g
+           :                                  IIS2ICLX_3g;
 
   if (iis2iclx_xl_full_scale_set(&(pObj->Ctx), new_fs) != IIS2ICLX_OK)
   {
@@ -493,11 +493,11 @@ int32_t IIS2ICLX_ACC_SetFullScale(IIS2ICLX_Object_t *pObj, int32_t FullScale)
 }
 
 /**
- * @brief  Get the IIS2ICLX accelerometer sensor raw axes
- * @param  pObj the device pObj
- * @param  Value pointer where the raw values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the IIS2ICLX accelerometer sensor raw axes
+  * @param  pObj the device pObj
+  * @param  Value pointer where the raw values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_GetAxesRaw(IIS2ICLX_Object_t *pObj, IIS2ICLX_AxesRaw_t *Value)
 {
   iis2iclx_axis3bit16_t data_raw;
@@ -517,11 +517,11 @@ int32_t IIS2ICLX_ACC_GetAxesRaw(IIS2ICLX_Object_t *pObj, IIS2ICLX_AxesRaw_t *Val
 }
 
 /**
- * @brief  Get the IIS2ICLX accelerometer sensor axes
- * @param  pObj the device pObj
- * @param  Acceleration pointer where the values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the IIS2ICLX accelerometer sensor axes
+  * @param  pObj the device pObj
+  * @param  Acceleration pointer where the values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_GetAxes(IIS2ICLX_Object_t *pObj, IIS2ICLX_Axes_t *Acceleration)
 {
   iis2iclx_axis3bit16_t data_raw;
@@ -548,12 +548,12 @@ int32_t IIS2ICLX_ACC_GetAxes(IIS2ICLX_Object_t *pObj, IIS2ICLX_Axes_t *Accelerat
 }
 
 /**
- * @brief  Get the IIS2ICLX register value
- * @param  pObj the device pObj
- * @param  Reg address to be read
- * @param  Data pointer where the value is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the IIS2ICLX register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be read
+  * @param  Data pointer where the value is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_Read_Reg(IIS2ICLX_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 {
   if (iis2iclx_read_reg(&(pObj->Ctx), Reg, Data, 1) != IIS2ICLX_OK)
@@ -565,12 +565,12 @@ int32_t IIS2ICLX_Read_Reg(IIS2ICLX_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 }
 
 /**
- * @brief  Set the IIS2ICLX register value
- * @param  pObj the device pObj
- * @param  Reg address to be written
- * @param  Data value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the IIS2ICLX register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be written
+  * @param  Data value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_Write_Reg(IIS2ICLX_Object_t *pObj, uint8_t Reg, uint8_t Data)
 {
   if (iis2iclx_write_reg(&(pObj->Ctx), Reg, &Data, 1) != IIS2ICLX_OK)
@@ -582,11 +582,11 @@ int32_t IIS2ICLX_Write_Reg(IIS2ICLX_Object_t *pObj, uint8_t Reg, uint8_t Data)
 }
 
 /**
- * @brief  Set the interrupt latch
- * @param  pObj the device pObj
- * @param  Status value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the interrupt latch
+  * @param  pObj the device pObj
+  * @param  Status value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_Set_Interrupt_Latch(IIS2ICLX_Object_t *pObj, uint8_t Status)
 {
   if (Status > 1U)
@@ -603,11 +603,11 @@ int32_t IIS2ICLX_Set_Interrupt_Latch(IIS2ICLX_Object_t *pObj, uint8_t Status)
 }
 
 /**
- * @brief  Enable wake up detection
- * @param  pObj the device pObj
- * @param  IntPin interrupt pin line to be used
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable wake up detection
+  * @param  pObj the device pObj
+  * @param  IntPin interrupt pin line to be used
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Enable_Wake_Up_Detection(IIS2ICLX_Object_t *pObj, IIS2ICLX_SensorIntPin_t IntPin)
 {
   int32_t ret = IIS2ICLX_OK;
@@ -678,14 +678,14 @@ int32_t IIS2ICLX_ACC_Enable_Wake_Up_Detection(IIS2ICLX_Object_t *pObj, IIS2ICLX_
 }
 
 /**
- * @brief  Disable wake up detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable wake up detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Disable_Wake_Up_Detection(IIS2ICLX_Object_t *pObj)
 {
-	iis2iclx_pin_int1_route_t val1;
-	iis2iclx_pin_int2_route_t val2;
+  iis2iclx_pin_int1_route_t val1;
+  iis2iclx_pin_int2_route_t val2;
 
   /* Disable wake up event on both INT1 and INT2 pins */
   if (iis2iclx_pin_int1_route_get(&(pObj->Ctx), &val1) != IIS2ICLX_OK)
@@ -728,11 +728,11 @@ int32_t IIS2ICLX_ACC_Disable_Wake_Up_Detection(IIS2ICLX_Object_t *pObj)
 }
 
 /**
- * @brief  Set wake up threshold
- * @param  pObj the device pObj
- * @param  Threshold wake up detection threshold
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set wake up threshold
+  * @param  pObj the device pObj
+  * @param  Threshold wake up detection threshold
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Set_Wake_Up_Threshold(IIS2ICLX_Object_t *pObj, uint8_t Threshold)
 {
   /* Set wake up threshold. */
@@ -745,11 +745,11 @@ int32_t IIS2ICLX_ACC_Set_Wake_Up_Threshold(IIS2ICLX_Object_t *pObj, uint8_t Thre
 }
 
 /**
- * @brief  Set wake up duration
- * @param  pObj the device pObj
- * @param  Duration wake up detection duration
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set wake up duration
+  * @param  pObj the device pObj
+  * @param  Duration wake up detection duration
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Set_Wake_Up_Duration(IIS2ICLX_Object_t *pObj, uint8_t Duration)
 {
   /* Set wake up duration. */
@@ -762,11 +762,11 @@ int32_t IIS2ICLX_ACC_Set_Wake_Up_Duration(IIS2ICLX_Object_t *pObj, uint8_t Durat
 }
 
 /**
- * @brief  Enable single tap detection
- * @param  pObj the device pObj
- * @param  IntPin interrupt pin line to be used
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable single tap detection
+  * @param  pObj the device pObj
+  * @param  IntPin interrupt pin line to be used
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Enable_Single_Tap_Detection(IIS2ICLX_Object_t *pObj, IIS2ICLX_SensorIntPin_t IntPin)
 {
   int32_t ret = IIS2ICLX_OK;
@@ -859,14 +859,14 @@ int32_t IIS2ICLX_ACC_Enable_Single_Tap_Detection(IIS2ICLX_Object_t *pObj, IIS2IC
 }
 
 /**
- * @brief  Disable single tap detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable single tap detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Disable_Single_Tap_Detection(IIS2ICLX_Object_t *pObj)
 {
-	iis2iclx_pin_int1_route_t val1;
-	iis2iclx_pin_int2_route_t val2;
+  iis2iclx_pin_int1_route_t val1;
+  iis2iclx_pin_int2_route_t val2;
 
   /* Disable single tap event on both INT1 and INT2 pins */
   if (iis2iclx_pin_int1_route_get(&(pObj->Ctx), &val1) != IIS2ICLX_OK)
@@ -927,11 +927,11 @@ int32_t IIS2ICLX_ACC_Disable_Single_Tap_Detection(IIS2ICLX_Object_t *pObj)
 }
 
 /**
- * @brief  Enable double tap detection
- * @param  pObj the device pObj
- * @param  IntPin interrupt pin line to be used
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable double tap detection
+  * @param  pObj the device pObj
+  * @param  IntPin interrupt pin line to be used
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Enable_Double_Tap_Detection(IIS2ICLX_Object_t *pObj, IIS2ICLX_SensorIntPin_t IntPin)
 {
   int32_t ret = IIS2ICLX_OK;
@@ -1032,10 +1032,10 @@ int32_t IIS2ICLX_ACC_Enable_Double_Tap_Detection(IIS2ICLX_Object_t *pObj, IIS2IC
 }
 
 /**
- * @brief  Disable double tap detection
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable double tap detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Disable_Double_Tap_Detection(IIS2ICLX_Object_t *pObj)
 {
   iis2iclx_pin_int1_route_t val1;
@@ -1112,11 +1112,11 @@ int32_t IIS2ICLX_ACC_Disable_Double_Tap_Detection(IIS2ICLX_Object_t *pObj)
 }
 
 /**
- * @brief  Set tap threshold
- * @param  pObj the device pObj
- * @param  Threshold tap threshold
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set tap threshold
+  * @param  pObj the device pObj
+  * @param  Threshold tap threshold
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Set_Tap_Threshold(IIS2ICLX_Object_t *pObj, uint8_t Threshold)
 {
   /* Set tap threshold. */
@@ -1129,11 +1129,11 @@ int32_t IIS2ICLX_ACC_Set_Tap_Threshold(IIS2ICLX_Object_t *pObj, uint8_t Threshol
 }
 
 /**
- * @brief  Set tap shock time
- * @param  pObj the device pObj
- * @param  Time tap shock time
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set tap shock time
+  * @param  pObj the device pObj
+  * @param  Time tap shock time
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Set_Tap_Shock_Time(IIS2ICLX_Object_t *pObj, uint8_t Time)
 {
   /* Set tap shock time window. */
@@ -1146,11 +1146,11 @@ int32_t IIS2ICLX_ACC_Set_Tap_Shock_Time(IIS2ICLX_Object_t *pObj, uint8_t Time)
 }
 
 /**
- * @brief  Set tap quiet time
- * @param  pObj the device pObj
- * @param  Time tap quiet time
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set tap quiet time
+  * @param  pObj the device pObj
+  * @param  Time tap quiet time
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Set_Tap_Quiet_Time(IIS2ICLX_Object_t *pObj, uint8_t Time)
 {
   /* Set tap quiet time window. */
@@ -1163,11 +1163,11 @@ int32_t IIS2ICLX_ACC_Set_Tap_Quiet_Time(IIS2ICLX_Object_t *pObj, uint8_t Time)
 }
 
 /**
- * @brief  Set tap duration time
- * @param  pObj the device pObj
- * @param  Time tap duration time
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set tap duration time
+  * @param  pObj the device pObj
+  * @param  Time tap duration time
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Set_Tap_Duration_Time(IIS2ICLX_Object_t *pObj, uint8_t Time)
 {
   /* Set tap duration time window. */
@@ -1180,11 +1180,11 @@ int32_t IIS2ICLX_ACC_Set_Tap_Duration_Time(IIS2ICLX_Object_t *pObj, uint8_t Time
 }
 
 /**
- * @brief  Get the IIS2ICLX ACC data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the IIS2ICLX ACC data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Get_DRDY_Status(IIS2ICLX_Object_t *pObj, uint8_t *Status)
 {
   if (iis2iclx_xl_flag_data_ready_get(&(pObj->Ctx), Status) != IIS2ICLX_OK)
@@ -1196,11 +1196,11 @@ int32_t IIS2ICLX_ACC_Get_DRDY_Status(IIS2ICLX_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Get the status of all hardware events
- * @param  pObj the device pObj
- * @param  Status the status of all hardware events
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the status of all hardware events
+  * @param  pObj the device pObj
+  * @param  Status the status of all hardware events
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Get_Event_Status(IIS2ICLX_Object_t *pObj, IIS2ICLX_Event_Status_t *Status)
 {
   iis2iclx_wake_up_src_t wake_up_src;
@@ -1280,19 +1280,19 @@ int32_t IIS2ICLX_ACC_Get_Event_Status(IIS2ICLX_Object_t *pObj, IIS2ICLX_Event_St
 }
 
 /**
- * @brief  Set self test
- * @param  pObj the device pObj
- * @param  val the value of st_xl in reg CTRL5_C
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set self test
+  * @param  pObj the device pObj
+  * @param  val the value of st_xl in reg CTRL5_C
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Set_SelfTest(IIS2ICLX_Object_t *pObj, uint8_t val)
 {
   iis2iclx_st_xl_t reg;
 
   reg = (val == 0U)  ? IIS2ICLX_XL_ST_DISABLE
-      : (val == 1U)  ? IIS2ICLX_XL_ST_POSITIVE
-      : (val == 2U)  ? IIS2ICLX_XL_ST_NEGATIVE
-      :                IIS2ICLX_XL_ST_DISABLE;
+        : (val == 1U)  ? IIS2ICLX_XL_ST_POSITIVE
+        : (val == 2U)  ? IIS2ICLX_XL_ST_NEGATIVE
+        :                IIS2ICLX_XL_ST_DISABLE;
 
   if (iis2iclx_xl_self_test_set(&(pObj->Ctx), reg) != IIS2ICLX_OK)
   {
@@ -1303,11 +1303,11 @@ int32_t IIS2ICLX_ACC_Set_SelfTest(IIS2ICLX_Object_t *pObj, uint8_t val)
 }
 
 /**
- * @brief  Get the IIS2ICLX FIFO number of samples
- * @param  pObj the device pObj
- * @param  NumSamples number of samples
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the IIS2ICLX FIFO number of samples
+  * @param  pObj the device pObj
+  * @param  NumSamples number of samples
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_FIFO_Get_Num_Samples(IIS2ICLX_Object_t *pObj, uint16_t *NumSamples)
 {
   if (iis2iclx_fifo_data_level_get(&(pObj->Ctx), NumSamples) != IIS2ICLX_OK)
@@ -1319,11 +1319,11 @@ int32_t IIS2ICLX_FIFO_Get_Num_Samples(IIS2ICLX_Object_t *pObj, uint16_t *NumSamp
 }
 
 /**
- * @brief  Get the IIS2ICLX FIFO full status
- * @param  pObj the device pObj
- * @param  Status FIFO full status
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the IIS2ICLX FIFO full status
+  * @param  pObj the device pObj
+  * @param  Status FIFO full status
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_FIFO_Get_Full_Status(IIS2ICLX_Object_t *pObj, uint8_t *Status)
 {
   iis2iclx_reg_t reg;
@@ -1339,11 +1339,11 @@ int32_t IIS2ICLX_FIFO_Get_Full_Status(IIS2ICLX_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Set the IIS2ICLX FIFO full interrupt on INT1 pin
- * @param  pObj the device pObj
- * @param  Status FIFO full interrupt on INT1 pin status
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the IIS2ICLX FIFO full interrupt on INT1 pin
+  * @param  pObj the device pObj
+  * @param  Status FIFO full interrupt on INT1 pin status
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_FIFO_Set_INT1_FIFO_Full(IIS2ICLX_Object_t *pObj, uint8_t Status)
 {
   iis2iclx_reg_t reg;
@@ -1364,11 +1364,11 @@ int32_t IIS2ICLX_FIFO_Set_INT1_FIFO_Full(IIS2ICLX_Object_t *pObj, uint8_t Status
 }
 
 /**
- * @brief  Set the IIS2ICLX FIFO watermark level
- * @param  pObj the device pObj
- * @param  Watermark FIFO watermark level
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the IIS2ICLX FIFO watermark level
+  * @param  pObj the device pObj
+  * @param  Watermark FIFO watermark level
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_FIFO_Set_Watermark_Level(IIS2ICLX_Object_t *pObj, uint16_t Watermark)
 {
   if (iis2iclx_fifo_watermark_set(&(pObj->Ctx), Watermark) != IIS2ICLX_OK)
@@ -1380,11 +1380,11 @@ int32_t IIS2ICLX_FIFO_Set_Watermark_Level(IIS2ICLX_Object_t *pObj, uint16_t Wate
 }
 
 /**
- * @brief  Set the IIS2ICLX FIFO stop on watermark
- * @param  pObj the device pObj
- * @param  Status FIFO stop on watermark status
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the IIS2ICLX FIFO stop on watermark
+  * @param  pObj the device pObj
+  * @param  Status FIFO stop on watermark status
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_FIFO_Set_Stop_On_Fth(IIS2ICLX_Object_t *pObj, uint8_t Status)
 {
   if (iis2iclx_fifo_stop_on_wtm_set(&(pObj->Ctx), Status) != IIS2ICLX_OK)
@@ -1396,11 +1396,11 @@ int32_t IIS2ICLX_FIFO_Set_Stop_On_Fth(IIS2ICLX_Object_t *pObj, uint8_t Status)
 }
 
 /**
- * @brief  Set the IIS2ICLX FIFO mode
- * @param  pObj the device pObj
- * @param  Mode FIFO mode
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the IIS2ICLX FIFO mode
+  * @param  pObj the device pObj
+  * @param  Mode FIFO mode
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_FIFO_Set_Mode(IIS2ICLX_Object_t *pObj, uint8_t Mode)
 {
   int32_t ret = IIS2ICLX_OK;
@@ -1434,11 +1434,11 @@ int32_t IIS2ICLX_FIFO_Set_Mode(IIS2ICLX_Object_t *pObj, uint8_t Mode)
 }
 
 /**
- * @brief  Get the IIS2ICLX FIFO tag
- * @param  pObj the device pObj
- * @param  Tag FIFO tag
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the IIS2ICLX FIFO tag
+  * @param  pObj the device pObj
+  * @param  Tag FIFO tag
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_FIFO_Get_Tag(IIS2ICLX_Object_t *pObj, uint8_t *Tag)
 {
   iis2iclx_fifo_tag_t tag_local;
@@ -1448,17 +1448,17 @@ int32_t IIS2ICLX_FIFO_Get_Tag(IIS2ICLX_Object_t *pObj, uint8_t *Tag)
     return IIS2ICLX_ERROR;
   }
 
-	*Tag = (uint8_t)tag_local;
+  *Tag = (uint8_t)tag_local;
 
   return IIS2ICLX_OK;
 }
 
 /**
- * @brief  Get the IIS2ICLX FIFO raw data
- * @param  pObj the device pObj
- * @param  Data FIFO raw data array [6]
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the IIS2ICLX FIFO raw data
+  * @param  pObj the device pObj
+  * @param  Data FIFO raw data array [6]
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_FIFO_Get_Data(IIS2ICLX_Object_t *pObj, uint8_t *Data)
 {
   if (iis2iclx_read_reg(&(pObj->Ctx), IIS2ICLX_FIFO_DATA_OUT_X_L, Data, 6) != IIS2ICLX_OK)
@@ -1469,14 +1469,12 @@ int32_t IIS2ICLX_FIFO_Get_Data(IIS2ICLX_Object_t *pObj, uint8_t *Data)
   return IIS2ICLX_OK;
 }
 
-// TODO: Works correctly only for reading of IIS2ICLX internal accelerometer data (2 axes).
-//       Solve how to read external accelerometer data (3 axes)
 /**
- * @brief  Get the IIS2ICLX FIFO accelero single sample (16-bit data per 2 axes) and calculate acceleration [mg]
- * @param  pObj the device pObj
- * @param  Acceleration FIFO accelero axes [mg]
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the IIS2ICLX FIFO accelero single sample (16-bit data per 2 axes) and calculate acceleration [mg]
+  * @param  pObj the device pObj
+  * @param  Acceleration FIFO accelero axes [mg]
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_FIFO_ACC_Get_Axes(IIS2ICLX_Object_t *pObj, IIS2ICLX_Axes_t *Acceleration)
 {
   uint8_t data[6];
@@ -1510,23 +1508,23 @@ int32_t IIS2ICLX_FIFO_ACC_Get_Axes(IIS2ICLX_Object_t *pObj, IIS2ICLX_Axes_t *Acc
 }
 
 /**
- * @brief  Set the IIS2ICLX FIFO accelero BDR value
- * @param  pObj the device pObj
- * @param  Bdr FIFO accelero BDR value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the IIS2ICLX FIFO accelero BDR value
+  * @param  pObj the device pObj
+  * @param  Bdr FIFO accelero BDR value
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_FIFO_ACC_Set_BDR(IIS2ICLX_Object_t *pObj, float Bdr)
 {
   iis2iclx_bdr_xl_t new_bdr;
 
   new_bdr = (Bdr <=    0.0f) ? IIS2ICLX_XL_NOT_BATCHED
-          : (Bdr <=   12.5f) ? IIS2ICLX_XL_BATCHED_AT_12Hz5
-          : (Bdr <=   26.0f) ? IIS2ICLX_XL_BATCHED_AT_26Hz
-          : (Bdr <=   52.0f) ? IIS2ICLX_XL_BATCHED_AT_52Hz
-          : (Bdr <=  104.0f) ? IIS2ICLX_XL_BATCHED_AT_104Hz
-          : (Bdr <=  208.0f) ? IIS2ICLX_XL_BATCHED_AT_208Hz
-          : (Bdr <=  417.0f) ? IIS2ICLX_XL_BATCHED_AT_417Hz
-          :                    IIS2ICLX_XL_BATCHED_AT_833Hz;
+            : (Bdr <=   12.5f) ? IIS2ICLX_XL_BATCHED_AT_12Hz5
+            : (Bdr <=   26.0f) ? IIS2ICLX_XL_BATCHED_AT_26Hz
+            : (Bdr <=   52.0f) ? IIS2ICLX_XL_BATCHED_AT_52Hz
+            : (Bdr <=  104.0f) ? IIS2ICLX_XL_BATCHED_AT_104Hz
+            : (Bdr <=  208.0f) ? IIS2ICLX_XL_BATCHED_AT_208Hz
+            : (Bdr <=  417.0f) ? IIS2ICLX_XL_BATCHED_AT_417Hz
+            :                    IIS2ICLX_XL_BATCHED_AT_833Hz;
 
   if (iis2iclx_fifo_xl_batch_set(&(pObj->Ctx), new_bdr) != IIS2ICLX_OK)
   {
@@ -1537,30 +1535,30 @@ int32_t IIS2ICLX_FIFO_ACC_Set_BDR(IIS2ICLX_Object_t *pObj, float Bdr)
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup IIS2ICLX_Private_Functions IIS2ICLX Private Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Set the IIS2ICLX accelerometer sensor output data rate when enabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the IIS2ICLX accelerometer sensor output data rate when enabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t IIS2ICLX_ACC_SetOutputDataRate_When_Enabled(IIS2ICLX_Object_t *pObj, float Odr)
 {
   iis2iclx_odr_xl_t new_odr;
 
   new_odr = (Odr <=   12.5f) ? IIS2ICLX_XL_ODR_12Hz5
-          : (Odr <=   26.0f) ? IIS2ICLX_XL_ODR_26Hz
-          : (Odr <=   52.0f) ? IIS2ICLX_XL_ODR_52Hz
-          : (Odr <=  104.0f) ? IIS2ICLX_XL_ODR_104Hz
-          : (Odr <=  208.0f) ? IIS2ICLX_XL_ODR_208Hz
-          : (Odr <=  416.0f) ? IIS2ICLX_XL_ODR_416Hz
-          :                    IIS2ICLX_XL_ODR_833Hz;
+            : (Odr <=   26.0f) ? IIS2ICLX_XL_ODR_26Hz
+            : (Odr <=   52.0f) ? IIS2ICLX_XL_ODR_52Hz
+            : (Odr <=  104.0f) ? IIS2ICLX_XL_ODR_104Hz
+            : (Odr <=  208.0f) ? IIS2ICLX_XL_ODR_208Hz
+            : (Odr <=  416.0f) ? IIS2ICLX_XL_ODR_416Hz
+            :                    IIS2ICLX_XL_ODR_833Hz;
 
   /* Output data rate selection. */
   if (iis2iclx_xl_data_rate_set(&(pObj->Ctx), new_odr) != IIS2ICLX_OK)
@@ -1572,40 +1570,40 @@ static int32_t IIS2ICLX_ACC_SetOutputDataRate_When_Enabled(IIS2ICLX_Object_t *pO
 }
 
 /**
- * @brief  Set the IIS2ICLX accelerometer sensor output data rate when disabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the IIS2ICLX accelerometer sensor output data rate when disabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t IIS2ICLX_ACC_SetOutputDataRate_When_Disabled(IIS2ICLX_Object_t *pObj, float Odr)
 {
   pObj->acc_odr = (Odr <=   12.5f) ? IIS2ICLX_XL_ODR_12Hz5
-                : (Odr <=   26.0f) ? IIS2ICLX_XL_ODR_26Hz
-                : (Odr <=   52.0f) ? IIS2ICLX_XL_ODR_52Hz
-                : (Odr <=  104.0f) ? IIS2ICLX_XL_ODR_104Hz
-                : (Odr <=  208.0f) ? IIS2ICLX_XL_ODR_208Hz
-                : (Odr <=  416.0f) ? IIS2ICLX_XL_ODR_416Hz
-                :                    IIS2ICLX_XL_ODR_833Hz;
+                  : (Odr <=   26.0f) ? IIS2ICLX_XL_ODR_26Hz
+                  : (Odr <=   52.0f) ? IIS2ICLX_XL_ODR_52Hz
+                  : (Odr <=  104.0f) ? IIS2ICLX_XL_ODR_104Hz
+                  : (Odr <=  208.0f) ? IIS2ICLX_XL_ODR_208Hz
+                  : (Odr <=  416.0f) ? IIS2ICLX_XL_ODR_416Hz
+                  :                    IIS2ICLX_XL_ODR_833Hz;
 
   return IIS2ICLX_OK;
 }
 
 /**
- * @brief  Enable IIS2ICLX accelerometer DRDY interrupt mode
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable IIS2ICLX accelerometer DRDY interrupt mode
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Enable_DRDY_Interrupt(IIS2ICLX_Object_t *pObj)
 {
   iis2iclx_pin_int1_route_t pin_int1_route;
 
   /* Enable accelerometer DRDY Interrupt on INT1 */
-  if(iis2iclx_pin_int1_route_get(&(pObj->Ctx), &pin_int1_route) != IIS2ICLX_OK)
+  if (iis2iclx_pin_int1_route_get(&(pObj->Ctx), &pin_int1_route) != IIS2ICLX_OK)
   {
     return IIS2ICLX_ERROR;
   }
   pin_int1_route.int1_ctrl.int1_drdy_xl = 1;
-  if(iis2iclx_pin_int1_route_set(&(pObj->Ctx), &pin_int1_route) != IIS2ICLX_OK)
+  if (iis2iclx_pin_int1_route_set(&(pObj->Ctx), &pin_int1_route) != IIS2ICLX_OK)
   {
     return IIS2ICLX_ERROR;
   }
@@ -1614,24 +1612,24 @@ int32_t IIS2ICLX_ACC_Enable_DRDY_Interrupt(IIS2ICLX_Object_t *pObj)
 }
 
 /**
- * @brief  Set the IIS2ICLX accelerometer filter mode
- * @param  pObj the device pObj
- * @param  LowHighPassFlag 0/1 for setting low-pass/high-pass filter mode
- * @param  FilterMode Value of the filter Mode
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the IIS2ICLX accelerometer filter mode
+  * @param  pObj the device pObj
+  * @param  LowHighPassFlag 0/1 for setting low-pass/high-pass filter mode
+  * @param  FilterMode Value of the filter Mode
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Set_Filter_Mode(IIS2ICLX_Object_t *pObj, uint8_t LowHighPassFlag, uint8_t FilterMode)
 {
-  if(LowHighPassFlag == 0)
+  if (LowHighPassFlag == 0)
   {
     /*Set accelerometer low_pass filter-mode*/
 
     /*Set to 1 LPF2 bit (CTRL8_XL)*/
-    if(iis2iclx_xl_filter_lp2_set(&(pObj->Ctx), 1) != IIS2ICLX_OK)
+    if (iis2iclx_xl_filter_lp2_set(&(pObj->Ctx), 1) != IIS2ICLX_OK)
     {
       return IIS2ICLX_ERROR;
     }
-    if(iis2iclx_xl_hp_path_on_out_set(&(pObj->Ctx), (iis2iclx_hp_slope_xl_en_t)FilterMode) != IIS2ICLX_OK)
+    if (iis2iclx_xl_hp_path_on_out_set(&(pObj->Ctx), (iis2iclx_hp_slope_xl_en_t)FilterMode) != IIS2ICLX_OK)
     {
       return IIS2ICLX_ERROR;
     }
@@ -1639,7 +1637,7 @@ int32_t IIS2ICLX_ACC_Set_Filter_Mode(IIS2ICLX_Object_t *pObj, uint8_t LowHighPas
   else
   {
     /*Set accelerometer high_pass filter-mode*/
-    if(iis2iclx_xl_hp_path_on_out_set(&(pObj->Ctx), (iis2iclx_hp_slope_xl_en_t)FilterMode) != IIS2ICLX_OK)
+    if (iis2iclx_xl_hp_path_on_out_set(&(pObj->Ctx), (iis2iclx_hp_slope_xl_en_t)FilterMode) != IIS2ICLX_OK)
     {
       return IIS2ICLX_ERROR;
     }
@@ -1648,11 +1646,11 @@ int32_t IIS2ICLX_ACC_Set_Filter_Mode(IIS2ICLX_Object_t *pObj, uint8_t LowHighPas
 }
 
 /**
- * @brief  Set LSM6DSO accelerometer sleep duration
- * @param  pObj the device pObj
- * @param  Duration wake up detection duration
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set LSM6DSO accelerometer sleep duration
+  * @param  pObj the device pObj
+  * @param  Duration wake up detection duration
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t IIS2ICLX_ACC_Set_Sleep_Duration(IIS2ICLX_Object_t *pObj, uint8_t Duration)
 {
   /* Set wake up duration. */
@@ -1665,13 +1663,13 @@ int32_t IIS2ICLX_ACC_Set_Sleep_Duration(IIS2ICLX_Object_t *pObj, uint8_t Duratio
 }
 
 /**
- * @brief  Wrap Read register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Read register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   IIS2ICLX_Object_t *pObj = (IIS2ICLX_Object_t *)Handle;
@@ -1680,13 +1678,13 @@ static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t L
 }
 
 /**
- * @brief  Wrap Write register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Write register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   IIS2ICLX_Object_t *pObj = (IIS2ICLX_Object_t *)Handle;

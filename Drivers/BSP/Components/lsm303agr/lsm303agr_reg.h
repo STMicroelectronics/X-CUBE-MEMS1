@@ -1,22 +1,22 @@
-/*
- ******************************************************************************
- * @file    lsm303agr_reg.h
- * @author  Sensors Software Solution Team
- * @brief   This file contains all the functions prototypes for the
- *          lsm303agr_reg.c driver.
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    lsm303agr_reg.h
+  * @author  Sensors Software Solution Team
+  * @brief   This file contains all the functions prototypes for the
+  *          lsm303agr_reg.c driver.
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LSM303AGR_REGS_H
@@ -28,6 +28,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
+#include <stddef.h>
 #include <math.h>
 
 /** @addtogroup LSM303AGR
@@ -74,7 +75,8 @@ extern "C" {
 #ifndef MEMS_SHARED_TYPES
 #define MEMS_SHARED_TYPES
 
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t bit0       : 1;
   uint8_t bit1       : 1;
@@ -107,12 +109,11 @@ typedef struct {
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *,
-                                    uint16_t);
-typedef int32_t (*stmdev_read_ptr) (void *, uint8_t, uint8_t *,
-                                    uint16_t);
+typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 
-typedef struct {
+typedef struct
+{
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
@@ -141,7 +142,8 @@ typedef struct {
   *
   */
 
-typedef struct {
+typedef struct
+{
   uint8_t address;
   uint8_t data;
 } ucf_line_t;
@@ -177,7 +179,8 @@ typedef struct {
   */
 
 #define LSM303AGR_STATUS_REG_AUX_A           0x07U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01            : 2;
   uint8_t tda                    : 1;
@@ -199,7 +202,8 @@ typedef struct {
 #define LSM303AGR_WHO_AM_I_A                 0x0FU
 
 #define LSM303AGR_TEMP_CFG_REG_A             0x1FU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01            : 6;
   uint8_t temp_en                : 2;
@@ -210,7 +214,8 @@ typedef struct {
 } lsm303agr_temp_cfg_reg_a_t;
 
 #define LSM303AGR_CTRL_REG1_A                0x20U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xen                    : 1;
   uint8_t yen                    : 1;
@@ -227,7 +232,8 @@ typedef struct {
 } lsm303agr_ctrl_reg1_a_t;
 
 #define LSM303AGR_CTRL_REG2_A                0x21U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
 uint8_t hp                     :
   3; /* HPCLICK + HPIS2 + HPIS1 -> HP */
@@ -244,7 +250,8 @@ uint8_t hp                     :
 } lsm303agr_ctrl_reg2_a_t;
 
 #define LSM303AGR_CTRL_REG3_A                0x22U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01            : 1;
   uint8_t i1_overrun             : 1;
@@ -267,7 +274,8 @@ typedef struct {
 } lsm303agr_ctrl_reg3_a_t;
 
 #define LSM303AGR_CTRL_REG4_A                0x23U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t spi_enable             : 1;
   uint8_t st                     : 2;
@@ -286,7 +294,8 @@ typedef struct {
 } lsm303agr_ctrl_reg4_a_t;
 
 #define LSM303AGR_CTRL_REG5_A                0x24U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t d4d_int2               : 1;
   uint8_t lir_int2               : 1;
@@ -307,7 +316,8 @@ typedef struct {
 } lsm303agr_ctrl_reg5_a_t;
 
 #define LSM303AGR_CTRL_REG6_A               0x25U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01            : 1;
   uint8_t h_lactive              : 1;
@@ -331,7 +341,8 @@ typedef struct {
 
 #define LSM303AGR_REFERENCE_A               0x26U
 #define LSM303AGR_STATUS_REG_A              0x27U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xda                    : 1;
   uint8_t yda                    : 1;
@@ -360,7 +371,8 @@ typedef struct {
 #define LSM303AGR_OUT_Z_L_A                 0x2CU
 #define LSM303AGR_OUT_Z_H_A                 0x2DU
 #define LSM303AGR_FIFO_CTRL_REG_A           0x2EU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t fth                    : 5;
   uint8_t tr                     : 1;
@@ -373,7 +385,8 @@ typedef struct {
 } lsm303agr_fifo_ctrl_reg_a_t;
 
 #define LSM303AGR_FIFO_SRC_REG_A            0x2FU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t fss                    : 5;
   uint8_t empty                  : 1;
@@ -388,7 +401,8 @@ typedef struct {
 } lsm303agr_fifo_src_reg_a_t;
 
 #define LSM303AGR_INT1_CFG_A                0x30U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xlie                   : 1; /* or XDOWNE */
   uint8_t xhie                   : 1; /* or XUPE */
@@ -411,7 +425,8 @@ typedef struct {
 } lsm303agr_int1_cfg_a_t;
 
 #define LSM303AGR_INT1_SRC_A                0x31U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xl                     : 1;
   uint8_t xh                     : 1;
@@ -434,7 +449,8 @@ typedef struct {
 } lsm303agr_int1_src_a_t;
 
 #define LSM303AGR_INT1_THS_A                0x32U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ths                    : 7;
   uint8_t not_used_01            : 1;
@@ -445,7 +461,8 @@ typedef struct {
 } lsm303agr_int1_ths_a_t;
 
 #define LSM303AGR_INT1_DURATION_A           0x33U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t d                      : 7;
   uint8_t not_used_01            : 1;
@@ -456,7 +473,8 @@ typedef struct {
 } lsm303agr_int1_duration_a_t;
 
 #define LSM303AGR_INT2_CFG_A                0x34U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xlie                   : 1;
   uint8_t xhie                   : 1;
@@ -479,7 +497,8 @@ typedef struct {
 } lsm303agr_int2_cfg_a_t;
 
 #define LSM303AGR_INT2_SRC_A                0x35U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xl                     : 1;
   uint8_t xh                     : 1;
@@ -502,7 +521,8 @@ typedef struct {
 } lsm303agr_int2_src_a_t;
 
 #define LSM303AGR_INT2_THS_A                0x36U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ths                    : 7;
   uint8_t not_used_01            : 1;
@@ -513,7 +533,8 @@ typedef struct {
 } lsm303agr_int2_ths_a_t;
 
 #define LSM303AGR_INT2_DURATION_A           0x37U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t d                      : 7;
   uint8_t not_used_01            : 1;
@@ -524,7 +545,8 @@ typedef struct {
 } lsm303agr_int2_duration_a_t;
 
 #define LSM303AGR_CLICK_CFG_A               0x38U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xs                     : 1;
   uint8_t xd                     : 1;
@@ -545,7 +567,8 @@ typedef struct {
 } lsm303agr_click_cfg_a_t;
 
 #define LSM303AGR_CLICK_SRC_A               0x39U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t x                      : 1;
   uint8_t y                      : 1;
@@ -568,7 +591,8 @@ typedef struct {
 } lsm303agr_click_src_a_t;
 
 #define LSM303AGR_CLICK_THS_A               0x3AU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ths                    : 7;
   uint8_t not_used_01            : 1;
@@ -579,7 +603,8 @@ typedef struct {
 } lsm303agr_click_ths_a_t;
 
 #define LSM303AGR_TIME_LIMIT_A              0x3BU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t tli                    : 7;
   uint8_t not_used_01            : 1;
@@ -590,17 +615,20 @@ typedef struct {
 } lsm303agr_time_limit_a_t;
 
 #define LSM303AGR_TIME_LATENCY_A            0x3CU
-typedef struct {
+typedef struct
+{
   uint8_t tla                    : 8;
 } lsm303agr_time_latency_a_t;
 
 #define LSM303AGR_TIME_WINDOW_A             0x3DU
-typedef struct {
+typedef struct
+{
   uint8_t tw                     : 8;
 } lsm303agr_time_window_a_t;
 
 #define LSM303AGR_ACT_THS_A                 0x3EU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t acth                   : 7;
   uint8_t not_used_01            : 1;
@@ -611,7 +639,8 @@ typedef struct {
 } lsm303agr_act_ths_a_t;
 
 #define LSM303AGR_ACT_DUR_A                 0x3FU
-typedef struct {
+typedef struct
+{
   uint8_t actd                   : 8;
 } lsm303agr_act_dur_a_t;
 
@@ -623,7 +652,8 @@ typedef struct {
 #define LSM303AGR_OFFSET_Z_REG_H_M          0x4AU
 #define LSM303AGR_WHO_AM_I_M                0x4FU
 #define LSM303AGR_CFG_REG_A_M               0x60U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t md                     : 2;
   uint8_t odr                    : 2;
@@ -642,7 +672,8 @@ typedef struct {
 } lsm303agr_cfg_reg_a_m_t;
 
 #define LSM303AGR_CFG_REG_B_M               0x61U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t lpf                    : 1;
   uint8_t set_rst                : 2; /* OFF_CANC + Set_FREQ */
@@ -659,7 +690,8 @@ typedef struct {
 } lsm303agr_cfg_reg_b_m_t;
 
 #define LSM303AGR_CFG_REG_C_M               0x62U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t int_mag                : 1;
   uint8_t self_test              : 1;
@@ -682,7 +714,8 @@ typedef struct {
 } lsm303agr_cfg_reg_c_m_t;
 
 #define LSM303AGR_INT_CRTL_REG_M            0x63U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ien                    : 1;
   uint8_t iel                    : 1;
@@ -703,7 +736,8 @@ typedef struct {
 } lsm303agr_int_crtl_reg_m_t;
 
 #define LSM303AGR_INT_SOURCE_REG_M          0x64U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t _int                   : 1;
   uint8_t mroi                   : 1;
@@ -728,7 +762,8 @@ typedef struct {
 #define LSM303AGR_INT_THS_L_REG_M           0x65U
 #define LSM303AGR_INT_THS_H_REG_M           0x66U
 #define LSM303AGR_STATUS_REG_M              0x67U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xda                    : 1;
   uint8_t yda                    : 1;
@@ -759,9 +794,9 @@ typedef struct {
 
 /**
   * @defgroup LSM303AGR_Register_Union
-  * @brief    This union group all the registers that has a bit-field
+  * @brief    This union group all the registers having a bit-field
   *           description.
-  *           This union is useful but not need by the driver.
+  *           This union is useful but it's not needed by the driver.
   *
   *           REMOVING this union you are compliant with:
   *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
@@ -769,7 +804,8 @@ typedef struct {
   * @{
   *
   */
-typedef union {
+typedef union
+{
   lsm303agr_status_reg_aux_a_t       status_reg_aux_a;
   lsm303agr_temp_cfg_reg_a_t         temp_cfg_reg_a;
   lsm303agr_ctrl_reg1_a_t            ctrl_reg1_a;
@@ -850,7 +886,8 @@ int32_t lsm303agr_temp_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t lsm303agr_temperature_raw_get(stmdev_ctx_t *ctx,
                                       int16_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_TEMP_DISABLE  = 0,
   LSM303AGR_TEMP_ENABLE   = 3,
 } lsm303agr_temp_en_a_t;
@@ -859,7 +896,8 @@ int32_t lsm303agr_temperature_meas_set(stmdev_ctx_t *ctx,
 int32_t lsm303agr_temperature_meas_get(stmdev_ctx_t *ctx,
                                        lsm303agr_temp_en_a_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_HR_12bit   = 0,
   LSM303AGR_NM_10bit   = 1,
   LSM303AGR_LP_8bit    = 2,
@@ -869,7 +907,8 @@ int32_t lsm303agr_xl_operating_mode_set(stmdev_ctx_t *ctx,
 int32_t lsm303agr_xl_operating_mode_get(stmdev_ctx_t *ctx,
                                         lsm303agr_op_md_a_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_XL_POWER_DOWN                      = 0,
   LSM303AGR_XL_ODR_1Hz                         = 1,
   LSM303AGR_XL_ODR_10Hz                        = 2,
@@ -891,7 +930,8 @@ int32_t lsm303agr_xl_high_pass_on_outputs_set(stmdev_ctx_t *ctx,
 int32_t lsm303agr_xl_high_pass_on_outputs_get(stmdev_ctx_t *ctx,
                                               uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_AGGRESSIVE  = 0,
   LSM303AGR_STRONG      = 1,
   LSM303AGR_MEDIUM      = 2,
@@ -902,7 +942,8 @@ int32_t lsm303agr_xl_high_pass_bandwidth_set(stmdev_ctx_t *ctx,
 int32_t lsm303agr_xl_high_pass_bandwidth_get(stmdev_ctx_t *ctx,
                                              lsm303agr_hpcf_a_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_NORMAL_WITH_RST  = 0,
   LSM303AGR_REFERENCE_MODE   = 1,
   LSM303AGR_NORMAL           = 2,
@@ -913,7 +954,8 @@ int32_t lsm303agr_xl_high_pass_mode_set(stmdev_ctx_t *ctx,
 int32_t lsm303agr_xl_high_pass_mode_get(stmdev_ctx_t *ctx,
                                         lsm303agr_hpm_a_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_2g   = 0,
   LSM303AGR_4g   = 1,
   LSM303AGR_8g   = 2,
@@ -943,7 +985,8 @@ int32_t lsm303agr_acceleration_raw_get(stmdev_ctx_t *ctx,
 
 int32_t lsm303agr_xl_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_ST_DISABLE   = 0,
   LSM303AGR_ST_POSITIVE  = 1,
   LSM303AGR_ST_NEGATIVE  = 2,
@@ -953,7 +996,8 @@ int32_t lsm303agr_xl_self_test_set(stmdev_ctx_t *ctx,
 int32_t lsm303agr_xl_self_test_get(stmdev_ctx_t *ctx,
                                    lsm303agr_st_a_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_XL_LSB_AT_LOW_ADD = 0,
   LSM303AGR_XL_MSB_AT_LOW_ADD = 1,
 } lsm303agr_ble_a_t;
@@ -1004,7 +1048,8 @@ int32_t lsm303agr_xl_int2_gen_duration_set(stmdev_ctx_t *ctx,
 int32_t lsm303agr_xl_int2_gen_duration_get(stmdev_ctx_t *ctx,
                                            uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_DISC_FROM_INT_GENERATOR  = 0,
   LSM303AGR_ON_INT1_GEN              = 1,
   LSM303AGR_ON_INT2_GEN              = 2,
@@ -1029,7 +1074,8 @@ int32_t lsm303agr_xl_int2_pin_detect_4d_set(stmdev_ctx_t *ctx,
 int32_t lsm303agr_xl_int2_pin_detect_4d_get(stmdev_ctx_t *ctx,
                                             uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_INT2_PULSED   = 0,
   LSM303AGR_INT2_LATCHED  = 1,
 } lsm303agr_lir_int2_a_t;
@@ -1043,7 +1089,8 @@ int32_t lsm303agr_xl_int1_pin_detect_4d_set(stmdev_ctx_t *ctx,
 int32_t lsm303agr_xl_int1_pin_detect_4d_get(stmdev_ctx_t *ctx,
                                             uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_INT1_PULSED   = 0,
   LSM303AGR_INT1_LATCHED  = 1,
 } lsm303agr_lir_int1_a_t;
@@ -1065,7 +1112,8 @@ int32_t lsm303agr_xl_fifo_watermark_set(stmdev_ctx_t *ctx,
 int32_t lsm303agr_xl_fifo_watermark_get(stmdev_ctx_t *ctx,
                                         uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_INT1_GEN = 0,
   LSM303AGR_INT2_GEN = 1,
 } lsm303agr_tr_a_t;
@@ -1074,7 +1122,8 @@ int32_t lsm303agr_xl_fifo_trigger_event_set(stmdev_ctx_t *ctx,
 int32_t lsm303agr_xl_fifo_trigger_event_get(stmdev_ctx_t *ctx,
                                             lsm303agr_tr_a_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_BYPASS_MODE           = 0,
   LSM303AGR_FIFO_MODE             = 1,
   LSM303AGR_DYNAMIC_STREAM_MODE   = 2,
@@ -1128,7 +1177,8 @@ int32_t lsm303agr_act_threshold_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t lsm303agr_act_timeout_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm303agr_act_timeout_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_SPI_4_WIRE = 0,
   LSM303AGR_SPI_3_WIRE = 1,
 } lsm303agr_sim_a_t;
@@ -1142,7 +1192,8 @@ int32_t lsm303agr_mag_user_offset_set(stmdev_ctx_t *ctx,
 int32_t lsm303agr_mag_user_offset_get(stmdev_ctx_t *ctx,
                                       int16_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_CONTINUOUS_MODE  = 0,
   LSM303AGR_SINGLE_TRIGGER   = 1,
   LSM303AGR_POWER_DOWN       = 2,
@@ -1152,7 +1203,8 @@ int32_t lsm303agr_mag_operating_mode_set(stmdev_ctx_t *ctx,
 int32_t lsm303agr_mag_operating_mode_get(stmdev_ctx_t *ctx,
                                          lsm303agr_md_m_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_MG_ODR_10Hz   = 0,
   LSM303AGR_MG_ODR_20Hz   = 1,
   LSM303AGR_MG_ODR_50Hz   = 2,
@@ -1163,7 +1215,8 @@ int32_t lsm303agr_mag_data_rate_set(stmdev_ctx_t *ctx,
 int32_t lsm303agr_mag_data_rate_get(stmdev_ctx_t *ctx,
                                     lsm303agr_mg_odr_m_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_HIGH_RESOLUTION  = 0,
   LSM303AGR_LOW_POWER        = 1,
 } lsm303agr_lp_m_t;
@@ -1177,7 +1230,8 @@ int32_t lsm303agr_mag_offset_temp_comp_set(stmdev_ctx_t *ctx,
 int32_t lsm303agr_mag_offset_temp_comp_get(stmdev_ctx_t *ctx,
                                            uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_ODR_DIV_2  = 0,
   LSM303AGR_ODR_DIV_4  = 1,
 } lsm303agr_lpf_m_t;
@@ -1186,7 +1240,8 @@ int32_t lsm303agr_mag_low_pass_bandwidth_set(stmdev_ctx_t *ctx,
 int32_t lsm303agr_mag_low_pass_bandwidth_get(stmdev_ctx_t *ctx,
                                              lsm303agr_lpf_m_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_SET_SENS_ODR_DIV_63        = 0,
   LSM303AGR_SENS_OFF_CANC_EVERY_ODR    = 1,
   LSM303AGR_SET_SENS_ONLY_AT_POWER_ON  = 2,
@@ -1225,7 +1280,8 @@ int32_t lsm303agr_mag_self_test_set(stmdev_ctx_t *ctx,
 int32_t lsm303agr_mag_self_test_get(stmdev_ctx_t *ctx,
                                     uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_MG_LSB_AT_LOW_ADD  = 0,
   LSM303AGR_MG_MSB_AT_LOW_ADD  = 1,
 } lsm303agr_ble_m_t;
@@ -1237,7 +1293,8 @@ int32_t lsm303agr_mag_data_format_get(stmdev_ctx_t *ctx,
 int32_t lsm303agr_mag_status_get(stmdev_ctx_t *ctx,
                                  lsm303agr_status_reg_m_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_CHECK_BEFORE  = 0,
   LSM303AGR_CHECK_AFTER   = 1,
 } lsm303agr_int_on_dataoff_m_t;
@@ -1266,7 +1323,8 @@ int32_t lsm303agr_mag_int_gen_treshold_set(stmdev_ctx_t *ctx,
 int32_t lsm303agr_mag_int_gen_treshold_get(stmdev_ctx_t *ctx,
                                            int16_t *val);
 
-typedef enum {
+typedef enum
+{
   LSM303AGR_I2C_ENABLE   = 0,
   LSM303AGR_I2C_DISABLE  = 1,
 } lsm303agr_i2c_dis_m_t;

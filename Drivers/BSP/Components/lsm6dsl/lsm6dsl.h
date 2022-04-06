@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    lsm6dsl.h
- * @author  MEMS Software Solutions Team
- * @brief   LSM6DSL header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lsm6dsl.h
+  * @author  MEMS Software Solutions Team
+  * @brief   LSM6DSL header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LSM6DSL_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup LSM6DSL LSM6DSL
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LSM6DSL_Exported_Types LSM6DSL Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*LSM6DSL_Init_Func)(void);
 typedef int32_t (*LSM6DSL_DeInit_Func)(void);
@@ -155,33 +155,37 @@ typedef struct
   int32_t (*GetAxesRaw)(LSM6DSL_Object_t *, LSM6DSL_AxesRaw_t *);
 } LSM6DSL_GYRO_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } lsm6dsl_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } lsm6dsl_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } lsm6dsl_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } lsm6dsl_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LSM6DSL_Exported_Constants LSM6DSL Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define LSM6DSL_OK                       0
 #define LSM6DSL_ERROR                   -1
@@ -202,12 +206,12 @@ typedef union{
 #define LSM6DSL_GYRO_SENSITIVITY_FS_2000DPS  70.000f
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LSM6DSL_Exported_Functions LSM6DSL Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t LSM6DSL_RegisterBusIO(LSM6DSL_Object_t *pObj, LSM6DSL_IO_t *pIO);
 int32_t LSM6DSL_Init(LSM6DSL_Object_t *pObj);
@@ -312,20 +316,20 @@ int32_t LSM6DSL_FIFO_GYRO_Set_Decimation(LSM6DSL_Object_t *pObj, uint8_t Decimat
 int32_t LSM6DSL_FIFO_GYRO_Get_Axis(LSM6DSL_Object_t *pObj, int32_t *AngularVelocity);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LSM6DSL_Exported_Variables LSM6DSL Exported Variables
- * @{
- */
+  * @{
+  */
 
 extern LSM6DSL_CommonDrv_t LSM6DSL_COMMON_Driver;
 extern LSM6DSL_ACC_Drv_t LSM6DSL_ACC_Driver;
 extern LSM6DSL_GYRO_Drv_t LSM6DSL_GYRO_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -334,15 +338,15 @@ extern LSM6DSL_GYRO_Drv_t LSM6DSL_GYRO_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

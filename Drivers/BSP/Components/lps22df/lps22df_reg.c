@@ -628,7 +628,7 @@ int32_t lps22df_trigger_sw(stmdev_ctx_t *ctx, lps22df_md_t *md)
   * @brief  Software trigger for One-Shot.[get]
   *
   * @param  ctx   communication interface handler.(ptr)
-  * @param  data  data retrived from the sensor.(ptr)
+  * @param  data  data retrieved from the sensor.(ptr)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -788,7 +788,7 @@ int32_t lps22df_fifo_level_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   * @param  ctx   communication interface handler.(ptr)
   * @param  samp  number of samples stored in FIFO.(ptr)
-  * @param  data  data retrived from FIFO.(ptr)
+  * @param  data  data retrieved from FIFO.(ptr)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -1007,12 +1007,12 @@ int32_t lps22df_int_on_threshold_mode_set(stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-      ret = lps22df_read_reg(ctx, LPS22DF_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
-      if (ret == 0)
-      {
-        ctrl_reg4.int_en = PROPERTY_ENABLE;
-        ret = lps22df_write_reg(ctx, LPS22DF_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
-      }
+    ret = lps22df_read_reg(ctx, LPS22DF_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+    if (ret == 0)
+    {
+      ctrl_reg4.int_en = PROPERTY_ENABLE;
+      ret = lps22df_write_reg(ctx, LPS22DF_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+    }
   }
   return ret;
 }

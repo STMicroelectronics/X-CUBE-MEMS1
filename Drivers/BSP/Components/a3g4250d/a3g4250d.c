@@ -1,40 +1,40 @@
 /**
- ******************************************************************************
- * @file    a3g4250d.c
- * @author  MEMS Software Solutions Team
- * @brief   A3G4250D driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    a3g4250d.c
+  * @author  MEMS Software Solutions Team
+  * @brief   A3G4250D driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "a3g4250d.h"
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @defgroup A3G4250D A3G4250D
- * @{
- */
+  * @{
+  */
 
 /** @defgroup A3G4250D_Exported_Variables A3G4250D Exported Variables
- * @{
- */
+  * @{
+  */
 
 A3G4250D_CommonDrv_t A3G4250D_COMMON_Driver =
 {
@@ -58,12 +58,12 @@ A3G4250D_GYRO_Drv_t A3G4250D_GYRO_Driver =
 };
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup A3G4250D_Private_Function_Prototypes A3G4250D Private Function Prototypes
- * @{
- */
+  * @{
+  */
 
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
@@ -71,18 +71,18 @@ static int32_t A3G4250D_GYRO_SetOutputDataRate_When_Enabled(A3G4250D_Object_t *p
 static int32_t A3G4250D_GYRO_SetOutputDataRate_When_Disabled(A3G4250D_Object_t *pObj, float_t Odr);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup A3G4250D_Exported_Functions A3G4250D Exported Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Register Component Bus IO operations
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Register Component Bus IO operations
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t A3G4250D_RegisterBusIO(A3G4250D_Object_t *pObj, A3G4250D_IO_t *pIO)
 {
   int32_t ret = A3G4250D_OK;
@@ -136,10 +136,10 @@ int32_t A3G4250D_RegisterBusIO(A3G4250D_Object_t *pObj, A3G4250D_IO_t *pIO)
 }
 
 /**
- * @brief  Initialize the A3G4250D sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Initialize the A3G4250D sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t A3G4250D_Init(A3G4250D_Object_t *pObj)
 {
   /* FIFO mode selection */
@@ -163,10 +163,10 @@ int32_t A3G4250D_Init(A3G4250D_Object_t *pObj)
 }
 
 /**
- * @brief  Deinitialize the A3G4250D sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Deinitialize the A3G4250D sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t A3G4250D_DeInit(A3G4250D_Object_t *pObj)
 {
   /* Disable the component */
@@ -184,11 +184,11 @@ int32_t A3G4250D_DeInit(A3G4250D_Object_t *pObj)
 }
 
 /**
- * @brief  Read component ID
- * @param  pObj the device pObj
- * @param  Id the WHO_AM_I value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Read component ID
+  * @param  pObj the device pObj
+  * @param  Id the WHO_AM_I value
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t A3G4250D_ReadID(A3G4250D_Object_t *pObj, uint8_t *Id)
 {
   if (a3g4250d_device_id_get(&(pObj->Ctx), Id) != A3G4250D_OK)
@@ -200,11 +200,11 @@ int32_t A3G4250D_ReadID(A3G4250D_Object_t *pObj, uint8_t *Id)
 }
 
 /**
- * @brief  Get A3G4250D sensor capabilities
- * @param  pObj Component object pointer
- * @param  Capabilities pointer to A3G4250D sensor capabilities
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get A3G4250D sensor capabilities
+  * @param  pObj Component object pointer
+  * @param  Capabilities pointer to A3G4250D sensor capabilities
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t A3G4250D_GetCapabilities(A3G4250D_Object_t *pObj, A3G4250D_Capabilities_t *Capabilities)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -224,10 +224,10 @@ int32_t A3G4250D_GetCapabilities(A3G4250D_Object_t *pObj, A3G4250D_Capabilities_
 }
 
 /**
- * @brief  Enable the A3G4250D gyroscope sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the A3G4250D gyroscope sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t A3G4250D_GYRO_Enable(A3G4250D_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -248,10 +248,10 @@ int32_t A3G4250D_GYRO_Enable(A3G4250D_Object_t *pObj)
 }
 
 /**
- * @brief  Disable the A3G4250D gyroscope sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable the A3G4250D gyroscope sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t A3G4250D_GYRO_Disable(A3G4250D_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -278,11 +278,11 @@ int32_t A3G4250D_GYRO_Disable(A3G4250D_Object_t *pObj)
 }
 
 /**
- * @brief  Get the A3G4250D gyroscope sensor sensitivity
- * @param  pObj the device pObj
- * @param  Sensitivity pointer
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the A3G4250D gyroscope sensor sensitivity
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t A3G4250D_GYRO_GetSensitivity(A3G4250D_Object_t *pObj, float_t *Sensitivity)
 {
   (void)pObj;
@@ -292,11 +292,11 @@ int32_t A3G4250D_GYRO_GetSensitivity(A3G4250D_Object_t *pObj, float_t *Sensitivi
 }
 
 /**
- * @brief  Get the A3G4250D gyroscope sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the A3G4250D gyroscope sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t A3G4250D_GYRO_GetOutputDataRate(A3G4250D_Object_t *pObj, float_t *Odr)
 {
   int32_t ret = A3G4250D_OK;
@@ -344,11 +344,11 @@ int32_t A3G4250D_GYRO_GetOutputDataRate(A3G4250D_Object_t *pObj, float_t *Odr)
 }
 
 /**
- * @brief  Set the A3G4250D gyroscope sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the A3G4250D gyroscope sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t A3G4250D_GYRO_SetOutputDataRate(A3G4250D_Object_t *pObj, float_t Odr)
 {
   /* Check if the component is enabled */
@@ -363,11 +363,11 @@ int32_t A3G4250D_GYRO_SetOutputDataRate(A3G4250D_Object_t *pObj, float_t Odr)
 }
 
 /**
- * @brief  Get the A3G4250D gyroscope sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale pointer where the full scale is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the A3G4250D gyroscope sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale pointer where the full scale is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t A3G4250D_GYRO_GetFullScale(A3G4250D_Object_t *pObj, int32_t *FullScale)
 {
   (void)pObj;
@@ -377,11 +377,11 @@ int32_t A3G4250D_GYRO_GetFullScale(A3G4250D_Object_t *pObj, int32_t *FullScale)
 }
 
 /**
- * @brief  Set the A3G4250D gyroscope sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale the functional full scale to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the A3G4250D gyroscope sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale the functional full scale to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t A3G4250D_GYRO_SetFullScale(A3G4250D_Object_t *pObj, int32_t FullScale)
 {
   (void)pObj;
@@ -392,11 +392,11 @@ int32_t A3G4250D_GYRO_SetFullScale(A3G4250D_Object_t *pObj, int32_t FullScale)
 }
 
 /**
- * @brief  Get the A3G4250D gyroscope sensor raw axes
- * @param  pObj the device pObj
- * @param  Value pointer where the raw values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the A3G4250D gyroscope sensor raw axes
+  * @param  pObj the device pObj
+  * @param  Value pointer where the raw values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t A3G4250D_GYRO_GetAxesRaw(A3G4250D_Object_t *pObj, A3G4250D_AxesRaw_t *Value)
 {
   a3g4250d_axis3bit16_t data_raw;
@@ -409,7 +409,7 @@ int32_t A3G4250D_GYRO_GetAxesRaw(A3G4250D_Object_t *pObj, A3G4250D_AxesRaw_t *Va
   }
 
   /* Check data overrun */
-  if (a3g4250d_read_reg(&(pObj->Ctx), A3G4250D_STATUS_REG, (uint8_t*)&status_reg, 1) != A3G4250D_OK)
+  if (a3g4250d_read_reg(&(pObj->Ctx), A3G4250D_STATUS_REG, (uint8_t *)&status_reg, 1) != A3G4250D_OK)
   {
     return A3G4250D_ERROR;
   }
@@ -428,11 +428,11 @@ int32_t A3G4250D_GYRO_GetAxesRaw(A3G4250D_Object_t *pObj, A3G4250D_AxesRaw_t *Va
 }
 
 /**
- * @brief  Get the A3G4250D gyroscope sensor axes
- * @param  pObj the device pObj
- * @param  AngularRate pointer where the values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the A3G4250D gyroscope sensor axes
+  * @param  pObj the device pObj
+  * @param  AngularRate pointer where the values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t A3G4250D_GYRO_GetAxes(A3G4250D_Object_t *pObj, A3G4250D_Axes_t *AngularRate)
 {
   A3G4250D_AxesRaw_t data_raw;
@@ -459,12 +459,12 @@ int32_t A3G4250D_GYRO_GetAxes(A3G4250D_Object_t *pObj, A3G4250D_Axes_t *AngularR
 }
 
 /**
- * @brief  Get the A3G4250D register value
- * @param  pObj the device pObj
- * @param  Reg address to be read
- * @param  Data pointer where the value is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the A3G4250D register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be read
+  * @param  Data pointer where the value is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t A3G4250D_Read_Reg(A3G4250D_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 {
   if (a3g4250d_read_reg(&(pObj->Ctx), Reg, Data, 1) != A3G4250D_OK)
@@ -476,12 +476,12 @@ int32_t A3G4250D_Read_Reg(A3G4250D_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 }
 
 /**
- * @brief  Set the A3G4250D register value
- * @param  pObj the device pObj
- * @param  Reg address to be written
- * @param  Data value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the A3G4250D register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be written
+  * @param  Data value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t A3G4250D_Write_Reg(A3G4250D_Object_t *pObj, uint8_t Reg, uint8_t Data)
 {
   if (a3g4250d_write_reg(&(pObj->Ctx), Reg, &Data, 1) != A3G4250D_OK)
@@ -493,11 +493,11 @@ int32_t A3G4250D_Write_Reg(A3G4250D_Object_t *pObj, uint8_t Reg, uint8_t Data)
 }
 
 /**
- * @brief  Get the A3G4250D GYRO data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the A3G4250D GYRO data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t A3G4250D_GYRO_Get_DRDY_Status(A3G4250D_Object_t *pObj, uint8_t *Status)
 {
   if (a3g4250d_flag_data_ready_get(&(pObj->Ctx), Status) != A3G4250D_OK)
@@ -509,27 +509,27 @@ int32_t A3G4250D_GYRO_Get_DRDY_Status(A3G4250D_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup A3G4250D_Private_Functions A3G4250D Private Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Set the A3G4250D gyroscope sensor output data rate when enabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the A3G4250D gyroscope sensor output data rate when enabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t A3G4250D_GYRO_SetOutputDataRate_When_Enabled(A3G4250D_Object_t *pObj, float_t Odr)
 {
   a3g4250d_dr_t new_odr;
 
   new_odr = (Odr <= 105.0f) ? A3G4250D_ODR_100Hz
-          : (Odr <= 208.0f) ? A3G4250D_ODR_200Hz
-          : (Odr <= 420.0f) ? A3G4250D_ODR_400Hz
-          :                   A3G4250D_ODR_800Hz;
+            : (Odr <= 208.0f) ? A3G4250D_ODR_200Hz
+            : (Odr <= 420.0f) ? A3G4250D_ODR_400Hz
+            :                   A3G4250D_ODR_800Hz;
 
   /* Output data rate selection. */
   if (a3g4250d_data_rate_set(&(pObj->Ctx), new_odr) != A3G4250D_OK)
@@ -544,30 +544,30 @@ static int32_t A3G4250D_GYRO_SetOutputDataRate_When_Enabled(A3G4250D_Object_t *p
 }
 
 /**
- * @brief  Set the A3G4250D gyroscope sensor output data rate when disabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the A3G4250D gyroscope sensor output data rate when disabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t A3G4250D_GYRO_SetOutputDataRate_When_Disabled(A3G4250D_Object_t *pObj, float_t Odr)
 {
   /* Store the new output data rate value */
   pObj->gyro_odr = (Odr <= 105.0f) ? A3G4250D_ODR_100Hz
-                 : (Odr <= 208.0f) ? A3G4250D_ODR_200Hz
-                 : (Odr <= 420.0f) ? A3G4250D_ODR_400Hz
-                 :                   A3G4250D_ODR_800Hz;
+                   : (Odr <= 208.0f) ? A3G4250D_ODR_200Hz
+                   : (Odr <= 420.0f) ? A3G4250D_ODR_400Hz
+                   :                   A3G4250D_ODR_800Hz;
 
   return A3G4250D_OK;
 }
 
 /**
- * @brief  Wrap Read register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Read register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   A3G4250D_Object_t *pObj = (A3G4250D_Object_t *)Handle;
@@ -585,13 +585,13 @@ static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t L
 }
 
 /**
- * @brief  Wrap Write register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Write register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   A3G4250D_Object_t *pObj = (A3G4250D_Object_t *)Handle;

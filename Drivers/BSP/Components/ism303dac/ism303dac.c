@@ -1,40 +1,40 @@
 /**
- ******************************************************************************
- * @file    ism303dac.c
- * @author  MEMS Software Solutions Team
- * @brief   ISM303DAC driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    ism303dac.c
+  * @author  MEMS Software Solutions Team
+  * @brief   ISM303DAC driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "ism303dac.h"
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @defgroup ISM303DAC ISM303DAC
- * @{
- */
+  * @{
+  */
 
 /** @defgroup ISM303DAC_Exported_Variables ISM303DAC Exported Variables
- * @{
- */
+  * @{
+  */
 
 ISM303DAC_ACC_CommonDrv_t ISM303DAC_ACC_COMMON_Driver =
 {
@@ -79,12 +79,12 @@ ISM303DAC_MAG_Drv_t ISM303DAC_MAG_Driver =
 };
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup ISM303DAC_Private_Function_Prototypes ISM303DAC Private Function Prototypes
- * @{
- */
+  * @{
+  */
 
 static int32_t ReadAccRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
 static int32_t WriteAccRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
@@ -94,18 +94,18 @@ static int32_t ISM303DAC_ACC_SetOutputDataRate_When_Enabled(ISM303DAC_ACC_Object
 static int32_t ISM303DAC_ACC_SetOutputDataRate_When_Disabled(ISM303DAC_ACC_Object_t *pObj, float Odr);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup ISM303DAC_Exported_Functions ISM303DAC Exported Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Register Component Bus IO operations
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Register Component Bus IO operations
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_ACC_RegisterBusIO(ISM303DAC_ACC_Object_t *pObj, ISM303DAC_IO_t *pIO)
 {
   int32_t ret = ISM303DAC_OK;
@@ -159,10 +159,10 @@ int32_t ISM303DAC_ACC_RegisterBusIO(ISM303DAC_ACC_Object_t *pObj, ISM303DAC_IO_t
 }
 
 /**
- * @brief  Initialize the ISM303DAC sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Initialize the ISM303DAC sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_ACC_Init(ISM303DAC_ACC_Object_t *pObj)
 {
   /* Enable BDU */
@@ -198,10 +198,10 @@ int32_t ISM303DAC_ACC_Init(ISM303DAC_ACC_Object_t *pObj)
 }
 
 /**
- * @brief  Deinitialize the ISM303DAC accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Deinitialize the ISM303DAC accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_ACC_DeInit(ISM303DAC_ACC_Object_t *pObj)
 {
   /* Disable the component */
@@ -218,11 +218,11 @@ int32_t ISM303DAC_ACC_DeInit(ISM303DAC_ACC_Object_t *pObj)
 }
 
 /**
- * @brief  Read component ID
- * @param  pObj the device pObj
- * @param  Id the WHO_AM_I value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Read component ID
+  * @param  pObj the device pObj
+  * @param  Id the WHO_AM_I value
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_ACC_ReadID(ISM303DAC_ACC_Object_t *pObj, uint8_t *Id)
 {
   if (ism303dac_xl_device_id_get(&(pObj->Ctx), Id) != ISM303DAC_OK)
@@ -234,11 +234,11 @@ int32_t ISM303DAC_ACC_ReadID(ISM303DAC_ACC_Object_t *pObj, uint8_t *Id)
 }
 
 /**
- * @brief  Get ISM303DAC accelerometer sensor capabilities
- * @param  pObj Component object pointer
- * @param  Capabilities pointer to ISM303DAC accelerometer sensor capabilities
- * @retval Component status
- */
+  * @brief  Get ISM303DAC accelerometer sensor capabilities
+  * @param  pObj Component object pointer
+  * @param  Capabilities pointer to ISM303DAC accelerometer sensor capabilities
+  * @retval Component status
+  */
 int32_t ISM303DAC_ACC_GetCapabilities(ISM303DAC_ACC_Object_t *pObj, ISM303DAC_Capabilities_t *Capabilities)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -258,10 +258,10 @@ int32_t ISM303DAC_ACC_GetCapabilities(ISM303DAC_ACC_Object_t *pObj, ISM303DAC_Ca
 }
 
 /**
- * @brief  Enable the ISM303DAC accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the ISM303DAC accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_ACC_Enable(ISM303DAC_ACC_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -282,10 +282,10 @@ int32_t ISM303DAC_ACC_Enable(ISM303DAC_ACC_Object_t *pObj)
 }
 
 /**
- * @brief  Disable the ISM303DAC accelerometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable the ISM303DAC accelerometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_ACC_Disable(ISM303DAC_ACC_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -312,11 +312,11 @@ int32_t ISM303DAC_ACC_Disable(ISM303DAC_ACC_Object_t *pObj)
 }
 
 /**
- * @brief  Get the ISM303DAC accelerometer sensor sensitivity
- * @param  pObj the device pObj
- * @param  Sensitivity pointer
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM303DAC accelerometer sensor sensitivity
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_ACC_GetSensitivity(ISM303DAC_ACC_Object_t *pObj, float *Sensitivity)
 {
   int32_t ret = ISM303DAC_OK;
@@ -356,11 +356,11 @@ int32_t ISM303DAC_ACC_GetSensitivity(ISM303DAC_ACC_Object_t *pObj, float *Sensit
 }
 
 /**
- * @brief  Get the ISM303DAC accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM303DAC accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_ACC_GetOutputDataRate(ISM303DAC_ACC_Object_t *pObj, float *Odr)
 {
   int32_t ret = ISM303DAC_OK;
@@ -438,11 +438,11 @@ int32_t ISM303DAC_ACC_GetOutputDataRate(ISM303DAC_ACC_Object_t *pObj, float *Odr
 }
 
 /**
- * @brief  Set the ISM303DAC accelerometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM303DAC accelerometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_ACC_SetOutputDataRate(ISM303DAC_ACC_Object_t *pObj, float Odr)
 {
   /* Check if the component is enabled */
@@ -457,11 +457,11 @@ int32_t ISM303DAC_ACC_SetOutputDataRate(ISM303DAC_ACC_Object_t *pObj, float Odr)
 }
 
 /**
- * @brief  Get the ISM303DAC accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale pointer where the full scale is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM303DAC accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale pointer where the full scale is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_ACC_GetFullScale(ISM303DAC_ACC_Object_t *pObj, int32_t *FullScale)
 {
   int32_t ret = ISM303DAC_OK;
@@ -500,11 +500,11 @@ int32_t ISM303DAC_ACC_GetFullScale(ISM303DAC_ACC_Object_t *pObj, int32_t *FullSc
 }
 
 /**
- * @brief  Set the ISM303DAC accelerometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale the functional full scale to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM303DAC accelerometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale the functional full scale to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_ACC_SetFullScale(ISM303DAC_ACC_Object_t *pObj, int32_t FullScale)
 {
   ism303dac_xl_fs_t new_fs;
@@ -523,11 +523,11 @@ int32_t ISM303DAC_ACC_SetFullScale(ISM303DAC_ACC_Object_t *pObj, int32_t FullSca
 }
 
 /**
- * @brief  Get the ISM303DAC accelerometer sensor raw axes
- * @param  pObj the device pObj
- * @param  Value pointer where the raw values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM303DAC accelerometer sensor raw axes
+  * @param  pObj the device pObj
+  * @param  Value pointer where the raw values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_ACC_GetAxesRaw(ISM303DAC_ACC_Object_t *pObj, ISM303DAC_AxesRaw_t *Value)
 {
   ism303dac_axis3bit16_t data_raw;
@@ -548,11 +548,11 @@ int32_t ISM303DAC_ACC_GetAxesRaw(ISM303DAC_ACC_Object_t *pObj, ISM303DAC_AxesRaw
 }
 
 /**
- * @brief  Get the ISM303DAC accelerometer sensor axes
- * @param  pObj the device pObj
- * @param  Acceleration pointer where the values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM303DAC accelerometer sensor axes
+  * @param  pObj the device pObj
+  * @param  Acceleration pointer where the values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_ACC_GetAxes(ISM303DAC_ACC_Object_t *pObj, ISM303DAC_Axes_t *Acceleration)
 {
   ISM303DAC_AxesRaw_t data_raw;
@@ -579,12 +579,12 @@ int32_t ISM303DAC_ACC_GetAxes(ISM303DAC_ACC_Object_t *pObj, ISM303DAC_Axes_t *Ac
 }
 
 /**
- * @brief  Get the ISM303DAC register value for accelerometer sensor
- * @param  pObj the device pObj
- * @param  Reg address to be read
- * @param  Data pointer where the value is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM303DAC register value for accelerometer sensor
+  * @param  pObj the device pObj
+  * @param  Reg address to be read
+  * @param  Data pointer where the value is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_ACC_Read_Reg(ISM303DAC_ACC_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 {
   if (ism303dac_read_reg(&(pObj->Ctx), Reg, Data, 1) != ISM303DAC_OK)
@@ -596,12 +596,12 @@ int32_t ISM303DAC_ACC_Read_Reg(ISM303DAC_ACC_Object_t *pObj, uint8_t Reg, uint8_
 }
 
 /**
- * @brief  Set the ISM303DAC register value for accelerometer sensor
- * @param  pObj the device pObj
- * @param  Reg address to be written
- * @param  Data value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM303DAC register value for accelerometer sensor
+  * @param  pObj the device pObj
+  * @param  Reg address to be written
+  * @param  Data value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_ACC_Write_Reg(ISM303DAC_ACC_Object_t *pObj, uint8_t Reg, uint8_t Data)
 {
   if (ism303dac_write_reg(&(pObj->Ctx), Reg, &Data, 1) != ISM303DAC_OK)
@@ -613,11 +613,11 @@ int32_t ISM303DAC_ACC_Write_Reg(ISM303DAC_ACC_Object_t *pObj, uint8_t Reg, uint8
 }
 
 /**
- * @brief  Get the ISM303DAC ACC data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM303DAC ACC data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_ACC_Get_DRDY_Status(ISM303DAC_ACC_Object_t *pObj, uint8_t *Status)
 {
   if (ism303dac_xl_flag_data_ready_get(&(pObj->Ctx), Status) != ISM303DAC_OK)
@@ -629,11 +629,11 @@ int32_t ISM303DAC_ACC_Get_DRDY_Status(ISM303DAC_ACC_Object_t *pObj, uint8_t *Sta
 }
 
 /**
- * @brief  Get the ISM303DAC ACC initialization status
- * @param  pObj the device pObj
- * @param  Status 1 if initialized, 0 otherwise
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM303DAC ACC initialization status
+  * @param  pObj the device pObj
+  * @param  Status 1 if initialized, 0 otherwise
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_ACC_Get_Init_Status(ISM303DAC_ACC_Object_t *pObj, uint8_t *Status)
 {
   if (pObj == NULL)
@@ -647,10 +647,10 @@ int32_t ISM303DAC_ACC_Get_Init_Status(ISM303DAC_ACC_Object_t *pObj, uint8_t *Sta
 }
 
 /**
- * @brief  Register Component Bus IO operations
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Register Component Bus IO operations
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_MAG_RegisterBusIO(ISM303DAC_MAG_Object_t *pObj, ISM303DAC_IO_t *pIO)
 {
   int32_t ret = ISM303DAC_OK;
@@ -702,10 +702,10 @@ int32_t ISM303DAC_MAG_RegisterBusIO(ISM303DAC_MAG_Object_t *pObj, ISM303DAC_IO_t
 }
 
 /**
- * @brief  Initialize the ISM303DAC sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Initialize the ISM303DAC sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_MAG_Init(ISM303DAC_MAG_Object_t *pObj)
 {
   /* Enable BDU */
@@ -738,10 +738,10 @@ int32_t ISM303DAC_MAG_Init(ISM303DAC_MAG_Object_t *pObj)
 }
 
 /**
- * @brief  Deinitialize the ISM303DAC magnetometer sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Deinitialize the ISM303DAC magnetometer sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_MAG_DeInit(ISM303DAC_MAG_Object_t *pObj)
 {
   /* Disable the component */
@@ -756,11 +756,11 @@ int32_t ISM303DAC_MAG_DeInit(ISM303DAC_MAG_Object_t *pObj)
 }
 
 /**
- * @brief  Read component ID
- * @param  pObj the device pObj
- * @param  Id the WHO_AM_I value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Read component ID
+  * @param  pObj the device pObj
+  * @param  Id the WHO_AM_I value
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_MAG_ReadID(ISM303DAC_MAG_Object_t *pObj, uint8_t *Id)
 {
   if (ism303dac_mg_device_id_get(&(pObj->Ctx), Id) != ISM303DAC_OK)
@@ -772,11 +772,11 @@ int32_t ISM303DAC_MAG_ReadID(ISM303DAC_MAG_Object_t *pObj, uint8_t *Id)
 }
 
 /**
- * @brief  Get ISM303DAC magnetometer sensor capabilities
- * @param  pObj Component object pointer
- * @param  Capabilities pointer to ISM303DAC magnetometer sensor capabilities
- * @retval Component status
- */
+  * @brief  Get ISM303DAC magnetometer sensor capabilities
+  * @param  pObj Component object pointer
+  * @param  Capabilities pointer to ISM303DAC magnetometer sensor capabilities
+  * @retval Component status
+  */
 int32_t ISM303DAC_MAG_GetCapabilities(ISM303DAC_MAG_Object_t *pObj, ISM303DAC_Capabilities_t *Capabilities)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -796,10 +796,10 @@ int32_t ISM303DAC_MAG_GetCapabilities(ISM303DAC_MAG_Object_t *pObj, ISM303DAC_Ca
 }
 
 /**
- * @brief Enable the ISM303DAC magnetometer sensor
- * @param pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief Enable the ISM303DAC magnetometer sensor
+  * @param pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_MAG_Enable(ISM303DAC_MAG_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -820,10 +820,10 @@ int32_t ISM303DAC_MAG_Enable(ISM303DAC_MAG_Object_t *pObj)
 }
 
 /**
- * @brief Disable the ISM303DAC magnetometer sensor
- * @param pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief Disable the ISM303DAC magnetometer sensor
+  * @param pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_MAG_Disable(ISM303DAC_MAG_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -844,11 +844,11 @@ int32_t ISM303DAC_MAG_Disable(ISM303DAC_MAG_Object_t *pObj)
 }
 
 /**
- * @brief  Get the ISM303DAC magnetometer sensor sensitivity
- * @param  pObj the device pObj
- * @param  Sensitivity pointer
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM303DAC magnetometer sensor sensitivity
+  * @param  pObj the device pObj
+  * @param  Sensitivity pointer
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_MAG_GetSensitivity(ISM303DAC_MAG_Object_t *pObj, float *Sensitivity)
 {
   *Sensitivity = ISM303DAC_MAG_SENSITIVITY_FS_50GAUSS;
@@ -857,11 +857,11 @@ int32_t ISM303DAC_MAG_GetSensitivity(ISM303DAC_MAG_Object_t *pObj, float *Sensit
 }
 
 /**
- * @brief  Get the ISM303DAC magnetometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM303DAC magnetometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_MAG_GetOutputDataRate(ISM303DAC_MAG_Object_t *pObj, float *Odr)
 {
   int32_t ret = ISM303DAC_OK;
@@ -900,11 +900,11 @@ int32_t ISM303DAC_MAG_GetOutputDataRate(ISM303DAC_MAG_Object_t *pObj, float *Odr
 }
 
 /**
- * @brief  Set the ISM303DAC magnetometer sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM303DAC magnetometer sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_MAG_SetOutputDataRate(ISM303DAC_MAG_Object_t *pObj, float Odr)
 {
   ism303dac_mg_odr_t new_odr;
@@ -924,11 +924,11 @@ int32_t ISM303DAC_MAG_SetOutputDataRate(ISM303DAC_MAG_Object_t *pObj, float Odr)
 
 
 /**
- * @brief  Get the ISM303DAC magnetometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale pointer where the full scale is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM303DAC magnetometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale pointer where the full scale is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_MAG_GetFullScale(ISM303DAC_MAG_Object_t *pObj, int32_t *FullScale)
 {
   *FullScale = 50;
@@ -937,22 +937,22 @@ int32_t ISM303DAC_MAG_GetFullScale(ISM303DAC_MAG_Object_t *pObj, int32_t *FullSc
 }
 
 /**
- * @brief  Set the ISM303DAC magnetometer sensor full scale
- * @param  pObj the device pObj
- * @param  FullScale the functional full scale to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM303DAC magnetometer sensor full scale
+  * @param  pObj the device pObj
+  * @param  FullScale the functional full scale to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_MAG_SetFullScale(ISM303DAC_MAG_Object_t *pObj, int32_t FullScale)
 {
   return ISM303DAC_OK;
 }
 
 /**
- * @brief  Get the ISM303DAC magnetometer sensor raw axes
- * @param  pObj the device pObj
- * @param  Value pointer where the raw values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM303DAC magnetometer sensor raw axes
+  * @param  pObj the device pObj
+  * @param  Value pointer where the raw values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_MAG_GetAxesRaw(ISM303DAC_MAG_Object_t *pObj, ISM303DAC_AxesRaw_t *Value)
 {
   ism303dac_axis3bit16_t data_raw;
@@ -972,11 +972,11 @@ int32_t ISM303DAC_MAG_GetAxesRaw(ISM303DAC_MAG_Object_t *pObj, ISM303DAC_AxesRaw
 }
 
 /**
- * @brief  Get the ISM303DAC magnetometer sensor axes
- * @param  pObj the device pObj
- * @param  MagneticField pointer where the values of the axes are written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM303DAC magnetometer sensor axes
+  * @param  pObj the device pObj
+  * @param  MagneticField pointer where the values of the axes are written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_MAG_GetAxes(ISM303DAC_MAG_Object_t *pObj, ISM303DAC_Axes_t *MagneticField)
 {
   ism303dac_axis3bit16_t data_raw;
@@ -1000,12 +1000,12 @@ int32_t ISM303DAC_MAG_GetAxes(ISM303DAC_MAG_Object_t *pObj, ISM303DAC_Axes_t *Ma
 }
 
 /**
- * @brief  Get the ISM303DAC register value for magnetic sensor
- * @param  pObj the device pObj
- * @param  Reg address to be read
- * @param  Data pointer where the value is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM303DAC register value for magnetic sensor
+  * @param  pObj the device pObj
+  * @param  Reg address to be read
+  * @param  Data pointer where the value is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_MAG_Read_Reg(ISM303DAC_MAG_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 {
   if (ism303dac_read_reg(&(pObj->Ctx), Reg, Data, 1) != ISM303DAC_OK)
@@ -1017,12 +1017,12 @@ int32_t ISM303DAC_MAG_Read_Reg(ISM303DAC_MAG_Object_t *pObj, uint8_t Reg, uint8_
 }
 
 /**
- * @brief  Set the ISM303DAC register value for magnetic sensor
- * @param  pObj the device pObj
- * @param  Reg address to be written
- * @param  Data value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM303DAC register value for magnetic sensor
+  * @param  pObj the device pObj
+  * @param  Reg address to be written
+  * @param  Data value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_MAG_Write_Reg(ISM303DAC_MAG_Object_t *pObj, uint8_t Reg, uint8_t Data)
 {
   if (ism303dac_write_reg(&(pObj->Ctx), Reg, &Data, 1) != ISM303DAC_OK)
@@ -1034,11 +1034,11 @@ int32_t ISM303DAC_MAG_Write_Reg(ISM303DAC_MAG_Object_t *pObj, uint8_t Reg, uint8
 }
 
 /**
- * @brief  Get the ISM303DAC MAG data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM303DAC MAG data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_MAG_Get_DRDY_Status(ISM303DAC_MAG_Object_t *pObj, uint8_t *Status)
 {
   if (ism303dac_mg_data_ready_get(&(pObj->Ctx), Status) != ISM303DAC_OK)
@@ -1050,11 +1050,11 @@ int32_t ISM303DAC_MAG_Get_DRDY_Status(ISM303DAC_MAG_Object_t *pObj, uint8_t *Sta
 }
 
 /**
- * @brief  Get the ISM303DAC MAG initialization status
- * @param  pObj the device pObj
- * @param  Status 1 if initialized, 0 otherwise
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the ISM303DAC MAG initialization status
+  * @param  pObj the device pObj
+  * @param  Status 1 if initialized, 0 otherwise
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t ISM303DAC_MAG_Get_Init_Status(ISM303DAC_MAG_Object_t *pObj, uint8_t *Status)
 {
   if (pObj == NULL)
@@ -1068,19 +1068,19 @@ int32_t ISM303DAC_MAG_Get_Init_Status(ISM303DAC_MAG_Object_t *pObj, uint8_t *Sta
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup ISM303DAC_Private_Functions ISM303DAC Private Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Set the ISM303DAC accelerometer sensor output data rate when enabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM303DAC accelerometer sensor output data rate when enabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ISM303DAC_ACC_SetOutputDataRate_When_Enabled(ISM303DAC_ACC_Object_t *pObj, float Odr)
 {
   ism303dac_xl_odr_t new_odr;
@@ -1104,11 +1104,11 @@ static int32_t ISM303DAC_ACC_SetOutputDataRate_When_Enabled(ISM303DAC_ACC_Object
 }
 
 /**
- * @brief  Set the ISM303DAC accelerometer sensor output data rate when disabled
- * @param  pObj the device pObj
- * @param  Odr the functional output data rate to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the ISM303DAC accelerometer sensor output data rate when disabled
+  * @param  pObj the device pObj
+  * @param  Odr the functional output data rate to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ISM303DAC_ACC_SetOutputDataRate_When_Disabled(ISM303DAC_ACC_Object_t *pObj, float Odr)
 {
   pObj->acc_odr = (Odr <=    1.0f) ? ISM303DAC_XL_ODR_1Hz_LP
@@ -1124,13 +1124,13 @@ static int32_t ISM303DAC_ACC_SetOutputDataRate_When_Disabled(ISM303DAC_ACC_Objec
 }
 
 /**
- * @brief  Wrap Read register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Read register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ReadAccRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   ISM303DAC_ACC_Object_t *pObj = (ISM303DAC_ACC_Object_t *)Handle;
@@ -1148,13 +1148,13 @@ static int32_t ReadAccRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_
 }
 
 /**
- * @brief  Wrap Write register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Write register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t WriteAccRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   ISM303DAC_ACC_Object_t *pObj = (ISM303DAC_ACC_Object_t *)Handle;
@@ -1172,13 +1172,13 @@ static int32_t WriteAccRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16
 }
 
 /**
- * @brief  Wrap Read register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Read register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ReadMagRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   ISM303DAC_MAG_Object_t *pObj = (ISM303DAC_MAG_Object_t *)Handle;
@@ -1196,13 +1196,13 @@ static int32_t ReadMagRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_
 }
 
 /**
- * @brief  Wrap Write register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Write register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t WriteMagRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   ISM303DAC_MAG_Object_t *pObj = (ISM303DAC_MAG_Object_t *)Handle;

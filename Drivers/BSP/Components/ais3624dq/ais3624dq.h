@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    ais3624dq.h
- * @author  MEMS Software Solutions Team
- * @brief   AIS3624DQ header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    ais3624dq.h
+  * @author  MEMS Software Solutions Team
+  * @brief   AIS3624DQ header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef AIS3624DQ_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup AIS3624DQ AIS3624DQ
- * @{
- */
+  * @{
+  */
 
 /** @defgroup AIS3624DQ_Exported_Types AIS3624DQ Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*AIS3624DQ_Init_Func)(void);
 typedef int32_t (*AIS3624DQ_DeInit_Func)(void);
@@ -127,33 +127,37 @@ typedef struct
   int32_t (*GetAxesRaw)(AIS3624DQ_Object_t *, AIS3624DQ_AxesRaw_t *);
 } AIS3624DQ_ACC_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } ais3624dq_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } ais3624dq_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } ais3624dq_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } ais3624dq_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup AIS3624DQ_Exported_Constants AIS3624DQ Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define AIS3624DQ_OK                       0
 #define AIS3624DQ_ERROR                   -1
@@ -167,12 +171,12 @@ typedef union{
 #define AIS3624DQ_ACC_SENSITIVITY_FOR_FS_24G   11.7f  /**< Sensitivity value for 24g full scale [mg/LSB] */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup AIS3624DQ_Exported_Functions AIS3624DQ Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t AIS3624DQ_RegisterBusIO(AIS3624DQ_Object_t *pObj, AIS3624DQ_IO_t *pIO);
 int32_t AIS3624DQ_Init(AIS3624DQ_Object_t *pObj);
@@ -196,19 +200,19 @@ int32_t AIS3624DQ_Write_Reg(AIS3624DQ_Object_t *pObj, uint8_t reg, uint8_t Data)
 int32_t AIS3624DQ_ACC_Get_DRDY_Status(AIS3624DQ_Object_t *pObj, uint8_t *Status);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup AIS3624DQ_Exported_Variables AIS3624DQ Exported Variables
- * @{
- */
+  * @{
+  */
 
 extern AIS3624DQ_CommonDrv_t AIS3624DQ_COMMON_Driver;
 extern AIS3624DQ_ACC_Drv_t AIS3624DQ_ACC_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -217,15 +221,15 @@ extern AIS3624DQ_ACC_Drv_t AIS3624DQ_ACC_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

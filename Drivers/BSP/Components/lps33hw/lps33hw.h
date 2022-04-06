@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    lps33hw.h
- * @author  MEMS Software Solutions Team
- * @brief   LPS33HW header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lps33hw.h
+  * @author  MEMS Software Solutions Team
+  * @brief   LPS33HW header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LPS33HW_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup LPS33HW LPS33HW
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LPS33HW_Exported_Types LPS33HW Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*LPS33HW_Init_Func)(void);
 typedef int32_t (*LPS33HW_DeInit_Func)(void);
@@ -121,33 +121,37 @@ typedef enum
   LPS33HW_FIFO_TRIGGER_BYPASSTOFIFO_MODE      = (uint8_t)0xE0     /*!< BYPASS mode until trigger deasserted, then FIFO MODE*/
 } LPS33HW_FifoMode;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } lps33hw_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } lps33hw_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } lps33hw_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } lps33hw_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LPS33HW_Exported_Constants LPS33HW Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define LPS33HW_OK                0
 #define LPS33HW_ERROR            -1
@@ -159,12 +163,12 @@ typedef union{
 #define LPS33HW_FIFO_FULL        (uint8_t)0x20
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LPS33HW_Exported_Functions LPS33HW Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t LPS33HW_RegisterBusIO(LPS33HW_Object_t *pObj, LPS33HW_IO_t *pIO);
 int32_t LPS33HW_Init(LPS33HW_Object_t *pObj);
@@ -209,19 +213,19 @@ int32_t LPS33HW_Set_One_Shot(LPS33HW_Object_t *pObj);
 int32_t LPS33HW_Get_One_Shot_Status(LPS33HW_Object_t *pObj, uint8_t *Status);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LPS33HW_Exported_Variables LPS33HW Exported Variables
- * @{
- */
+  * @{
+  */
 extern LPS33HW_CommonDrv_t LPS33HW_COMMON_Driver;
 extern LPS33HW_PRESS_Drv_t LPS33HW_PRESS_Driver;
 extern LPS33HW_TEMP_Drv_t LPS33HW_TEMP_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -230,15 +234,15 @@ extern LPS33HW_TEMP_Drv_t LPS33HW_TEMP_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

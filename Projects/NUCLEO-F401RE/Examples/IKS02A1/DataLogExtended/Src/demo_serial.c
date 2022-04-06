@@ -31,16 +31,16 @@
  */
 
 /* Private typedef -----------------------------------------------------------*/
-   
+
 /* Private define ------------------------------------------------------------*/
-   
+
 /* Private macro -------------------------------------------------------------*/
 
 /* Public variables ----------------------------------------------------------*/
 volatile uint8_t DataLoggerActive;
 
 /* Private variables ---------------------------------------------------------*/
-static uint8_t PresentationString[] = {"MEMS shield demo,101,9.1.0,0.0.0,IKS02A1"};
+static uint8_t PresentationString[] = {"MEMS shield demo,101,9.2.0,0.0.0,IKS02A1"};
 static volatile uint8_t DataStreamingDest = 1;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -206,7 +206,7 @@ int HandleMSG(TMsg *Msg)
       BUILD_REPLY_HEADER(Msg);
       UART_SendMsg(Msg);
       break;
-      
+
     case CMD_Enable_Disable_Sensor:
       if (Msg->Len < 4U)
       {

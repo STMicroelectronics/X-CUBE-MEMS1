@@ -1,22 +1,22 @@
-/*
- ******************************************************************************
- * @file    lps22ch_reg.h
- * @author  Sensors Software Solution Team
- * @brief   This file contains all the functions prototypes for the
- *          lps22ch_reg.c driver.
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    lps22ch_reg.h
+  * @author  Sensors Software Solution Team
+  * @brief   This file contains all the functions prototypes for the
+  *          lps22ch_reg.c driver.
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LPS22CH_REGS_H
@@ -28,6 +28,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
+#include <stddef.h>
 #include <math.h>
 
 /** @addtogroup LPS22CH
@@ -74,7 +75,8 @@ extern "C" {
 #ifndef MEMS_SHARED_TYPES
 #define MEMS_SHARED_TYPES
 
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t bit0       : 1;
   uint8_t bit1       : 1;
@@ -107,12 +109,11 @@ typedef struct {
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *,
-                                    uint16_t);
-typedef int32_t (*stmdev_read_ptr) (void *, uint8_t, uint8_t *,
-                                    uint16_t);
+typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 
-typedef struct {
+typedef struct
+{
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
@@ -141,7 +142,8 @@ typedef struct {
   *
   */
 
-typedef struct {
+typedef struct
+{
   uint8_t address;
   uint8_t data;
 } ucf_line_t;
@@ -176,7 +178,8 @@ typedef struct {
   */
 
 #define LPS22CH_INTERRUPT_CFG                   0x0BU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t pe                              : 2;  /* ple + phe */
   uint8_t lir                             : 1;
@@ -197,12 +200,14 @@ typedef struct {
 } lps22ch_interrupt_cfg_t;
 
 #define LPS22CH_THS_P_L                         0x0CU
-typedef struct {
+typedef struct
+{
   uint8_t ths                             : 8;
 } lps22ch_ths_p_l_t;
 
 #define LPS22CH_THS_P_H                         0x0DU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ths                             : 7;
   uint8_t not_used_01                     : 1;
@@ -213,7 +218,8 @@ typedef struct {
 } lps22ch_ths_p_h_t;
 
 #define LPS22CH_IF_CTRL                         0x0EU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t i2c_disable                     : 1;
   uint8_t i3c_disable                     : 1;
@@ -235,7 +241,8 @@ typedef struct {
 
 #define LPS22CH_WHO_AM_I                        0x0FU
 #define LPS22CH_CTRL_REG1                       0x10U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t sim                             : 1;
   uint8_t bdu                             : 1;
@@ -252,7 +259,8 @@ typedef struct {
 } lps22ch_ctrl_reg1_t;
 
 #define LPS22CH_CTRL_REG2                       0x11U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t one_shot                        : 1;
   uint8_t low_noise_en                    : 1;
@@ -275,7 +283,8 @@ typedef struct {
 } lps22ch_ctrl_reg2_t;
 
 #define LPS22CH_CTRL_REG3                       0x12U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t int_s                           : 2;
   uint8_t drdy                            : 1;
@@ -294,7 +303,8 @@ typedef struct {
 } lps22ch_ctrl_reg3_t;
 
 #define LPS22CH_FIFO_CTRL                       0x13U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
 uint8_t f_mode                          :
   3;  /* f_mode + trig_modes */
@@ -309,7 +319,8 @@ uint8_t f_mode                          :
 } lps22ch_fifo_ctrl_t;
 
 #define LPS22CH_FIFO_WTM                        0x14U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t wtm                             : 7;
   uint8_t not_used_01                     : 1;
@@ -324,7 +335,8 @@ typedef struct {
 #define LPS22CH_RPDS_L                          0x18U
 #define LPS22CH_RPDS_H                          0x19U
 #define LPS22CH_INT_SOURCE                      0x24U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ph                              : 1;
   uint8_t pl                              : 1;
@@ -342,7 +354,8 @@ typedef struct {
 
 #define LPS22CH_FIFO_STATUS1                    0x25U
 #define LPS22CH_FIFO_STATUS2                    0x26U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01                     : 5;
   uint8_t fifo_full_ia                    : 1;
@@ -357,7 +370,8 @@ typedef struct {
 } lps22ch_fifo_status2_t;
 
 #define LPS22CH_STATUS                          0x27U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t p_da                            : 1;
   uint8_t t_da                            : 1;
@@ -388,9 +402,9 @@ typedef struct {
 
 /**
   * @defgroup LPS22CH_Register_Union
-  * @brief    This union group all the registers that has a bitfield
+  * @brief    This union group all the registers having a bit-field
   *           description.
-  *           This union is useful but not need by the driver.
+  *           This union is useful but it's not needed by the driver.
   *
   *           REMOVING this union you are compliant with:
   *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
@@ -398,7 +412,8 @@ typedef struct {
   * @{
   *
   */
-typedef union {
+typedef union
+{
   lps22ch_interrupt_cfg_t        interrupt_cfg;
   lps22ch_if_ctrl_t              if_ctrl;
   lps22ch_ctrl_reg1_t            ctrl_reg1;
@@ -426,6 +441,7 @@ int32_t lps22ch_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
                           uint16_t len);
 
 float_t lps22ch_from_lsb_to_hpa(uint32_t lsb);
+
 float_t lps22ch_from_lsb_to_celsius(int16_t lsb);
 
 int32_t lps22ch_autozero_rst_set(stmdev_ctx_t *ctx, uint8_t val);
@@ -445,7 +461,8 @@ int32_t lps22ch_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lps22ch_block_data_update_get(stmdev_ctx_t *ctx,
                                       uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   LPS22CH_POWER_DOWN          = 0x00,
   LPS22CH_ONE_SHOOT           = 0x08,
   LPS22CH_1_Hz                = 0x01,
@@ -470,7 +487,8 @@ int32_t lps22ch_pressure_ref_get(stmdev_ctx_t *ctx, int16_t *val);
 int32_t lps22ch_pressure_offset_set(stmdev_ctx_t *ctx, int16_t val);
 int32_t lps22ch_pressure_offset_get(stmdev_ctx_t *ctx, int16_t *val);
 
-typedef struct {
+typedef struct
+{
   lps22ch_int_source_t    int_source;
   lps22ch_fifo_status2_t  fifo_status2;
   lps22ch_status_t        status;
@@ -508,7 +526,8 @@ int32_t lps22ch_auto_increment_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t lps22ch_boot_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lps22ch_boot_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   LPS22CH_LPF_ODR_DIV_2    = 0,
   LPS22CH_LPF_ODR_DIV_9    = 2,
   LPS22CH_LPF_ODR_DIV_20   = 3,
@@ -518,7 +537,8 @@ int32_t lps22ch_lp_bandwidth_set(stmdev_ctx_t *ctx,
 int32_t lps22ch_lp_bandwidth_get(stmdev_ctx_t *ctx,
                                  lps22ch_lpfp_cfg_t *val);
 
-typedef enum {
+typedef enum
+{
   LPS22CH_I2C_ENABLE    = 0,
   LPS22CH_I2C_DISABLE   = 1,
 } lps22ch_i2c_disable_t;
@@ -527,7 +547,8 @@ int32_t lps22ch_i2c_interface_set(stmdev_ctx_t *ctx,
 int32_t lps22ch_i2c_interface_get(stmdev_ctx_t *ctx,
                                   lps22ch_i2c_disable_t *val);
 
-typedef enum {
+typedef enum
+{
   LPS22CH_I3C_ENABLE    = 0,
   LPS22CH_I3C_DISABLE   = 1,
 } lps22ch_i3c_disable_t;
@@ -536,7 +557,8 @@ int32_t lps22ch_i3c_interface_set(stmdev_ctx_t *ctx,
 int32_t lps22ch_i3c_interface_get(stmdev_ctx_t *ctx,
                                   lps22ch_i3c_disable_t *val);
 
-typedef enum {
+typedef enum
+{
   LPS22CH_PULL_UP_DISCONNECT    = 0,
   LPS22CH_PULL_UP_CONNECT       = 1,
 } lps22ch_pu_en_t;
@@ -547,14 +569,16 @@ int32_t lps22ch_sdo_sa0_mode_get(stmdev_ctx_t *ctx,
 int32_t lps22ch_sda_mode_set(stmdev_ctx_t *ctx, lps22ch_pu_en_t val);
 int32_t lps22ch_sda_mode_get(stmdev_ctx_t *ctx, lps22ch_pu_en_t *val);
 
-typedef enum {
+typedef enum
+{
   LPS22CH_SPI_4_WIRE  = 0,
   LPS22CH_SPI_3_WIRE  = 1,
 } lps22ch_sim_t;
 int32_t lps22ch_spi_mode_set(stmdev_ctx_t *ctx, lps22ch_sim_t val);
 int32_t lps22ch_spi_mode_get(stmdev_ctx_t *ctx, lps22ch_sim_t *val);
 
-typedef enum {
+typedef enum
+{
   LPS22CH_INT_PULSED   = 0,
   LPS22CH_INT_LATCHED  = 1,
 } lps22ch_lir_t;
@@ -563,14 +587,16 @@ int32_t lps22ch_int_notification_set(stmdev_ctx_t *ctx,
 int32_t lps22ch_int_notification_get(stmdev_ctx_t *ctx,
                                      lps22ch_lir_t *val);
 
-typedef enum {
+typedef enum
+{
   LPS22CH_PUSH_PULL   = 0,
   LPS22CH_OPEN_DRAIN  = 1,
 } lps22ch_pp_od_t;
 int32_t lps22ch_pin_mode_set(stmdev_ctx_t *ctx, lps22ch_pp_od_t val);
 int32_t lps22ch_pin_mode_get(stmdev_ctx_t *ctx, lps22ch_pp_od_t *val);
 
-typedef enum {
+typedef enum
+{
   LPS22CH_ACTIVE_HIGH = 0,
   LPS22CH_ACTIVE_LOW  = 1,
 } lps22ch_int_h_l_t;
@@ -584,7 +610,8 @@ int32_t lps22ch_pin_int_route_set(stmdev_ctx_t *ctx,
 int32_t lps22ch_pin_int_route_get(stmdev_ctx_t *ctx,
                                   lps22ch_ctrl_reg3_t *val);
 
-typedef enum {
+typedef enum
+{
   LPS22CH_NO_THRESHOLD  = 0,
   LPS22CH_POSITIVE      = 1,
   LPS22CH_NEGATIVE      = 2,
@@ -598,7 +625,8 @@ int32_t lps22ch_int_on_threshold_get(stmdev_ctx_t *ctx,
 int32_t lps22ch_int_treshold_set(stmdev_ctx_t *ctx, uint16_t buff);
 int32_t lps22ch_int_treshold_get(stmdev_ctx_t *ctx, uint16_t *buff);
 
-typedef enum {
+typedef enum
+{
   LPS22CH_BYPASS_MODE            = 0,
   LPS22CH_FIFO_MODE              = 1,
   LPS22CH_STREAM_MODE            = 2,

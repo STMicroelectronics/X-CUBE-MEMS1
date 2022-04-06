@@ -1,22 +1,22 @@
-/*
- ******************************************************************************
- * @file    lis3mdl_reg.h
- * @author  Sensors Software Solution Team
- * @brief   This file contains all the functions prototypes for the
- *          lis3mdl_reg.c driver.
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    lis3mdl_reg.h
+  * @author  Sensors Software Solution Team
+  * @brief   This file contains all the functions prototypes for the
+  *          lis3mdl_reg.c driver.
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LIS3MDL_REGS_H
@@ -28,6 +28,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
+#include <stddef.h>
 #include <math.h>
 
 /** @addtogroup LIS3MDL
@@ -74,7 +75,8 @@ extern "C" {
 #ifndef MEMS_SHARED_TYPES
 #define MEMS_SHARED_TYPES
 
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t bit0       : 1;
   uint8_t bit1       : 1;
@@ -107,12 +109,11 @@ typedef struct {
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *,
-                                    uint16_t);
-typedef int32_t (*stmdev_read_ptr) (void *, uint8_t, uint8_t *,
-                                    uint16_t);
+typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 
-typedef struct {
+typedef struct
+{
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
@@ -141,7 +142,8 @@ typedef struct {
   *
   */
 
-typedef struct {
+typedef struct
+{
   uint8_t address;
   uint8_t data;
 } ucf_line_t;
@@ -177,7 +179,8 @@ typedef struct {
 
 #define LIS3MDL_WHO_AM_I       0x0FU
 #define LIS3MDL_CTRL_REG1      0x20U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t st              : 1;
   uint8_t om              : 6; /* om + do + fast_odr -> om */
@@ -190,7 +193,8 @@ typedef struct {
 } lis3mdl_ctrl_reg1_t;
 
 #define LIS3MDL_CTRL_REG2      0x21U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01     : 2;
   uint8_t soft_rst        : 1;
@@ -209,7 +213,8 @@ typedef struct {
 } lis3mdl_ctrl_reg2_t;
 
 #define LIS3MDL_CTRL_REG3      0x22U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t md              : 2;
   uint8_t sim             : 1;
@@ -226,7 +231,8 @@ typedef struct {
 } lis3mdl_ctrl_reg3_t;
 
 #define LIS3MDL_CTRL_REG4      0x23U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01     : 1;
   uint8_t ble             : 1;
@@ -241,7 +247,8 @@ typedef struct {
 } lis3mdl_ctrl_reg4_t;
 
 #define LIS3MDL_CTRL_REG5      0x24U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01     : 6;
   uint8_t bdu             : 1;
@@ -254,7 +261,8 @@ typedef struct {
 } lis3mdl_ctrl_reg5_t;
 
 #define LIS3MDL_STATUS_REG     0x27U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xda             : 1;
   uint8_t yda             : 1;
@@ -285,7 +293,8 @@ typedef struct {
 #define LIS3MDL_TEMP_OUT_L     0x2EU
 #define LIS3MDL_TEMP_OUT_H     0x2FU
 #define LIS3MDL_INT_CFG        0x30U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ien             : 1;
   uint8_t lir             : 1;
@@ -306,7 +315,8 @@ typedef struct {
 } lis3mdl_int_cfg_t;
 
 #define LIS3MDL_INT_SRC        0x31U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t int_            : 1;
   uint8_t mroi            : 1;
@@ -333,9 +343,9 @@ typedef struct {
 
 /**
   * @defgroup LIS3MDL_Register_Union
-  * @brief    This union group all the registers that has a bit-field
+  * @brief    This union group all the registers having a bit-field
   *           description.
-  *           This union is useful but not need by the driver.
+  *           This union is useful but it's not needed by the driver.
   *
   *           REMOVING this union you are compliant with:
   *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
@@ -343,7 +353,8 @@ typedef struct {
   * @{
   *
   */
-typedef union {
+typedef union
+{
   lis3mdl_ctrl_reg1_t      ctrl_reg1;
   lis3mdl_ctrl_reg2_t      ctrl_reg2;
   lis3mdl_ctrl_reg3_t      ctrl_reg3;
@@ -368,13 +379,15 @@ int32_t lis3mdl_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
                           uint8_t *data,
                           uint16_t len);
 
-float lis3mdl_from_fs4_to_gauss(int16_t lsb);
-float lis3mdl_from_fs8_to_gauss(int16_t lsb);
-float lis3mdl_from_fs12_to_gauss(int16_t lsb);
-float lis3mdl_from_fs16_to_gauss(int16_t lsb);
-float lis3mdl_from_lsb_to_celsius(int16_t lsb);
+float_t lis3mdl_from_fs4_to_gauss(int16_t lsb);
+float_t lis3mdl_from_fs8_to_gauss(int16_t lsb);
+float_t lis3mdl_from_fs12_to_gauss(int16_t lsb);
+float_t lis3mdl_from_fs16_to_gauss(int16_t lsb);
 
-typedef enum {
+float_t lis3mdl_from_lsb_to_celsius(int16_t lsb);
+
+typedef enum
+{
   LIS3MDL_LP_Hz625      = 0x00,
   LIS3MDL_LP_1kHz       = 0x01,
   LIS3MDL_MP_560Hz      = 0x11,
@@ -420,7 +433,8 @@ int32_t lis3mdl_data_rate_get(stmdev_ctx_t *ctx, lis3mdl_om_t *val);
 int32_t lis3mdl_temperature_meas_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lis3mdl_temperature_meas_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   LIS3MDL_4_GAUSS   = 0,
   LIS3MDL_8_GAUSS   = 1,
   LIS3MDL_12_GAUSS  = 2,
@@ -429,7 +443,8 @@ typedef enum {
 int32_t lis3mdl_full_scale_set(stmdev_ctx_t *ctx, lis3mdl_fs_t val);
 int32_t lis3mdl_full_scale_get(stmdev_ctx_t *ctx, lis3mdl_fs_t *val);
 
-typedef enum {
+typedef enum
+{
   LIS3MDL_CONTINUOUS_MODE  = 0,
   LIS3MDL_SINGLE_TRIGGER   = 1,
   LIS3MDL_POWER_DOWN       = 2,
@@ -468,7 +483,8 @@ int32_t lis3mdl_reset_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t lis3mdl_boot_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lis3mdl_boot_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   LIS3MDL_LSB_AT_LOW_ADD  = 0,
   LIS3MDL_MSB_AT_LOW_ADD  = 1,
 } lis3mdl_ble_t;
@@ -487,7 +503,8 @@ int32_t lis3mdl_int_config_get(stmdev_ctx_t *ctx,
 int32_t lis3mdl_int_generation_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lis3mdl_int_generation_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   LIS3MDL_INT_PULSED   = 0,
   LIS3MDL_INT_LATCHED  = 1,
 } lis3mdl_lir_t;
@@ -496,7 +513,8 @@ int32_t lis3mdl_int_notification_mode_set(stmdev_ctx_t *ctx,
 int32_t lis3mdl_int_notification_mode_get(stmdev_ctx_t *ctx,
                                           lis3mdl_lir_t *val);
 
-typedef enum {
+typedef enum
+{
   LIS3MDL_ACTIVE_HIGH  = 0,
   LIS3MDL_ACTIVE_LOW   = 1,
 } lis3mdl_iea_t;
@@ -538,7 +556,8 @@ int32_t lis3mdl_int_pos_x_flag_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t lis3mdl_int_threshold_set(stmdev_ctx_t *ctx, uint16_t val);
 int32_t lis3mdl_int_threshold_get(stmdev_ctx_t *ctx, uint16_t *val);
 
-typedef enum {
+typedef enum
+{
   LIS3MDL_SPI_4_WIRE   = 0,
   LIS3MDL_SPI_3_WIRE   = 1,
 } lis3mdl_sim_t;

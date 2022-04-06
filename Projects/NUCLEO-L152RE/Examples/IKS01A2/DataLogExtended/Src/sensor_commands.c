@@ -5,7 +5,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Software License Agreement
@@ -36,12 +36,12 @@
  */
 
 /* Private typedef -----------------------------------------------------------*/
-   
+
 /* Private defines -----------------------------------------------------------*/
 #define SENSOR_NAME_MAX_LENGTH  20
 
 /* Private macro -------------------------------------------------------------*/
-   
+
 /* Public variables ----------------------------------------------------------*/
 /* Currently selected sensor instances (defaults) */
 uint32_t AccInstance = IKS01A2_LSM6DSL_0;
@@ -51,7 +51,7 @@ uint32_t HumInstance = IKS01A2_HTS221_0;
 uint32_t TmpInstance = IKS01A2_HTS221_0;
 uint32_t PrsInstance = IKS01A2_LPS22HB_0;
 
-/* Private variables ---------------------------------------------------------*/   
+/* Private variables ---------------------------------------------------------*/
 /* Supported sensor names. Please verify that second index of array is HIGHER than longest string in array!!! */
 static uint8_t AccNameList[][SENSOR_NAME_MAX_LENGTH] = {"LSM6DSL", "ASM330LHH (DIL24)", "IIS2DLPC (DIL24)",
                                                         "ISM303DAC (DIL24)", "ISM330DLC (DIL24)", "LIS2DH12 (DIL24)",
@@ -159,7 +159,7 @@ static uint32_t PrsFsList[][1] = { /* Pa */
  * Please verify that second index of array is equal to or higher than count of longest sub-array items */
 static float AccOdrList[][12] = {                              /* Hz */
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1660, 3330, 6660},    /* LSM6DSL */
-  {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667},    /* ASM330LHH */
+  {10, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667},    /* ASM330LHH */
   {8, 12.5, 25, 50, 100, 200, 400, 800, 1600},                 /* IIS2DLPC */
   {11, 1, 12.5, 25, 50, 100, 200, 400, 800, 1600, 3200, 6400}, /* ISM303DAC */
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1660, 3330, 6660},    /* ISM330DLC */
@@ -168,15 +168,15 @@ static float AccOdrList[][12] = {                              /* Hz */
   {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667},    /* LSM6DSO */
   {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667},    /* LSM6DSOX */
   {5, 1.6, 12.5, 25, 50, 100},                                 /* AIS2DW12 */
-  {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667},    /* LSM6DSR */
+  {10, 12.5, 26, 52, 104, 208, 416, 833, 1666, 3332, 6667},    /* LSM6DSR */
 };
 static float GyrOdrList[][11] = {                           /* Hz */
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1660, 3330, 6660}, /* LSM6DSL */
-  {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667}, /* ASM330LHH */
+  {10, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667}, /* ASM330LHH */
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1660, 3330, 6660}, /* ISM330DLC */
   {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667}, /* LSM6DSO */
   {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667}, /* LSM6DSOX */
-  {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667}, /* LSM6DSR */
+  {10, 12.5, 26, 52, 104, 208, 416, 833, 1666, 3332, 6667}, /* LSM6DSR */
 };
 static float MagOdrList[][9] = {            /* Hz */
   {4, 10, 20, 50, 100},                     /* LSM303AGR */
@@ -284,7 +284,7 @@ int Handle_Sensor_command(TMsg *Msg)
     case SC_SET_ODR:
       ret = SC_Set_ODR(Msg);
       break;
-      
+
     case SC_GET_ODR:
       ret = SC_Get_ODR(Msg);
       break;
@@ -971,11 +971,14 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
         {
           ret = 0;
         }
-        if (Is_DIL24_Sensor(&AccNameList[AccIndex][0]) == 1)
+        if (ret != 0 && Is_DIL24_Sensor(&AccNameList[AccIndex][0]) == 1)
         {
           DIL24_INT1_Init();
         }
-        AccInstance = AccInstanceList[AccIndex];
+        if (ret != 0)
+        {
+          AccInstance = AccInstanceList[AccIndex];
+        }
       }
       break;
 
@@ -991,11 +994,14 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
         {
           ret = 0;
         }
-        if (Is_DIL24_Sensor(&GyrNameList[GyrIndex][0]) == 1)
+        if (ret != 0 && Is_DIL24_Sensor(&GyrNameList[GyrIndex][0]) == 1)
         {
           DIL24_INT1_Init();
         }
-        GyrInstance = GyrInstanceList[GyrIndex];
+        if (ret != 0)
+        {
+          GyrInstance = GyrInstanceList[GyrIndex];
+        }
       }
       break;
 
@@ -1011,11 +1017,14 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
         {
           ret = 0;
         }
-        if (Is_DIL24_Sensor(&MagNameList[MagIndex][0]) == 1)
+        if (ret != 0 && Is_DIL24_Sensor(&MagNameList[MagIndex][0]) == 1)
         {
           DIL24_INT1_Init();
         }
-        MagInstance = MagInstanceList[MagIndex];
+        if (ret != 0)
+        {
+          MagInstance = MagInstanceList[MagIndex];
+        }
       }
       break;
 
@@ -1031,11 +1040,14 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
         {
           ret = 0;
         }
-        if (Is_DIL24_Sensor(&TmpNameList[TmpIndex][0]) == 1)
+        if (ret != 0 && Is_DIL24_Sensor(&TmpNameList[TmpIndex][0]) == 1)
         {
           DIL24_INT1_Init();
         }
-        TmpInstance = TmpInstanceList[TmpIndex];
+        if (ret != 0)
+        {
+          TmpInstance = TmpInstanceList[TmpIndex];
+        }
       }
       break;
 
@@ -1051,11 +1063,14 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
         {
           ret = 0;
         }
-        if (Is_DIL24_Sensor(&HumNameList[HumIndex][0]) == 1)
+        if (ret != 0 && Is_DIL24_Sensor(&HumNameList[HumIndex][0]) == 1)
         {
           DIL24_INT1_Init();
         }
-        HumInstance = HumInstanceList[HumIndex];
+        if (ret != 0)
+        {
+          HumInstance = HumInstanceList[HumIndex];
+        }
       }
       break;
 
@@ -1071,11 +1086,14 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
         {
           ret = 0;
         }
-        if (Is_DIL24_Sensor(&PrsNameList[PrsIndex][0]) == 1)
+        if (ret != 0 && Is_DIL24_Sensor(&PrsNameList[PrsIndex][0]) == 1)
         {
           DIL24_INT1_Init();
         }
-        PrsInstance = PrsInstanceList[PrsIndex];
+        if (ret != 0)
+        {
+          PrsInstance = PrsInstanceList[PrsIndex];
+        }
       }
       break;
 
@@ -1083,6 +1101,11 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
       ret = 0;
       break;
   }
+
+  BUILD_REPLY_HEADER(Msg);
+  Msg->Data[5U] = ret;
+  Msg->Len = 6U;
+  UART_SendMsg(Msg);
 
   return ret;
 }

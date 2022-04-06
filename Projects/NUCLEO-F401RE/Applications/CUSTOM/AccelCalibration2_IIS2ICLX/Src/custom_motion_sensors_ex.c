@@ -6,11 +6,11 @@
  ******************************************************************************
  * @attention
  *
- * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+ * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
  * All rights reserved.</center></h2>
  *
  * This software component is licensed by ST under Software License Agreement SLA0077,
- * the â€œLicenseâ€?. You may not use this component except in compliance with the
+ * the "License". You may not use this component except in compliance with the
  * License. You may obtain a copy of the License at:
  *                        www.st.com/sla0077
  *
@@ -105,6 +105,26 @@ int32_t CUSTOM_MOTION_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Functio
 
   switch (Instance)
   {
+
+#if (USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0 == 1)
+    case CUSTOM_IIS2ICLX_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (IIS2ICLX_ACC_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;

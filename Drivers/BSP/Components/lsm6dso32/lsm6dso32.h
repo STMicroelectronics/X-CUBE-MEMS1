@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    lsm6dso32.h
- * @author  MEMS Software Solutions Team
- * @brief   LSM6DSO32 header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lsm6dso32.h
+  * @author  MEMS Software Solutions Team
+  * @brief   LSM6DSO32 header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LSM6DSO32_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup LSM6DSO32 LSM6DSO32
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LSM6DSO32_Exported_Types LSM6DSO32 Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*LSM6DSO32_Init_Func)(void);
 typedef int32_t (*LSM6DSO32_DeInit_Func)(void);
@@ -168,33 +168,37 @@ typedef struct
   int32_t (*GetAxesRaw)(LSM6DSO32_Object_t *, LSM6DSO32_AxesRaw_t *);
 } LSM6DSO32_GYRO_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } lsm6dso32_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } lsm6dso32_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } lsm6dso32_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } lsm6dso32_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LSM6DSO32_Exported_Constants LSM6DSO32 Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define LSM6DSO32_OK                       0
 #define LSM6DSO32_ERROR                   -1
@@ -215,12 +219,12 @@ typedef union{
 #define LSM6DSO32_GYRO_SENSITIVITY_FS_2000DPS  70.000f
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LSM6DSO32_Exported_Functions LSM6DSO32 Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t LSM6DSO32_RegisterBusIO(LSM6DSO32_Object_t *pObj, LSM6DSO32_IO_t *pIO);
 int32_t LSM6DSO32_Init(LSM6DSO32_Object_t *pObj);
@@ -233,7 +237,8 @@ int32_t LSM6DSO32_ACC_Disable(LSM6DSO32_Object_t *pObj);
 int32_t LSM6DSO32_ACC_GetSensitivity(LSM6DSO32_Object_t *pObj, float_t *Sensitivity);
 int32_t LSM6DSO32_ACC_GetOutputDataRate(LSM6DSO32_Object_t *pObj, float_t *Odr);
 int32_t LSM6DSO32_ACC_SetOutputDataRate(LSM6DSO32_Object_t *pObj, float_t Odr);
-int32_t LSM6DSO32_ACC_SetOutputDataRate_With_Mode(LSM6DSO32_Object_t *pObj, float_t Odr, LSM6DSO32_ACC_Operating_Mode_t Mode);
+int32_t LSM6DSO32_ACC_SetOutputDataRate_With_Mode(LSM6DSO32_Object_t *pObj, float_t Odr,
+                                                  LSM6DSO32_ACC_Operating_Mode_t Mode);
 int32_t LSM6DSO32_ACC_GetFullScale(LSM6DSO32_Object_t *pObj, int32_t *FullScale);
 int32_t LSM6DSO32_ACC_SetFullScale(LSM6DSO32_Object_t *pObj, int32_t FullScale);
 int32_t LSM6DSO32_ACC_GetAxesRaw(LSM6DSO32_Object_t *pObj, LSM6DSO32_AxesRaw_t *Value);
@@ -244,7 +249,8 @@ int32_t LSM6DSO32_GYRO_Disable(LSM6DSO32_Object_t *pObj);
 int32_t LSM6DSO32_GYRO_GetSensitivity(LSM6DSO32_Object_t *pObj, float_t *Sensitivity);
 int32_t LSM6DSO32_GYRO_GetOutputDataRate(LSM6DSO32_Object_t *pObj, float_t *Odr);
 int32_t LSM6DSO32_GYRO_SetOutputDataRate(LSM6DSO32_Object_t *pObj, float_t Odr);
-int32_t LSM6DSO32_GYRO_SetOutputDataRate_With_Mode(LSM6DSO32_Object_t *pObj, float_t Odr, LSM6DSO32_GYRO_Operating_Mode_t Mode);
+int32_t LSM6DSO32_GYRO_SetOutputDataRate_With_Mode(LSM6DSO32_Object_t *pObj, float_t Odr,
+                                                   LSM6DSO32_GYRO_Operating_Mode_t Mode);
 int32_t LSM6DSO32_GYRO_GetFullScale(LSM6DSO32_Object_t *pObj, int32_t *FullScale);
 int32_t LSM6DSO32_GYRO_SetFullScale(LSM6DSO32_Object_t *pObj, int32_t FullScale);
 int32_t LSM6DSO32_GYRO_GetAxesRaw(LSM6DSO32_Object_t *pObj, LSM6DSO32_AxesRaw_t *Value);
@@ -257,20 +263,20 @@ int32_t LSM6DSO32_ACC_Get_DRDY_Status(LSM6DSO32_Object_t *pObj, uint8_t *Status)
 int32_t LSM6DSO32_GYRO_Get_DRDY_Status(LSM6DSO32_Object_t *pObj, uint8_t *Status);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LSM6DSO32_Exported_Variables LSM6DSO32 Exported Variables
- * @{
- */
+  * @{
+  */
 
 extern LSM6DSO32_CommonDrv_t LSM6DSO32_COMMON_Driver;
 extern LSM6DSO32_ACC_Drv_t LSM6DSO32_ACC_Driver;
 extern LSM6DSO32_GYRO_Drv_t LSM6DSO32_GYRO_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -279,15 +285,15 @@ extern LSM6DSO32_GYRO_Drv_t LSM6DSO32_GYRO_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

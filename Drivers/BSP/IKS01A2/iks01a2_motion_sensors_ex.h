@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    iks01a2_motion_sensors_ex.h
- * @author  MEMS Software Solutions Team
- * @brief   This file provides a set of extended functions needed to manage the motion sensors
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    iks01a2_motion_sensors_ex.h
+  * @author  MEMS Software Solutions Team
+  * @brief   This file provides a set of extended functions needed to manage the motion sensors
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef IKS01A2_MOTION_SENSOR_EX_H
@@ -29,20 +29,20 @@ extern "C" {
 #include "iks01a2_motion_sensors.h"
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup IKS01A2 IKS01A2
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup IKS01A2_MOTION_SENSOR_EX IKS01A2 MOTION SENSOR EX
- * @{
- */
+  * @{
+  */
 
 /** @defgroup IKS01A2_MOTION_SENSOR_EX_Exported_Types IKS01A2 MOTION SENSOR EX Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef enum
 {
@@ -63,17 +63,17 @@ typedef struct
 } IKS01A2_MOTION_SENSOR_Event_Status_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup IKS01A2_MOTION_SENSOR_EX_Exported_Functions IKS01A2 MOTION SENSOR EX Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t IKS01A2_MOTION_SENSOR_Enable_HP_Filter(uint32_t Instance, uint8_t CutOff);
-int32_t IKS01A2_MOTION_SENSOR_Set_INT1_DRDY(uint32_t Instance,uint8_t Status);
-int32_t IKS01A2_MOTION_SENSOR_Set_INT2_DRDY(uint32_t Instance,uint8_t Status);
-int32_t IKS01A2_MOTION_SENSOR_DRDY_Set_Mode(uint32_t Instance,uint8_t Status);
+int32_t IKS01A2_MOTION_SENSOR_Set_INT1_DRDY(uint32_t Instance, uint8_t Status);
+int32_t IKS01A2_MOTION_SENSOR_Set_INT2_DRDY(uint32_t Instance, uint8_t Status);
+int32_t IKS01A2_MOTION_SENSOR_DRDY_Set_Mode(uint32_t Instance, uint8_t Status);
 int32_t IKS01A2_MOTION_SENSOR_Clear_DRDY(uint32_t Instance);
 int32_t IKS01A2_MOTION_SENSOR_Enable_6D_Orientation(uint32_t Instance, IKS01A2_MOTION_SENSOR_IntPin_t IntPin);
 int32_t IKS01A2_MOTION_SENSOR_Disable_6D_Orientation(uint32_t Instance);
@@ -125,24 +125,24 @@ int32_t IKS01A2_MOTION_SENSOR_FIFO_Set_Stop_On_Fth(uint32_t Instance, uint8_t St
 int32_t IKS01A2_MOTION_SENSOR_FIFO_Set_Mode(uint32_t Instance, uint8_t Mode);
 int32_t IKS01A2_MOTION_SENSOR_FIFO_Get_Pattern(uint32_t Instance, uint16_t *Pattern);
 int32_t IKS01A2_MOTION_SENSOR_FIFO_Get_Axis(uint32_t Instance, uint32_t Function, int32_t *Data);
-int32_t IKS01A2_MOTION_SENSOR_FIFO_Get_Data_Word(uint32_t Instance,uint32_t Function,int16_t *Data);
+int32_t IKS01A2_MOTION_SENSOR_FIFO_Get_Data_Word(uint32_t Instance, uint32_t Function, int16_t *Data);
 int32_t IKS01A2_MOTION_SENSOR_Set_SelfTest(uint32_t Instance, uint32_t Function, uint8_t Status);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }

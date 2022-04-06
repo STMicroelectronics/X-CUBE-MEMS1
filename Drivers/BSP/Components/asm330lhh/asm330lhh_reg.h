@@ -1,22 +1,22 @@
-/*
- ******************************************************************************
- * @file    asm330lhh_reg.h
- * @author  Sensors Software Solution Team
- * @brief   This file contains all the functions prototypes for the
- *          asm330lhh_reg.c driver.
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    asm330lhh_reg.h
+  * @author  Sensors Software Solution Team
+  * @brief   This file contains all the functions prototypes for the
+  *          asm330lhh_reg.c driver.
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef ASM330LHH_REGS_H
@@ -28,6 +28,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
+#include <stddef.h>
 #include <math.h>
 
 /** @addtogroup ASM330LHH
@@ -74,7 +75,8 @@ extern "C" {
 #ifndef MEMS_SHARED_TYPES
 #define MEMS_SHARED_TYPES
 
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t bit0       : 1;
   uint8_t bit1       : 1;
@@ -107,12 +109,11 @@ typedef struct {
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *,
-                                    uint16_t);
-typedef int32_t (*stmdev_read_ptr) (void *, uint8_t, uint8_t *,
-                                    uint16_t);
+typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 
-typedef struct {
+typedef struct
+{
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
@@ -141,7 +142,8 @@ typedef struct {
   *
   */
 
-typedef struct {
+typedef struct
+{
   uint8_t address;
   uint8_t data;
 } ucf_line_t;
@@ -176,7 +178,8 @@ typedef struct {
   */
 
 #define ASM330LHH_PIN_CTRL                     0x02U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01              : 6;
   uint8_t sdo_pu_en                : 1;
@@ -189,12 +192,14 @@ typedef struct {
 } asm330lhh_pin_ctrl_t;
 
 #define ASM330LHH_FIFO_CTRL1                   0x07U
-typedef struct {
+typedef struct
+{
   uint8_t wtm                      : 8;
 } asm330lhh_fifo_ctrl1_t;
 
 #define ASM330LHH_FIFO_CTRL2                   0x08U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t wtm                      : 1;
   uint8_t not_used_01              : 3;
@@ -211,7 +216,8 @@ typedef struct {
 } asm330lhh_fifo_ctrl2_t;
 
 #define ASM330LHH_FIFO_CTRL3                   0x09U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t bdr_xl                   : 4;
   uint8_t bdr_gy                   : 4;
@@ -222,7 +228,8 @@ typedef struct {
 } asm330lhh_fifo_ctrl3_t;
 
 #define ASM330LHH_FIFO_CTRL4                   0x0AU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t fifo_mode                : 3;
   uint8_t not_used_01              : 1;
@@ -237,7 +244,8 @@ typedef struct {
 } asm330lhh_fifo_ctrl4_t;
 
 #define ASM330LHH_COUNTER_BDR_REG1             0x0BU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t cnt_bdr_th               : 3;
   uint8_t not_used_01              : 2;
@@ -254,12 +262,14 @@ typedef struct {
 } asm330lhh_counter_bdr_reg1_t;
 
 #define ASM330LHH_COUNTER_BDR_REG2             0x0CU
-typedef struct {
+typedef struct
+{
   uint8_t cnt_bdr_th               : 8;
 } asm330lhh_counter_bdr_reg2_t;
 
 #define ASM330LHH_INT1_CTRL                    0x0DU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t int1_drdy_xl             : 1;
   uint8_t int1_drdy_g              : 1;
@@ -282,7 +292,8 @@ typedef struct {
 } asm330lhh_int1_ctrl_t;
 
 #define ASM330LHH_INT2_CTRL                    0x0EU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t int2_drdy_xl             : 1;
   uint8_t int2_drdy_g              : 1;
@@ -306,7 +317,8 @@ typedef struct {
 
 #define ASM330LHH_WHO_AM_I                     0x0FU
 #define ASM330LHH_CTRL1_XL                     0x10U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01              : 1;
   uint8_t lpf2_xl_en               : 1;
@@ -321,7 +333,8 @@ typedef struct {
 } asm330lhh_ctrl1_xl_t;
 
 #define ASM330LHH_CTRL2_G                      0x11U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t fs_g                     : 4; /* fs_4000 + fs_125 + fs_g */
   uint8_t odr_g                    : 4;
@@ -332,7 +345,8 @@ typedef struct {
 } asm330lhh_ctrl2_g_t;
 
 #define ASM330LHH_CTRL3_C                      0x12U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t sw_reset                 : 1;
   uint8_t not_used_01              : 1;
@@ -355,7 +369,8 @@ typedef struct {
 } asm330lhh_ctrl3_c_t;
 
 #define ASM330LHH_CTRL4_C                      0x13U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01              : 1;
   uint8_t lpf1_sel_g               : 1;
@@ -378,7 +393,8 @@ typedef struct {
 } asm330lhh_ctrl4_c_t;
 
 #define ASM330LHH_CTRL5_C                      0x14U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t st_xl                    : 2;
   uint8_t st_g                     : 2;
@@ -395,7 +411,8 @@ typedef struct {
 } asm330lhh_ctrl5_c_t;
 
 #define ASM330LHH_CTRL6_C                      0x15U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ftype                    : 3;
   uint8_t usr_off_w                : 1;
@@ -412,7 +429,8 @@ uint8_t den_mode                 :
 } asm330lhh_ctrl6_c_t;
 
 #define ASM330LHH_CTRL7_G                      0x16U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01              : 1;
   uint8_t usr_off_on_out           : 1;
@@ -431,7 +449,8 @@ typedef struct {
 } asm330lhh_ctrl7_g_t;
 
 #define ASM330LHH_CTRL8_XL                     0x17U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t low_pass_on_6d           : 1;
   uint8_t not_used_01              : 1;
@@ -450,7 +469,8 @@ typedef struct {
 } asm330lhh_ctrl8_xl_t;
 
 #define ASM330LHH_CTRL9_XL                     0x18U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01              : 1;
   uint8_t device_conf              : 1;
@@ -471,7 +491,8 @@ typedef struct {
 } asm330lhh_ctrl9_xl_t;
 
 #define ASM330LHH_CTRL10_C                     0x19U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01              : 5;
   uint8_t timestamp_en             : 1;
@@ -484,7 +505,8 @@ typedef struct {
 } asm330lhh_ctrl10_c_t;
 
 #define ASM330LHH_ALL_INT_SRC                  0x1AU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ff_ia                    : 1;
   uint8_t wu_ia                    : 1;
@@ -505,7 +527,8 @@ typedef struct {
 } asm330lhh_all_int_src_t;
 
 #define ASM330LHH_WAKE_UP_SRC                  0x1BU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t z_wu                     : 1;
   uint8_t y_wu                     : 1;
@@ -526,7 +549,8 @@ typedef struct {
 } asm330lhh_wake_up_src_t;
 
 #define ASM330LHH_TAP_SRC                      0x1CU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t z_tap                    : 1;
   uint8_t y_tap                    : 1;
@@ -549,7 +573,8 @@ typedef struct {
 } asm330lhh_tap_src_t;
 
 #define ASM330LHH_D6D_SRC                      0x1DU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xl                       : 1;
   uint8_t xh                       : 1;
@@ -572,7 +597,8 @@ typedef struct {
 } asm330lhh_d6d_src_t;
 
 #define ASM330LHH_STATUS_REG                   0x1EU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t xlda                     : 1;
   uint8_t gda                      : 1;
@@ -601,12 +627,14 @@ typedef struct {
 #define ASM330LHH_OUTZ_L_A                     0x2CU
 #define ASM330LHH_OUTZ_H_A                     0x2DU
 #define ASM330LHH_FIFO_STATUS1                 0x3AU
-typedef struct {
+typedef struct
+{
   uint8_t diff_fifo                : 8;
 } asm330lhh_fifo_status1_t;
 
 #define ASM330LHH_FIFO_STATUS2                 0x3BU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t diff_fifo                : 2;
   uint8_t not_used_01              : 1;
@@ -631,7 +659,8 @@ typedef struct {
 #define ASM330LHH_TIMESTAMP2                   0x42U
 #define ASM330LHH_TIMESTAMP3                   0x43U
 #define ASM330LHH_INT_CFG0                     0x56U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t lir                      : 1;
   uint8_t not_used_01              : 3;
@@ -650,7 +679,8 @@ typedef struct {
 } asm330lhh_int_cfg0_t;
 
 #define ASM330LHH_INT_CFG1                     0x58U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01              : 5;
   uint8_t inact_en                 : 2;
@@ -663,7 +693,8 @@ typedef struct {
 } asm330lhh_int_cfg1_t;
 
 #define ASM330LHH_THS_6D                       0x59U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01              : 5;
   uint8_t sixd_ths                 : 2;
@@ -676,7 +707,8 @@ typedef struct {
 } asm330lhh_ths_6d_t;
 
 #define ASM330LHH_INT_DUR2                     0x5AU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t shock                    : 2;
   uint8_t quiet                    : 2;
@@ -689,7 +721,8 @@ typedef struct {
 } asm330lhh_int_dur2_t;
 
 #define ASM330LHH_WAKE_UP_THS                  0x5BU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t wk_ths                   : 6;
   uint8_t usr_off_on_wu            : 1;
@@ -702,7 +735,8 @@ typedef struct {
 } asm330lhh_wake_up_ths_t;
 
 #define ASM330LHH_WAKE_UP_DUR                  0x5CU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t sleep_dur                : 4;
   uint8_t wake_ths_w               : 1;
@@ -717,7 +751,8 @@ typedef struct {
 } asm330lhh_wake_up_dur_t;
 
 #define ASM330LHH_FREE_FALL                    0x5DU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t ff_ths                   : 3;
   uint8_t ff_dur                   : 5;
@@ -728,7 +763,8 @@ typedef struct {
 } asm330lhh_free_fall_t;
 
 #define ASM330LHH_MD1_CFG                      0x5EU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used_01              : 2;
   uint8_t int1_6d                  : 1;
@@ -749,7 +785,8 @@ typedef struct {
 } asm330lhh_md1_cfg_t;
 
 #define ASM330LHH_MD2_CFG                      0x5FU
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t int2_timestamp           : 1;
   uint8_t not_used_01              : 1;
@@ -772,7 +809,8 @@ typedef struct {
 } asm330lhh_md2_cfg_t;
 
 #define ASM330LHH_INTERNAL_FREQ_FINE           0x63U
-typedef struct {
+typedef struct
+{
   uint8_t freq_fine                : 8;
 } asm330lhh_internal_freq_fine_t;
 
@@ -780,7 +818,8 @@ typedef struct {
 #define ASM330LHH_Y_OFS_USR                    0x74U
 #define ASM330LHH_Z_OFS_USR                    0x75U
 #define ASM330LHH_FIFO_DATA_OUT_TAG            0x78U
-typedef struct {
+typedef struct
+{
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t tag_parity               : 1;
   uint8_t tag_cnt                  : 2;
@@ -801,9 +840,9 @@ typedef struct {
 
 /**
   * @defgroup ASM330LHH_Register_Union
-  * @brief    This union group all the registers that has a bit-field
+  * @brief    This union group all the registers having a bit-field
   *           description.
-  *           This union is useful but not need by the driver.
+  *           This union is useful but it's not needed by the driver.
   *
   *           REMOVING this union you are compliant with:
   *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
@@ -811,7 +850,8 @@ typedef struct {
   * @{
   *
   */
-typedef union {
+typedef union
+{
   asm330lhh_pin_ctrl_t                      pin_ctrl;
   asm330lhh_fifo_ctrl1_t                    fifo_ctrl1;
   asm330lhh_fifo_ctrl2_t                    fifo_ctrl2;
@@ -868,16 +908,20 @@ float_t asm330lhh_from_fs2g_to_mg(int16_t lsb);
 float_t asm330lhh_from_fs4g_to_mg(int16_t lsb);
 float_t asm330lhh_from_fs8g_to_mg(int16_t lsb);
 float_t asm330lhh_from_fs16g_to_mg(int16_t lsb);
+
 float_t asm330lhh_from_fs125dps_to_mdps(int16_t lsb);
 float_t asm330lhh_from_fs250dps_to_mdps(int16_t lsb);
 float_t asm330lhh_from_fs500dps_to_mdps(int16_t lsb);
 float_t asm330lhh_from_fs1000dps_to_mdps(int16_t lsb);
 float_t asm330lhh_from_fs2000dps_to_mdps(int16_t lsb);
 float_t asm330lhh_from_fs4000dps_to_mdps(int16_t lsb);
+
 float_t asm330lhh_from_lsb_to_celsius(int16_t lsb);
+
 float_t asm330lhh_from_lsb_to_nsec(int32_t lsb);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_2g   = 0,
   ASM330LHH_16g  = 1, /* if XL_FS_MODE = '1' -> ASM330LHH_2g */
   ASM330LHH_4g   = 2,
@@ -888,26 +932,27 @@ int32_t asm330lhh_xl_full_scale_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_xl_full_scale_get(stmdev_ctx_t *ctx,
                                     asm330lhh_fs_xl_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_XL_ODR_OFF    = 0,
   ASM330LHH_XL_ODR_12Hz5  = 1,
   ASM330LHH_XL_ODR_26Hz   = 2,
   ASM330LHH_XL_ODR_52Hz   = 3,
   ASM330LHH_XL_ODR_104Hz  = 4,
   ASM330LHH_XL_ODR_208Hz  = 5,
-  ASM330LHH_XL_ODR_417Hz  = 6,
+  ASM330LHH_XL_ODR_416Hz  = 6,
   ASM330LHH_XL_ODR_833Hz  = 7,
   ASM330LHH_XL_ODR_1667Hz = 8,
   ASM330LHH_XL_ODR_3333Hz = 9,
   ASM330LHH_XL_ODR_6667Hz = 10,
-  ASM330LHH_XL_ODR_6Hz5   = 11, /* (low power only) */
 } asm330lhh_odr_xl_t;
 int32_t asm330lhh_xl_data_rate_set(stmdev_ctx_t *ctx,
                                    asm330lhh_odr_xl_t val);
 int32_t asm330lhh_xl_data_rate_get(stmdev_ctx_t *ctx,
                                    asm330lhh_odr_xl_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_125dps = 2,
   ASM330LHH_250dps = 0,
   ASM330LHH_500dps = 4,
@@ -920,14 +965,15 @@ int32_t asm330lhh_gy_full_scale_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_gy_full_scale_get(stmdev_ctx_t *ctx,
                                     asm330lhh_fs_g_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_GY_ODR_OFF    = 0,
   ASM330LHH_GY_ODR_12Hz5  = 1,
   ASM330LHH_GY_ODR_26Hz   = 2,
   ASM330LHH_GY_ODR_52Hz   = 3,
   ASM330LHH_GY_ODR_104Hz  = 4,
   ASM330LHH_GY_ODR_208Hz  = 5,
-  ASM330LHH_GY_ODR_417Hz  = 6,
+  ASM330LHH_GY_ODR_416Hz  = 6,
   ASM330LHH_GY_ODR_833Hz  = 7,
   ASM330LHH_GY_ODR_1667Hz = 8,
   ASM330LHH_GY_ODR_3333Hz = 9,
@@ -943,7 +989,8 @@ int32_t asm330lhh_block_data_update_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_block_data_update_get(stmdev_ctx_t *ctx,
                                         uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_LSb_1mg  = 0,
   ASM330LHH_LSb_16mg = 1,
 } asm330lhh_usr_off_w_t;
@@ -952,7 +999,8 @@ int32_t asm330lhh_xl_offset_weight_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_xl_offset_weight_get(stmdev_ctx_t *ctx,
                                        asm330lhh_usr_off_w_t *val);
 
-typedef struct {
+typedef struct
+{
   asm330lhh_all_int_src_t       all_int_src;
   asm330lhh_wake_up_src_t       wake_up_src;
   asm330lhh_tap_src_t           tap_src;
@@ -999,7 +1047,8 @@ int32_t asm330lhh_timestamp_get(stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t asm330lhh_timestamp_raw_get(stmdev_ctx_t *ctx, uint32_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_NO_ROUND      = 0,
   ASM330LHH_ROUND_XL      = 1,
   ASM330LHH_ROUND_GY      = 2,
@@ -1027,7 +1076,8 @@ int32_t asm330lhh_device_conf_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t asm330lhh_odr_cal_reg_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t asm330lhh_odr_cal_reg_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_DRDY_LATCHED = 0,
   ASM330LHH_DRDY_PULSED  = 1,
 } asm330lhh_dataready_pulsed_t;
@@ -1047,7 +1097,8 @@ int32_t asm330lhh_auto_increment_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t asm330lhh_boot_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t asm330lhh_boot_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_XL_ST_DISABLE  = 0,
   ASM330LHH_XL_ST_POSITIVE = 1,
   ASM330LHH_XL_ST_NEGATIVE = 2,
@@ -1057,7 +1108,8 @@ int32_t asm330lhh_xl_self_test_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_xl_self_test_get(stmdev_ctx_t *ctx,
                                    asm330lhh_st_xl_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_GY_ST_DISABLE  = 0,
   ASM330LHH_GY_ST_POSITIVE = 1,
   ASM330LHH_GY_ST_NEGATIVE = 3,
@@ -1078,7 +1130,8 @@ int32_t asm330lhh_filter_settling_mask_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_filter_settling_mask_get(stmdev_ctx_t *ctx,
                                            uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_ULTRA_LIGHT  = 0,
   ASM330LHH_VERY_LIGHT   = 1,
   ASM330LHH_LIGHT        = 2,
@@ -1096,7 +1149,8 @@ int32_t asm330lhh_gy_lp1_bandwidth_get(stmdev_ctx_t *ctx,
 int32_t asm330lhh_xl_lp2_on_6d_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t asm330lhh_xl_lp2_on_6d_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_HP_PATH_DISABLE_ON_OUT    = 0x00,
   ASM330LHH_SLOPE_ODR_DIV_4           = 0x10,
   ASM330LHH_HP_ODR_DIV_10             = 0x11,
@@ -1131,7 +1185,8 @@ int32_t asm330lhh_xl_fast_settling_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_xl_fast_settling_get(stmdev_ctx_t *ctx,
                                        uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_USE_SLOPE = 0,
   ASM330LHH_USE_HPF   = 1,
 } asm330lhh_slope_fds_t;
@@ -1140,7 +1195,8 @@ int32_t asm330lhh_xl_hp_path_internal_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_xl_hp_path_internal_get(stmdev_ctx_t *ctx,
                                           asm330lhh_slope_fds_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_HP_FILTER_NONE     = 0x00,
   ASM330LHH_HP_FILTER_16mHz    = 0x80,
   ASM330LHH_HP_FILTER_65mHz    = 0x81,
@@ -1152,7 +1208,8 @@ int32_t asm330lhh_gy_hp_path_internal_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_gy_hp_path_internal_get(stmdev_ctx_t *ctx,
                                           asm330lhh_hpm_g_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_PULL_UP_DISC       = 0,
   ASM330LHH_PULL_UP_CONNECT    = 1,
 } asm330lhh_sdo_pu_en_t;
@@ -1161,7 +1218,8 @@ int32_t asm330lhh_sdo_sa0_mode_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_sdo_sa0_mode_get(stmdev_ctx_t *ctx,
                                    asm330lhh_sdo_pu_en_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_SPI_4_WIRE = 0,
   ASM330LHH_SPI_3_WIRE = 1,
 } asm330lhh_sim_t;
@@ -1170,7 +1228,8 @@ int32_t asm330lhh_spi_mode_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_spi_mode_get(stmdev_ctx_t *ctx,
                                asm330lhh_sim_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_I2C_ENABLE  = 0,
   ASM330LHH_I2C_DISABLE = 1,
 } asm330lhh_i2c_disable_t;
@@ -1179,7 +1238,8 @@ int32_t asm330lhh_i2c_interface_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_i2c_interface_get(stmdev_ctx_t *ctx,
                                     asm330lhh_i2c_disable_t *val);
 
-typedef struct {
+typedef struct
+{
   asm330lhh_int1_ctrl_t          int1_ctrl;
   asm330lhh_md1_cfg_t            md1_cfg;
 } asm330lhh_pin_int1_route_t;
@@ -1188,7 +1248,8 @@ int32_t asm330lhh_pin_int1_route_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_pin_int1_route_get(stmdev_ctx_t *ctx,
                                      asm330lhh_pin_int1_route_t *val);
 
-typedef struct {
+typedef struct
+{
   asm330lhh_int2_ctrl_t          int2_ctrl;
   asm330lhh_md2_cfg_t            md2_cfg;
 } asm330lhh_pin_int2_route_t;
@@ -1197,7 +1258,8 @@ int32_t asm330lhh_pin_int2_route_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_pin_int2_route_get(stmdev_ctx_t *ctx,
                                      asm330lhh_pin_int2_route_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_PUSH_PULL   = 0,
   ASM330LHH_OPEN_DRAIN  = 1,
 } asm330lhh_pp_od_t;
@@ -1206,7 +1268,8 @@ int32_t asm330lhh_pin_mode_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_pin_mode_get(stmdev_ctx_t *ctx,
                                asm330lhh_pp_od_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_ACTIVE_HIGH = 0,
   ASM330LHH_ACTIVE_LOW  = 1,
 } asm330lhh_h_lactive_t;
@@ -1218,7 +1281,8 @@ int32_t asm330lhh_pin_polarity_get(stmdev_ctx_t *ctx,
 int32_t asm330lhh_all_on_int1_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t asm330lhh_all_on_int1_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_ALL_INT_PULSED            = 0,
   ASM330LHH_ALL_INT_LATCHED           = 3,
 } asm330lhh_lir_t;
@@ -1227,7 +1291,8 @@ int32_t asm330lhh_int_notification_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_int_notification_get(stmdev_ctx_t *ctx,
                                        asm330lhh_lir_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_LSb_FS_DIV_64       = 0,
   ASM330LHH_LSb_FS_DIV_256      = 1,
 } asm330lhh_wake_ths_w_t;
@@ -1250,7 +1315,8 @@ int32_t asm330lhh_wkup_dur_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t asm330lhh_gy_sleep_mode_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t asm330lhh_gy_sleep_mode_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_DRIVE_SLEEP_CHG_EVENT = 0,
   ASM330LHH_DRIVE_SLEEP_STATUS    = 1,
 } asm330lhh_sleep_status_on_int_t;
@@ -1259,7 +1325,8 @@ int32_t asm330lhh_act_pin_notification_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_act_pin_notification_get(stmdev_ctx_t *ctx,
                                            asm330lhh_sleep_status_on_int_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_XL_AND_GY_NOT_AFFECTED      = 0,
   ASM330LHH_XL_12Hz5_GY_NOT_AFFECTED    = 1,
   ASM330LHH_XL_12Hz5_GY_SLEEP           = 2,
@@ -1273,7 +1340,8 @@ int32_t asm330lhh_act_mode_get(stmdev_ctx_t *ctx,
 int32_t asm330lhh_act_sleep_dur_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t asm330lhh_act_sleep_dur_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_DEG_80  = 0,
   ASM330LHH_DEG_70  = 1,
   ASM330LHH_DEG_60  = 2,
@@ -1287,7 +1355,8 @@ int32_t asm330lhh_6d_threshold_get(stmdev_ctx_t *ctx,
 int32_t asm330lhh_4d_mode_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t asm330lhh_4d_mode_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_FF_TSH_156mg = 0,
   ASM330LHH_FF_TSH_219mg = 1,
   ASM330LHH_FF_TSH_250mg = 2,
@@ -1319,7 +1388,8 @@ int32_t asm330lhh_fifo_stop_on_wtm_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_fifo_stop_on_wtm_get(stmdev_ctx_t *ctx,
                                        uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_XL_NOT_BATCHED        =  0,
   ASM330LHH_XL_BATCHED_AT_12Hz5   =  1,
   ASM330LHH_XL_BATCHED_AT_26Hz    =  2,
@@ -1338,7 +1408,8 @@ int32_t asm330lhh_fifo_xl_batch_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_fifo_xl_batch_get(stmdev_ctx_t *ctx,
                                     asm330lhh_bdr_xl_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_GY_NOT_BATCHED         = 0,
   ASM330LHH_GY_BATCHED_AT_12Hz5    = 1,
   ASM330LHH_GY_BATCHED_AT_26Hz     = 2,
@@ -1357,7 +1428,8 @@ int32_t asm330lhh_fifo_gy_batch_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_fifo_gy_batch_get(stmdev_ctx_t *ctx,
                                     asm330lhh_bdr_gy_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_BYPASS_MODE             = 0,
   ASM330LHH_FIFO_MODE               = 1,
   ASM330LHH_STREAM_TO_FIFO_MODE     = 3,
@@ -1370,7 +1442,8 @@ int32_t asm330lhh_fifo_mode_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_fifo_mode_get(stmdev_ctx_t *ctx,
                                 asm330lhh_fifo_mode_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_TEMP_NOT_BATCHED        = 0,
   ASM330LHH_TEMP_BATCHED_AT_52Hz    = 1,
   ASM330LHH_TEMP_BATCHED_AT_12Hz5   = 2,
@@ -1381,7 +1454,8 @@ int32_t asm330lhh_fifo_temp_batch_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_fifo_temp_batch_get(stmdev_ctx_t *ctx,
                                       asm330lhh_odr_t_batch_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_NO_DECIMATION = 0,
   ASM330LHH_DEC_1         = 1,
   ASM330LHH_DEC_8         = 2,
@@ -1392,7 +1466,8 @@ int32_t asm330lhh_fifo_timestamp_decimation_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_fifo_timestamp_decimation_get(stmdev_ctx_t *ctx,
                                                 asm330lhh_odr_ts_batch_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_XL_BATCH_EVENT   = 0,
   ASM330LHH_GYRO_BATCH_EVENT = 1,
 } asm330lhh_trig_counter_bdr_t;
@@ -1423,7 +1498,8 @@ int32_t asm330lhh_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t asm330lhh_fifo_wtm_flag_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_GYRO_NC_TAG    = 1,
   ASM330LHH_XL_NC_TAG,
   ASM330LHH_TEMPERATURE_TAG,
@@ -1433,7 +1509,8 @@ typedef enum {
 int32_t asm330lhh_fifo_sensor_tag_get(stmdev_ctx_t *ctx,
                                       asm330lhh_fifo_tag_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_DEN_DISABLE    = 0,
   ASM330LHH_LEVEL_FIFO     = 6,
   ASM330LHH_LEVEL_LETCHED  = 3,
@@ -1445,7 +1522,8 @@ int32_t asm330lhh_den_mode_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_den_mode_get(stmdev_ctx_t *ctx,
                                asm330lhh_den_mode_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_DEN_ACT_LOW  = 0,
   ASM330LHH_DEN_ACT_HIGH = 1,
 } asm330lhh_den_lh_t;
@@ -1454,7 +1532,8 @@ int32_t asm330lhh_den_polarity_set(stmdev_ctx_t *ctx,
 int32_t asm330lhh_den_polarity_get(stmdev_ctx_t *ctx,
                                    asm330lhh_den_lh_t *val);
 
-typedef enum {
+typedef enum
+{
   ASM330LHH_STAMP_IN_GY_DATA     = 0,
   ASM330LHH_STAMP_IN_XL_DATA     = 1,
   ASM330LHH_STAMP_IN_GY_XL_DATA  = 2,

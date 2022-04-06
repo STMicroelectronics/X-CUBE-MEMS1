@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    asm330lhh.h
- * @author  MEMS Software Solutions Team
- * @brief   ASM330LHH header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    asm330lhh.h
+  * @author  MEMS Software Solutions Team
+  * @brief   ASM330LHH header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef ASM330LHH_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup ASM330LHH ASM330LHH
- * @{
- */
+  * @{
+  */
 
 /** @defgroup ASM330LHH_Exported_Types ASM330LHH Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*ASM330LHH_Init_Func)(void);
 typedef int32_t (*ASM330LHH_DeInit_Func)(void);
@@ -155,33 +155,37 @@ typedef struct
   int32_t (*GetAxesRaw)(ASM330LHH_Object_t *, ASM330LHH_AxesRaw_t *);
 } ASM330LHH_GYRO_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } asm330lhh_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } asm330lhh_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } asm330lhh_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup ASM330LHH_Exported_Constants ASM330LHH Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define ASM330LHH_OK                       0
 #define ASM330LHH_ERROR                   -1
@@ -202,12 +206,12 @@ typedef union{
 #define ASM330LHH_GYRO_SENSITIVITY_FS_2000DPS  70.000f
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup ASM330LHH_Exported_Functions ASM330LHH Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t ASM330LHH_RegisterBusIO(ASM330LHH_Object_t *pObj, ASM330LHH_IO_t *pIO);
 int32_t ASM330LHH_Init(ASM330LHH_Object_t *pObj);
@@ -243,20 +247,20 @@ int32_t ASM330LHH_ACC_Get_DRDY_Status(ASM330LHH_Object_t *pObj, uint8_t *Status)
 int32_t ASM330LHH_GYRO_Get_DRDY_Status(ASM330LHH_Object_t *pObj, uint8_t *Status);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup ASM330LHH_Exported_Variables ASM330LHH Exported Variables
- * @{
- */
+  * @{
+  */
 
 extern ASM330LHH_CommonDrv_t ASM330LHH_COMMON_Driver;
 extern ASM330LHH_ACC_Drv_t ASM330LHH_ACC_Driver;
 extern ASM330LHH_GYRO_Drv_t ASM330LHH_GYRO_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -265,15 +269,15 @@ extern ASM330LHH_GYRO_Drv_t ASM330LHH_GYRO_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

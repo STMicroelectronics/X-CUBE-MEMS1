@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Software License Agreement
@@ -43,6 +43,9 @@ extern "C" {
 #define USE_IKS01A3_ENV_SENSOR_LPS22CH_0                        1U
 #define USE_IKS01A3_ENV_SENSOR_LPS27HHTW_0                      1U
 #define USE_IKS01A3_ENV_SENSOR_LPS22DF_0                        1U
+#define USE_IKS01A3_ENV_SENSOR_ILPS22QS_0                       1U
+#define USE_IKS01A3_ENV_SENSOR_ILPS28QSW_0                      1U
+#define USE_IKS01A3_ENV_SENSOR_LPS28DFW_0                       1U
 
 #define USE_IKS01A3_MOTION_SENSOR_ASM330LHH_0                   1U
 #define USE_IKS01A3_MOTION_SENSOR_IIS2DLPC_0                    1U
@@ -66,6 +69,7 @@ extern "C" {
 #define USE_IKS01A3_MOTION_SENSOR_AIS2IH_0                      1U
 #define USE_IKS01A3_MOTION_SENSOR_LSM6DSO32X_0                  1U
 #define USE_IKS01A3_MOTION_SENSOR_LSM6DSOX_SENSORHUB_LIS2MDL_0  1U
+#define USE_IKS01A3_MOTION_SENSOR_LIS2DU12_0                    1U
 
 #define USE_IKS01A3_HYBRID_SENSOR_LIS2DTW12_0                   1U
 

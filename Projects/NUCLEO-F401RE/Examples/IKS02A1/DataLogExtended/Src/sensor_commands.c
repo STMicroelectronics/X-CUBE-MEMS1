@@ -5,7 +5,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Software License Agreement
@@ -74,12 +74,12 @@ static uint32_t MagFsList[][2] = { /* Ga */
 /* Sensor output data rate lists (have to correspond with supported sensor names above)
  * Please verify that second index of array is equal to or higher than count of longest sub-array items */
 static float AccOdrList[][11] = {                           /* Hz */
-  {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667}, /* ISM330DHCX */
+  {10, 12.5, 26, 52, 104, 208, 416, 833, 1666, 3332, 6667}, /* ISM330DHCX */
   {8, 12.5, 25, 50, 100, 200, 400, 800, 1600},              /* IIS2DLPC */
   {7, 12.5, 26, 52, 104, 208, 416, 833},                    /* IIS2ICLX */
 };
 static float GyrOdrList[][11] = {                           /* Hz */
-  {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667}, /* ISM330DHCX */
+  {10, 12.5, 26, 52, 104, 208, 416, 833, 1666, 3332, 6667}, /* ISM330DHCX */
 };
 static float MagOdrList[][5] = { /* Hz */
   {4, 10, 20, 50, 100},          /* IIS2MDC */
@@ -674,11 +674,14 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
         {
           ret = 0;
         }
-        if (Is_DIL24_Sensor(&AccNameList[AccIndex][0]) == 1)
+        if (ret != 0 && Is_DIL24_Sensor(&AccNameList[AccIndex][0]) == 1)
         {
           DIL24_INT1_Init();
         }
-        AccInstance = AccInstanceList[AccIndex];
+        if (ret != 0)
+        {
+          AccInstance = AccInstanceList[AccIndex];
+        }
       }
       break;
 
@@ -694,11 +697,14 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
         {
           ret = 0;
         }
-        if (Is_DIL24_Sensor(&GyrNameList[GyrIndex][0]) == 1)
+        if (ret != 0 && Is_DIL24_Sensor(&GyrNameList[GyrIndex][0]) == 1)
         {
           DIL24_INT1_Init();
         }
-        GyrInstance = GyrInstanceList[GyrIndex];
+        if (ret != 0)
+        {
+          GyrInstance = GyrInstanceList[GyrIndex];
+        }
       }
       break;
 
@@ -714,11 +720,14 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
         {
           ret = 0;
         }
-        if (Is_DIL24_Sensor(&MagNameList[MagIndex][0]) == 1)
+        if (ret != 0 && Is_DIL24_Sensor(&MagNameList[MagIndex][0]) == 1)
         {
           DIL24_INT1_Init();
         }
-        MagInstance = MagInstanceList[MagIndex];
+        if (ret != 0)
+        {
+          MagInstance = MagInstanceList[MagIndex];
+        }
       }
       break;
 
@@ -726,6 +735,11 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
       ret = 0;
       break;
   }
+
+  BUILD_REPLY_HEADER(Msg);
+  Msg->Data[5U] = ret;
+  Msg->Len = 6U;
+  UART_SendMsg(Msg);
 
   return ret;
 }

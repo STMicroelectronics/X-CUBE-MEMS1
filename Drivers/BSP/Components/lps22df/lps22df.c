@@ -1,40 +1,40 @@
 /**
- ******************************************************************************
- * @file    lps22df.c
- * @author  MEMS Software Solutions Team
- * @brief   LPS22DF driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lps22df.c
+  * @author  MEMS Software Solutions Team
+  * @brief   LPS22DF driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "lps22df.h"
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LPS22DF LPS22DF
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LPS22DF_Exported_Variables LPS22DF Exported Variables
- * @{
- */
+  * @{
+  */
 
 LPS22DF_CommonDrv_t LPS22DF_COMMON_Driver =
 {
@@ -63,12 +63,12 @@ LPS22DF_TEMP_Drv_t LPS22DF_TEMP_Driver =
 };
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LPS22DF_Private_Function_Prototypes LPS22DF Private Function Prototypes
- * @{
- */
+  * @{
+  */
 
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
@@ -78,18 +78,18 @@ static int32_t LPS22DF_SetOutputDataRate_When_Disabled(LPS22DF_Object_t *pObj, f
 static int32_t LPS22DF_Initialize(LPS22DF_Object_t *pObj);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LPS22DF_Exported_Functions LPS22DF Exported Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Register Component Bus IO operations
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Register Component Bus IO operations
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_RegisterBusIO(LPS22DF_Object_t *pObj, LPS22DF_IO_t *pIO)
 {
   int32_t ret = LPS22DF_OK;
@@ -143,10 +143,10 @@ int32_t LPS22DF_RegisterBusIO(LPS22DF_Object_t *pObj, LPS22DF_IO_t *pIO)
 }
 
 /**
- * @brief  Initialize the LPS22DF sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Initialize the LPS22DF sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_Init(LPS22DF_Object_t *pObj)
 {
   if (pObj->is_initialized == 0U)
@@ -163,10 +163,10 @@ int32_t LPS22DF_Init(LPS22DF_Object_t *pObj)
 }
 
 /**
- * @brief  Deinitialize the LPS22DF sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Deinitialize the LPS22DF sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_DeInit(LPS22DF_Object_t *pObj)
 {
   if (pObj->is_initialized == 1U)
@@ -188,11 +188,11 @@ int32_t LPS22DF_DeInit(LPS22DF_Object_t *pObj)
 }
 
 /**
- * @brief  Get WHO_AM_I value
- * @param  pObj the device pObj
- * @param  Id the WHO_AM_I value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get WHO_AM_I value
+  * @param  pObj the device pObj
+  * @param  Id the WHO_AM_I value
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_ReadID(LPS22DF_Object_t *pObj, uint8_t *Id)
 {
   lps22df_id_t val;
@@ -207,11 +207,11 @@ int32_t LPS22DF_ReadID(LPS22DF_Object_t *pObj, uint8_t *Id)
 }
 
 /**
- * @brief  Get LPS22DF sensor capabilities
- * @param  pObj Component object pointer
- * @param  Capabilities pointer to LPS22DF sensor capabilities
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get LPS22DF sensor capabilities
+  * @param  pObj Component object pointer
+  * @param  Capabilities pointer to LPS22DF sensor capabilities
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_GetCapabilities(LPS22DF_Object_t *pObj, LPS22DF_Capabilities_t *Capabilities)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -228,11 +228,11 @@ int32_t LPS22DF_GetCapabilities(LPS22DF_Object_t *pObj, LPS22DF_Capabilities_t *
 }
 
 /**
- * @brief  Get the LPS22DF initialization status
- * @param  pObj the device pObj
- * @param  Status 1 if initialized, 0 otherwise
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS22DF initialization status
+  * @param  pObj the device pObj
+  * @param  Status 1 if initialized, 0 otherwise
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_Get_Init_Status(LPS22DF_Object_t *pObj, uint8_t *Status)
 {
   if (pObj == NULL)
@@ -246,10 +246,10 @@ int32_t LPS22DF_Get_Init_Status(LPS22DF_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Enable the LPS22DF pressure sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the LPS22DF pressure sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_PRESS_Enable(LPS22DF_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -270,10 +270,10 @@ int32_t LPS22DF_PRESS_Enable(LPS22DF_Object_t *pObj)
 }
 
 /**
- * @brief  Disable the LPS22DF pressure sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable the LPS22DF pressure sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_PRESS_Disable(LPS22DF_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -311,22 +311,22 @@ int32_t LPS22DF_PRESS_Disable(LPS22DF_Object_t *pObj)
 }
 
 /**
- * @brief  Get the LPS22DF pressure sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS22DF pressure sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_PRESS_GetOutputDataRate(LPS22DF_Object_t *pObj, float *Odr)
 {
   return LPS22DF_GetOutputDataRate(pObj, Odr);
 }
 
 /**
- * @brief  Set the LPS22DF pressure sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LPS22DF pressure sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_PRESS_SetOutputDataRate(LPS22DF_Object_t *pObj, float Odr)
 {
   /* Check if the component is enabled */
@@ -341,11 +341,11 @@ int32_t LPS22DF_PRESS_SetOutputDataRate(LPS22DF_Object_t *pObj, float Odr)
 }
 
 /**
- * @brief  Get the LPS22DF pressure value
- * @param  pObj the device pObj
- * @param  Value pointer where the pressure value is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS22DF pressure value
+  * @param  pObj the device pObj
+  * @param  Value pointer where the pressure value is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_PRESS_GetPressure(LPS22DF_Object_t *pObj, float *Value)
 {
   lps22df_data_t data;
@@ -361,11 +361,11 @@ int32_t LPS22DF_PRESS_GetPressure(LPS22DF_Object_t *pObj, float *Value)
 }
 
 /**
- * @brief  Get the LPS22DF pressure data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS22DF pressure data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_PRESS_Get_DRDY_Status(LPS22DF_Object_t *pObj, uint8_t *Status)
 {
   lps22df_status_t reg;
@@ -381,10 +381,10 @@ int32_t LPS22DF_PRESS_Get_DRDY_Status(LPS22DF_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Enable the LPS22DF temperature sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable the LPS22DF temperature sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_TEMP_Enable(LPS22DF_Object_t *pObj)
 {
   /* Check if the component is already enabled */
@@ -405,10 +405,10 @@ int32_t LPS22DF_TEMP_Enable(LPS22DF_Object_t *pObj)
 }
 
 /**
- * @brief  Disable the LPS22DF temperature sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Disable the LPS22DF temperature sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_TEMP_Disable(LPS22DF_Object_t *pObj)
 {
   /* Check if the component is already disabled */
@@ -446,22 +446,22 @@ int32_t LPS22DF_TEMP_Disable(LPS22DF_Object_t *pObj)
 }
 
 /**
- * @brief  Get the LPS22DF temperature sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr pointer where the output data rate is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS22DF temperature sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr pointer where the output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_TEMP_GetOutputDataRate(LPS22DF_Object_t *pObj, float *Odr)
 {
   return LPS22DF_GetOutputDataRate(pObj, Odr);
 }
 
 /**
- * @brief  Set the LPS22DF temperature sensor output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LPS22DF temperature sensor output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_TEMP_SetOutputDataRate(LPS22DF_Object_t *pObj, float Odr)
 {
   /* Check if the component is enabled */
@@ -476,11 +476,11 @@ int32_t LPS22DF_TEMP_SetOutputDataRate(LPS22DF_Object_t *pObj, float Odr)
 }
 
 /**
- * @brief  Get the LPS22DF temperature value
- * @param  pObj the device pObj
- * @param  Value pointer where the temperature value is written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS22DF temperature value
+  * @param  pObj the device pObj
+  * @param  Value pointer where the temperature value is written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_TEMP_GetTemperature(LPS22DF_Object_t *pObj, float *Value)
 {
   lps22df_data_t data;
@@ -496,11 +496,11 @@ int32_t LPS22DF_TEMP_GetTemperature(LPS22DF_Object_t *pObj, float *Value)
 }
 
 /**
- * @brief  Get the LPS22DF temperature data ready bit value
- * @param  pObj the device pObj
- * @param  Status the status of data ready bit
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS22DF temperature data ready bit value
+  * @param  pObj the device pObj
+  * @param  Status the status of data ready bit
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_TEMP_Get_DRDY_Status(LPS22DF_Object_t *pObj, uint8_t *Status)
 {
   lps22df_status_t reg;
@@ -516,12 +516,12 @@ int32_t LPS22DF_TEMP_Get_DRDY_Status(LPS22DF_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Get the LPS22DF register value
- * @param  pObj the device pObj
- * @param  Reg address to be written
- * @param  Data value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS22DF register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be written
+  * @param  Data value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_Read_Reg(LPS22DF_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 {
   if (lps22df_read_reg(&(pObj->Ctx), Reg, Data, 1) != LPS22DF_OK)
@@ -533,12 +533,12 @@ int32_t LPS22DF_Read_Reg(LPS22DF_Object_t *pObj, uint8_t Reg, uint8_t *Data)
 }
 
 /**
- * @brief  Set the LPS22DF register value
- * @param  pObj the device pObj
- * @param  Reg address to be written
- * @param  Data value to be written
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LPS22DF register value
+  * @param  pObj the device pObj
+  * @param  Reg address to be written
+  * @param  Data value to be written
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_Write_Reg(LPS22DF_Object_t *pObj, uint8_t Reg, uint8_t Data)
 {
   if (lps22df_write_reg(&(pObj->Ctx), Reg, &Data, 1) != LPS22DF_OK)
@@ -550,19 +550,19 @@ int32_t LPS22DF_Write_Reg(LPS22DF_Object_t *pObj, uint8_t Reg, uint8_t Data)
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LPS22DF_Private_Functions LPS22DF Private Functions
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  Get output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LPS22DF_GetOutputDataRate(LPS22DF_Object_t *pObj, float *Odr)
 {
   int32_t ret = LPS22DF_OK;
@@ -620,11 +620,11 @@ static int32_t LPS22DF_GetOutputDataRate(LPS22DF_Object_t *pObj, float *Odr)
 }
 
 /**
- * @brief  Set output data rate
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set output data rate
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LPS22DF_SetOutputDataRate_When_Enabled(LPS22DF_Object_t *pObj, float Odr)
 {
   lps22df_md_t new_val;
@@ -635,13 +635,13 @@ static int32_t LPS22DF_SetOutputDataRate_When_Enabled(LPS22DF_Object_t *pObj, fl
   }
 
   new_val.odr = (Odr <=   1.0f) ? LPS22DF_1Hz
-              : (Odr <=   4.0f) ? LPS22DF_4Hz
-              : (Odr <=  10.0f) ? LPS22DF_10Hz
-              : (Odr <=  25.0f) ? LPS22DF_25Hz
-              : (Odr <=  50.0f) ? LPS22DF_50Hz
-              : (Odr <=  75.0f) ? LPS22DF_75Hz
-              : (Odr <= 100.0f) ? LPS22DF_100Hz
-              :                   LPS22DF_200Hz;
+                : (Odr <=   4.0f) ? LPS22DF_4Hz
+                : (Odr <=  10.0f) ? LPS22DF_10Hz
+                : (Odr <=  25.0f) ? LPS22DF_25Hz
+                : (Odr <=  50.0f) ? LPS22DF_50Hz
+                : (Odr <=  75.0f) ? LPS22DF_75Hz
+                : (Odr <= 100.0f) ? LPS22DF_100Hz
+                :                   LPS22DF_200Hz;
 
   if (lps22df_mode_set(&(pObj->Ctx), &new_val) != LPS22DF_OK)
   {
@@ -657,30 +657,30 @@ static int32_t LPS22DF_SetOutputDataRate_When_Enabled(LPS22DF_Object_t *pObj, fl
 }
 
 /**
- * @brief  Set output data rate when disabled
- * @param  pObj the device pObj
- * @param  Odr the output data rate value to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set output data rate when disabled
+  * @param  pObj the device pObj
+  * @param  Odr the output data rate value to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LPS22DF_SetOutputDataRate_When_Disabled(LPS22DF_Object_t *pObj, float Odr)
 {
   pObj->last_odr.odr = (Odr <=   1.0f) ? LPS22DF_1Hz
-                     : (Odr <=   4.0f) ? LPS22DF_4Hz
-                     : (Odr <=  10.0f) ? LPS22DF_10Hz
-                     : (Odr <=  25.0f) ? LPS22DF_25Hz
-                     : (Odr <=  50.0f) ? LPS22DF_50Hz
-                     : (Odr <=  75.0f) ? LPS22DF_75Hz
-                     : (Odr <= 100.0f) ? LPS22DF_100Hz
-                     :                   LPS22DF_200Hz;
+                       : (Odr <=   4.0f) ? LPS22DF_4Hz
+                       : (Odr <=  10.0f) ? LPS22DF_10Hz
+                       : (Odr <=  25.0f) ? LPS22DF_25Hz
+                       : (Odr <=  50.0f) ? LPS22DF_50Hz
+                       : (Odr <=  75.0f) ? LPS22DF_75Hz
+                       : (Odr <= 100.0f) ? LPS22DF_100Hz
+                       :                   LPS22DF_200Hz;
 
   return LPS22DF_OK;
 }
 
 /**
- * @brief  Initialize the LPS22DF sensor
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Initialize the LPS22DF sensor
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t LPS22DF_Initialize(LPS22DF_Object_t *pObj)
 {
   lps22df_md_t md;
@@ -697,7 +697,7 @@ static int32_t LPS22DF_Initialize(LPS22DF_Object_t *pObj)
   {
     bus_mode.interface = LPS22DF_SPI_3W;
   }
-  else if(pObj->IO.BusType == LPS22DF_SPI_4WIRES_BUS) /* SPI 3-Wires */
+  else if (pObj->IO.BusType == LPS22DF_SPI_4WIRES_BUS) /* SPI 3-Wires */
   {
     bus_mode.interface = LPS22DF_SPI_4W;
   }
@@ -734,10 +734,10 @@ static int32_t LPS22DF_Initialize(LPS22DF_Object_t *pObj)
 }
 
 /**
- * @brief  Set the LPS22DF One Shot Mode
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LPS22DF One Shot Mode
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_Set_One_Shot(LPS22DF_Object_t *pObj)
 {
   lps22df_md_t md;
@@ -748,7 +748,7 @@ int32_t LPS22DF_Set_One_Shot(LPS22DF_Object_t *pObj)
   }
 
   /* Start One Shot Measurement */
-  if(lps22df_trigger_sw(&(pObj->Ctx), &md) != LPS22DF_OK)
+  if (lps22df_trigger_sw(&(pObj->Ctx), &md) != LPS22DF_OK)
   {
     return LPS22DF_ERROR;
   }
@@ -757,29 +757,29 @@ int32_t LPS22DF_Set_One_Shot(LPS22DF_Object_t *pObj)
 }
 
 /**
- * @brief  Get the LPS22DF One Shot Status
- * @param  pObj the device pObj
- * @param  Status pointer to the one shot status (1 means measurements available, 0 means measurements not available yet)
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Get the LPS22DF One Shot Status
+  * @param  pObj the device pObj
+  * @param  Status pointer to the one shot status (1 means measurements available, 0 means measurements not available yet)
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_Get_One_Shot_Status(LPS22DF_Object_t *pObj, uint8_t *Status)
 {
   uint8_t p_da;
   uint8_t t_da;
 
   /* Get DataReady for pressure */
-  if(LPS22DF_PRESS_Get_DRDY_Status(pObj, &p_da) != LPS22DF_OK)
+  if (LPS22DF_PRESS_Get_DRDY_Status(pObj, &p_da) != LPS22DF_OK)
   {
     return LPS22DF_ERROR;
   }
 
   /* Get DataReady for temperature */
-  if(LPS22DF_TEMP_Get_DRDY_Status(pObj, &t_da) != LPS22DF_OK)
+  if (LPS22DF_TEMP_Get_DRDY_Status(pObj, &t_da) != LPS22DF_OK)
   {
     return LPS22DF_ERROR;
   }
 
-  if(p_da && t_da)
+  if (p_da && t_da)
   {
     *Status = 1;
   }
@@ -792,21 +792,21 @@ int32_t LPS22DF_Get_One_Shot_Status(LPS22DF_Object_t *pObj, uint8_t *Status)
 }
 
 /**
- * @brief  Enable LPS22DF DRDY interrupt mode
- * @param  pObj the device pObj
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Enable LPS22DF DRDY interrupt mode
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_Enable_DRDY_Interrupt(LPS22DF_Object_t *pObj)
 {
   lps22df_ctrl_reg4_t ctrl_reg4;
 
   /* Enable Interrupt DRDY on INT1 */
-  if(lps22df_read_reg(&(pObj->Ctx), LPS22DF_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1) != LPS22DF_OK)
+  if (lps22df_read_reg(&(pObj->Ctx), LPS22DF_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1) != LPS22DF_OK)
   {
     return LPS22DF_ERROR;
   }
   ctrl_reg4.drdy = 1;
-  if(lps22df_write_reg(&(pObj->Ctx), LPS22DF_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1) != LPS22DF_OK)
+  if (lps22df_write_reg(&(pObj->Ctx), LPS22DF_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1) != LPS22DF_OK)
   {
     return LPS22DF_ERROR;
   }
@@ -815,16 +815,16 @@ int32_t LPS22DF_Enable_DRDY_Interrupt(LPS22DF_Object_t *pObj)
 }
 
 /**
- * @brief  Set the LPS22DF averaging selection
- * @param  pObj the device pObj
- * @param  avg averaging selection to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LPS22DF averaging selection
+  * @param  pObj the device pObj
+  * @param  avg averaging selection to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_Set_AVG(LPS22DF_Object_t *pObj, uint8_t avg)
 {
   lps22df_md_t md;
 
-  if(avg > 7)
+  if (avg > 7)
   {
     return LPS22DF_ERROR;
   }
@@ -834,33 +834,33 @@ int32_t LPS22DF_Set_AVG(LPS22DF_Object_t *pObj, uint8_t avg)
     return LPS22DF_ERROR;
   }
 
-  switch(avg)
+  switch (avg)
   {
-  case 0:
-  default:
-    md.avg = LPS22DF_4_AVG;
-    break;
-  case 1:
-    md.avg = LPS22DF_8_AVG;
-    break;
-  case 2:
-    md.avg = LPS22DF_16_AVG;
-    break;
-  case 3:
-    md.avg = LPS22DF_32_AVG;
-    break;
-  case 4:
-    md.avg = LPS22DF_64_AVG;
-    break;
-  case 5:
-    md.avg = LPS22DF_128_AVG;
-    break;
-  case 6:
-    md.avg = LPS22DF_256_AVG;
-    break;
-  case 7:
-    md.avg = LPS22DF_512_AVG;
-    break;
+    case 0:
+    default:
+      md.avg = LPS22DF_4_AVG;
+      break;
+    case 1:
+      md.avg = LPS22DF_8_AVG;
+      break;
+    case 2:
+      md.avg = LPS22DF_16_AVG;
+      break;
+    case 3:
+      md.avg = LPS22DF_32_AVG;
+      break;
+    case 4:
+      md.avg = LPS22DF_64_AVG;
+      break;
+    case 5:
+      md.avg = LPS22DF_128_AVG;
+      break;
+    case 6:
+      md.avg = LPS22DF_256_AVG;
+      break;
+    case 7:
+      md.avg = LPS22DF_512_AVG;
+      break;
   }
 
   if (lps22df_mode_set(&(pObj->Ctx), &md) != LPS22DF_OK)
@@ -872,16 +872,16 @@ int32_t LPS22DF_Set_AVG(LPS22DF_Object_t *pObj, uint8_t avg)
 }
 
 /**
- * @brief  Set the LPS22DF low pass filter
- * @param  pObj the device pObj
- * @param  lpf low pass filter mode to be set
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Set the LPS22DF low pass filter
+  * @param  pObj the device pObj
+  * @param  lpf low pass filter mode to be set
+  * @retval 0 in case of success, an error code otherwise
+  */
 int32_t LPS22DF_Set_LPF(LPS22DF_Object_t *pObj, uint8_t lpf)
 {
   lps22df_md_t md;
 
-  if(lpf != 0 && lpf != 1 && lpf != 3)
+  if (lpf != 0 && lpf != 1 && lpf != 3)
   {
     return LPS22DF_ERROR;
   }
@@ -891,18 +891,18 @@ int32_t LPS22DF_Set_LPF(LPS22DF_Object_t *pObj, uint8_t lpf)
     return LPS22DF_ERROR;
   }
 
-  switch(lpf)
+  switch (lpf)
   {
-  case 0:
-  default:
-    md.lpf = LPS22DF_LPF_DISABLE;
-    break;
-  case 1:
-    md.lpf = LPS22DF_LPF_ODR_DIV_4;
-    break;
-  case 3:
-    md.lpf = LPS22DF_LPF_ODR_DIV_9;
-    break;
+    case 0:
+    default:
+      md.lpf = LPS22DF_LPF_DISABLE;
+      break;
+    case 1:
+      md.lpf = LPS22DF_LPF_ODR_DIV_4;
+      break;
+    case 3:
+      md.lpf = LPS22DF_LPF_ODR_DIV_9;
+      break;
   }
 
   if (lps22df_mode_set(&(pObj->Ctx), &md) != LPS22DF_OK)
@@ -914,13 +914,13 @@ int32_t LPS22DF_Set_LPF(LPS22DF_Object_t *pObj, uint8_t lpf)
 }
 
 /**
- * @brief  Wrap Read register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Read register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   LPS22DF_Object_t *pObj = (LPS22DF_Object_t *)Handle;
@@ -929,13 +929,13 @@ static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t L
 }
 
 /**
- * @brief  Wrap Write register component function to Bus IO function
- * @param  Handle the device handler
- * @param  Reg the register address
- * @param  pData the stored data pointer
- * @param  Length the length
- * @retval 0 in case of success, an error code otherwise
- */
+  * @brief  Wrap Write register component function to Bus IO function
+  * @param  Handle the device handler
+  * @param  Reg the register address
+  * @param  pData the stored data pointer
+  * @param  Length the length
+  * @retval 0 in case of success, an error code otherwise
+  */
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
 {
   LPS22DF_Object_t *pObj = (LPS22DF_Object_t *)Handle;
@@ -944,19 +944,19 @@ static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t 
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

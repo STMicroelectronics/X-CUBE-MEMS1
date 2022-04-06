@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    ais2dw12.h
- * @author  MEMS Software Solutions Team
- * @brief   AIS2DW12 header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    ais2dw12.h
+  * @author  MEMS Software Solutions Team
+  * @brief   AIS2DW12 header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef AIS2DW12_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup AIS2DW12 AIS2DW12
- * @{
- */
+  * @{
+  */
 
 /** @defgroup AIS2DW12_Exported_Types AIS2DW12 Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*AIS2DW12_Init_Func)(void);
 typedef int32_t (*AIS2DW12_DeInit_Func)(void);
@@ -149,33 +149,37 @@ typedef struct
   int32_t (*GetAxesRaw)(AIS2DW12_Object_t *, AIS2DW12_AxesRaw_t *);
 } AIS2DW12_ACC_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } ais2dw12_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } ais2dw12_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } ais2dw12_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } ais2dw12_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup AIS2DW12_Exported_Constants AIS2DW12 Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define AIS2DW12_OK                       0
 #define AIS2DW12_ERROR                   -1
@@ -191,12 +195,12 @@ typedef union{
 #define AIS2DW12_ACC_SENSITIVITY_FOR_FS_4G_OTHER_MODES   0.488f  /**< Sensitivity value for 4g full scale, all other modes except Low-power1 [mg/LSB] */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup AIS2DW12_Exported_Functions AIS2DW12 Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t AIS2DW12_RegisterBusIO(AIS2DW12_Object_t *pObj, AIS2DW12_IO_t *pIO);
 int32_t AIS2DW12_Init(AIS2DW12_Object_t *pObj);
@@ -252,19 +256,19 @@ int32_t AIS2DW12_FIFO_Get_Num_Samples(AIS2DW12_Object_t *pObj, uint16_t *NumSamp
 int32_t AIS2DW12_FIFO_Set_Mode(AIS2DW12_Object_t *pObj, uint8_t Mode);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup AIS2DW12_Exported_Variables AIS2DW12 Exported Variables
- * @{
- */
+  * @{
+  */
 
 extern AIS2DW12_CommonDrv_t AIS2DW12_COMMON_Driver;
 extern AIS2DW12_ACC_Drv_t AIS2DW12_ACC_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -273,15 +277,15 @@ extern AIS2DW12_ACC_Drv_t AIS2DW12_ACC_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

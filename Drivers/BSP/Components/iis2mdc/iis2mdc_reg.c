@@ -1,21 +1,20 @@
-/*
- ******************************************************************************
- * @file    iis2mdc_reg.c
- * @author  Sensors Software Solution Team
- * @brief   IIS2MDC driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+/**
+  ******************************************************************************
+  * @file    iis2mdc_reg.c
+  * @author  Sensors Software Solution Team
+  * @brief   IIS2MDC driver file
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
 
 #include "iis2mdc_reg.h"
 /**
@@ -50,7 +49,9 @@ int32_t iis2mdc_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
                          uint16_t len)
 {
   int32_t ret;
+
   ret = ctx->read_reg(ctx->handle, reg, data, len);
+
   return ret;
 }
 
@@ -69,7 +70,9 @@ int32_t iis2mdc_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
                           uint16_t len)
 {
   int32_t ret;
+
   ret = ctx->write_reg(ctx->handle, reg, data, len);
+
   return ret;
 }
 
@@ -111,7 +114,7 @@ float_t iis2mdc_from_lsb_to_celsius(int16_t lsb)
 /**
   * @brief  These registers comprise a 3 group of 16-bit number and represent
   *         hard-iron offset in order to compensate environmental effects.
-  *         Data format is the same of output data raw: two’s complement with
+  *         Data format is the same of output data raw: two's complement with
   *         1LSb = 1.5mG.
   *         These values act on the magnetic output data value in order to
   *         delete the environmental offset.[set]
@@ -125,20 +128,22 @@ int32_t iis2mdc_mag_user_offset_set(stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
-  buff[1] = (uint8_t) ((uint16_t)val[0] / 256U);
-  buff[0] = (uint8_t) ((uint16_t)val[0] - (buff[1] * 256U));
-  buff[3] = (uint8_t) ((uint16_t)val[1] / 256U);
-  buff[2] = (uint8_t) ((uint16_t)val[1] - (buff[3] * 256U));
-  buff[5] = (uint8_t) ((uint16_t)val[2] / 256U);
-  buff[4] = (uint8_t) ((uint16_t)val[2] - (buff[5] * 256U));
+
+  buff[1] = (uint8_t)((uint16_t)val[0] / 256U);
+  buff[0] = (uint8_t)((uint16_t)val[0] - (buff[1] * 256U));
+  buff[3] = (uint8_t)((uint16_t)val[1] / 256U);
+  buff[2] = (uint8_t)((uint16_t)val[1] - (buff[3] * 256U));
+  buff[5] = (uint8_t)((uint16_t)val[2] / 256U);
+  buff[4] = (uint8_t)((uint16_t)val[2] - (buff[5] * 256U));
   ret =  iis2mdc_write_reg(ctx, IIS2MDC_OFFSET_X_REG_L, buff, 6);
+
   return ret;
 }
 
 /**
   * @brief  These registers comprise a 3 group of 16-bit number and represent
   *         hard-iron offset in order to compensate environmental effects.
-  *         Data format is the same of output data raw: two’s complement with
+  *         Data format is the same of output data raw: two's complement with
   *         1LSb = 1.5mG.
   *         These values act on the magnetic output data value in order to
   *         delete the environmental offset.[get]
@@ -152,6 +157,7 @@ int32_t iis2mdc_mag_user_offset_get(stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
+
   ret =  iis2mdc_read_reg(ctx, IIS2MDC_OFFSET_X_REG_L, buff, 6);
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
@@ -159,6 +165,7 @@ int32_t iis2mdc_mag_user_offset_get(stmdev_ctx_t *ctx, int16_t *val)
   val[1] = (val[1] * 256) + (int16_t)buff[2];
   val[2] = (int16_t)buff[5];
   val[2] = (val[2] * 256) + (int16_t)buff[4];
+
   return ret;
 }
 
@@ -175,9 +182,11 @@ int32_t iis2mdc_operating_mode_set(stmdev_ctx_t *ctx,
 {
   iis2mdc_cfg_reg_a_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
 
-  if (ret == 0) {
+  if (ret == 0)
+  {
     reg.md = (uint8_t)val;
     ret = iis2mdc_write_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
   }
@@ -198,9 +207,11 @@ int32_t iis2mdc_operating_mode_get(stmdev_ctx_t *ctx,
 {
   iis2mdc_cfg_reg_a_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
 
-  switch (reg.md) {
+  switch (reg.md)
+  {
     case IIS2MDC_CONTINUOUS_MODE:
       *val = IIS2MDC_CONTINUOUS_MODE;
       break;
@@ -233,9 +244,11 @@ int32_t iis2mdc_data_rate_set(stmdev_ctx_t *ctx, iis2mdc_odr_t val)
 {
   iis2mdc_cfg_reg_a_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
 
-  if (ret == 0) {
+  if (ret == 0)
+  {
     reg.odr = (uint8_t)val;
     ret = iis2mdc_write_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
   }
@@ -255,9 +268,11 @@ int32_t iis2mdc_data_rate_get(stmdev_ctx_t *ctx, iis2mdc_odr_t *val)
 {
   iis2mdc_cfg_reg_a_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
 
-  switch (reg.odr) {
+  switch (reg.odr)
+  {
     case IIS2MDC_ODR_10Hz:
       *val = IIS2MDC_ODR_10Hz;
       break;
@@ -294,9 +309,11 @@ int32_t iis2mdc_power_mode_set(stmdev_ctx_t *ctx, iis2mdc_lp_t val)
 {
   iis2mdc_cfg_reg_a_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
 
-  if (ret == 0) {
+  if (ret == 0)
+  {
     reg.lp = (uint8_t)val;
     ret = iis2mdc_write_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
   }
@@ -316,9 +333,11 @@ int32_t iis2mdc_power_mode_get(stmdev_ctx_t *ctx, iis2mdc_lp_t *val)
 {
   iis2mdc_cfg_reg_a_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
 
-  switch (reg.lp) {
+  switch (reg.lp)
+  {
     case IIS2MDC_HIGH_RESOLUTION:
       *val = IIS2MDC_HIGH_RESOLUTION;
       break;
@@ -347,9 +366,11 @@ int32_t iis2mdc_offset_temp_comp_set(stmdev_ctx_t *ctx, uint8_t val)
 {
   iis2mdc_cfg_reg_a_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
 
-  if (ret == 0) {
+  if (ret == 0)
+  {
     reg.comp_temp_en = val;
     ret = iis2mdc_write_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
   }
@@ -369,8 +390,10 @@ int32_t iis2mdc_offset_temp_comp_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   iis2mdc_cfg_reg_a_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
   *val = reg.comp_temp_en;
+
   return ret;
 }
 
@@ -387,9 +410,11 @@ int32_t iis2mdc_low_pass_bandwidth_set(stmdev_ctx_t *ctx,
 {
   iis2mdc_cfg_reg_b_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_B, (uint8_t *) &reg, 1);
 
-  if (ret == 0) {
+  if (ret == 0)
+  {
     reg.lpf = (uint8_t)val;
     ret = iis2mdc_write_reg(ctx, IIS2MDC_CFG_REG_B, (uint8_t *) &reg, 1);
   }
@@ -410,9 +435,11 @@ int32_t iis2mdc_low_pass_bandwidth_get(stmdev_ctx_t *ctx,
 {
   iis2mdc_cfg_reg_b_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_B, (uint8_t *) &reg, 1);
 
-  switch (reg.lpf) {
+  switch (reg.lpf)
+  {
     case IIS2MDC_ODR_DIV_2:
       *val = IIS2MDC_ODR_DIV_2;
       break;
@@ -443,9 +470,11 @@ int32_t iis2mdc_set_rst_mode_set(stmdev_ctx_t *ctx,
 {
   iis2mdc_cfg_reg_b_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_B, (uint8_t *) &reg, 1);
 
-  if (ret == 0) {
+  if (ret == 0)
+  {
     reg.set_rst = (uint8_t)val;
     ret = iis2mdc_write_reg(ctx, IIS2MDC_CFG_REG_B, (uint8_t *) &reg, 1);
   }
@@ -466,9 +495,11 @@ int32_t iis2mdc_set_rst_mode_get(stmdev_ctx_t *ctx,
 {
   iis2mdc_cfg_reg_b_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_B, (uint8_t *) &reg, 1);
 
-  switch (reg.set_rst) {
+  switch (reg.set_rst)
+  {
     case IIS2MDC_SET_SENS_ODR_DIV_63:
       *val = IIS2MDC_SET_SENS_ODR_DIV_63;
       break;
@@ -507,9 +538,11 @@ int32_t iis2mdc_set_rst_sensor_single_set(stmdev_ctx_t *ctx,
 {
   iis2mdc_cfg_reg_b_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_B, (uint8_t *) &reg, 1);
 
-  if (ret == 0) {
+  if (ret == 0)
+  {
     reg.off_canc_one_shot = val;
     ret = iis2mdc_write_reg(ctx, IIS2MDC_CFG_REG_B, (uint8_t *) &reg, 1);
   }
@@ -534,8 +567,10 @@ int32_t iis2mdc_set_rst_sensor_single_get(stmdev_ctx_t *ctx,
 {
   iis2mdc_cfg_reg_b_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_B, (uint8_t *) &reg, 1);
   *val = reg.off_canc_one_shot;
+
   return ret;
 }
 
@@ -551,9 +586,11 @@ int32_t iis2mdc_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
 {
   iis2mdc_cfg_reg_c_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
 
-  if (ret == 0) {
+  if (ret == 0)
+  {
     reg.bdu = val;
     ret = iis2mdc_write_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
   }
@@ -573,8 +610,10 @@ int32_t iis2mdc_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   iis2mdc_cfg_reg_c_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
   *val = reg.bdu;
+
   return ret;
 }
 
@@ -590,8 +629,10 @@ int32_t iis2mdc_mag_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   iis2mdc_status_reg_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_STATUS_REG, (uint8_t *) &reg, 1);
   *val = reg.zyxda;
+
   return ret;
 }
 
@@ -607,8 +648,10 @@ int32_t iis2mdc_mag_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   iis2mdc_status_reg_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_STATUS_REG, (uint8_t *) &reg, 1);
   *val = reg.zyxor;
+
   return ret;
 }
 
@@ -624,13 +667,15 @@ int32_t iis2mdc_magnetic_raw_get(stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
+
   ret =  iis2mdc_read_reg(ctx, IIS2MDC_OUTX_L_REG, buff, 6);
   val[0] = (int16_t)buff[1];
-  val[0] = (val[0] * 256) +  (int16_t)buff[0];
+  val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
-  val[1] = (val[1] * 256) +  (int16_t)buff[2];
+  val[1] = (val[1] * 256) + (int16_t)buff[2];
   val[2] = (int16_t)buff[5];
-  val[2] = (val[2] * 256) +  (int16_t)buff[4];
+  val[2] = (val[2] * 256) + (int16_t)buff[4];
+
   return ret;
 }
 
@@ -646,9 +691,11 @@ int32_t iis2mdc_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
+
   ret =  iis2mdc_read_reg(ctx, IIS2MDC_TEMP_OUT_L_REG, buff, 2);
   *val = (int16_t)buff[1];
   *val = (*val * 256) + (int16_t)buff[0];
+
   return ret;
 }
 
@@ -675,7 +722,9 @@ int32_t iis2mdc_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val)
 int32_t iis2mdc_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
+
   ret =  iis2mdc_read_reg(ctx, IIS2MDC_WHO_AM_I, buff, 1);
+
   return ret;
 }
 
@@ -692,9 +741,11 @@ int32_t iis2mdc_reset_set(stmdev_ctx_t *ctx, uint8_t val)
 {
   iis2mdc_cfg_reg_a_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
 
-  if (ret == 0) {
+  if (ret == 0)
+  {
     reg.soft_rst = val;
     ret = iis2mdc_write_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
   }
@@ -714,8 +765,10 @@ int32_t iis2mdc_reset_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   iis2mdc_cfg_reg_a_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
   *val = reg.soft_rst;
+
   return ret;
 }
 
@@ -731,9 +784,11 @@ int32_t iis2mdc_boot_set(stmdev_ctx_t *ctx, uint8_t val)
 {
   iis2mdc_cfg_reg_a_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
 
-  if (ret == 0) {
+  if (ret == 0)
+  {
     reg.reboot = val;
     ret = iis2mdc_write_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
   }
@@ -753,8 +808,10 @@ int32_t iis2mdc_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   iis2mdc_cfg_reg_a_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
   *val = reg.reboot;
+
   return ret;
 }
 
@@ -770,9 +827,11 @@ int32_t iis2mdc_self_test_set(stmdev_ctx_t *ctx, uint8_t val)
 {
   iis2mdc_cfg_reg_c_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
 
-  if (ret == 0) {
+  if (ret == 0)
+  {
     reg.self_test = val;
     ret = iis2mdc_write_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
   }
@@ -792,8 +851,10 @@ int32_t iis2mdc_self_test_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   iis2mdc_cfg_reg_c_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
   *val = reg.self_test;
+
   return ret;
 }
 
@@ -809,9 +870,11 @@ int32_t iis2mdc_data_format_set(stmdev_ctx_t *ctx, iis2mdc_ble_t val)
 {
   iis2mdc_cfg_reg_c_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
 
-  if (ret == 0) {
+  if (ret == 0)
+  {
     reg.ble = (uint8_t)val;
     ret = iis2mdc_write_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
   }
@@ -831,9 +894,11 @@ int32_t iis2mdc_data_format_get(stmdev_ctx_t *ctx, iis2mdc_ble_t *val)
 {
   iis2mdc_cfg_reg_c_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
 
-  switch (reg.ble) {
+  switch (reg.ble)
+  {
     case IIS2MDC_LSB_AT_LOW_ADD:
       *val = IIS2MDC_LSB_AT_LOW_ADD;
       break;
@@ -862,7 +927,9 @@ int32_t iis2mdc_status_get(stmdev_ctx_t *ctx,
                            iis2mdc_status_reg_t *val)
 {
   int32_t ret;
+
   ret =  iis2mdc_read_reg(ctx, IIS2MDC_STATUS_REG, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -894,9 +961,11 @@ int32_t iis2mdc_offset_int_conf_set(stmdev_ctx_t *ctx,
 {
   iis2mdc_cfg_reg_b_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_B, (uint8_t *) &reg, 1);
 
-  if (ret == 0) {
+  if (ret == 0)
+  {
     reg.int_on_dataoff = (uint8_t)val;
     ret = iis2mdc_write_reg(ctx, IIS2MDC_CFG_REG_B, (uint8_t *) &reg, 1);
   }
@@ -919,9 +988,11 @@ int32_t iis2mdc_offset_int_conf_get(stmdev_ctx_t *ctx,
 {
   iis2mdc_cfg_reg_b_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_B, (uint8_t *) &reg, 1);
 
-  switch (reg.int_on_dataoff) {
+  switch (reg.int_on_dataoff)
+  {
     case IIS2MDC_CHECK_BEFORE:
       *val = IIS2MDC_CHECK_BEFORE;
       break;
@@ -950,9 +1021,11 @@ int32_t iis2mdc_drdy_on_pin_set(stmdev_ctx_t *ctx, uint8_t val)
 {
   iis2mdc_cfg_reg_c_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
 
-  if (ret == 0) {
+  if (ret == 0)
+  {
     reg.drdy_on_pin = val;
     ret = iis2mdc_write_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
   }
@@ -972,8 +1045,10 @@ int32_t iis2mdc_drdy_on_pin_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   iis2mdc_cfg_reg_c_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
   *val = reg.drdy_on_pin;
+
   return ret;
 }
 
@@ -989,9 +1064,11 @@ int32_t iis2mdc_int_on_pin_set(stmdev_ctx_t *ctx, uint8_t val)
 {
   iis2mdc_cfg_reg_c_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
 
-  if (ret == 0) {
+  if (ret == 0)
+  {
     reg.int_on_pin = val;
     ret = iis2mdc_write_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
   }
@@ -1011,8 +1088,10 @@ int32_t iis2mdc_int_on_pin_get(stmdev_ctx_t *ctx, uint8_t *val)
 {
   iis2mdc_cfg_reg_c_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
   *val = reg.int_on_pin;
+
   return ret;
 }
 
@@ -1028,8 +1107,9 @@ int32_t iis2mdc_int_gen_conf_set(stmdev_ctx_t *ctx,
                                  iis2mdc_int_crtl_reg_t *val)
 {
   int32_t ret;
-  ret =  iis2mdc_write_reg(ctx, IIS2MDC_INT_CRTL_REG, (uint8_t *) val,
-                           1);
+
+  ret =  iis2mdc_write_reg(ctx, IIS2MDC_INT_CRTL_REG, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1045,8 +1125,9 @@ int32_t iis2mdc_int_gen_conf_get(stmdev_ctx_t *ctx,
                                  iis2mdc_int_crtl_reg_t *val)
 {
   int32_t ret;
-  ret =  iis2mdc_read_reg(ctx, IIS2MDC_INT_CRTL_REG, (uint8_t *) val,
-                          1);
+
+  ret =  iis2mdc_read_reg(ctx, IIS2MDC_INT_CRTL_REG, (uint8_t *) val, 1);
+
   return ret;
 }
 
@@ -1062,15 +1143,16 @@ int32_t iis2mdc_int_gen_source_get(stmdev_ctx_t *ctx,
                                    iis2mdc_int_source_reg_t *val)
 {
   int32_t ret;
-  ret =  iis2mdc_read_reg(ctx, IIS2MDC_INT_SOURCE_REG, (uint8_t *) val,
-                          1);
+
+  ret =  iis2mdc_read_reg(ctx, IIS2MDC_INT_SOURCE_REG, (uint8_t *) val, 1);
+
   return ret;
 }
 
 /**
   * @brief  User-defined threshold value for xl interrupt event on generator.
   *         Data format is the same of output data raw:
-  *         two’s complement with 1LSb = 1.5mG.[set]
+  *         two's complement with 1LSb = 1.5mG.[set]
   *
   * @param  ctx      read / write interface definitions
   * @param  buff     buffer that contains data to write
@@ -1081,16 +1163,18 @@ int32_t iis2mdc_int_gen_treshold_set(stmdev_ctx_t *ctx, int16_t val)
 {
   uint8_t buff[2];
   int32_t ret;
-  buff[1] = (uint8_t) ((uint16_t)val / 256U);
-  buff[0] = (uint8_t) ((uint16_t)val - (buff[1] * 256U));
+
+  buff[1] = (uint8_t)((uint16_t)val / 256U);
+  buff[0] = (uint8_t)((uint16_t)val - (buff[1] * 256U));
   ret =  iis2mdc_write_reg(ctx, IIS2MDC_INT_THS_L_REG, buff, 2);
+
   return ret;
 }
 
 /**
   * @brief  User-defined threshold value for xl interrupt event on generator.
   *         Data format is the same of output data raw:
-  *         two’s complement with 1LSb = 1.5mG.[get]
+  *         two's complement with 1LSb = 1.5mG.[get]
   *
   * @param  ctx      read / write interface definitions
   * @param  buff     buffer that stores data read
@@ -1101,9 +1185,11 @@ int32_t iis2mdc_int_gen_treshold_get(stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
+
   ret =  iis2mdc_read_reg(ctx, IIS2MDC_INT_THS_L_REG, buff, 2);
   *val = (int16_t)buff[1];
-  *val = (*val * 256) +  (int16_t)buff[0];
+  *val = (*val * 256) + (int16_t)buff[0];
+
   return ret;
 }
 
@@ -1133,9 +1219,11 @@ int32_t iis2mdc_i2c_interface_set(stmdev_ctx_t *ctx,
 {
   iis2mdc_cfg_reg_c_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
 
-  if (ret == 0) {
+  if (ret == 0)
+  {
     reg.i2c_dis = (uint8_t)val;
     ret = iis2mdc_write_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
   }
@@ -1156,9 +1244,11 @@ int32_t iis2mdc_i2c_interface_get(stmdev_ctx_t *ctx,
 {
   iis2mdc_cfg_reg_c_t reg;
   int32_t ret;
+
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
 
-  switch (reg.i2c_dis) {
+  switch (reg.i2c_dis)
+  {
     case IIS2MDC_I2C_ENABLE:
       *val = IIS2MDC_I2C_ENABLE;
       break;
@@ -1179,5 +1269,3 @@ int32_t iis2mdc_i2c_interface_get(stmdev_ctx_t *ctx,
   * @}
   *
   */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

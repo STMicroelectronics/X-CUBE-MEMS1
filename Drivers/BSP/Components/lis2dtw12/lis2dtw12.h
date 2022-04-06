@@ -1,21 +1,21 @@
 /**
- ******************************************************************************
- * @file    lis2dtw12.h
- * @author  MEMS Software Solutions Team
- * @brief   LIS2DTW12 header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    lis2dtw12.h
+  * @author  MEMS Software Solutions Team
+  * @brief   LIS2DTW12 header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LIS2DTW12_H
@@ -31,20 +31,20 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup LIS2DTW12 LIS2DTW12
- * @{
- */
+  * @{
+  */
 
 /** @defgroup LIS2DTW12_Exported_Types LIS2DTW12 Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*LIS2DTW12_Init_Func)(void);
 typedef int32_t (*LIS2DTW12_DeInit_Func)(void);
@@ -174,33 +174,37 @@ typedef struct
   int32_t (*GetValue)(LIS2DTW12_Object_t *, float *);
 } LIS2DTW12_TEMP_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } lis2dtw12_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } lis2dtw12_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } lis2dtw12_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } lis2dtw12_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup LIS2DTW12_Exported_Constants LIS2DTW12 Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define LIS2DTW12_OK                       0
 #define LIS2DTW12_ERROR                   -1
@@ -222,12 +226,12 @@ typedef union{
 #define LIS2DTW12_ACC_SENSITIVITY_FOR_FS_16G_OTHER_MODES  1.952f  /**< Sensitivity value for 16g full scale, all other modes except Low-power1 [mg/LSB] */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LIS2DTW12_Exported_Functions LIS2DTW12 Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t LIS2DTW12_RegisterBusIO(LIS2DTW12_Object_t *pObj, LIS2DTW12_IO_t *pIO);
 int32_t LIS2DTW12_Init(LIS2DTW12_Object_t *pObj);
@@ -244,7 +248,8 @@ int32_t LIS2DTW12_ACC_Disable(LIS2DTW12_Object_t *pObj);
 int32_t LIS2DTW12_ACC_GetSensitivity(LIS2DTW12_Object_t *pObj, float *Sensitivity);
 int32_t LIS2DTW12_ACC_GetOutputDataRate(LIS2DTW12_Object_t *pObj, float *Odr);
 int32_t LIS2DTW12_ACC_SetOutputDataRate(LIS2DTW12_Object_t *pObj, float Odr);
-int32_t LIS2DTW12_ACC_SetOutputDataRate_With_Mode(LIS2DTW12_Object_t *pObj, float Odr, LIS2DTW12_Operating_Mode_t Mode, LIS2DTW12_Low_Noise_t Noise);
+int32_t LIS2DTW12_ACC_SetOutputDataRate_With_Mode(LIS2DTW12_Object_t *pObj, float Odr, LIS2DTW12_Operating_Mode_t Mode,
+                                                  LIS2DTW12_Low_Noise_t Noise);
 int32_t LIS2DTW12_ACC_GetFullScale(LIS2DTW12_Object_t *pObj, int32_t *FullScale);
 int32_t LIS2DTW12_ACC_SetFullScale(LIS2DTW12_Object_t *pObj, int32_t FullScale);
 int32_t LIS2DTW12_ACC_GetAxesRaw(LIS2DTW12_Object_t *pObj, LIS2DTW12_ACC_AxesRaw_t *Value);
@@ -289,20 +294,20 @@ int32_t LIS2DTW12_FIFO_Get_Num_Samples(LIS2DTW12_Object_t *pObj, uint16_t *NumSa
 int32_t LIS2DTW12_FIFO_Set_Mode(LIS2DTW12_Object_t *pObj, uint8_t Mode);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup LIS2DTW12_Exported_Variables LIS2DTW12 Exported Variables
- * @{
- */
+  * @{
+  */
 
 extern LIS2DTW12_CommonDrv_t LIS2DTW12_COMMON_Driver;
 extern LIS2DTW12_ACC_Drv_t LIS2DTW12_ACC_Driver;
 extern LIS2DTW12_TEMP_Drv_t LIS2DTW12_TEMP_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -311,15 +316,15 @@ extern LIS2DTW12_TEMP_Drv_t LIS2DTW12_TEMP_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
