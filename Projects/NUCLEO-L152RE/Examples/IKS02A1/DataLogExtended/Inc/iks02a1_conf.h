@@ -1,21 +1,20 @@
 /**
- ******************************************************************************
- * @file    iks02a1_conf.h
- * @author  MEMS Application Team
- * @brief   This file contains definitions for the MEMS components bus interfaces
+  ******************************************************************************
+  * @file    iks02a1_conf.h
+  * @author  MEMS Application Team
+  * @brief   This file contains definitions for the MEMS components bus interfaces
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2014-2022 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under Software License Agreement
-  * SLA0077, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0077
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
- */
+  */
 
 #include "stm32l1xx_hal.h"
 #include "nucleo_l152re_bus.h"
@@ -33,6 +32,7 @@ extern "C" {
 #define USE_IKS02A1_MOTION_SENSOR_IIS2DLPC_0           1U
 #define USE_IKS02A1_MOTION_SENSOR_IIS2MDC_0            1U
 #define USE_IKS02A1_MOTION_SENSOR_IIS2ICLX_0           1U
+#define USE_IKS02A1_MOTION_SENSOR_ASM330LHHX_0         1U
 
 #define IKS02A1_I2C_Init BSP_I2C1_Init
 #define IKS02A1_I2C_DeInit BSP_I2C1_DeInit
@@ -45,5 +45,3 @@ extern "C" {
 #endif
 
 #endif /* __IKS02A1_CONF_H__*/
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

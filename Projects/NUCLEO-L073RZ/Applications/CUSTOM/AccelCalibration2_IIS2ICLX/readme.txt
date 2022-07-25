@@ -2,7 +2,7 @@
   @page AccelCalibration2_IIS2ICLX application based on sensor evaluation board and STM32 Nucleo Boards
 
   @verbatim
-  ******************** (C) COPYRIGHT 2021 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2022 STMicroelectronics *******************
   * @file       readme.txt
   * @brief      This application contains an example which shows how to use
   *             Sensor evaluation board to send 2-axis accelerometer calibration
@@ -44,13 +44,6 @@ correct accelerometer sensor data by using IIS2ICLX 2-axis accelerometer only.
 To run the application, it is needed to install and launch the Unicleo-GUI on the PC.
 The Unicleo-GUI is available on https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/sensor-software-development-tools/unicleo-gui.html
 
-------------------------------------
-WARNING: When starting the project from Example Selector in STM32CubeMX and regenerating 
-it from ioc file, you may face a build issue. To solve it, remove from the IDE project 
-the file stm32l0xx_nucleo.c in Application/User virtual folder and delete from Src and 
-Inc folders the files: stm32l0xx_nucleo.c, stm32l0xx_nucleo.h and stm32l0xx_nucleo_errno.h.
-------------------------------------
-
 @par Keywords
 
 MEMS, I2C, VCOM
@@ -62,7 +55,7 @@ MEMS, I2C, VCOM
     - NUCLEO-F401RE RevC board
     - NUCLEO-L073RZ RevC board
     - NUCLEO-L152RE RevC board
-    - NUCLEO-L476RG RevC board
+    - NUCLEO-U575ZI-Q RevC board
 
 ADDITIONAL_BOARD : STEVAL-MKI209V1K https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mems-motion-sensor-eval-boards/steval-mki209v1k.html
 ADDITIONAL_COMP : IIS2ICLX https://www.st.com/content/st_com/en/products/mems-and-sensors/accelerometers/iis2iclx.html

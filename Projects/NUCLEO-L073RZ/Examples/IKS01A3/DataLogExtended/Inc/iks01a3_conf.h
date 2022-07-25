@@ -1,21 +1,20 @@
 /**
- ******************************************************************************
- * @file    iks01a3_conf.h
- * @author  MEMS Application Team
- * @brief   This file contains definitions for the MEMS components bus interfaces
+  ******************************************************************************
+  * @file    iks01a3_conf.h
+  * @author  MEMS Application Team
+  * @brief   This file contains definitions for the MEMS components bus interfaces
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2014-2022 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under Software License Agreement
-  * SLA0077, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0077
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
- */
+  */
 
 #include "stm32l0xx_hal.h"
 #include "nucleo_l073rz_bus.h"
@@ -70,6 +69,7 @@ extern "C" {
 #define USE_IKS01A3_MOTION_SENSOR_LSM6DSO32X_0                  1U
 #define USE_IKS01A3_MOTION_SENSOR_LSM6DSOX_SENSORHUB_LIS2MDL_0  1U
 #define USE_IKS01A3_MOTION_SENSOR_LIS2DU12_0                    1U
+#define USE_IKS01A3_MOTION_SENSOR_ASM330LHHX_0                  1U
 
 #define USE_IKS01A3_HYBRID_SENSOR_LIS2DTW12_0                   1U
 
@@ -84,5 +84,3 @@ extern "C" {
 #endif
 
 #endif /* __IKS01A3_CONF_H__*/
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

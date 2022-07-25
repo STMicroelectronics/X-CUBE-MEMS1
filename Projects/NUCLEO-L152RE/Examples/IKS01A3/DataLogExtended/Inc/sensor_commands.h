@@ -1,21 +1,20 @@
 /**
- *******************************************************************************
- * @file    sensor_commands.h
- * @author  MEMS Software Solutions Team
- * @brief   Header for sensor_commands.h
+  ******************************************************************************
+  * @file    sensor_commands.h
+  * @author  MEMS Software Solutions Team
+  * @brief   Header for sensor_commands.h
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2014-2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under Software License Agreement
-  * SLA0077, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0077
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
- */
+  */
 
 /* Define to prevent recursive inclusion ------------------------------------ */
 #ifndef SENSOR_COMMANDS_H
@@ -63,5 +62,3 @@ extern uint32_t IsHybridTmpSensor;
 int Handle_Sensor_command(TMsg *Msg);
 
 #endif /* SENSOR_COMMANDS_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

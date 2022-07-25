@@ -1,21 +1,20 @@
 /**
- ******************************************************************************
- * @file    custom_mems_conf_app.h
- * @author  MEMS Application Team
- * @brief   Custom sensor configuration file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under Software License Agreement SLA0077,
- * the "License". You may not use this component except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        www.st.com/sla0077
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    custom_mems_conf_app.h
+  * @author  MEMS Application Team
+  * @brief   Custom sensor configuration file
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2022 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __CUSTOM_MEMS_CONF_APP_H__
@@ -730,10 +729,45 @@ extern "C" {
   #endif
 #endif
 
+#ifdef USE_CUSTOM_MOTION_SENSOR_ASM330LHHX_0
+  #if (USE_CUSTOM_MOTION_SENSOR_ASM330LHHX_0 == 1)
+    #ifndef CUSTOM_ACC_INSTANCE_0
+      #define CUSTOM_ACC_INSTANCE_0 CUSTOM_ASM330LHHX_0
+      #define CUSTOM_ACC_INSTANCE_NAME_0 "ASM330LHHX"
+      #define CUSTOM_ACC_INSTANCE_ODR_0 {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667} /* Hz */
+      #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
+      #ifndef ACC_GYR_UNICLEO_ID
+        #define ACC_GYR_UNICLEO_ID ASM330LHHX_UNICLEO_ID
+      #endif
+    #endif
+    #ifndef CUSTOM_GYR_INSTANCE_0
+      #define CUSTOM_GYR_INSTANCE_0 CUSTOM_ASM330LHHX_0
+      #define CUSTOM_GYR_INSTANCE_NAME_0 "ASM330LHHX"
+      #define CUSTOM_GYR_INSTANCE_ODR_0 {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667} /* Hz */
+      #define CUSTOM_GYR_INSTANCE_FS_0 {6, 125, 250, 500, 1000, 2000, 4000} /* dps */
+      #ifndef ACC_GYR_UNICLEO_ID
+        #define ACC_GYR_UNICLEO_ID ASM330LHHX_UNICLEO_ID
+      #endif
+    #endif
+  #endif
+#endif
+
+#ifdef USE_CUSTOM_MOTION_SENSOR_IIS3DWB_0
+  #if (USE_CUSTOM_MOTION_SENSOR_IIS3DWB_0 == 1)
+    #ifndef CUSTOM_ACC_INSTANCE_0
+      #define CUSTOM_ACC_INSTANCE_0 CUSTOM_IIS3DWB_0
+      #define CUSTOM_ACC_INSTANCE_NAME_0 "IIS3DWB"
+      #define CUSTOM_ACC_INSTANCE_ODR_0 {1, 26700} /* Hz */
+      #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
+      #ifndef ACC_GYR_UNICLEO_ID
+        #define ACC_GYR_UNICLEO_ID IIS3DWB_UNICLEO_ID
+      #endif
+    #endif
+  #endif
+#endif
+
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* __CUSTOM_MEMS_CONF_APP_H__ */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -287,7 +287,7 @@ int32_t ISM330DHCX_GetCapabilities(ISM330DHCX_Object_t *pObj, ISM330DHCX_Capabil
   Capabilities->Gyro         = 1;
   Capabilities->Magneto      = 0;
   Capabilities->LowPower     = 0;
-  Capabilities->GyroMaxFS    = 2000;
+  Capabilities->GyroMaxFS    = 4000;
   Capabilities->AccMaxFS     = 16;
   Capabilities->MagMaxFS     = 0;
   Capabilities->GyroMaxOdr   = 6667.0f;
@@ -701,6 +701,10 @@ int32_t ISM330DHCX_GYRO_GetSensitivity(ISM330DHCX_Object_t *pObj, float *Sensiti
       *Sensitivity = ISM330DHCX_GYRO_SENSITIVITY_FS_2000DPS;
       break;
 
+    case ISM330DHCX_4000dps:
+      *Sensitivity = ISM330DHCX_GYRO_SENSITIVITY_FS_4000DPS;
+      break;
+
     default:
       ret = ISM330DHCX_ERROR;
       break;
@@ -838,6 +842,10 @@ int32_t ISM330DHCX_GYRO_GetFullScale(ISM330DHCX_Object_t *pObj, int32_t  *FullSc
       *FullScale = 2000;
       break;
 
+    case ISM330DHCX_4000dps:
+      *FullScale = 4000;
+      break;
+
     default:
       ret = ISM330DHCX_ERROR;
       break;
@@ -860,7 +868,8 @@ int32_t ISM330DHCX_GYRO_SetFullScale(ISM330DHCX_Object_t *pObj, int32_t FullScal
            : (FullScale <= 250)  ? ISM330DHCX_250dps
            : (FullScale <= 500)  ? ISM330DHCX_500dps
            : (FullScale <= 1000) ? ISM330DHCX_1000dps
-           :                       ISM330DHCX_2000dps;
+           : (FullScale <= 2000) ? ISM330DHCX_2000dps
+           :                       ISM330DHCX_4000dps;
 
   if (ism330dhcx_gy_full_scale_set(&(pObj->Ctx), new_fs) != ISM330DHCX_OK)
   {

@@ -1,21 +1,20 @@
 /**
- ******************************************************************************
- * @file    custom_motion_sensors.c
- * @author  MEMS Application Team
- * @brief   This file provides BSP Motion Sensors interface for custom boards
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under Software License Agreement SLA0077,
- * the "License". You may not use this component except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        www.st.com/sla0077
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    custom_motion_sensors.c
+  * @author  MEMS Application Team
+  * @brief   This file provides BSP Motion Sensors interface for custom boards
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2022 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "custom_motion_sensors.h"
@@ -359,8 +358,7 @@ int32_t CUSTOM_MOTION_SENSOR_GetSensitivity(uint32_t Instance, uint32_t Function
   {
     if ((MotionCtx[Instance].Functions & Function) == Function)
     {
-      if (MotionFuncDrv[Instance][FunctionIndex[Function]]->GetSensitivity(MotionCompObj[Instance],
-          Sensitivity) != BSP_ERROR_NONE)
+      if (MotionFuncDrv[Instance][FunctionIndex[Function]]->GetSensitivity(MotionCompObj[Instance], Sensitivity) != BSP_ERROR_NONE)
       {
         ret = BSP_ERROR_COMPONENT_FAILURE;
       }
@@ -538,11 +536,11 @@ int32_t CUSTOM_MOTION_SENSOR_SetFullScale(uint32_t Instance, uint32_t Function, 
   return ret;
 }
 
-#if (USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0  == 1)
+#if (USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0 == 1)
 /**
  * @brief  Register Bus IOs for IIS2ICLX instance
  * @param  Functions Motion sensor functions. Could be :
- *         - MOTION_GYRO and/or MOTION_ACCELERO
+ *         - MOTION_ACCELERO
  * @retval BSP status
  */
 static int32_t IIS2ICLX_0_Probe(uint32_t Functions)
@@ -570,7 +568,7 @@ static int32_t IIS2ICLX_0_Probe(uint32_t Functions)
   {
     ret = BSP_ERROR_UNKNOWN_COMPONENT;
   }
-  else if (id != IIS2ICLX_ID)
+  else if (id != (uint8_t)IIS2ICLX_ID)
   {
     ret = BSP_ERROR_UNKNOWN_COMPONENT;
   }
@@ -583,6 +581,11 @@ static int32_t IIS2ICLX_0_Probe(uint32_t Functions)
     /* The second cast (void *) is added to bypass Misra R11.3 rule */
     MotionDrv[CUSTOM_IIS2ICLX_0] = (MOTION_SENSOR_CommonDrv_t *)(void *)&IIS2ICLX_COMMON_Driver;
 
+    if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_GYRO) == MOTION_GYRO))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
     if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_ACCELERO) == MOTION_ACCELERO) && (cap.Acc == 1U))
     {
       /* The second cast (void *) is added to bypass Misra R11.3 rule */
@@ -597,11 +600,6 @@ static int32_t IIS2ICLX_0_Probe(uint32_t Functions)
         ret = BSP_ERROR_NONE;
       }
     }
-    if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_GYRO) == MOTION_GYRO))
-    {
-      /* Return an error if the application try to initialize a function not supported by the component */
-      ret = BSP_ERROR_COMPONENT_FAILURE;
-    }
     if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_MAGNETO) == MOTION_MAGNETO))
     {
       /* Return an error if the application try to initialize a function not supported by the component */
@@ -613,4 +611,3 @@ static int32_t IIS2ICLX_0_Probe(uint32_t Functions)
 }
 #endif
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

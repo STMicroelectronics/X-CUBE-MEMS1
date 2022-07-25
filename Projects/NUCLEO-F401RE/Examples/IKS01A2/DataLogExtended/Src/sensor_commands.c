@@ -5,13 +5,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2014-2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under Software License Agreement
-  * SLA0077, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0077
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -44,12 +43,12 @@
 
 /* Public variables ----------------------------------------------------------*/
 /* Currently selected sensor instances (defaults) */
-uint32_t AccInstance = IKS01A2_LSM6DSL_0;
-uint32_t GyrInstance = IKS01A2_LSM6DSL_0;
-uint32_t MagInstance = IKS01A2_LSM303AGR_MAG_0;
-uint32_t HumInstance = IKS01A2_HTS221_0;
-uint32_t TmpInstance = IKS01A2_HTS221_0;
-uint32_t PrsInstance = IKS01A2_LPS22HB_0;
+uint32_t AccInstance = 0xFFFFFFFF;
+uint32_t GyrInstance = 0xFFFFFFFF;
+uint32_t MagInstance = 0xFFFFFFFF;
+uint32_t HumInstance = 0xFFFFFFFF;
+uint32_t TmpInstance = 0xFFFFFFFF;
+uint32_t PrsInstance = 0xFFFFFFFF;
 
 /* Private variables ---------------------------------------------------------*/
 /* Supported sensor names. Please verify that second index of array is HIGHER than longest string in array!!! */
@@ -963,9 +962,12 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
       AccIndex = Msg->Data[5];
       if (AccInstance != AccInstanceList[AccIndex])
       {
-        if (IKS01A2_MOTION_SENSOR_Disable(AccInstance, MOTION_ACCELERO) != BSP_ERROR_NONE)
+        if (AccInstance != 0xFFFFFFFF)
         {
-          ret = 0;
+          if (IKS01A2_MOTION_SENSOR_Disable(AccInstance, MOTION_ACCELERO) != BSP_ERROR_NONE)
+          {
+            ret = 0;
+          }
         }
         if (IKS01A2_MOTION_SENSOR_Init(AccInstanceList[AccIndex], MOTION_ACCELERO) != BSP_ERROR_NONE)
         {
@@ -986,9 +988,12 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
       GyrIndex = Msg->Data[5];
       if (GyrInstance != GyrInstanceList[GyrIndex])
       {
-        if (IKS01A2_MOTION_SENSOR_Disable(GyrInstance, MOTION_GYRO) != BSP_ERROR_NONE)
+        if (GyrInstance != 0xFFFFFFFF)
         {
-          ret = 0;
+          if (IKS01A2_MOTION_SENSOR_Disable(GyrInstance, MOTION_GYRO) != BSP_ERROR_NONE)
+          {
+            ret = 0;
+          }
         }
         if (IKS01A2_MOTION_SENSOR_Init(GyrInstanceList[GyrIndex], MOTION_GYRO) != BSP_ERROR_NONE)
         {
@@ -1009,9 +1014,12 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
       MagIndex = Msg->Data[5];
       if (MagInstance != MagInstanceList[MagIndex])
       {
-        if (IKS01A2_MOTION_SENSOR_Disable(MagInstance, MOTION_MAGNETO) != BSP_ERROR_NONE)
+        if (MagInstance != 0xFFFFFFFF)
         {
-          ret = 0;
+          if (IKS01A2_MOTION_SENSOR_Disable(MagInstance, MOTION_MAGNETO) != BSP_ERROR_NONE)
+          {
+            ret = 0;
+          }
         }
         if (IKS01A2_MOTION_SENSOR_Init(MagInstanceList[MagIndex], MOTION_MAGNETO) != BSP_ERROR_NONE)
         {
@@ -1032,9 +1040,12 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
       TmpIndex = Msg->Data[5];
       if (TmpInstance != TmpInstanceList[TmpIndex])
       {
-        if (IKS01A2_ENV_SENSOR_Disable(TmpInstance, ENV_TEMPERATURE) != BSP_ERROR_NONE)
+      if (TmpInstance != 0xFFFFFFFF)
         {
-          ret = 0;
+          if (IKS01A2_ENV_SENSOR_Disable(TmpInstance, ENV_TEMPERATURE) != BSP_ERROR_NONE)
+          {
+            ret = 0;
+          }
         }
         if (IKS01A2_ENV_SENSOR_Init(TmpInstanceList[TmpIndex], ENV_TEMPERATURE) != BSP_ERROR_NONE)
         {
@@ -1055,9 +1066,12 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
       HumIndex = Msg->Data[5];
       if (HumInstance != HumInstanceList[HumIndex])
       {
-        if (IKS01A2_ENV_SENSOR_Disable(HumInstance, ENV_HUMIDITY) != BSP_ERROR_NONE)
+        if (HumInstance != 0xFFFFFFFF)
         {
-          ret = 0;
+          if (IKS01A2_ENV_SENSOR_Disable(HumInstance, ENV_HUMIDITY) != BSP_ERROR_NONE)
+          {
+            ret = 0;
+          }
         }
         if (IKS01A2_ENV_SENSOR_Init(HumInstanceList[HumIndex], ENV_HUMIDITY) != BSP_ERROR_NONE)
         {
@@ -1078,9 +1092,12 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
       PrsIndex = Msg->Data[5];
       if (PrsInstance != PrsInstanceList[PrsIndex])
       {
-        if (IKS01A2_ENV_SENSOR_Disable(PrsInstance, ENV_PRESSURE) != BSP_ERROR_NONE)
+        if (PrsInstance != 0xFFFFFFFF)
         {
-          ret = 0;
+          if (IKS01A2_ENV_SENSOR_Disable(PrsInstance, ENV_PRESSURE) != BSP_ERROR_NONE)
+          {
+            ret = 0;
+          }
         }
         if (IKS01A2_ENV_SENSOR_Init(PrsInstanceList[PrsIndex], ENV_PRESSURE) != BSP_ERROR_NONE)
         {

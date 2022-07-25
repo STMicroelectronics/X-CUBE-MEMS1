@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2022 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -45,6 +44,10 @@ extern "C" {
 #define USE_IKS02A1_MOTION_SENSOR_IIS2ICLX_0         0
 #endif
 
+#ifndef USE_IKS02A1_MOTION_SENSOR_ASM330LHHX_0
+#define USE_IKS02A1_MOTION_SENSOR_ASM330LHHX_0       0
+#endif
+
 #if (USE_IKS02A1_MOTION_SENSOR_ISM330DHCX_0 == 1)
 #include "ism330dhcx.h"
 #endif
@@ -59,6 +62,10 @@ extern "C" {
 
 #if (USE_IKS02A1_MOTION_SENSOR_IIS2ICLX_0 == 1)
 #include "iis2iclx.h"
+#endif
+
+#if (USE_IKS02A1_MOTION_SENSOR_ASM330LHHX_0 == 1)
+#include "asm330lhhx.h"
 #endif
 
 /** @addtogroup BSP BSP
@@ -138,6 +145,13 @@ typedef struct
                              USE_IKS02A1_MOTION_SENSOR_IIS2MDC_0)
 #endif
 
+#if (USE_IKS02A1_MOTION_SENSOR_ASM330LHHX_0 == 1)
+#define IKS02A1_ASM330LHHX_0  (USE_IKS02A1_MOTION_SENSOR_ISM330DHCX_0 + \
+                             USE_IKS02A1_MOTION_SENSOR_IIS2DLPC_0 + \
+                             USE_IKS02A1_MOTION_SENSOR_IIS2MDC_0 + \
+                             USE_IKS02A1_MOTION_SENSOR_IIS2ICLX_0)
+#endif
+
 #ifndef MOTION_GYRO
 #define MOTION_GYRO             1U
 #endif
@@ -152,7 +166,8 @@ typedef struct
 #define IKS02A1_MOTION_INSTANCES_NBR    (USE_IKS02A1_MOTION_SENSOR_ISM330DHCX_0 + \
                                          USE_IKS02A1_MOTION_SENSOR_IIS2DLPC_0 + \
                                          USE_IKS02A1_MOTION_SENSOR_IIS2MDC_0 + \
-                                         USE_IKS02A1_MOTION_SENSOR_IIS2ICLX_0)
+                                         USE_IKS02A1_MOTION_SENSOR_IIS2ICLX_0 + \
+                                         USE_IKS02A1_MOTION_SENSOR_ASM330LHHX_0)
 
 #if (IKS02A1_MOTION_INSTANCES_NBR == 0)
 #error "No motion sensor instance has been selected"
@@ -201,5 +216,3 @@ int32_t IKS02A1_MOTION_SENSOR_SetFullScale(uint32_t Instance, uint32_t Function,
 #endif
 
 #endif /* IKS02A1_MOTION_SENSOR_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

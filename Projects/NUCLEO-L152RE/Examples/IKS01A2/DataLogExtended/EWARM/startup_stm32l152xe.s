@@ -543,4 +543,3 @@ COMP_ACQ_IRQHandler
         B COMP_ACQ_IRQHandler                
                 
         END
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

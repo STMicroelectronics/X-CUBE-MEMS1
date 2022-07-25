@@ -1,21 +1,20 @@
 /**
- ******************************************************************************
- * @file    motion_gc_manager.h
- * @author  MEMS Software Solutions Team
- * @brief   This file contains definitions for the motion_gc_manager.c file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under Software License Agreement SLA0077,
- * the "License". You may not use this component except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        www.st.com/sla0077
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    motion_gc_manager.h
+  * @author  MEMS Software Solutions Team
+  * @brief   This file contains definitions for the motion_gc_manager.c file
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2022 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef MOTION_GC_MANAGER_H
@@ -54,4 +53,3 @@ int16_t gyro_bias_to_mdps(float gyro_bias);
 
 #endif /* MOTION_GC_MANAGER_H */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

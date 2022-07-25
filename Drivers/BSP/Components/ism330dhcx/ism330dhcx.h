@@ -250,9 +250,6 @@ int32_t ISM330DHCX_ACC_Disable_Free_Fall_Detection(ISM330DHCX_Object_t *pObj);
 int32_t ISM330DHCX_ACC_Set_Free_Fall_Threshold(ISM330DHCX_Object_t *pObj, uint8_t Threshold);
 int32_t ISM330DHCX_ACC_Set_Free_Fall_Duration(ISM330DHCX_Object_t *pObj, uint8_t Duration);
 
-int32_t ISM330DHCX_ACC_Enable_Tilt_Detection(ISM330DHCX_Object_t *pObj, ISM330DHCX_SensorIntPin_t IntPin);
-int32_t ISM330DHCX_ACC_Disable_Tilt_Detection(ISM330DHCX_Object_t *pObj);
-
 int32_t ISM330DHCX_ACC_Enable_Wake_Up_Detection(ISM330DHCX_Object_t *pObj, ISM330DHCX_SensorIntPin_t IntPin);
 int32_t ISM330DHCX_ACC_Disable_Wake_Up_Detection(ISM330DHCX_Object_t *pObj);
 int32_t ISM330DHCX_ACC_Set_Wake_Up_Threshold(ISM330DHCX_Object_t *pObj, uint8_t Threshold);

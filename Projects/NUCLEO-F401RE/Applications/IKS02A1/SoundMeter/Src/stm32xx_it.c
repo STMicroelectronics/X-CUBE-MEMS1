@@ -2,22 +2,18 @@
   ******************************************************************************
   * @file    stm32xx_it.c 
   * @author  SRA - Central Labs
-  * @version v5.0.0
-  * @date    6-May-19
   * @brief   Main Interrupt Service Routines.
   *          This file provides template for all exceptions handler and 
   *          peripherals interrupt service routine.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2014-2021 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed under Software License Agreement
-  * SLA0077, (the "License"). You may not use this file except in compliance
-  * with the License. You may obtain a copy of the License at:
-  *
-  *     www.st.com/content/st_com/en/search.html#q=SLA0077-t=keywords-page=1
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -143,5 +139,3 @@ void AUDIO_IN_I2S_IRQHandler(void)
 /**
 * @}
 */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

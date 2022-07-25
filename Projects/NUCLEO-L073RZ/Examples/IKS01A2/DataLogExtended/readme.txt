@@ -2,7 +2,7 @@
   @page DataLogExtended example based on sensor expansion board X-NUCLEO-IKS01A2 and STM32 Nucleo Boards
 
   @verbatim
-  ******************** (C) COPYRIGHT 2021 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2022 STMicroelectronics *******************
   * @file    readme.txt
   * @brief   This application contains an example which shows how to obtain data
   *          from various sensors on sensor expansion board.
@@ -58,7 +58,7 @@ MEMS, I2C, VCOM
     - NUCLEO-F401RE RevC board
     - NUCLEO-L073RZ RevC board
     - NUCLEO-L152RE RevC board
-    - NUCLEO-L476RG RevC board
+    - NUCLEO-U575ZI-Q RevC board
 
 ADDITIONAL_BOARD : X-NUCLEO-IKS01A2 https://www.st.com/content/st_com/en/products/ecosystems/stm32-open-development-environment/stm32-nucleo-expansion-boards/stm32-ode-sense-hw/x-nucleo-iks01a2.html
 ADDITIONAL_COMP : LSM6DSL https://www.st.com/content/st_com/en/products/mems-and-sensors/inemo-inertial-modules/lsm6dsl.html

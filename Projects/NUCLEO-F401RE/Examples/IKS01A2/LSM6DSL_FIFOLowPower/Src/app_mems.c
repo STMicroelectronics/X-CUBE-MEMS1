@@ -1,21 +1,20 @@
 /**
- ******************************************************************************
- * File Name          : app_mems.c
- * Description        : This file provides code for the configuration
- *                      of the STMicroelectronics.X-CUBE-MEMS1.9.2.0 instances.
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under Software License Agreement SLA0077,
- * the "License". You may not use this component except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        www.st.com/sla0077
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * File Name          : app_mems.c
+  * Description        : This file provides code for the configuration
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.3.0 instances.
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2022 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
 
 #ifdef __cplusplus
 extern "C" {
@@ -401,7 +400,7 @@ static int32_t LSM6DSL_Read_Single_FIFO_Pattern_Cycle(uint16_t SampleIndex)
 
   if (SampleIndex < SAMPLE_LIST_MAX)
   {
-    (void)snprintf(dataOut, MAX_BUF_SIZE, "[DATA %02d]  %5ld  %5ld  %5ld\r\n", SampleIndex + 1U, acc_x, acc_y, acc_z);
+    (void)snprintf(dataOut, MAX_BUF_SIZE, "[DATA %02d]  %5ld  %5ld  %5ld\r\n", SampleIndex + 1U, (long)acc_x, (long)acc_y, (long)acc_z);
     printf("%s", dataOut);
   }
 
@@ -412,4 +411,3 @@ static int32_t LSM6DSL_Read_Single_FIFO_Pattern_Cycle(uint16_t SampleIndex)
 }
 #endif
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

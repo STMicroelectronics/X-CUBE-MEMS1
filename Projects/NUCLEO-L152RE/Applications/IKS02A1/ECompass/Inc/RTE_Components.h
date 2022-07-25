@@ -22,7 +22,7 @@
 #define  __RTE_COMPONENTS_H__
 
 /* Defines ------------------------------------------------------------------*/
-/* STMicroelectronics.X-CUBE-MEMS1.9.2.0 */
+/* STMicroelectronics.X-CUBE-MEMS1.9.3.0 */
 #define IKS02A1
 #define IKS02A1_ECOMPASS_DEMO
 

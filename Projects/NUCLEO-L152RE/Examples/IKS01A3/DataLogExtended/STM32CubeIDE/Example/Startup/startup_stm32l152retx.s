@@ -405,5 +405,4 @@ g_pfnVectors:
   .weak COMP_ACQ_IRQHandler
    .thumb_set COMP_ACQ_IRQHandler,Default_Handler
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 

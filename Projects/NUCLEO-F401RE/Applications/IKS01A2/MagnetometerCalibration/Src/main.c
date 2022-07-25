@@ -40,7 +40,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
- CRC_HandleTypeDef hcrc;
+CRC_HandleTypeDef hcrc;
 
 RTC_HandleTypeDef hrtc;
 

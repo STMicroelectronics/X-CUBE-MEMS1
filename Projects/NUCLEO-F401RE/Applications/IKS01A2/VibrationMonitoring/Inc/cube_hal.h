@@ -1,22 +1,20 @@
 /**
- *******************************************************************************
- * @file    cube_hal.h
- * @author  MEMS Software Solutions Team
- * @brief   Header for cube_hal_f4.c, cube_hal_l0.c, cube_hal_l1.c and cube_hal_l4.c
- *******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed under Software License Agreement
- * SLA0077, (the "License"). You may not use this file except in compliance
- * with the License. You may obtain a copy of the License at:
- *
- *     www.st.com/content/st_com/en/search.html#q=SLA0077-t=keywords-page=1
- *
- *******************************************************************************
- */
+  ******************************************************************************
+  * @file    cube_hal.h
+  * @author  MEMS Software Solutions Team
+  * @brief   Header for cube_hal_f4.c, cube_hal_l0.c, cube_hal_l1.c and cube_hal_l4.c
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2014-2021 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef CUBE_HAL_H
@@ -101,5 +99,3 @@ uint32_t Get_DMA_Counter(DMA_HandleTypeDef *handle_dma);
 void Config_DMA_Handler(DMA_HandleTypeDef *handle_dma);
 
 #endif /* CUBE_HAL_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

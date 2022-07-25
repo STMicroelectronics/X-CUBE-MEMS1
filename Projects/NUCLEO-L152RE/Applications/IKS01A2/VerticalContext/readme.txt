@@ -2,7 +2,7 @@
   @page VerticalContext application based on sensor expansion board X-NUCLEO-IKS01A2 and STM32 Nucleo Boards
 
   @verbatim
-  ******************** (C) COPYRIGHT 2021 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2022 STMicroelectronics *******************
   * @file       readme.txt
   * @brief      This application contains an example which shows how to use
   *             Sensor expansion board to detect vertical movement
@@ -44,13 +44,6 @@ detect vertical movement by using accelerometer and pressure sensor only.
 To run the application, it is needed to install and launch the Unicleo-GUI on the PC.
 The Unicleo-GUI is available on https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/sensor-software-development-tools/unicleo-gui.html
 
-------------------------------------
-WARNING: When starting the project from Example Selector in STM32CubeMX and regenerating 
-it from ioc file, you may face a build issue. To solve it, remove from the IDE project 
-the file stm32l1xx_nucleo.c in Application/User virtual folder and delete from Src and 
-Inc folders the files: stm32l1xx_nucleo.c, stm32l1xx_nucleo.h and stm32l1xx_nucleo_errno.h.
-------------------------------------
-
 @par Keywords
 
 MEMS, I2C, VCOM
@@ -61,7 +54,7 @@ MEMS, I2C, VCOM
   - This example has been tested with STMicroelectronics:
     - NUCLEO-F401RE RevC board
     - NUCLEO-L152RE RevC board
-    - NUCLEO-L476RG RevC board
+    - NUCLEO-U575ZI-Q RevC board
 
 ADDITIONAL_BOARD : X-NUCLEO-IKS01A2 https://www.st.com/content/st_com/en/products/ecosystems/stm32-open-development-environment/stm32-nucleo-expansion-boards/stm32-ode-sense-hw/x-nucleo-iks01a2.html
 ADDITIONAL_COMP : LSM6DSL https://www.st.com/content/st_com/en/products/mems-and-sensors/inemo-inertial-modules/lsm6dsl.html

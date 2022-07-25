@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2022 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -164,6 +163,10 @@ static int32_t LSM6DSOX_SENSORHUB_LIS2MDL_0_Probe(uint32_t Functions);
 
 #if (USE_IKS01A3_MOTION_SENSOR_LIS2DU12_0 == 1)
 static int32_t LIS2DU12_0_Probe(uint32_t Functions);
+#endif
+
+#if (USE_IKS01A3_MOTION_SENSOR_ASM330LHHX_0 == 1)
+static int32_t ASM330LHHX_0_Probe(uint32_t Functions);
 #endif
 
 /**
@@ -821,6 +824,31 @@ int32_t IKS01A3_MOTION_SENSOR_Init(uint32_t Instance, uint32_t Functions)
 #if (USE_IKS01A3_MOTION_SENSOR_LIS2DU12_0 == 1)
     case IKS01A3_LIS2DU12_0:
       if (LIS2DU12_0_Probe(Functions) != BSP_ERROR_NONE)
+      {
+        return BSP_ERROR_NO_INIT;
+      }
+      if (MotionDrv[Instance]->GetCapabilities(MotionCompObj[Instance], (void *)&cap) != BSP_ERROR_NONE)
+      {
+        return BSP_ERROR_UNKNOWN_COMPONENT;
+      }
+      if (cap.Acc == 1U)
+      {
+        component_functions |= MOTION_ACCELERO;
+      }
+      if (cap.Gyro == 1U)
+      {
+        component_functions |= MOTION_GYRO;
+      }
+      if (cap.Magneto == 1U)
+      {
+        component_functions |= MOTION_MAGNETO;
+      }
+      break;
+#endif
+
+#if (USE_IKS01A3_MOTION_SENSOR_ASM330LHHX_0 == 1)
+    case IKS01A3_ASM330LHHX_0:
+      if (ASM330LHHX_0_Probe(Functions) != BSP_ERROR_NONE)
       {
         return BSP_ERROR_NO_INIT;
       }
@@ -3294,9 +3322,86 @@ static int32_t LIS2DU12_0_Probe(uint32_t Functions)
 }
 #endif
 
+#if (USE_IKS01A3_MOTION_SENSOR_ASM330LHHX_0  == 1)
 /**
-  * @}
+  * @brief  Register Bus IOs for instance 0 if component ID is OK
+  * @retval BSP status
   */
+static int32_t ASM330LHHX_0_Probe(uint32_t Functions)
+{
+  ASM330LHHX_IO_t            io_ctx;
+  uint8_t                    id;
+  static ASM330LHHX_Object_t asm330lhhx_obj_0;
+  ASM330LHHX_Capabilities_t  cap;
+  int32_t ret = BSP_ERROR_NONE;
+
+  /* Configure the accelero driver */
+  io_ctx.BusType     = ASM330LHHX_I2C_BUS; /* I2C */
+  io_ctx.Address     = ASM330LHHX_I2C_ADD_L;
+  io_ctx.Init        = IKS01A3_I2C_Init;
+  io_ctx.DeInit      = IKS01A3_I2C_DeInit;
+  io_ctx.ReadReg     = IKS01A3_I2C_ReadReg;
+  io_ctx.WriteReg    = IKS01A3_I2C_WriteReg;
+  io_ctx.GetTick     = IKS01A3_GetTick;
+
+  if (ASM330LHHX_RegisterBusIO(&asm330lhhx_obj_0, &io_ctx) != ASM330LHHX_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (ASM330LHHX_ReadID(&asm330lhhx_obj_0, &id) != ASM330LHHX_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (id != ASM330LHHX_ID)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else
+  {
+    (void)ASM330LHHX_GetCapabilities(&asm330lhhx_obj_0, &cap);
+    MotionCtx[IKS01A3_ASM330LHHX_0].Functions = ((uint32_t)cap.Gyro) | ((uint32_t)cap.Acc << 1) | ((uint32_t)cap.Magneto << 2);
+
+    MotionCompObj[IKS01A3_ASM330LHHX_0] = &asm330lhhx_obj_0;
+    /* The second cast (void *) is added to bypass Misra R11.3 rule */
+    MotionDrv[IKS01A3_ASM330LHHX_0] = (MOTION_SENSOR_CommonDrv_t *)(void *)&ASM330LHHX_COMMON_Driver;
+
+    if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_GYRO) == MOTION_GYRO) && (cap.Gyro == 1U))
+    {
+      /* The second cast (void *) is added to bypass Misra R11.3 rule */
+      MotionFuncDrv[IKS01A3_ASM330LHHX_0][FunctionIndex[MOTION_GYRO]] = (MOTION_SENSOR_FuncDrv_t *)(void *)&ASM330LHHX_GYRO_Driver;
+
+      if (MotionDrv[IKS01A3_ASM330LHHX_0]->Init(MotionCompObj[IKS01A3_ASM330LHHX_0]) != ASM330LHHX_OK)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_ACCELERO) == MOTION_ACCELERO) && (cap.Acc == 1U))
+    {
+      /* The second cast (void *) is added to bypass Misra R11.3 rule */
+      MotionFuncDrv[IKS01A3_ASM330LHHX_0][FunctionIndex[MOTION_ACCELERO]] = (MOTION_SENSOR_FuncDrv_t *)(void *)&ASM330LHHX_ACC_Driver;
+
+      if (MotionDrv[IKS01A3_ASM330LHHX_0]->Init(MotionCompObj[IKS01A3_ASM330LHHX_0]) != ASM330LHHX_OK)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_MAGNETO) == MOTION_MAGNETO))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+  }
+  return ret;
+}
+#endif
 
 /**
   * @}
@@ -3310,4 +3415,6 @@ static int32_t LIS2DU12_0_Probe(uint32_t Functions)
   * @}
   */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+/**
+  * @}
+  */

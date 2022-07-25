@@ -2,7 +2,7 @@
   @page VibrationMonitoring application based on sensor expansion board X-NUCLEO-IKS02A1 and STM32 Nucleo Boards
 
   @verbatim
-  ******************** (C) COPYRIGHT 2021 STMicroelectronics *******************
+  ******************** (C) COPYRIGHT 2022 STMicroelectronics *******************
   * @file       readme.txt
   * @brief      This application contains an example which shows how to use
   *             Sensor expansion board to send vibration monitoring
@@ -53,7 +53,7 @@ MEMS, I2C, VCOM
   - This example runs on STM32 Nucleo devices with MEMS sensor expansion board (X-NUCLEO-IKS02A1)
   - This example has been tested with STMicroelectronics:
     - NUCLEO-F401RE RevC board
-    - NUCLEO-L476RG RevC board
+    - NUCLEO-U575ZI-Q RevC board
 
 ADDITIONAL_BOARD : X-NUCLEO-IKS02A1 https://www.st.com/content/st_com/en/products/ecosystems/stm32-open-development-environment/stm32-nucleo-expansion-boards/stm32-ode-sense-hw/x-nucleo-iks02a1.html
 ADDITIONAL_COMP : ISM330DHCX https://www.st.com/content/st_com/en/products/mems-and-sensors/inemo-inertial-modules/ism330dhcx.html

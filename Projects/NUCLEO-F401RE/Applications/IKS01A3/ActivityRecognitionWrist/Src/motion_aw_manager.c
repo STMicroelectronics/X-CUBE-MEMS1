@@ -1,21 +1,20 @@
 /**
- ******************************************************************************
- * @file    motion_aw_manager.c
- * @author  MEMS Software Solutions Team
- * @brief   This file contains Activity Recognition Wrist interface functions
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under Software License Agreement SLA0077,
- * the "License". You may not use this component except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        www.st.com/sla0077
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    motion_aw_manager.c
+  * @author  MEMS Software Solutions Team
+  * @brief   This file contains Activity Recognition Wrist interface functions
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2022 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "motion_aw_manager.h"
@@ -77,4 +76,3 @@ void MotionAW_manager_get_version(char *version, int *length)
  * @}
  */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

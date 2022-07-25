@@ -1,22 +1,20 @@
 /**
- ******************************************************************************
- * @file    iks02a1_conf.h
- * @author  MEMS Application Team
- * @brief   This file contains definitions for the MEMS components bus interfaces
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed under Software License Agreement
- * SLA0077, (the "License"). You may not use this file except in compliance
- * with the License. You may obtain a copy of the License at:
- *
- *     www.st.com/content/st_com/en/search.html#q=SLA0077-t=keywords-page=1
- *
- *******************************************************************************
- */
+  ******************************************************************************
+  * @file    iks02a1_conf.h
+  * @author  MEMS Application Team
+  * @brief   This file contains definitions for the MEMS components bus interfaces
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2014-2021 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
 
 #include "stm32f4xx_hal.h"
 #include "nucleo_f401re_bus.h"
@@ -47,5 +45,3 @@ extern "C" {
 #endif
 
 #endif /* __IKS02A1_CONF_H__*/
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -1,21 +1,20 @@
 /**
- ******************************************************************************
- * @file    custom_motion_sensors_ex.h
- * @author  MEMS Application Team
- * @brief   This file contains definitions for the BSP Motion Sensors Extended interface for custom boards
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under Software License Agreement SLA0077,
- * the "License". You may not use this component except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        www.st.com/sla0077
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    custom_motion_sensors_ex.h
+  * @author  MEMS Application Team
+  * @brief   This file contains definitions for the BSP Motion Sensors Extended interface for custom boards
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2022 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __CUSTOM_MOTION_SENSORS_EX_H__
@@ -106,4 +105,3 @@ int32_t CUSTOM_MOTION_SENSOR_Set_SelfTest(uint32_t Instance, uint32_t Function, 
 
 #endif /* __CUSTOM_MOTION_SENSORS_EX_H__ */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
