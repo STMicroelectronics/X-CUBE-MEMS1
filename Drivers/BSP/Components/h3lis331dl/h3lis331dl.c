@@ -102,6 +102,7 @@ int32_t H3LIS331DL_RegisterBusIO(H3LIS331DL_Object_t *pObj, H3LIS331DL_IO_t *pIO
 
     pObj->Ctx.read_reg  = ReadRegWrap;
     pObj->Ctx.write_reg = WriteRegWrap;
+    pObj->Ctx.mdelay    = pIO->Delay;
     pObj->Ctx.handle    = pObj;
 
     if (pObj->IO.Init == NULL)

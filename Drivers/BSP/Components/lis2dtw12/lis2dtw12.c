@@ -113,6 +113,7 @@ int32_t LIS2DTW12_RegisterBusIO(LIS2DTW12_Object_t *pObj, LIS2DTW12_IO_t *pIO)
 
     pObj->Ctx.read_reg  = ReadRegWrap;
     pObj->Ctx.write_reg = WriteRegWrap;
+    pObj->Ctx.mdelay    = pIO->Delay;
     pObj->Ctx.handle   = pObj;
 
     if (pObj->IO.Init == NULL)

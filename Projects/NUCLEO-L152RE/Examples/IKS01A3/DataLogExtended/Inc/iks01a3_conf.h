@@ -70,6 +70,8 @@ extern "C" {
 #define USE_IKS01A3_MOTION_SENSOR_LSM6DSOX_SENSORHUB_LIS2MDL_0  1U
 #define USE_IKS01A3_MOTION_SENSOR_LIS2DU12_0                    1U
 #define USE_IKS01A3_MOTION_SENSOR_ASM330LHHX_0                  1U
+#define USE_IKS01A3_MOTION_SENSOR_LSM6DSV16X_0                  1U
+#define USE_IKS01A3_MOTION_SENSOR_LSM6DSV16BX_0                 1U
 
 #define USE_IKS01A3_HYBRID_SENSOR_LIS2DTW12_0                   1U
 
@@ -77,6 +79,7 @@ extern "C" {
 #define IKS01A3_I2C_DeInit BSP_I2C1_DeInit
 #define IKS01A3_I2C_ReadReg BSP_I2C1_ReadReg
 #define IKS01A3_I2C_WriteReg BSP_I2C1_WriteReg
+#define IKS01A3_Delay HAL_Delay
 #define IKS01A3_GetTick BSP_GetTick
 
 #ifdef __cplusplus

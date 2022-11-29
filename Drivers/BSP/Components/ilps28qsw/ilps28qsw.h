@@ -48,6 +48,7 @@ extern "C"
 typedef int32_t (*ILPS28QSW_Init_Func)(void);
 typedef int32_t (*ILPS28QSW_DeInit_Func)(void);
 typedef int32_t (*ILPS28QSW_GetTick_Func)(void);
+typedef void    (*ILPS28QSW_Delay_Func)(uint32_t);
 typedef int32_t (*ILPS28QSW_WriteReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 typedef int32_t (*ILPS28QSW_ReadReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 
@@ -60,6 +61,7 @@ typedef struct
   ILPS28QSW_WriteReg_Func      WriteReg;
   ILPS28QSW_ReadReg_Func       ReadReg;
   ILPS28QSW_GetTick_Func       GetTick;
+  ILPS28QSW_Delay_Func         Delay;
 } ILPS28QSW_IO_t;
 
 typedef struct

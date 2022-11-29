@@ -28,11 +28,7 @@
 #define TMsg_BS                 0xF1
 #define TMsg_BS_EOF             0xF2
 
-#ifdef USE_USB_OTG_HS
 #define TMsg_MaxLen             512
-#else
-#define TMsg_MaxLen             256
-#endif
 
 /* Exported types ------------------------------------------------------------*/
 /**
@@ -60,4 +56,3 @@ void Serialize(uint8_t *Dest, uint32_t Source, uint32_t Len);
 void Serialize_s32(uint8_t *Dest, int32_t Source, uint32_t Len);
 
 #endif /* SERIAL_PROTOCOL_H */
-

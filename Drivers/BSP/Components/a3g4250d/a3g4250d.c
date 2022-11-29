@@ -102,6 +102,7 @@ int32_t A3G4250D_RegisterBusIO(A3G4250D_Object_t *pObj, A3G4250D_IO_t *pIO)
 
     pObj->Ctx.read_reg  = ReadRegWrap;
     pObj->Ctx.write_reg = WriteRegWrap;
+    pObj->Ctx.mdelay    = pIO->Delay;
     pObj->Ctx.handle    = pObj;
 
     if (pObj->IO.Init == NULL)

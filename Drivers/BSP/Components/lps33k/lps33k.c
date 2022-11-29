@@ -109,6 +109,7 @@ int32_t LPS33K_RegisterBusIO(LPS33K_Object_t *pObj, LPS33K_IO_t *pIO)
 
     pObj->Ctx.read_reg  = ReadRegWrap;
     pObj->Ctx.write_reg = WriteRegWrap;
+    pObj->Ctx.mdelay    = pIO->Delay;
     pObj->Ctx.handle   = pObj;
 
     if (pObj->IO.Init == NULL)

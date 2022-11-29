@@ -59,4 +59,3 @@ extern uint32_t PrsInstance;
 int Handle_Sensor_command(TMsg *Msg);
 
 #endif /* SENSOR_COMMANDS_H */
-

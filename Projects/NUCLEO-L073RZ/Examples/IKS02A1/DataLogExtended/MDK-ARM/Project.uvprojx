@@ -55,7 +55,7 @@
           <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>0</BrowseInformation>
-          <ListingPath></ListingPath>
+          <ListingPath>.\STM32L073RZ_NUCLEO\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -186,6 +186,7 @@
             <RvdsVP>0</RvdsVP>
             <RvdsMve>0</RvdsMve>
             <RvdsCdeCp>0</RvdsCdeCp>
+            <nBranchProt>0</nBranchProt>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -339,7 +340,7 @@
               <MiscControls>--C99</MiscControls>
               <Define>STM32L073xx,USE_HAL_DRIVER,USE_STM32L0XX_NUCLEO</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Inc;..\..\..\..\..\..\Drivers\BSP\Components\Common;..\..\..\..\..\..\Drivers\BSP\Components\ism330dhcx;..\..\..\..\..\..\Drivers\BSP\STM32L0xx_Nucleo;..\..\..\..\..\..\Drivers\BSP\IKS02A1;..\..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32L0xx\Include;..\..\..\..\..\..\Drivers\CMSIS\Include;..\..\..\..\..\..\Drivers\STM32L0xx_HAL_Driver\Inc;..\..\..\..\..\..\Drivers\BSP\Components\iis2dlpc;..\..\..\..\..\..\Drivers\BSP\Components\iis2iclx;..\..\..\..\..\..\Drivers\BSP\Components\iis2mdc;..\..\..\..\..\..\Drivers\BSP\Components\asm330lhhx</IncludePath>
+              <IncludePath>..\Inc;..\..\..\..\..\..\Drivers\BSP\Components\Common;..\..\..\..\..\..\Drivers\BSP\Components\ism330dhcx;..\..\..\..\..\..\Drivers\BSP\STM32L0xx_Nucleo;..\..\..\..\..\..\Drivers\BSP\IKS02A1;..\..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32L0xx\Include;..\..\..\..\..\..\Drivers\CMSIS\Include;..\..\..\..\..\..\Drivers\STM32L0xx_HAL_Driver\Inc;..\..\..\..\..\..\Drivers\BSP\Components\iis2dlpc;..\..\..\..\..\..\Drivers\BSP\Components\iis2iclx;..\..\..\..\..\..\Drivers\BSP\Components\iis2mdc;..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16x;..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16bx</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -424,14 +425,24 @@
               <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\iis2iclx\iis2iclx_reg.c</FilePath>
             </File>
             <File>
-              <FileName>asm330lhhx.c</FileName>
+              <FileName>lsm6dsv16x.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\asm330lhhx\asm330lhhx.c</FilePath>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16x\lsm6dsv16x.c</FilePath>
             </File>
             <File>
-              <FileName>asm330lhhx_reg.c</FileName>
+              <FileName>lsm6dsv16x_reg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\asm330lhhx\asm330lhhx_reg.c</FilePath>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16x\lsm6dsv16x_reg.c</FilePath>
+            </File>
+            <File>
+              <FileName>lsm6dsv16bx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16bx\lsm6dsv16bx.c</FilePath>
+            </File>
+            <File>
+              <FileName>lsm6dsv16bx_reg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16bx\lsm6dsv16bx_reg.c</FilePath>
             </File>
           </Files>
         </Group>

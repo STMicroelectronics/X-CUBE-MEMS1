@@ -109,6 +109,7 @@ int32_t LPS28DFW_RegisterBusIO(LPS28DFW_Object_t *pObj, LPS28DFW_IO_t *pIO)
 
     pObj->Ctx.read_reg  = ReadRegWrap;
     pObj->Ctx.write_reg = WriteRegWrap;
+    pObj->Ctx.mdelay    = pIO->Delay;
     pObj->Ctx.handle    = pObj;
 
     if (pObj->IO.Init == NULL)

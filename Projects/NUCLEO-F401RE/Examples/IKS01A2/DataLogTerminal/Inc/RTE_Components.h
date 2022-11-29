@@ -22,7 +22,7 @@
 #define  __RTE_COMPONENTS_H__
 
 /* Defines ------------------------------------------------------------------*/
-/* STMicroelectronics.X-CUBE-MEMS1.9.3.0 */
+/* STMicroelectronics.X-CUBE-MEMS1.9.4.0 */
 #define IKS01A2
 #define IKS01A2_DATALOGTERMINAL_DEMO
 

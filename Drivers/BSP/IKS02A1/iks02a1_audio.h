@@ -2,8 +2,6 @@
   ******************************************************************************
   * @file    iks02a1_audio.h
   * @author  SRA - Central Labs
-  * @version v1.0.0
-  * @date    5-July-19
   * @brief   This file contains the common defines and functions prototypes for
   *          the iks02a1_audio.c driver.
   ******************************************************************************

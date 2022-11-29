@@ -48,6 +48,7 @@ extern "C"
 typedef int32_t (*AIS328DQ_Init_Func)(void);
 typedef int32_t (*AIS328DQ_DeInit_Func)(void);
 typedef int32_t (*AIS328DQ_GetTick_Func)(void);
+typedef void    (*AIS328DQ_Delay_Func)(uint32_t);
 typedef int32_t (*AIS328DQ_WriteReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 typedef int32_t (*AIS328DQ_ReadReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 
@@ -66,6 +67,7 @@ typedef struct
   AIS328DQ_WriteReg_Func    WriteReg;
   AIS328DQ_ReadReg_Func     ReadReg;
   AIS328DQ_GetTick_Func     GetTick;
+  AIS328DQ_Delay_Func       Delay;
 } AIS328DQ_IO_t;
 
 typedef struct

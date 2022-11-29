@@ -1518,7 +1518,7 @@ int32_t lsm6dso32x_timestamp_get(stmdev_ctx_t *ctx, uint8_t *val)
 /**
   * @brief  Timestamp first data output register (r).
   *         The value is expressed as a 32-bit word and the bit
-  *         resolution is 25 μs.[get]
+  *         resolution is 25 us.[get]
   *
   * @param  ctx      read / write interface definitions
   * @param  buff     buffer that stores data read

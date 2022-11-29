@@ -102,6 +102,7 @@ int32_t AIS328DQ_RegisterBusIO(AIS328DQ_Object_t *pObj, AIS328DQ_IO_t *pIO)
 
     pObj->Ctx.read_reg  = ReadRegWrap;
     pObj->Ctx.write_reg = WriteRegWrap;
+    pObj->Ctx.mdelay    = pIO->Delay;
     pObj->Ctx.handle    = pObj;
 
     if (pObj->IO.Init == NULL)

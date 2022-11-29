@@ -100,6 +100,7 @@ int32_t IIS3DWB_RegisterBusIO(IIS3DWB_Object_t *pObj, IIS3DWB_IO_t *pIO)
 
     pObj->Ctx.read_reg  = ReadRegWrap;
     pObj->Ctx.write_reg = WriteRegWrap;
+    pObj->Ctx.mdelay    = pIO->Delay;
     pObj->Ctx.handle   = pObj;
 
     if (pObj->IO.Init != NULL)
@@ -990,7 +991,7 @@ int32_t IIS3DWB_FIFO_Set_BDR(IIS3DWB_Object_t *pObj, float Bdr)
 */
 int32_t IIS3DWB_FIFO_Set_TS_Decimation(IIS3DWB_Object_t *pObj, uint8_t decimation)
 {
-  if (iis3dwb_fifo_timestamp_decimation_set(&(pObj->Ctx), (iis3dwb_odr_ts_batch_t)decimation) != IIS3DWB_OK)
+  if (iis3dwb_fifo_timestamp_batch_set(&(pObj->Ctx), (iis3dwb_fifo_timestamp_batch_t)decimation) != IIS3DWB_OK)
   {
     return IIS3DWB_ERROR;
   }

@@ -45,4 +45,3 @@ extern "C" {
 #endif
 
 #endif /* __CUSTOM_MEMS_CONF_H__*/
-

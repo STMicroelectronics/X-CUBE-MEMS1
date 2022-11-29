@@ -102,6 +102,7 @@ int32_t IIS2ICLX_RegisterBusIO(IIS2ICLX_Object_t *pObj, IIS2ICLX_IO_t *pIO)
 
     pObj->Ctx.read_reg  = ReadRegWrap;
     pObj->Ctx.write_reg = WriteRegWrap;
+    pObj->Ctx.mdelay    = pIO->Delay;
     pObj->Ctx.handle   = pObj;
 
     if (pObj->IO.Init == NULL)

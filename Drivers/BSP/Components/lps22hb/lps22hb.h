@@ -48,6 +48,7 @@ extern "C"
 typedef int32_t (*LPS22HB_Init_Func)(void);
 typedef int32_t (*LPS22HB_DeInit_Func)(void);
 typedef int32_t (*LPS22HB_GetTick_Func)(void);
+typedef void    (*LPS22HB_Delay_Func)(uint32_t);
 typedef int32_t (*LPS22HB_WriteReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 typedef int32_t (*LPS22HB_ReadReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 
@@ -60,6 +61,7 @@ typedef struct
   LPS22HB_WriteReg_Func      WriteReg;
   LPS22HB_ReadReg_Func       ReadReg;
   LPS22HB_GetTick_Func       GetTick;
+  LPS22HB_Delay_Func         Delay;
 } LPS22HB_IO_t;
 
 typedef struct

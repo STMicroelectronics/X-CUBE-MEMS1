@@ -33,9 +33,6 @@
 
 #define STREAMING_MSG_LENGTH            81
 
-#define NOT_HYBRID_SENSOR               0x00U
-#define HYBRID_SENSOR                   0x01U
-
 extern volatile uint8_t DataLoggerActive;
 
 int HandleMSG(TMsg *Msg);

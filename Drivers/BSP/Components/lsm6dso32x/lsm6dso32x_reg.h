@@ -110,12 +110,15 @@ typedef struct
 
 typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
 typedef struct
 {
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
+  /** Component optional fields **/
+  stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
 } stmdev_ctx_t;
@@ -3889,8 +3892,8 @@ typedef struct
     LSM6DSO32X_SPI_4W      = 0x06, /* Only SPI: SDO / SDI separated pins */
     LSM6DSO32X_SPI_3W      = 0x07, /* Only SPI: SDO / SDI share the same pin */
     LSM6DSO32X_I2C         = 0x04, /* Only I2C */
-    LSM6DSO32X_I3C_T_50us  = 0x02, /* I3C: available time equal to 50 μs */
-    LSM6DSO32X_I3C_T_2us   = 0x12, /* I3C: available time equal to 2 μs */
+    LSM6DSO32X_I3C_T_50us  = 0x02, /* I3C: available time equal to 50 us */
+    LSM6DSO32X_I3C_T_2us   = 0x12, /* I3C: available time equal to 2 us */
     LSM6DSO32X_I3C_T_1ms   = 0x22, /* I3C: available time equal to 1 ms */
     LSM6DSO32X_I3C_T_25ms  = 0x32, /* I3C: available time equal to 25 ms */
   } ui_bus_md;

@@ -103,6 +103,7 @@ int32_t LIS2MDL_RegisterBusIO(LIS2MDL_Object_t *pObj, LIS2MDL_IO_t *pIO)
 
     pObj->Ctx.read_reg  = ReadMagRegWrap;
     pObj->Ctx.write_reg = WriteMagRegWrap;
+    pObj->Ctx.mdelay    = pIO->Delay;
     pObj->Ctx.handle    = pObj;
 
     if (pObj->IO.Init == NULL)

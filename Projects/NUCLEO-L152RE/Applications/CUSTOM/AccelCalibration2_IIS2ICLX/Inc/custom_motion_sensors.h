@@ -108,4 +108,3 @@ int32_t CUSTOM_MOTION_SENSOR_SetFullScale(uint32_t Instance, uint32_t Function, 
 #endif
 
 #endif /* __CUSTOM_MOTION_SENSORS_H__ */
-

@@ -48,6 +48,7 @@ extern "C"
 typedef int32_t (*ASM330LHHX_Init_Func)(void);
 typedef int32_t (*ASM330LHHX_DeInit_Func)(void);
 typedef int32_t (*ASM330LHHX_GetTick_Func)(void);
+typedef void    (*ASM330LHHX_Delay_Func)(uint32_t);
 typedef int32_t (*ASM330LHHX_WriteReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 typedef int32_t (*ASM330LHHX_ReadReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 
@@ -66,6 +67,7 @@ typedef struct
   ASM330LHHX_WriteReg_Func   WriteReg;
   ASM330LHHX_ReadReg_Func    ReadReg;
   ASM330LHHX_GetTick_Func    GetTick;
+  ASM330LHHX_Delay_Func      Delay;
 } ASM330LHHX_IO_t;
 
 

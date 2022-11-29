@@ -110,12 +110,15 @@ typedef struct
 
 typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
 typedef struct
 {
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
+  /** Component optional fields **/
+  stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
 } stmdev_ctx_t;
@@ -562,13 +565,17 @@ int32_t ilps28qsw_mode_get(stmdev_ctx_t *ctx, ilps28qsw_md_t *val);
 
 int32_t ilps28qsw_trigger_sw(stmdev_ctx_t *ctx, ilps28qsw_md_t *md);
 
+#define ILPS28QSW_IS_AH_QVAR_DATA(raw) ((raw & 0x100) != 0)
+#define ILPS28QSW_CLR_AH_QVAR_DATA(raw) (raw & ~0x100)
+
 typedef struct
 {
   struct
   {
-    float_t hpa;
+    int32_t ah_qvar_lsb; /* ah_qvar 24 bit properly right aligned */
+    float_t press_hpa;
     int32_t raw; /* 32 bit signed-left algned  format left  */
-  } pressure;
+  } sample;
   struct
   {
     float_t deg_c;
@@ -577,13 +584,6 @@ typedef struct
 } ilps28qsw_data_t;
 int32_t ilps28qsw_data_get(stmdev_ctx_t *ctx, ilps28qsw_md_t *md,
                            ilps28qsw_data_t *data);
-typedef struct
-{
-  int32_t lsb; /* 24 bit properly right aligned */
-  int32_t raw; /* 32 bit signed-left algned  format left  */
-} ilps28qsw_ah_qvar_data_t;
-int32_t ilps28qsw_ah_qvar_data_get(stmdev_ctx_t *ctx,
-                                   ilps28qsw_ah_qvar_data_t *data);
 
 typedef struct
 {
@@ -603,13 +603,8 @@ int32_t ilps28qsw_fifo_mode_get(stmdev_ctx_t *ctx, ilps28qsw_fifo_md_t *val);
 
 int32_t ilps28qsw_fifo_level_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef struct
-{
-  float_t hpa;
-  int32_t raw;
-} ilps28qsw_fifo_data_t;
 int32_t ilps28qsw_fifo_data_get(stmdev_ctx_t *ctx, uint8_t samp,
-                                ilps28qsw_md_t *md, ilps28qsw_fifo_data_t *data);
+                                ilps28qsw_md_t *md, ilps28qsw_data_t *data);
 
 typedef struct
 {

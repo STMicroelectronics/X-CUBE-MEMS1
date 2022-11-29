@@ -28,15 +28,15 @@
  */
 
 /* Private typedef -----------------------------------------------------------*/
-   
+
 /* Private define ------------------------------------------------------------*/
-   
+
 /* Private macro -------------------------------------------------------------*/
-   
+
 /* Private variables ---------------------------------------------------------*/
-   
+
 /* Private function prototypes -----------------------------------------------*/
-   
+
 /* Public functions ----------------------------------------------------------*/
 
 /******************************************************************************/
@@ -90,6 +90,16 @@ void SysTick_Handler(void)
 /*  available peripheral interrupt handler's name please refer to the startup */
 /*  file (startup_stm32f4xx.s).                                               */
 /******************************************************************************/
+
+/**
+ * @brief  This function handles External line 0 interrupt request
+ * @param  None
+ * @retval None
+ */
+void EXTI0_IRQHandler(void)
+{
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
+}
 
 /**
  * @brief  This function handles External line 10-15 interrupt request

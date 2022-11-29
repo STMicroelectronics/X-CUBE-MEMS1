@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    com.h
   * @author  MEMS Software Solutions Team
-  * @brief   header for com.c.
+  * @brief   header for com.c
   ******************************************************************************
   * @attention
   *
@@ -19,6 +19,10 @@
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef COM_H
 #define COM_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -72,5 +76,9 @@ void USARTConfig(void);
 int UART_ReceivedMSG(TMsg *Msg);
 void UART_SendMsg(TMsg *Msg);
 void USART_DMA_Configuration(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* COM_H */

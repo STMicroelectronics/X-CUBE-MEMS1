@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.3.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.4.0 instances.
   ******************************************************************************
   * @attention
   *
@@ -322,7 +322,8 @@ static void MC_Data_Handler(TMsg *Msg)
   data_in.Mag[2] = (float)MagValue.z / 10.0f;
 
   /* Time stamp [ms] */
-  data_in.TimeStamp = (int)(TimeStamp * ReportInterval);
+  data_in.TimeStamp = (int)TimeStamp;
+  TimeStamp += ReportInterval;
 
   /* Run Magnetometer Calibration algorithm */
   MotionMC_manager_update(&data_in);

@@ -110,12 +110,15 @@ typedef struct
 
 typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
 typedef struct
 {
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
+  /** Component optional fields **/
+  stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
 } stmdev_ctx_t;
@@ -467,7 +470,7 @@ typedef struct
   uint8_t not_used_01        : 1;
   uint8_t wu_dur_x4          : 1;
   uint8_t int1_6d            : 1;
-  uint8_t int1_tap           : 1;
+  uint8_t int1_double_tap    : 1;
   uint8_t int1_ff            : 1;
   uint8_t int1_wu            : 1;
   uint8_t int1_single_tap    : 1;
@@ -477,7 +480,7 @@ typedef struct
   uint8_t int1_single_tap    : 1;
   uint8_t int1_wu            : 1;
   uint8_t int1_ff            : 1;
-  uint8_t int1_tap           : 1;
+  uint8_t int1_double_tap    : 1;
   uint8_t int1_6d            : 1;
   uint8_t wu_dur_x4          : 1;
   uint8_t not_used_01        : 1;
@@ -491,7 +494,7 @@ typedef struct
   uint8_t not_used_01        : 1;
   uint8_t pd_dis_int2        : 1;
   uint8_t int2_6d            : 1;
-  uint8_t int2_tap           : 1;
+  uint8_t int2_double_tap    : 1;
   uint8_t int2_ff            : 1;
   uint8_t int2_wu            : 1;
   uint8_t int2_single_tap    : 1;
@@ -501,7 +504,7 @@ typedef struct
   uint8_t int2_single_tap    : 1;
   uint8_t int2_wu            : 1;
   uint8_t int2_ff            : 1;
-  uint8_t int2_tap           : 1;
+  uint8_t int2_double_tap    : 1;
   uint8_t int2_6d            : 1;
   uint8_t pd_dis_int2        : 1;
   uint8_t not_used_01        : 1;
@@ -566,11 +569,11 @@ typedef struct
   uint8_t yh          : 1;
   uint8_t zl          : 1;
   uint8_t zh          : 1;
-  uint8_t sixd_ia     : 1;
+  uint8_t d6d_ia      : 1;
   uint8_t not_used_01 : 1;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
   uint8_t not_used_01 : 1;
-  uint8_t sixd_ia     : 1;
+  uint8_t d6d_ia      : 1;
   uint8_t zh          : 1;
   uint8_t zl          : 1;
   uint8_t yh          : 1;
@@ -584,23 +587,23 @@ typedef struct
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t ff_ia_all       : 1;
-  uint8_t wu_ia_all       : 1;
-  uint8_t single_tap_all  : 1;
-  uint8_t double_tap_all  : 1;
-  uint8_t sixd_ia_all     : 1;
-  uint8_t sleep_change_ia : 1;
-  uint8_t int_global      : 1;
-  uint8_t not_used_01     : 1;
+  uint8_t ff_ia_all           : 1;
+  uint8_t wu_ia_all           : 1;
+  uint8_t single_tap_all      : 1;
+  uint8_t double_tap_all      : 1;
+  uint8_t d6d_ia_all          : 1;
+  uint8_t sleep_change_ia_all : 1;
+  uint8_t int_global          : 1;
+  uint8_t not_used_01         : 1;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t not_used_01     : 1;
-  uint8_t int_global      : 1;
-  uint8_t sleep_change_ia : 1;
-  uint8_t sixd_ia_all     : 1;
-  uint8_t double_tap_all  : 1;
-  uint8_t single_tap_all  : 1;
-  uint8_t wu_ia_all       : 1;
-  uint8_t ff_ia_all       : 1;
+  uint8_t not_used_01         : 1;
+  uint8_t int_global          : 1;
+  uint8_t sleep_change_ia_all : 1;
+  uint8_t d6d_ia_all          : 1;
+  uint8_t double_tap_all      : 1;
+  uint8_t single_tap_all      : 1;
+  uint8_t wu_ia_all           : 1;
+  uint8_t ff_ia_all           : 1;
 #endif /* DRV_BYTE_ORDER */
 } lis2du12_all_int_src_t;
 
@@ -770,9 +773,6 @@ int32_t lis2du12_pin_conf_get(stmdev_ctx_t *ctx, lis2du12_pin_conf_t *val);
 
 typedef struct
 {
-
-  uint8_t base_int         :  1; /* base functions are: FF, WU, 4/6D, Tap */
-  uint8_t drdy_xl          :  1; /* Accelerometer data ready */
   uint8_t free_fall        :  1; /* free fall event */
   uint8_t wake_up          :  1; /* wake up event */
   uint8_t wake_up_z        :  1; /* wake up on Z axis event */
@@ -793,9 +793,6 @@ typedef struct
   uint8_t six_d_zh         :  1; /* Z-axis high 6D/4D event (over threshold) */
   uint8_t sleep_change     :  1; /* Act/Inact (or Vice-versa) status changed */
   uint8_t sleep_state      :  1; /* Act/Inact status flag (0-Act / 1-Inact) */
-  uint8_t fifo_full        :  1; /* FIFO full */
-  uint8_t fifo_ovr         :  1; /* FIFO overrun */
-  uint8_t fifo_th          :  1; /* FIFO threshold reached */
 } lis2du12_all_sources_t;
 int32_t lis2du12_all_sources_get(stmdev_ctx_t *ctx,
                                  lis2du12_all_sources_t *val);
@@ -863,6 +860,7 @@ typedef enum
 } lis2du12_st_t;
 int32_t lis2du12_self_test_sign_set(stmdev_ctx_t *ctx, lis2du12_st_t val);
 int32_t lis2du12_self_test_start(stmdev_ctx_t *ctx, uint8_t val); /* valid values: 1 or 2 */
+int32_t lis2du12_self_test_stop(stmdev_ctx_t *ctx);
 
 typedef struct
 {
@@ -884,6 +882,13 @@ typedef struct
 } lis2du12_fifo_md_t;
 int32_t lis2du12_fifo_mode_set(stmdev_ctx_t *ctx, lis2du12_fifo_md_t *val);
 int32_t lis2du12_fifo_mode_get(stmdev_ctx_t *ctx, lis2du12_fifo_md_t *val);
+
+typedef struct
+{
+  uint8_t fifo_fth         : 1; /* 1 = fifo threshold event */
+  uint8_t fifo_ovr         : 1; /* 1 = fifo overrun event */
+} lis2du12_fifo_status_t;
+int32_t lis2du12_fifo_status_get(stmdev_ctx_t *ctx, lis2du12_fifo_status_t *val);
 
 int32_t lis2du12_fifo_level_get(stmdev_ctx_t *ctx, lis2du12_fifo_md_t *md,
                                 uint8_t *val);
@@ -931,10 +936,10 @@ typedef struct
   uint8_t free_fall     : 1; /* free fall event */
   uint8_t six_d         : 1; /* orientation change (6D/4D detection) */
   uint8_t single_tap    : 1; /* single-tap event */
-  uint8_t tap           : 1; /* all tap event */
+  uint8_t double_tap    : 1; /* double tap event */
   uint8_t wake_up       : 1; /* wake up event */
   uint8_t sleep_change  : 1; /* Act/Inact (or Vice-versa) status changed */
-  uint8_t sleep_state   :  1; /* Act/Inact status flag */
+  uint8_t sleep_state   : 1; /* Act/Inact status flag */
 } lis2du12_pin_int1_route_t;
 int32_t lis2du12_pin_int1_route_set(stmdev_ctx_t *ctx,
                                     lis2du12_pin_int1_route_t *val);
@@ -951,7 +956,7 @@ typedef struct
   uint8_t free_fall     : 1; /* free fall event */
   uint8_t six_d         : 1; /* orientation change (6D/4D detection) */
   uint8_t single_tap    : 1; /* single-tap event */
-  uint8_t tap           : 1; /* all tap event */
+  uint8_t double_tap    : 1; /* double tap event */
   uint8_t wake_up       : 1; /* wake up event */
   uint8_t sleep_change  : 1; /* Act/Inact (or Vice-versa) status changed */
   uint8_t sleep_state   : 1; /* Act/Inact status flag */

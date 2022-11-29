@@ -253,35 +253,38 @@ int32_t ilps22qs_init_set(stmdev_ctx_t *ctx, ilps22qs_init_t val)
   int32_t ret;
 
   ret = ilps22qs_read_reg(ctx, ILPS22QS_CTRL_REG2, reg, 2);
-
-  bytecpy((uint8_t *)&ctrl_reg2, &reg[0]);
-  bytecpy((uint8_t *)&ctrl_reg3, &reg[1]);
-
-  switch (val)
+  if (ret == 0)
   {
-    case ILPS22QS_BOOT:
-      ctrl_reg2.boot = PROPERTY_ENABLE;
-      ret = ilps22qs_write_reg(ctx, ILPS22QS_CTRL_REG2,
-                               (uint8_t *)&ctrl_reg2, 1);
-      break;
-    case ILPS22QS_RESET:
-      ctrl_reg2.swreset = PROPERTY_ENABLE;
-      ret = ilps22qs_write_reg(ctx, ILPS22QS_CTRL_REG2,
-                               (uint8_t *)&ctrl_reg2, 1);
-      break;
-    case ILPS22QS_DRV_RDY:
-      ctrl_reg2.bdu = PROPERTY_ENABLE;
-      ctrl_reg3.if_add_inc = PROPERTY_ENABLE;
-      bytecpy(&reg[0], (uint8_t *)&ctrl_reg2);
-      bytecpy(&reg[1], (uint8_t *)&ctrl_reg3);
-      ret = ilps22qs_write_reg(ctx, ILPS22QS_CTRL_REG2, reg, 2);
-      break;
-    default:
-      ctrl_reg2.swreset = PROPERTY_ENABLE;
-      ret = ilps22qs_write_reg(ctx, ILPS22QS_CTRL_REG2,
-                               (uint8_t *)&ctrl_reg2, 1);
-      break;
+    bytecpy((uint8_t *)&ctrl_reg2, &reg[0]);
+    bytecpy((uint8_t *)&ctrl_reg3, &reg[1]);
+
+    switch (val)
+    {
+      case ILPS22QS_BOOT:
+        ctrl_reg2.boot = PROPERTY_ENABLE;
+        ret = ilps22qs_write_reg(ctx, ILPS22QS_CTRL_REG2,
+                                 (uint8_t *)&ctrl_reg2, 1);
+        break;
+      case ILPS22QS_RESET:
+        ctrl_reg2.swreset = PROPERTY_ENABLE;
+        ret = ilps22qs_write_reg(ctx, ILPS22QS_CTRL_REG2,
+                                 (uint8_t *)&ctrl_reg2, 1);
+        break;
+      case ILPS22QS_DRV_RDY:
+        ctrl_reg2.bdu = PROPERTY_ENABLE;
+        ctrl_reg3.if_add_inc = PROPERTY_ENABLE;
+        bytecpy(&reg[0], (uint8_t *)&ctrl_reg2);
+        bytecpy(&reg[1], (uint8_t *)&ctrl_reg3);
+        ret = ilps22qs_write_reg(ctx, ILPS22QS_CTRL_REG2, reg, 2);
+        break;
+      default:
+        ctrl_reg2.swreset = PROPERTY_ENABLE;
+        ret = ilps22qs_write_reg(ctx, ILPS22QS_CTRL_REG2,
+                                 (uint8_t *)&ctrl_reg2, 1);
+        break;
+    }
   }
+
   return ret;
 }
 
@@ -478,8 +481,8 @@ int32_t ilps22qs_mode_get(stmdev_ctx_t *ctx, ilps22qs_md_t *val)
       case ILPS22QS_1260hPa:
         val->fs = ILPS22QS_1260hPa;
         break;
-      case ILPS22QS_4000hPa:
-        val->fs = ILPS22QS_4000hPa;
+      case ILPS22QS_4060hPa:
+        val->fs = ILPS22QS_4060hPa;
         break;
       default:
         val->fs = ILPS22QS_1260hPa;
@@ -666,7 +669,7 @@ int32_t ilps22qs_data_get(stmdev_ctx_t *ctx, ilps22qs_md_t *md,
     case ILPS22QS_1260hPa:
       data->pressure.hpa = ilps22qs_from_fs1260_to_hPa(data->pressure.raw);
       break;
-    case ILPS22QS_4000hPa:
+    case ILPS22QS_4060hPa:
       data->pressure.hpa = ilps22qs_from_fs4000_to_hPa(data->pressure.raw);
       break;
     default:
@@ -744,7 +747,7 @@ int32_t ilps22qs_fifo_mode_set(stmdev_ctx_t *ctx, ilps22qs_fifo_md_t *val)
     bytecpy((uint8_t *)&fifo_wtm, &reg[1]);
 
     fifo_ctrl.f_mode = (uint8_t)val->operation & 0x03U;
-    fifo_ctrl.trig_modes = ((uint8_t)val->operation & 0x04) >> 2;
+    fifo_ctrl.trig_modes = ((uint8_t)val->operation & 0x04U) >> 2;
 
     if (val->watermark != 0x00U)
     {
@@ -858,9 +861,9 @@ int32_t ilps22qs_fifo_data_get(stmdev_ctx_t *ctx, uint8_t samp,
   for (i = 0U; i < samp; i++)
   {
     ret = ilps22qs_read_reg(ctx, ILPS22QS_FIFO_DATA_OUT_PRESS_XL, fifo_data, 3);
-    data[i].raw = (int16_t)fifo_data[2];
-    data[i].raw = (data[i].raw * 256) + fifo_data[1];
-    data[i].raw = (data[i].raw * 256) + fifo_data[0];
+    data[i].raw = (int32_t)fifo_data[2];
+    data[i].raw = (data[i].raw * 256) + (int32_t)fifo_data[1];
+    data[i].raw = (data[i].raw * 256) + (int32_t)fifo_data[0];
     data[i].raw = (data[i].raw * 256);
 
     switch (md->fs)
@@ -868,7 +871,7 @@ int32_t ilps22qs_fifo_data_get(stmdev_ctx_t *ctx, uint8_t samp,
       case ILPS22QS_1260hPa:
         data[i].hpa = ilps22qs_from_fs1260_to_hPa(data[i].raw);
         break;
-      case ILPS22QS_4000hPa:
+      case ILPS22QS_4060hPa:
         data[i].hpa = ilps22qs_from_fs4000_to_hPa(data[i].raw);
         break;
       default:
@@ -1131,8 +1134,8 @@ int32_t ilps22qs_opc_set(stmdev_ctx_t *ctx, int16_t val)
   uint8_t reg[2];
   int32_t ret;
 
-  reg[1] = (val & 0xFF00U) / 256;
-  reg[0] = val & 0x00FFU ;
+  reg[1] = (uint8_t)(((uint16_t)val & 0xFF00U) / 256U);
+  reg[0] = (uint8_t)((uint16_t)val & 0x00FFU);
 
   ret = ilps22qs_write_reg(ctx, ILPS22QS_RPDS_L, reg, 2);
 
@@ -1154,12 +1157,11 @@ int32_t ilps22qs_opc_get(stmdev_ctx_t *ctx, int16_t *val)
 
   ret = ilps22qs_read_reg(ctx, ILPS22QS_RPDS_L, reg, 2);
 
-  *val = reg[1];
-  *val = *val * 256 + reg[0];
+  *val = (int16_t)reg[1];
+  *val = *val * 256 + (int16_t)reg[0];
 
   return ret;
 }
-
 
 /**
   * @}

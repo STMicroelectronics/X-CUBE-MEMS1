@@ -110,15 +110,37 @@ typedef struct
 
 typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
 typedef struct
 {
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
+  /** Component optional fields **/
+  stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
 } stmdev_ctx_t;
+
+#ifndef __weak
+#define __weak __attribute__((weak))
+#endif /* __weak */
+
+/*
+ * These are the basic platform dependent I/O routines to read
+ * and write device registers connected on a standard bus.
+ * The driver keeps offering a default implementation based on function
+ * pointers to read/write routines for backward compatibility.
+ * The __weak directive allows the final application to overwrite
+ * them with a custom implementation.
+ */
+int32_t lsm6dso_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                uint8_t *data,
+                                uint16_t len);
+int32_t lsm6dso_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                 uint8_t *data,
+                                 uint16_t len);
 
 /**
   * @}
@@ -2717,13 +2739,6 @@ typedef union
   *
   */
 
-int32_t lsm6dso_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                         uint8_t *data,
-                         uint16_t len);
-int32_t lsm6dso_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                          uint8_t *data,
-                          uint16_t len);
-
 float_t lsm6dso_from_fs2_to_mg(int16_t lsb);
 float_t lsm6dso_from_fs4_to_mg(int16_t lsb);
 float_t lsm6dso_from_fs8_to_mg(int16_t lsb);
@@ -3963,8 +3978,8 @@ typedef enum
   LSM6DSO_SPI_4W      = 0x06, /* Only SPI: SDO / SDI separated pins */
   LSM6DSO_SPI_3W      = 0x07, /* Only SPI: SDO / SDI share the same pin */
   LSM6DSO_I2C         = 0x04, /* Only I2C */
-  LSM6DSO_I3C_T_50us  = 0x02, /* I3C: available time equal to 50 μs */
-  LSM6DSO_I3C_T_2us   = 0x12, /* I3C: available time equal to 2 μs */
+  LSM6DSO_I3C_T_50us  = 0x02, /* I3C: available time equal to 50 us */
+  LSM6DSO_I3C_T_2us   = 0x12, /* I3C: available time equal to 2 us */
   LSM6DSO_I3C_T_1ms   = 0x22, /* I3C: available time equal to 1 ms */
   LSM6DSO_I3C_T_25ms  = 0x32, /* I3C: available time equal to 25 ms */
 } lsm6dso_ui_bus_md_t;

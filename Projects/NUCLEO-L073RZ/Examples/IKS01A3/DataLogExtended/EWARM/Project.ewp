@@ -347,8 +347,6 @@
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32L0xx\Include</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\CMSIS\Include</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\STM32L0xx_HAL_Driver\Inc</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\asm330lhh</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\asm330lhhx</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\hts221</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\iis2dlpc</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\iis2iclx</state>
@@ -364,18 +362,13 @@
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lsm6dso</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsox</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\stts751</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\ais2dw12</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lis3mdl</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsr</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\stts22h</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\a3g4250d</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\ais328dq</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\ais3624dq</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\h3lis331dl</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsrx</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\ism330dhcx</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lsm6dso32</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\ais2ih</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lsm6dso32x</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lps22df</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lis2dtw12</state>
@@ -383,6 +376,8 @@
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\ilps22qs</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\ilps28qsw</state>
                     <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lps28dfw</state>
+                    <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16x</state>
+                    <state>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16bx</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1109,48 +1104,6 @@
             <group>
                 <name>Components</name>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\a3g4250d\a3g4250d.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\a3g4250d\a3g4250d_reg.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\ais2dw12\ais2dw12.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\ais2dw12\ais2dw12_reg.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\ais2ih\ais2ih.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\ais2ih\ais2ih_reg.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\ais328dq\ais328dq.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\ais328dq\ais328dq_reg.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\ais3624dq\ais3624dq.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\ais3624dq\ais3624dq_reg.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\asm330lhh\asm330lhh.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\asm330lhh\asm330lhh_reg.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\asm330lhhx\asm330lhhx.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\asm330lhhx\asm330lhhx_reg.c</name>
-                </file>
-                <file>
                     <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\h3lis331dl\h3lis331dl.c</name>
                 </file>
                 <file>
@@ -1271,6 +1224,12 @@
                     <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lps27hhtw\lps27hhtw_reg.c</name>
                 </file>
                 <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lps28dfw\lps28dfw.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lps28dfw\lps28dfw_reg.c</name>
+                </file>
+                <file>
                     <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lps33hw\lps33hw.c</name>
                 </file>
                 <file>
@@ -1319,6 +1278,18 @@
                     <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsrx\lsm6dsrx_reg.c</name>
                 </file>
                 <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16bx\lsm6dsv16bx.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16bx\lsm6dsv16bx_reg.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16x\lsm6dsv16x.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16x\lsm6dsv16x_reg.c</name>
+                </file>
+                <file>
                     <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\stts22h\stts22h.c</name>
                 </file>
                 <file>
@@ -1358,12 +1329,6 @@
                     <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\STM32L0xx_Nucleo\stm32l0xx_nucleo.c</name>
                 </file>
             </group>
-            <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lps28dfw\lps28dfw.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\..\Drivers\BSP\Components\lps28dfw\lps28dfw_reg.c</name>
-            </file>
         </group>
         <group>
             <name>CMSIS</name>

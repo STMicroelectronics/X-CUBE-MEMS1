@@ -27,15 +27,15 @@
  */
 
 /* Private typedef -----------------------------------------------------------*/
-   
+
 /* Private define ------------------------------------------------------------*/
-   
+
 /* Private macro -------------------------------------------------------------*/
-   
+
 /* Private variables ---------------------------------------------------------*/
-   
+
 /* Private function prototypes -----------------------------------------------*/
-   
+
 /* Private functions ---------------------------------------------------------*/
 /**
  * @brief RTC MSP Initialization
@@ -54,7 +54,7 @@ void HAL_RTC_MspInit(RTC_HandleTypeDef *hrtc)
   RCC_OscInitTypeDef        RCC_OscInitStruct;
   RCC_PeriphCLKInitTypeDef  PeriphClkInitStruct;
 
-  /*##-1- Configue LSE/LSI as RTC clock source ###############################*/
+  /*##-1- Configure LSE/LSI as RTC clock source ###############################*/
   if (UseLSI == 0)
   {
     RCC_OscInitStruct.OscillatorType =  RCC_OSCILLATORTYPE_LSI | RCC_OSCILLATORTYPE_LSE;

@@ -46,9 +46,9 @@
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dso_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                         uint8_t *data,
-                         uint16_t len)
+int32_t __weak lsm6dso_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                uint8_t *data,
+                                uint16_t len)
 {
   int32_t ret;
 
@@ -67,9 +67,9 @@ int32_t lsm6dso_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dso_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                          uint8_t *data,
-                          uint16_t len)
+int32_t __weak lsm6dso_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                 uint8_t *data,
+                                 uint16_t len)
 {
   int32_t ret;
 
@@ -1303,7 +1303,7 @@ int32_t lsm6dso_timestamp_get(stmdev_ctx_t *ctx, uint8_t *val)
 /**
   * @brief  Timestamp first data output register (r).
   *         The value is expressed as a 32-bit word and the bit
-  *         resolution is 25 μs.[get]
+  *         resolution is 25 us.[get]
   *
   * @param  ctx      read / write interface definitions
   * @param  buff     buffer that stores data read

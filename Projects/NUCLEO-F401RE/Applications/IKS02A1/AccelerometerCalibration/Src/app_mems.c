@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.3.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.4.0 instances.
   ******************************************************************************
   * @attention
   *
@@ -311,8 +311,7 @@ static void AC_Data_Handler(TMsg *Msg)
 {
   uint32_t elapsed_time_us = 0U;
   uint8_t is_calibrated = 0;
-  uint32_t time_stamp_uint32;
-  MAC_input_t data_in = {.Acc[0] = 0.0f, .Acc[1] = 0.0f, .Acc[2] = 0.0f};
+  MAC_input_t data_in = {.Acc[0] = 0.0f, .Acc[1] = 0.0f, .Acc[2] = 0.0f, .TimeStamp = 0};
   MAC_output_t data_out;
   MOTION_SENSOR_Axes_t acc_comp;
   static MAC_calibration_mode_t prev_calibration_mode = DYNAMIC_CALIBRATION;
@@ -336,8 +335,8 @@ static void AC_Data_Handler(TMsg *Msg)
     data_in.Acc[0] = (float)AccValue.x / 1000.0f;
     data_in.Acc[1] = (float)AccValue.y / 1000.0f;
     data_in.Acc[2] = (float)AccValue.z / 1000.0f;
-    time_stamp_uint32 = TimeStamp * ReportInterval;
-    data_in.TimeStamp = (int)time_stamp_uint32;
+    data_in.TimeStamp = (int)TimeStamp;
+    TimeStamp += ReportInterval;
 
     /* Run Accelerometer Calibration algorithm */
     BSP_LED_On(LED2);

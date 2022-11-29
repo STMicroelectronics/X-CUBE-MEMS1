@@ -109,6 +109,7 @@ int32_t ILPS22QS_RegisterBusIO(ILPS22QS_Object_t *pObj, ILPS22QS_IO_t *pIO)
 
     pObj->Ctx.read_reg  = ReadRegWrap;
     pObj->Ctx.write_reg = WriteRegWrap;
+    pObj->Ctx.mdelay    = pIO->Delay;
     pObj->Ctx.handle    = pObj;
 
     if (pObj->IO.Init == NULL)

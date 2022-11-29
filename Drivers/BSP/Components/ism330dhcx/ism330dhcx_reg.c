@@ -45,9 +45,9 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ism330dhcx_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                            uint8_t *data,
-                            uint16_t len)
+int32_t __weak ism330dhcx_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                   uint8_t *data,
+                                   uint16_t len)
 {
   int32_t ret;
   ret = ctx->read_reg(ctx->handle, reg, data, len);
@@ -65,9 +65,9 @@ int32_t ism330dhcx_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ism330dhcx_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                             uint8_t *data,
-                             uint16_t len)
+int32_t __weak ism330dhcx_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                    uint8_t *data,
+                                    uint16_t len)
 {
   int32_t ret;
   ret = ctx->write_reg(ctx->handle, reg, data, len);
@@ -2111,7 +2111,8 @@ int32_t ism330dhcx_ln_pg_write(stmdev_ctx_t *ctx, uint16_t add,
   ism330dhcx_page_rw_t page_rw;
   ism330dhcx_page_sel_t page_sel;
   ism330dhcx_page_address_t page_address;
-  uint8_t msb, lsb;
+  uint8_t msb;
+  uint8_t lsb;
   int32_t ret;
   uint8_t i ;
   msb = (uint8_t)((add / 256U) & 0x0FU);

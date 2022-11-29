@@ -117,6 +117,7 @@ int32_t ASM330LHH_RegisterBusIO(ASM330LHH_Object_t *pObj, ASM330LHH_IO_t *pIO)
 
     pObj->Ctx.read_reg  = ReadRegWrap;
     pObj->Ctx.write_reg = WriteRegWrap;
+    pObj->Ctx.mdelay    = pIO->Delay;
     pObj->Ctx.handle   = pObj;
 
     if (pObj->IO.Init == NULL)
@@ -424,8 +425,8 @@ int32_t ASM330LHH_ACC_GetOutputDataRate(ASM330LHH_Object_t *pObj, float *Odr)
       *Odr = 208.0f;
       break;
 
-    case ASM330LHH_XL_ODR_416Hz:
-      *Odr = 416.0f;
+    case ASM330LHH_XL_ODR_417Hz:
+      *Odr = 417.0f;
       break;
 
     case ASM330LHH_XL_ODR_833Hz:
@@ -739,8 +740,8 @@ int32_t ASM330LHH_GYRO_GetOutputDataRate(ASM330LHH_Object_t *pObj, float *Odr)
       *Odr = 208.0f;
       break;
 
-    case ASM330LHH_GY_ODR_416Hz:
-      *Odr = 416.0f;
+    case ASM330LHH_GY_ODR_417Hz:
+      *Odr = 417.0f;
       break;
 
     case ASM330LHH_GY_ODR_833Hz:
@@ -1006,7 +1007,7 @@ static int32_t ASM330LHH_ACC_SetOutputDataRate_When_Enabled(ASM330LHH_Object_t *
             : (Odr <=   52.0f) ? ASM330LHH_XL_ODR_52Hz
             : (Odr <=  104.0f) ? ASM330LHH_XL_ODR_104Hz
             : (Odr <=  208.0f) ? ASM330LHH_XL_ODR_208Hz
-            : (Odr <=  416.0f) ? ASM330LHH_XL_ODR_416Hz
+            : (Odr <=  417.0f) ? ASM330LHH_XL_ODR_417Hz
             : (Odr <=  833.0f) ? ASM330LHH_XL_ODR_833Hz
             : (Odr <= 1667.0f) ? ASM330LHH_XL_ODR_1667Hz
             : (Odr <= 3333.0f) ? ASM330LHH_XL_ODR_3333Hz
@@ -1034,7 +1035,7 @@ static int32_t ASM330LHH_ACC_SetOutputDataRate_When_Disabled(ASM330LHH_Object_t 
                   : (Odr <=   52.0f) ? ASM330LHH_XL_ODR_52Hz
                   : (Odr <=  104.0f) ? ASM330LHH_XL_ODR_104Hz
                   : (Odr <=  208.0f) ? ASM330LHH_XL_ODR_208Hz
-                  : (Odr <=  416.0f) ? ASM330LHH_XL_ODR_416Hz
+                  : (Odr <=  417.0f) ? ASM330LHH_XL_ODR_417Hz
                   : (Odr <=  833.0f) ? ASM330LHH_XL_ODR_833Hz
                   : (Odr <= 1667.0f) ? ASM330LHH_XL_ODR_1667Hz
                   : (Odr <= 3333.0f) ? ASM330LHH_XL_ODR_3333Hz
@@ -1058,7 +1059,7 @@ static int32_t ASM330LHH_GYRO_SetOutputDataRate_When_Enabled(ASM330LHH_Object_t 
             : (Odr <=   52.0f) ? ASM330LHH_GY_ODR_52Hz
             : (Odr <=  104.0f) ? ASM330LHH_GY_ODR_104Hz
             : (Odr <=  208.0f) ? ASM330LHH_GY_ODR_208Hz
-            : (Odr <=  416.0f) ? ASM330LHH_GY_ODR_416Hz
+            : (Odr <=  417.0f) ? ASM330LHH_GY_ODR_417Hz
             : (Odr <=  833.0f) ? ASM330LHH_GY_ODR_833Hz
             : (Odr <= 1667.0f) ? ASM330LHH_GY_ODR_1667Hz
             : (Odr <= 3333.0f) ? ASM330LHH_GY_ODR_3333Hz
@@ -1086,7 +1087,7 @@ static int32_t ASM330LHH_GYRO_SetOutputDataRate_When_Disabled(ASM330LHH_Object_t
                    : (Odr <=   52.0f) ? ASM330LHH_GY_ODR_52Hz
                    : (Odr <=  104.0f) ? ASM330LHH_GY_ODR_104Hz
                    : (Odr <=  208.0f) ? ASM330LHH_GY_ODR_208Hz
-                   : (Odr <=  416.0f) ? ASM330LHH_GY_ODR_416Hz
+                   : (Odr <=  417.0f) ? ASM330LHH_GY_ODR_417Hz
                    : (Odr <=  833.0f) ? ASM330LHH_GY_ODR_833Hz
                    : (Odr <= 1667.0f) ? ASM330LHH_GY_ODR_1667Hz
                    : (Odr <= 3333.0f) ? ASM330LHH_GY_ODR_3333Hz

@@ -48,6 +48,7 @@ extern "C"
 typedef int32_t (*ISM303DAC_Init_Func)(void);
 typedef int32_t (*ISM303DAC_DeInit_Func)(void);
 typedef int32_t (*ISM303DAC_GetTick_Func)(void);
+typedef void    (*ISM303DAC_Delay_Func)(uint32_t);
 typedef int32_t (*ISM303DAC_WriteReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 typedef int32_t (*ISM303DAC_ReadReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 
@@ -60,6 +61,7 @@ typedef struct
   ISM303DAC_WriteReg_Func      WriteReg;
   ISM303DAC_ReadReg_Func       ReadReg;
   ISM303DAC_GetTick_Func       GetTick;
+  ISM303DAC_Delay_Func         Delay;
 } ISM303DAC_IO_t;
 
 

@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    motion_ec.h
   * @author  MEMS Application Team
-  * @version V1.4.1
-  * @date    10-August-2021
+  * @version V1.5.0
+  * @date    02-August-2022
   * @brief   Header for motion_ec module
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2017 STMicroelectronics.
+  * Copyright (c) 2022 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file

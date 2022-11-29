@@ -109,6 +109,7 @@ int32_t ILPS28QSW_RegisterBusIO(ILPS28QSW_Object_t *pObj, ILPS28QSW_IO_t *pIO)
 
     pObj->Ctx.read_reg  = ReadRegWrap;
     pObj->Ctx.write_reg = WriteRegWrap;
+    pObj->Ctx.mdelay    = pIO->Delay;
     pObj->Ctx.handle    = pObj;
 
     if (pObj->IO.Init == NULL)
@@ -370,7 +371,7 @@ int32_t ILPS28QSW_PRESS_GetPressure(ILPS28QSW_Object_t *pObj, float *Value)
     return ILPS28QSW_ERROR;
   }
 
-  *Value = data.pressure.hpa;
+  *Value = data.sample.press_hpa;
 
   return ILPS28QSW_OK;
 }

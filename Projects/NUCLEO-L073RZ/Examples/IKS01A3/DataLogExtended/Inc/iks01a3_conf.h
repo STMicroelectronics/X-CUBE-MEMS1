@@ -36,7 +36,6 @@ extern "C" {
 #define USE_IKS01A3_MOTION_SENSOR_LIS2DW12_0                    1U
 #define USE_IKS01A3_MOTION_SENSOR_LIS2MDL_0                     1U
 
-#define USE_IKS01A3_ENV_SENSOR_LPS33HW_0                        1U
 #define USE_IKS01A3_ENV_SENSOR_STTS22H_0                        1U
 #define USE_IKS01A3_ENV_SENSOR_LPS33K_0                         1U
 #define USE_IKS01A3_ENV_SENSOR_LPS22CH_0                        1U
@@ -46,30 +45,24 @@ extern "C" {
 #define USE_IKS01A3_ENV_SENSOR_ILPS28QSW_0                      1U
 #define USE_IKS01A3_ENV_SENSOR_LPS28DFW_0                       1U
 
-#define USE_IKS01A3_MOTION_SENSOR_ASM330LHH_0                   1U
 #define USE_IKS01A3_MOTION_SENSOR_IIS2DLPC_0                    1U
 #define USE_IKS01A3_MOTION_SENSOR_IIS2MDC_0                     1U
 #define USE_IKS01A3_MOTION_SENSOR_ISM303DAC_ACC_0               1U
 #define USE_IKS01A3_MOTION_SENSOR_ISM303DAC_MAG_0               1U
-#define USE_IKS01A3_MOTION_SENSOR_ISM330DLC_0                   1U
 #define USE_IKS01A3_MOTION_SENSOR_LIS2DH12_0                    1U
 #define USE_IKS01A3_MOTION_SENSOR_LSM6DSOX_0                    1U
-#define USE_IKS01A3_MOTION_SENSOR_AIS2DW12_0                    1U
 #define USE_IKS01A3_MOTION_SENSOR_LSM6DSR_0                     1U
 #define USE_IKS01A3_MOTION_SENSOR_LIS3MDL_0                     1U
-#define USE_IKS01A3_MOTION_SENSOR_A3G4250D_0                    1U
-#define USE_IKS01A3_MOTION_SENSOR_AIS328DQ_0                    1U
-#define USE_IKS01A3_MOTION_SENSOR_AIS3624DQ_0                   1U
 #define USE_IKS01A3_MOTION_SENSOR_H3LIS331DL_0                  1U
 #define USE_IKS01A3_MOTION_SENSOR_LSM6DSRX_0                    1U
 #define USE_IKS01A3_MOTION_SENSOR_ISM330DHCX_0                  1U
 #define USE_IKS01A3_MOTION_SENSOR_LSM6DSO32_0                   1U
 #define USE_IKS01A3_MOTION_SENSOR_IIS2ICLX_0                    1U
-#define USE_IKS01A3_MOTION_SENSOR_AIS2IH_0                      1U
 #define USE_IKS01A3_MOTION_SENSOR_LSM6DSO32X_0                  1U
 #define USE_IKS01A3_MOTION_SENSOR_LSM6DSOX_SENSORHUB_LIS2MDL_0  1U
 #define USE_IKS01A3_MOTION_SENSOR_LIS2DU12_0                    1U
-#define USE_IKS01A3_MOTION_SENSOR_ASM330LHHX_0                  1U
+#define USE_IKS01A3_MOTION_SENSOR_LSM6DSV16X_0                  1U
+#define USE_IKS01A3_MOTION_SENSOR_LSM6DSV16BX_0                 1U
 
 #define USE_IKS01A3_HYBRID_SENSOR_LIS2DTW12_0                   1U
 
@@ -77,6 +70,7 @@ extern "C" {
 #define IKS01A3_I2C_DeInit BSP_I2C1_DeInit
 #define IKS01A3_I2C_ReadReg BSP_I2C1_ReadReg
 #define IKS01A3_I2C_WriteReg BSP_I2C1_WriteReg
+#define IKS01A3_Delay HAL_Delay
 #define IKS01A3_GetTick BSP_GetTick
 
 #ifdef __cplusplus

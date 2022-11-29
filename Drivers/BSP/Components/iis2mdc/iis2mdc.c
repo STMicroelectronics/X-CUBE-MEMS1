@@ -100,6 +100,7 @@ int32_t IIS2MDC_RegisterBusIO(IIS2MDC_Object_t *pObj, IIS2MDC_IO_t *pIO)
 
     pObj->Ctx.read_reg  = ReadMagRegWrap;
     pObj->Ctx.write_reg = WriteMagRegWrap;
+    pObj->Ctx.mdelay    = pIO->Delay;
     pObj->Ctx.handle    = pObj;
 
     if (pObj->IO.Init == NULL)

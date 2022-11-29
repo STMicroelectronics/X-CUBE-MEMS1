@@ -110,12 +110,15 @@ typedef struct
 
 typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
 typedef struct
 {
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
+  /** Component optional fields **/
+  stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
 } stmdev_ctx_t;
@@ -526,14 +529,15 @@ typedef struct
   uint8_t fifo_ovr    :  1; /* FIFO overrun */
   uint8_t fifo_th     :  1; /* FIFO threshold reached */
 } ilps22qs_all_sources_t;
-int32_t ilps22qs_all_sources_get(stmdev_ctx_t *ctx, ilps22qs_all_sources_t *val);
+int32_t ilps22qs_all_sources_get(stmdev_ctx_t *ctx,
+                                 ilps22qs_all_sources_t *val);
 
 typedef struct
 {
   enum
   {
     ILPS22QS_1260hPa = 0x00,
-    ILPS22QS_4000hPa = 0x01,
+    ILPS22QS_4060hPa = 0x01,
   } fs;
   enum
   {
@@ -623,8 +627,10 @@ typedef struct
 {
   uint8_t int_latched  : 1; /* int events are: int on threshold, FIFO */
 } ilps22qs_int_mode_t;
-int32_t ilps22qs_interrupt_mode_set(stmdev_ctx_t *ctx, ilps22qs_int_mode_t *val);
-int32_t ilps22qs_interrupt_mode_get(stmdev_ctx_t *ctx, ilps22qs_int_mode_t *val);
+int32_t ilps22qs_interrupt_mode_set(stmdev_ctx_t *ctx,
+                                    ilps22qs_int_mode_t *val);
+int32_t ilps22qs_interrupt_mode_get(stmdev_ctx_t *ctx,
+                                    ilps22qs_int_mode_t *val);
 
 int32_t ilps22qs_ah_qvar_disable(stmdev_ctx_t *ctx);
 int32_t ilps22qs_ah_qvar_en_set(stmdev_ctx_t *ctx, uint8_t val);
@@ -633,7 +639,7 @@ int32_t ilps22qs_ah_qvar_en_get(stmdev_ctx_t *ctx, uint8_t *val);
 typedef struct
 {
   uint16_t threshold;   /* Threshold in hPa * 16 (@1260hPa)
-                         * Threshold in hPa * 8  (@4000hPa)
+                         * Threshold in hPa * 8  (@4060hPa)
                          */
   uint8_t over_th  : 1; /* Pressure data over threshold event */
   uint8_t under_th : 1; /* Pressure data under threshold event */

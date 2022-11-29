@@ -110,12 +110,15 @@ typedef struct
 
 typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
 typedef struct
 {
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
+  /** Component optional fields **/
+  stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
 } stmdev_ctx_t;
@@ -653,7 +656,7 @@ typedef struct
 {
   uint8_t int_latched  : 1; /* int events are: int on threshold, FIFO */
   uint8_t active_low   : 1; /* 1 = active low / 0 = active high */
-  uint8_t drdy_latched : 1; /* pulsed ~5 μs with enabled drdy_pres " */
+  uint8_t drdy_latched : 1; /* pulsed ~5 us with enabled drdy_pres " */
 } lps28dfw_int_mode_t;
 int32_t lps28dfw_interrupt_mode_set(stmdev_ctx_t *ctx,
                                     lps28dfw_int_mode_t *val);

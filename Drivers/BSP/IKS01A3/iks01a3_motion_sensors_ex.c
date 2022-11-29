@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2022 STMicroelectronics.
+  * Copyright (c) 2019 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -48,7 +48,7 @@ extern void *MotionCompObj[IKS01A3_MOTION_INSTANCES_NBR];
 /**
   * @brief  Get the status of data ready bit (available only for LSM6DSO, LIS2DW12, LIS2MDL, ASM330LHH,
   *         IIS2DLPC, IIS2MDC, ISM303DAC, ISM330DLC, LIS2DH12, LSM6DSOX, AIS2IH, LSM6DSO32X, LIS2DU12,
-  *         ASM330LHHX sensors)
+  *         ASM330LHHX, LSM6DSV16X, LSM6DSV16BX sensors)
   * @param  Instance the device instance
   * @param  Function Motion sensor function. Could be:
   *         - MOTION_ACCELERO or MOTION_GYRO for instance IKS01A3_LSM6DSO_0
@@ -713,6 +713,68 @@ int32_t IKS01A3_MOTION_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Functi
       break;
 #endif
 
+#if (USE_IKS01A3_MOTION_SENSOR_LSM6DSV16X_0 == 1)
+    case IKS01A3_LSM6DSV16X_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (LSM6DSV16X_ACC_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else if ((Function & MOTION_GYRO) == MOTION_GYRO)
+      {
+        if (LSM6DSV16X_GYRO_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
+#if (USE_IKS01A3_MOTION_SENSOR_LSM6DSV16BX_0 == 1)
+    case IKS01A3_LSM6DSV16BX_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (LSM6DSV16BX_ACC_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else if ((Function & MOTION_GYRO) == MOTION_GYRO)
+      {
+        if (LSM6DSV16BX_GYRO_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -723,8 +785,8 @@ int32_t IKS01A3_MOTION_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Functi
 
 /**
   * @brief  Get the register value (available only for LSM6DSO, LIS2DW12, LIS2MDL, ASM330LHH, IIS2DLPC,
-  *         IIS2MDC, ISM303DAC, ISM330DLC, LIS2DH12, LSM6DSOX, AIS2IH, LSM6DSO32X, LIS2DU12, ASM330LHHX
-  *         sensors)
+  *         IIS2MDC, ISM303DAC, ISM330DLC, LIS2DH12, LSM6DSOX, AIS2IH, LSM6DSO32X, LIS2DU12, ASM330LHHX,
+  *         LSM6DSV16X, LSM6DSV16BX sensors)
   * @param  Instance the device instance
   * @param  Reg address to be read
   * @param  Data pointer where the value is written to
@@ -1074,6 +1136,32 @@ int32_t IKS01A3_MOTION_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint
       break;
 #endif
 
+#if (USE_IKS01A3_MOTION_SENSOR_LSM6DSV16X_0 == 1)
+    case IKS01A3_LSM6DSV16X_0:
+      if (LSM6DSV16X_Read_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+#if (USE_IKS01A3_MOTION_SENSOR_LSM6DSV16BX_0 == 1)
+    case IKS01A3_LSM6DSV16BX_0:
+      if (LSM6DSV16BX_Read_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -1084,8 +1172,8 @@ int32_t IKS01A3_MOTION_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint
 
 /**
   * @brief  Set the register value (available only for LSM6DSO, LIS2DW12, LIS2MDL, ASM330LHH, IIS2DLPC,
-  *         IIS2MDC, ISM303DAC, ISM330DLC, LIS2DH12, LSM6DSOX, AIS2IH, LSM6DSO32X, LIS2DU12, ASM330LHHX
-  *         sensors)
+  *         IIS2MDC, ISM303DAC, ISM330DLC, LIS2DH12, LSM6DSOX, AIS2IH, LSM6DSO32X, LIS2DU12, ASM330LHHX,
+  *         LSM6DSV16X, LSM6DSV16BX sensors)
   * @param  Instance the device instance
   * @param  Reg address to be read
   * @param  Data value to be written
@@ -1425,6 +1513,32 @@ int32_t IKS01A3_MOTION_SENSOR_Write_Register(uint32_t Instance, uint8_t Reg, uin
 #if (USE_IKS01A3_MOTION_SENSOR_ASM330LHHX_0 == 1)
     case IKS01A3_ASM330LHHX_0:
       if (ASM330LHHX_Write_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+#if (USE_IKS01A3_MOTION_SENSOR_LSM6DSV16X_0 == 1)
+    case IKS01A3_LSM6DSV16X_0:
+      if (LSM6DSV16X_Write_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+#if (USE_IKS01A3_MOTION_SENSOR_LSM6DSV16BX_0 == 1)
+    case IKS01A3_LSM6DSV16BX_0:
+      if (LSM6DSV16BX_Write_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
       {
         ret = BSP_ERROR_COMPONENT_FAILURE;
       }

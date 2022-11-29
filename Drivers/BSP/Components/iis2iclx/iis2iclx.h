@@ -48,6 +48,7 @@ extern "C"
 typedef int32_t (*IIS2ICLX_Init_Func)(void);
 typedef int32_t (*IIS2ICLX_DeInit_Func)(void);
 typedef int32_t (*IIS2ICLX_GetTick_Func)(void);
+typedef void    (*IIS2ICLX_Delay_Func)(uint32_t);
 typedef int32_t (*IIS2ICLX_WriteReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 typedef int32_t (*IIS2ICLX_ReadReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 
@@ -66,6 +67,7 @@ typedef struct
   IIS2ICLX_WriteReg_Func     WriteReg;
   IIS2ICLX_ReadReg_Func      ReadReg;
   IIS2ICLX_GetTick_Func      GetTick;
+  IIS2ICLX_Delay_Func        Delay;
 } IIS2ICLX_IO_t;
 
 typedef struct

@@ -110,7 +110,7 @@ int ReverseByteStuffCopyByte(uint8_t *Source, uint8_t *Dest)
       *Dest = TMsg_EOF;
       return 2;
     }
-    return 0; // invalide sequence
+    return 0; // invalid sequence
   }
   else
   {

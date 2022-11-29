@@ -1177,4 +1177,3 @@ int32_t CUSTOM_MOTION_SENSOR_Set_SelfTest(uint32_t Instance, uint32_t Function, 
 
   return ret;
 }
-

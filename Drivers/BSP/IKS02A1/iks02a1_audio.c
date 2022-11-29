@@ -2,8 +2,6 @@
   ******************************************************************************
   * @file    iks02a1_audio.c
   * @author  SRA - Central Labs
-  * @version v1.0.0
-  * @date    5-July-19
   * @brief   This file provides the audio driver for the iks02a1
   *          board.
   ******************************************************************************

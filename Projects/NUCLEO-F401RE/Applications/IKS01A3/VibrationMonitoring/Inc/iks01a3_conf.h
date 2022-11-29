@@ -42,6 +42,7 @@ extern "C" {
 #define IKS01A3_I2C_ReadReg BSP_I2C1_ReadReg
 #define IKS01A3_I2C_WriteReg BSP_I2C1_WriteReg
 #define IKS01A3_GetTick BSP_GetTick
+#define IKS01A3_Delay HAL_Delay
 
 #ifdef __cplusplus
 }

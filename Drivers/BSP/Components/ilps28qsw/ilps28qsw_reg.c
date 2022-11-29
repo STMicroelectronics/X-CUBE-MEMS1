@@ -105,12 +105,12 @@ static void bytecpy(uint8_t *target, uint8_t *source)
 
 float_t ilps28qsw_from_fs1260_to_hPa(int32_t lsb)
 {
-  return ((float_t)lsb / 1048576.0f);   /* 4096.0f * 256 */
+  return ((float_t)lsb / 1048576.0f); /* 4096.0f * 256 */
 }
 
 float_t ilps28qsw_from_fs4000_to_hPa(int32_t lsb)
 {
-  return ((float_t)lsb /  524288.0f);   /* 2048.0f * 256 */
+  return ((float_t)lsb /  524288.0f); /* 2048.0f * 256 */
 }
 
 float_t ilps28qsw_from_lsb_to_celsius(int16_t lsb)
@@ -710,55 +710,30 @@ int32_t ilps28qsw_data_get(stmdev_ctx_t *ctx, ilps28qsw_md_t *md,
   ret = ilps28qsw_read_reg(ctx, ILPS28QSW_PRESS_OUT_XL, buff, 5);
 
   /* pressure conversion */
-  data->pressure.raw = (int32_t)buff[2];
-  data->pressure.raw = (data->pressure.raw * 256) + (int32_t) buff[1];
-  data->pressure.raw = (data->pressure.raw * 256) + (int32_t) buff[0];
-  data->pressure.raw = data->pressure.raw * 256;
+  data->sample.raw = (int32_t)buff[2];
+  data->sample.raw = (data->sample.raw * 256) + (int32_t) buff[1];
+  data->sample.raw = (data->sample.raw * 256) + (int32_t) buff[0];
+  data->sample.raw = data->sample.raw * 256;
 
   switch (md->fs)
   {
     case ILPS28QSW_1260hPa:
-      data->pressure.hpa = ilps28qsw_from_fs1260_to_hPa(data->pressure.raw);
+      data->sample.press_hpa = ilps28qsw_from_fs1260_to_hPa(data->sample.raw);
       break;
     case ILPS28QSW_4000hPa:
-      data->pressure.hpa = ilps28qsw_from_fs4000_to_hPa(data->pressure.raw);
+      data->sample.press_hpa = ilps28qsw_from_fs4000_to_hPa(data->sample.raw);
       break;
     default:
-      data->pressure.hpa = 0.0f;
+      data->sample.press_hpa = 0.0f;
       break;
   }
+
+  data->sample.ah_qvar_lsb = (data->sample.raw / 256); /* shift 8bit left */
 
   /* temperature conversion */
   data->heat.raw = (int16_t)buff[4];
   data->heat.raw = (data->heat.raw * 256) + (int16_t) buff[3];
   data->heat.deg_c = ilps28qsw_from_lsb_to_celsius(data->heat.raw);
-
-  return ret;
-}
-
-/**
-  * @brief  AH/QVAR data read.[get]
-  *
-  * @param  ctx   communication interface handler.(ptr)
-  * @param  md    the sensor conversion parameters.(ptr)
-  * @param  data  data retrieved from the sensor.(ptr)
-  * @retval       interface status (MANDATORY: return 0 -> no Error)
-  *
-  */
-int32_t ilps28qsw_ah_qvar_data_get(stmdev_ctx_t *ctx,
-                                   ilps28qsw_ah_qvar_data_t *data)
-{
-  uint8_t buff[5];
-  int32_t ret;
-
-  ret = ilps28qsw_read_reg(ctx, ILPS28QSW_PRESS_OUT_XL, buff, 3);
-
-  /* AH/QVAR conversion */
-  data->raw = (int32_t)buff[2];
-  data->raw = (data->raw * 256) + (int32_t) buff[1];
-  data->raw = (data->raw * 256) + (int32_t) buff[0];
-  data->raw = (data->raw * 256);
-  data->lsb = (data->raw / 256); /* shift 8bit left */
 
   return ret;
 }
@@ -903,7 +878,7 @@ int32_t ilps28qsw_fifo_level_get(stmdev_ctx_t *ctx, uint8_t *val)
   *
   */
 int32_t ilps28qsw_fifo_data_get(stmdev_ctx_t *ctx, uint8_t samp,
-                                ilps28qsw_md_t *md, ilps28qsw_fifo_data_t *data)
+                                ilps28qsw_md_t *md, ilps28qsw_data_t *data)
 {
   uint8_t fifo_data[3];
   uint8_t i;
@@ -912,24 +887,25 @@ int32_t ilps28qsw_fifo_data_get(stmdev_ctx_t *ctx, uint8_t samp,
   for (i = 0U; i < samp; i++)
   {
     ret = ilps28qsw_read_reg(ctx, ILPS28QSW_FIFO_DATA_OUT_PRESS_XL, fifo_data, 3);
-    data[i].raw = (int16_t)fifo_data[2];
-    data[i].raw = (data[i].raw * 256) + fifo_data[1];
-    data[i].raw = (data[i].raw * 256) + fifo_data[0];
-    data[i].raw = (data[i].raw * 256);
+    data[i].sample.raw = (int16_t)fifo_data[2];
+    data[i].sample.raw = (data[i].sample.raw * 256) + fifo_data[1];
+    data[i].sample.raw = (data[i].sample.raw * 256) + fifo_data[0];
+    data[i].sample.raw = (data[i].sample.raw * 256);
 
     switch (md->fs)
     {
       case ILPS28QSW_1260hPa:
-        data[i].hpa = ilps28qsw_from_fs1260_to_hPa(data[i].raw);
+        data[i].sample.press_hpa = ilps28qsw_from_fs1260_to_hPa(data[i].sample.raw);
         break;
       case ILPS28QSW_4000hPa:
-        data[i].hpa = ilps28qsw_from_fs4000_to_hPa(data[i].raw);
+        data[i].sample.press_hpa = ilps28qsw_from_fs4000_to_hPa(data[i].sample.raw);
         break;
       default:
-        data[i].hpa = 0.0f;
+        data[i].sample.press_hpa = 0.0f;
         break;
     }
 
+    data[i].sample.ah_qvar_lsb = (data[i].sample.raw / 256); /* shift 8bit left */
   }
 
   return ret;
@@ -1154,7 +1130,7 @@ int32_t ilps28qsw_reference_mode_get(stmdev_ctx_t *ctx, ilps28qsw_ref_md_t *val)
                            (uint8_t *)&interrupt_cfg, 1);
 
   switch ((interrupt_cfg.reset_az << 1) |
-          interrupt_cfg.autorefp)
+           interrupt_cfg.autorefp)
   {
     case ILPS28QSW_OUT_AND_INTERRUPT:
       val->apply_ref = ILPS28QSW_OUT_AND_INTERRUPT;

@@ -48,6 +48,7 @@ extern "C"
 typedef int32_t (*LPS27HHTW_Init_Func)(void);
 typedef int32_t (*LPS27HHTW_DeInit_Func)(void);
 typedef int32_t (*LPS27HHTW_GetTick_Func)(void);
+typedef void    (*LPS27HHTW_Delay_Func)(uint32_t);
 typedef int32_t (*LPS27HHTW_WriteReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 typedef int32_t (*LPS27HHTW_ReadReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 
@@ -60,6 +61,7 @@ typedef struct
   LPS27HHTW_WriteReg_Func    WriteReg;
   LPS27HHTW_ReadReg_Func     ReadReg;
   LPS27HHTW_GetTick_Func     GetTick;
+  LPS27HHTW_Delay_Func       Delay;
 } LPS27HHTW_IO_t;
 
 typedef struct

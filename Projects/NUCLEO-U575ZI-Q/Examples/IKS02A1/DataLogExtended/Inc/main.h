@@ -47,6 +47,7 @@ extern "C" {
 #define INTERRUPTS_ENABLED                      0x00000100U
 #define FSM_ENABLED                             0x00000200U
 #define MLC_ENABLED                             0x00000400U
+#define QVAR_ENABLED                            0x00001000U
 
 extern int UseLSI;
 extern uint32_t SensorsEnabled;

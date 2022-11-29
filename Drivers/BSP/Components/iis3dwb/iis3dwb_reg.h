@@ -108,16 +108,17 @@ typedef struct
   *
   */
 
-typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *,
-                                    uint16_t);
-typedef int32_t (*stmdev_read_ptr) (void *, uint8_t, uint8_t *,
-                                    uint16_t);
+typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
 typedef struct
 {
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
+  /** Component optional fields **/
+  stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
 } stmdev_ctx_t;
@@ -521,7 +522,7 @@ typedef struct
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t diff_fifo                : 2;
   uint8_t not_used_01              : 1;
-  uint8_t over_run_latched         : 1;
+  uint8_t fifo_ovr_latched         : 1;
   uint8_t counter_bdr_ia           : 1;
   uint8_t fifo_full_ia             : 1;
   uint8_t fifo_ovr_ia              : 1;
@@ -531,7 +532,7 @@ typedef struct
   uint8_t fifo_ovr_ia              : 1;
   uint8_t fifo_full_ia             : 1;
   uint8_t counter_bdr_ia           : 1;
-  uint8_t over_run_latched         : 1;
+  uint8_t fifo_ovr_latched         : 1;
   uint8_t not_used_01              : 1;
   uint8_t diff_fifo                : 2;
 #endif /* DRV_BYTE_ORDER */
@@ -736,7 +737,7 @@ extern float_t iis3dwb_from_lsb_to_nsec(int32_t lsb);
 typedef enum
 {
   IIS3DWB_2g   = 0,
-  IIS3DWB_16g  = 1, /* if XL_FS_MODE = ‘1’ -> IIS3DWB_2g */
+  IIS3DWB_16g  = 1, /* if XL_FS_MODE = '1' -> IIS3DWB_2g */
   IIS3DWB_4g   = 2,
   IIS3DWB_8g   = 3,
 } iis3dwb_fs_xl_t;
@@ -834,8 +835,6 @@ int32_t iis3dwb_rounding_mode_get(stmdev_ctx_t *ctx,
 int32_t iis3dwb_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val);
 
 int32_t iis3dwb_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *val);
-
-int32_t iis3dwb_fifo_out_raw_get(stmdev_ctx_t *ctx, uint8_t *buff);
 
 int32_t iis3dwb_odr_cal_reg_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t iis3dwb_odr_cal_reg_get(stmdev_ctx_t *ctx, uint8_t *val);
@@ -1082,11 +1081,11 @@ typedef enum
   IIS3DWB_DEC_1         = 1,
   IIS3DWB_DEC_8         = 2,
   IIS3DWB_DEC_32        = 3,
-} iis3dwb_odr_ts_batch_t;
-int32_t iis3dwb_fifo_timestamp_decimation_set(stmdev_ctx_t *ctx,
-                                              iis3dwb_odr_ts_batch_t val);
-int32_t iis3dwb_fifo_timestamp_decimation_get(stmdev_ctx_t *ctx,
-                                              iis3dwb_odr_ts_batch_t *val);
+} iis3dwb_fifo_timestamp_batch_t;
+int32_t iis3dwb_fifo_timestamp_batch_set(stmdev_ctx_t *ctx,
+                                              iis3dwb_fifo_timestamp_batch_t val);
+int32_t iis3dwb_fifo_timestamp_batch_get(stmdev_ctx_t *ctx,
+                                              iis3dwb_fifo_timestamp_batch_t *val);
 
 int32_t iis3dwb_rst_batch_counter_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t iis3dwb_rst_batch_counter_get(stmdev_ctx_t *ctx,
@@ -1099,23 +1098,31 @@ int32_t iis3dwb_batch_counter_threshold_get(stmdev_ctx_t *ctx,
 
 int32_t iis3dwb_fifo_data_level_get(stmdev_ctx_t *ctx, uint16_t *val);
 
-int32_t iis3dwb_fifo_status_get(stmdev_ctx_t *ctx,
-                                iis3dwb_fifo_status2_t *val);
-
-int32_t iis3dwb_fifo_full_flag_get(stmdev_ctx_t *ctx, uint8_t *val);
-
-int32_t iis3dwb_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val);
-
-int32_t iis3dwb_fifo_wtm_flag_get(stmdev_ctx_t *ctx, uint8_t *val);
-
-typedef enum
+typedef struct
 {
-  IIS3DWB_XL_TAG = 2,
-  IIS3DWB_TEMPERATURE_TAG,
-  IIS3DWB_TIMESTAMP_TAG,
-} iis3dwb_fifo_tag_t;
-int32_t iis3dwb_fifo_sensor_tag_get(stmdev_ctx_t *ctx,
-                                    iis3dwb_fifo_tag_t *val);
+  uint16_t fifo_level : 10;
+  uint8_t fifo_bdr : 1;
+  uint8_t fifo_full : 1;
+  uint8_t fifo_ovr : 1;
+  uint8_t fifo_th : 1;
+} iis3dwb_fifo_status_t;
+int32_t iis3dwb_fifo_status_get(stmdev_ctx_t *ctx,
+                                iis3dwb_fifo_status_t *val);
+
+typedef struct
+{
+  enum
+  {
+    IIS3DWB_XL_TAG = 2,
+    IIS3DWB_TEMPERATURE_TAG,
+    IIS3DWB_TIMESTAMP_TAG,
+  } tag;
+  uint8_t data[6];
+} iis3dwb_fifo_out_raw_t;
+int32_t iis3dwb_fifo_out_raw_get(stmdev_ctx_t *ctx, iis3dwb_fifo_out_raw_t *val);
+int32_t iis3dwb_fifo_out_multi_raw_get(stmdev_ctx_t *ctx,
+                                       iis3dwb_fifo_out_raw_t *fdata,
+                                       uint16_t num);
 
 /**
   *@}

@@ -175,8 +175,8 @@ void UART_StartReceiveMsg(void)
 }
 
 /**
-  * @brief  Rx Transfer completed callback.
-  * @param  huart UART handle.
+  * @brief  Rx Transfer completed callback
+  * @param  huart UART handle
   * @retval None
   */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)

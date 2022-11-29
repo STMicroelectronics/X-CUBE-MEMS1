@@ -125,6 +125,7 @@ int32_t ISM303DAC_ACC_RegisterBusIO(ISM303DAC_ACC_Object_t *pObj, ISM303DAC_IO_t
 
     pObj->Ctx.read_reg  = ReadAccRegWrap;
     pObj->Ctx.write_reg = WriteAccRegWrap;
+    pObj->Ctx.mdelay    = pIO->Delay;
     pObj->Ctx.handle    = pObj;
 
     if (pObj->IO.Init == NULL)

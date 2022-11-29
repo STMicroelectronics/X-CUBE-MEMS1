@@ -128,6 +128,7 @@ int32_t LSM303AGR_ACC_RegisterBusIO(LSM303AGR_ACC_Object_t *pObj, LSM303AGR_IO_t
 
     pObj->Ctx.read_reg  = ReadAccRegWrap;
     pObj->Ctx.write_reg = WriteAccRegWrap;
+    pObj->Ctx.mdelay    = pIO->Delay;
     pObj->Ctx.handle    = pObj;
 
     if (pObj->IO.Init == NULL)

@@ -302,8 +302,8 @@ int32_t asm330lhh_xl_data_rate_get(stmdev_ctx_t *ctx,
       *val = ASM330LHH_XL_ODR_208Hz;
       break;
 
-    case ASM330LHH_XL_ODR_416Hz:
-      *val = ASM330LHH_XL_ODR_416Hz;
+    case ASM330LHH_XL_ODR_417Hz:
+      *val = ASM330LHH_XL_ODR_417Hz;
       break;
 
     case ASM330LHH_XL_ODR_833Hz:
@@ -472,8 +472,8 @@ int32_t asm330lhh_gy_data_rate_get(stmdev_ctx_t *ctx,
       *val = ASM330LHH_GY_ODR_208Hz;
       break;
 
-    case ASM330LHH_GY_ODR_416Hz:
-      *val = ASM330LHH_GY_ODR_416Hz;
+    case ASM330LHH_GY_ODR_417Hz:
+      *val = ASM330LHH_GY_ODR_417Hz;
       break;
 
     case ASM330LHH_GY_ODR_833Hz:
@@ -611,7 +611,7 @@ int32_t asm330lhh_xl_offset_weight_get(stmdev_ctx_t *ctx,
   *[get]
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  val    Get registers ALL_INT_SRC; WAKE_UP_SRC;
-  *                              TAP_SRC; D6D_SRC; STATUS_REG;
+  *                              D6D_SRC; STATUS_REG;
   *                              EMB_FUNC_STATUS; FSM_STATUS_A/B
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
@@ -964,7 +964,7 @@ int32_t asm330lhh_timestamp_get(stmdev_ctx_t *ctx, uint8_t *val)
 /**
   * @brief  Timestamp first data output register (r).
   *         The value is expressed as a 32-bit word and the bit resolution
-  *         is 25 μs.[get]
+  *         is 25 us.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores data read
@@ -3948,8 +3948,8 @@ int32_t asm330lhh_fifo_gy_batch_get(stmdev_ctx_t *ctx,
       *val = ASM330LHH_GY_BATCHED_AT_6667Hz;
       break;
 
-    case ASM330LHH_GY_BATCHED_6Hz5:
-      *val = ASM330LHH_GY_BATCHED_6Hz5;
+    case ASM330LHH_GY_BATCHED_AT_6Hz5:
+      *val = ASM330LHH_GY_BATCHED_AT_6Hz5;
       break;
 
     default:
@@ -4131,7 +4131,7 @@ int32_t asm330lhh_fifo_timestamp_decimation_set(stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    fifo_ctrl4.odr_ts_batch = (uint8_t)val;
+    fifo_ctrl4.dec_ts_batch = (uint8_t)val;
     ret = asm330lhh_write_reg(ctx, ASM330LHH_FIFO_CTRL4,
                               (uint8_t *)&fifo_ctrl4, 1);
   }
@@ -4159,7 +4159,7 @@ int32_t asm330lhh_fifo_timestamp_decimation_get(stmdev_ctx_t *ctx,
   ret = asm330lhh_read_reg(ctx, ASM330LHH_FIFO_CTRL4,
                            (uint8_t *)&fifo_ctrl4, 1);
 
-  switch (fifo_ctrl4.odr_ts_batch)
+  switch (fifo_ctrl4.dec_ts_batch)
   {
     case ASM330LHH_NO_DECIMATION:
       *val = ASM330LHH_NO_DECIMATION;
@@ -4322,7 +4322,7 @@ int32_t asm330lhh_batch_counter_threshold_set(stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    counter_bdr_reg1.cnt_bdr_th = (uint8_t)((val / 256U) & 0x07U);
+    counter_bdr_reg1.cnt_bdr_th = (uint8_t)((val / 256U) & 0x03U);
     ret = asm330lhh_write_reg(ctx, ASM330LHH_COUNTER_BDR_REG1,
                               (uint8_t *)&counter_bdr_reg1, 1);
   }
@@ -4883,3 +4883,5 @@ int32_t asm330lhh_den_mark_axis_z_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @}
   *
   */
+
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

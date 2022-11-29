@@ -39,7 +39,7 @@
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private defines -----------------------------------------------------------*/
-#define SENSOR_NAME_MAX_LENGTH  19
+#define SENSOR_NAME_MAX_LENGTH  20
 
 /* Private macro -------------------------------------------------------------*/
 
@@ -57,25 +57,23 @@ uint32_t IsHybridTmpSensor = NOT_HYBRID_SENSOR;
 
 /* Private variables ---------------------------------------------------------*/
 /* Supported sensor names. Please verify that second index of array is HIGHER than longest string in array!!! */
-static uint8_t AccNameList[][SENSOR_NAME_MAX_LENGTH] = {"LSM6DSO", "LIS2DW12", "ASM330LHH (DIL24)", "IIS2DLPC (DIL24)",
-                                                        "ISM303DAC (DIL24)", "ISM330DLC (DIL24)", "LIS2DH12 (DIL24)",
-                                                        "LSM6DSOX (DIL24)", "AIS2DW12 (DIL24)", "LSM6DSR (DIL24)",
-                                                        "AIS328DQ (DIL24)", "AIS3624DQ (DIL24)", "H3LIS331DL (DIL24)",
-                                                        "LSM6DSRX (DIL24)", "ISM330DHCX (DIL24)", "LSM6DSO32 (DIL24)",
-                                                        "IIS2ICLX (DIL24)", "AIS2IH (DIL24)", "LSM6DSO32X (DIL24)",
-                                                        "LIS2DTW12 (DIL24)", "LIS2DU12 (DIL24)", "ASM330LHHX (DIL24)"};
-static uint8_t GyrNameList[][SENSOR_NAME_MAX_LENGTH] = {"LSM6DSO", "ASM330LHH (DIL24)", "ISM330DLC (DIL24)",
-                                                        "LSM6DSOX (DIL24)", "LSM6DSR (DIL24)", "A3G4250D (DIL24)",
-                                                        "LSM6DSRX (DIL24)", "ISM330DHCX (DIL24)", "LSM6DSO32 (DIL24)",
-                                                        "LSM6DSO32X (DIL24)", "ASM330LHHX (DIL24)"};
+static uint8_t AccNameList[][SENSOR_NAME_MAX_LENGTH] = {"LSM6DSO", "LIS2DW12", "IIS2DLPC (DIL24)", "ISM303DAC (DIL24)",
+                                                        "LIS2DH12 (DIL24)", "LSM6DSOX (DIL24)", "LSM6DSR (DIL24)",
+                                                        "H3LIS331DL (DIL24)", "LSM6DSRX (DIL24)", "ISM330DHCX (DIL24)",
+                                                        "LSM6DSO32 (DIL24)", "IIS2ICLX (DIL24)", "LSM6DSO32X (DIL24)",
+                                                        "LIS2DTW12 (DIL24)", "LIS2DU12 (DIL24)", "LSM6DSV16X (DIL24)",
+                                                        "LSM6DSV16BX (DIL24)"};
+static uint8_t GyrNameList[][SENSOR_NAME_MAX_LENGTH] = {"LSM6DSO", "LSM6DSOX (DIL24)", "LSM6DSR (DIL24)", "LSM6DSRX (DIL24)",
+                                                        "ISM330DHCX (DIL24)", "LSM6DSO32 (DIL24)", "LSM6DSO32X (DIL24)",
+                                                        "LSM6DSV16X (DIL24)", "LSM6DSV16BX (DIL24)"};
 static uint8_t MagNameList[][SENSOR_NAME_MAX_LENGTH] = {"LIS2MDL", "IIS2MDC (DIL24)", "ISM303DAC (DIL24)", "LIS3MDL (DIL24)",
                                                         "LIS2MDL SH (DIL24)"};
 static uint8_t HumNameList[][SENSOR_NAME_MAX_LENGTH] = {"HTS221"};
-static uint8_t TmpNameList[][SENSOR_NAME_MAX_LENGTH] = {"HTS221", "STTS751", "LPS22HH", "LPS33HW (DIL24)", "STTS22H (DIL24)",
-                                                        "LPS33K (DIL24)", "LPS22CH (DIL24)", "LPS27HHTW (DIL24)", "LPS22DF (DIL24)",
+static uint8_t TmpNameList[][SENSOR_NAME_MAX_LENGTH] = {"HTS221", "STTS751", "LPS22HH", "STTS22H (DIL24)", "LPS33K (DIL24)",
+                                                        "LPS22CH (DIL24)", "LPS27HHTW (DIL24)", "LPS22DF (DIL24)",
                                                         "LIS2DTW12 (DIL24)", "ILPS22QS (DIL24)", "ILPS28QSW (DIL24)",
                                                         "LPS28DFW (DIL24)"};
-static uint8_t PrsNameList[][SENSOR_NAME_MAX_LENGTH] = {"LPS22HH", "LPS33HW (DIL24)", "LPS33K (DIL24)", "LPS22CH (DIL24)",
+static uint8_t PrsNameList[][SENSOR_NAME_MAX_LENGTH] = {"LPS22HH", "LPS33K (DIL24)", "LPS22CH (DIL24)",
                                                         "LPS27HHTW (DIL24)", "LPS22DF (DIL24)", "ILPS22QS (DIL24)",
                                                         "ILPS28QSW (DIL24)", "LPS28DFW (DIL24)"};
 
@@ -83,39 +81,32 @@ static uint8_t PrsNameList[][SENSOR_NAME_MAX_LENGTH] = {"LPS22HH", "LPS33HW (DIL
 static uint32_t AccInstanceList[] = {
   IKS01A3_LSM6DSO_0,
   IKS01A3_LIS2DW12_0,
-  IKS01A3_ASM330LHH_0,
   IKS01A3_IIS2DLPC_0,
   IKS01A3_ISM303DAC_ACC_0,
-  IKS01A3_ISM330DLC_0,
   IKS01A3_LIS2DH12_0,
   IKS01A3_LSM6DSOX_0,
-  IKS01A3_AIS2DW12_0,
   IKS01A3_LSM6DSR_0,
-  IKS01A3_AIS328DQ_0,
-  IKS01A3_AIS3624DQ_0,
   IKS01A3_H3LIS331DL_0,
   IKS01A3_LSM6DSRX_0,
   IKS01A3_ISM330DHCX_0,
   IKS01A3_LSM6DSO32_0,
   IKS01A3_IIS2ICLX_0,
-  IKS01A3_AIS2IH_0,
   IKS01A3_LSM6DSO32X_0,
   IKS01A3_LIS2DTW12_0,
   IKS01A3_LIS2DU12_0,
-  IKS01A3_ASM330LHHX_0,
+  IKS01A3_LSM6DSV16X_0,
+  IKS01A3_LSM6DSV16BX_0,
 };
 static uint32_t GyrInstanceList[] = {
   IKS01A3_LSM6DSO_0,
-  IKS01A3_ASM330LHH_0,
-  IKS01A3_ISM330DLC_0,
   IKS01A3_LSM6DSOX_0,
   IKS01A3_LSM6DSR_0,
-  IKS01A3_A3G4250D_0,
   IKS01A3_LSM6DSRX_0,
   IKS01A3_ISM330DHCX_0,
   IKS01A3_LSM6DSO32_0,
   IKS01A3_LSM6DSO32X_0,
-  IKS01A3_ASM330LHHX_0,
+  IKS01A3_LSM6DSV16X_0,
+  IKS01A3_LSM6DSV16BX_0,
 };
 static uint32_t MagInstanceList[] = {
   IKS01A3_LIS2MDL_0,
@@ -131,7 +122,6 @@ static uint32_t TmpInstanceList[] = {
   IKS01A3_HTS221_0,
   IKS01A3_STTS751_0,
   IKS01A3_LPS22HH_0,
-  IKS01A3_LPS33HW_0,
   IKS01A3_STTS22H_0,
   IKS01A3_LPS33K_0,
   IKS01A3_LPS22CH_0,
@@ -144,7 +134,6 @@ static uint32_t TmpInstanceList[] = {
 };
 static uint32_t PrsInstanceList[] = {
   IKS01A3_LPS22HH_0,
-  IKS01A3_LPS33HW_0,
   IKS01A3_LPS33K_0,
   IKS01A3_LPS22CH_0,
   IKS01A3_LPS27HHTW_0,
@@ -156,32 +145,26 @@ static uint32_t PrsInstanceList[] = {
 static uint32_t HybridAccInstanceList[] = {
   NOT_HYBRID_SENSOR, /* LSM6DSO */
   NOT_HYBRID_SENSOR, /* LIS2DW12 */
-  NOT_HYBRID_SENSOR, /* ASM330LHH */
   NOT_HYBRID_SENSOR, /* IIS2DLPC */
   NOT_HYBRID_SENSOR, /* ISM303DAC_ACC */
-  NOT_HYBRID_SENSOR, /* ISM330DLC */
   NOT_HYBRID_SENSOR, /* LIS2DH12 */
   NOT_HYBRID_SENSOR, /* LSM6DSOX */
-  NOT_HYBRID_SENSOR, /* AIS2DW12 */
   NOT_HYBRID_SENSOR, /* LSM6DSR */
-  NOT_HYBRID_SENSOR, /* AIS328DQ */
-  NOT_HYBRID_SENSOR, /* AIS3624DQ */
   NOT_HYBRID_SENSOR, /* H3LIS331DL */
   NOT_HYBRID_SENSOR, /* LSM6DSRX */
   NOT_HYBRID_SENSOR, /* ISM330DHCX */
   NOT_HYBRID_SENSOR, /* LSM6DSO32 */
   NOT_HYBRID_SENSOR, /* IIS2ICLX */
-  NOT_HYBRID_SENSOR, /* AIS2IH */
   NOT_HYBRID_SENSOR, /* LSM6DSO32X */
   HYBRID_SENSOR,     /* LIS2DTW12 */
   NOT_HYBRID_SENSOR, /* LIS2DU12 */
-  NOT_HYBRID_SENSOR, /* ASM330LHHX */
+  NOT_HYBRID_SENSOR, /* LSM6DSV16X */
+  NOT_HYBRID_SENSOR, /* LSM6DSV16BX */
 };
 static uint32_t HybridTmpInstanceList[] = {
   NOT_HYBRID_SENSOR, /* HTS221 */
   NOT_HYBRID_SENSOR, /* STTS751 */
   NOT_HYBRID_SENSOR, /* LPS22HH */
-  NOT_HYBRID_SENSOR, /* LPS33HW */
   NOT_HYBRID_SENSOR, /* STTS22H */
   NOT_HYBRID_SENSOR, /* LPS33K */
   NOT_HYBRID_SENSOR, /* LPS22CH */
@@ -198,39 +181,32 @@ static uint32_t HybridTmpInstanceList[] = {
 static uint32_t AccFsList[][5] = { /* g */
   {4, 2, 4, 8, 16},                /* LSM6DSO */
   {4, 2, 4, 8, 16},                /* LIS2DW12 */
-  {4, 2, 4, 8, 16},                /* ASM330LHH */
   {4, 2, 4, 8, 16},                /* IIS2DLPC */
   {4, 2, 4, 8, 16},                /* ISM303DAC */
-  {4, 2, 4, 8, 16},                /* ISM330DLC */
   {4, 2, 4, 8, 16},                /* LIS2DH12 */
   {4, 2, 4, 8, 16},                /* LSM6DSOX */
-  {2, 2, 4},                       /* AIS2DW12 */
   {4, 2, 4, 8, 16},                /* LSM6DSR */
-  {3, 2, 4, 8},                    /* AIS328DQ */
-  {3, 6, 12, 24},                  /* AIS3624DQ */
   {3, 100, 200, 400},              /* H3LIS331DL */
   {4, 2, 4, 8, 16},                /* LSM6DSRX */
   {4, 2, 4, 8, 16},                /* ISM330DHCX */
   {4, 4, 8, 16, 32},               /* LSM6DSO32 */
   {4, 500, 1000, 2000, 3000},      /* IIS2ICLX [mg] */
-  {4, 2, 4, 8, 16},                /* AIS2IH */
   {4, 4, 8, 16, 32},               /* LSM6DSO32X */
   {4, 2, 4, 8, 16},                /* LIS2DTW12 */
   {4, 2, 4, 8, 16},                /* LIS2DU12 */
-  {4, 2, 4, 8, 16},                /* ASM330LHHX */
+  {4, 2, 4, 8, 16},                /* LSM6DSV16X */
+  {4, 2, 4, 8, 16},                /* LSM6DSV16BX */
 };
 static uint32_t GyrFsList[][7] = {      /* dps */
   {5, 125, 250, 500, 1000, 2000},       /* LSM6DSO */
-  {6, 125, 250, 500, 1000, 2000, 4000}, /* ASM330LHH */
-  {5, 125, 250, 500, 1000, 2000},       /* ISM330DLC */
   {5, 125, 250, 500, 1000, 2000},       /* LSM6DSOX */
   {6, 125, 250, 500, 1000, 2000, 4000}, /* LSM6DSR */
-  {1, 245},                             /* A3G4250D */
   {6, 125, 250, 500, 1000, 2000, 4000}, /* LSM6DSRX */
   {6, 125, 250, 500, 1000, 2000, 4000}, /* ISM330DHCX */
   {5, 125, 250, 500, 1000, 2000},       /* LSM6DSO32 */
   {5, 125, 250, 500, 1000, 2000},       /* LSM6DSO32X */
-  {6, 125, 250, 500, 1000, 2000, 4000}, /* ASM330LHHX */
+  {6, 125, 250, 500, 1000, 2000, 4000}, /* LSM6DSV16X */
+  {6, 125, 250, 500, 1000, 2000, 4000}, /* LSM6DSV16BX */
 };
 static uint32_t MagFsList[][5] = { /* Ga */
   {1, 50},                         /* LIS2MDL */
@@ -246,7 +222,6 @@ static uint32_t TmpFsList[][1] = { /* C */
   {0},                             /* HTS221 */
   {0},                             /* STTS751 */
   {0},                             /* LPS22HH */
-  {0},                             /* LPS33HW */
   {0},                             /* STTS22H */
   {0},                             /* LPS33K */
   {0},                             /* LPS22CH */
@@ -259,7 +234,6 @@ static uint32_t TmpFsList[][1] = { /* C */
 };
 static uint32_t PrsFsList[][1] = { /* Pa */
   {0},                             /* LPS22HH */
-  {0},                             /* LPS33HW */
   {0},                             /* LPS33K */
   {0},                             /* LPS22CH */
   {0},                             /* LPS27HHTW */
@@ -274,39 +248,32 @@ static uint32_t PrsFsList[][1] = { /* Pa */
 static float AccOdrList[][12] = {                                /* Hz */
   {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667},      /* LSM6DSO */
   {8, 12.5, 25, 50, 100, 200, 400, 800, 1600},                   /* LIS2DW12 */
-  {10, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667},      /* ASM330LHH */
   {8, 12.5, 25, 50, 100, 200, 400, 800, 1600},                   /* IIS2DLPC */
   {11, 1, 12.5, 25, 50, 100, 200, 400, 800, 1600, 3200, 6400},   /* ISM303DAC */
-  {10, 12.5, 26, 52, 104, 208, 416, 833, 1660, 3330, 6660},      /* ISM330DLC */
   {10, 1, 10, 25, 50, 100, 200, 400, 1344, 1620, 5376},          /* LIS2DH12 */
   {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667},      /* LSM6DSOX */
-  {5, 1.6, 12.5, 25, 50, 100},                                   /* AIS2DW12 */
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1666, 3332, 6667},      /* LSM6DSR */
-  {9, 0.5, 1, 2, 5, 10, 50, 100, 400, 1000},                     /* AIS328DQ */
-  {9, 0.5, 1, 2, 5, 10, 50, 100, 400, 1000},                     /* AIS3624DQ */
   {9, 0.5, 1, 2, 5, 10, 50, 100, 400, 1000},                     /* H3LIS331DL */
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1666, 3332, 6667},      /* LSM6DSRX */
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1666, 3332, 6667},      /* ISM330DHCX */
   {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667},      /* LSM6DSO32 */
   {7, 12.5, 26, 52, 104, 208, 416, 833},                         /* IIS2ICLX */
-  {9, 1.6, 12.5, 25, 50, 100, 200, 400, 800, 1600},              /* AIS2IH */
   {11, 1.6, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667}, /* LSM6DSO32X */
   {8, 12.5, 25, 50, 100, 200, 400, 800, 1600},                   /* LIS2DTW12 */
   {8, 6, 12.5, 25, 50, 100, 200, 400, 800},                      /* LIS2DU12 */
-  {11, 1.6, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667}, /* ASM330LHHX */
+  {11, 1.6, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667}, /* LSM6DSV16X */
+  {11, 1.6, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667}, /* LSM6DSV16BX */
 };
 static float GyrOdrList[][11] = {                           /* Hz */
   {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667}, /* LSM6DSO */
-  {10, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667}, /* ASM330LHH */
-  {10, 12.5, 26, 52, 104, 208, 416, 833, 1660, 3330, 6660}, /* ISM330DLC */
   {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667}, /* LSM6DSOX */
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1666, 3332, 6667}, /* LSM6DSR */
-  {4, 105, 208, 420, 840},                                  /* A3G4250D */
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1666, 3332, 6667}, /* LSM6DSRX */
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1666, 3332, 6667}, /* ISM330DHCX */
   {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667}, /* LSM6DSO32 */
   {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667}, /* LSM6DSO32X */
-  {10, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667}, /* ASM330LHHX */
+  {10, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667}, /* LSM6DSV16X */
+  {10, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667}, /* LSM6DSV16BX */
 };
 static float MagOdrList[][9] = {            /* Hz */
   {4, 10, 20, 50, 100},                     /* LIS2MDL */
@@ -322,7 +289,6 @@ static float TmpOdrList[][11] = {                     /* Hz */
   {3, 1, 7, 12.5},                                    /* HTS221 */
   {10, 0.0625, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16, 32}, /* STTS751 */
   {7, 1, 10, 25, 50, 75, 100, 200},                   /* LPS22HH */
-  {5, 1, 10, 25, 50, 75},                             /* LPS33HW */
   {5, 1, 25, 50, 100, 200},                           /* STTS22H */
   {5, 1, 10, 25, 50, 75},                             /* LPS33K */
   {7, 1, 10, 25, 50, 75, 100, 200},                   /* LPS22CH */
@@ -335,7 +301,6 @@ static float TmpOdrList[][11] = {                     /* Hz */
 };
 static float PrsOdrList[][9] = {       /* Hz */
   {7, 1, 10, 25, 50, 75, 100, 200},    /* LPS22HH */
-  {5, 1, 10, 25, 50, 75},              /* LPS33HW */
   {5, 1, 10, 25, 50, 75},              /* LPS33K */
   {7, 1, 10, 25, 50, 75, 100, 200},    /* LPS22CH */
   {7, 1, 10, 25, 50, 75, 100, 200},    /* LPS27HHTW */
@@ -1517,10 +1482,14 @@ static void DIL24_INT1_Init(void)
 
   GPIO_InitTypeDef GPIO_InitStruct;
 
-  GPIO_InitStruct.Pin = GPIO_PIN_0;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pin  = GPIO_PIN_0;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /* Enable and set Button EXTI Interrupt to the lowest priority */
+  HAL_NVIC_SetPriority(EXTI0_1_IRQn, 0x0F, 0x00);
+  HAL_NVIC_EnableIRQ(EXTI0_1_IRQn);
 }
 
 /**

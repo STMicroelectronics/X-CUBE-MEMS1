@@ -48,6 +48,7 @@ extern "C"
 typedef int32_t (*LSM6DSRX_Init_Func)(void);
 typedef int32_t (*LSM6DSRX_DeInit_Func)(void);
 typedef int32_t (*LSM6DSRX_GetTick_Func)(void);
+typedef void    (*LSM6DSRX_Delay_Func)(uint32_t);
 typedef int32_t (*LSM6DSRX_WriteReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 typedef int32_t (*LSM6DSRX_ReadReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 
@@ -66,6 +67,7 @@ typedef struct
   LSM6DSRX_WriteReg_Func     WriteReg;
   LSM6DSRX_ReadReg_Func      ReadReg;
   LSM6DSRX_GetTick_Func      GetTick;
+  LSM6DSRX_Delay_Func        Delay;
 } LSM6DSRX_IO_t;
 
 

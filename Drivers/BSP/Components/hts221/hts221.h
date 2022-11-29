@@ -48,6 +48,7 @@ extern "C"
 typedef int32_t (*HTS221_Init_Func)(void);
 typedef int32_t (*HTS221_DeInit_Func)(void);
 typedef int32_t (*HTS221_GetTick_Func)(void);
+typedef void    (*HTS221_Delay_Func)(uint32_t);
 typedef int32_t (*HTS221_WriteReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 typedef int32_t (*HTS221_ReadReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 
@@ -60,6 +61,7 @@ typedef struct
   HTS221_WriteReg_Func      WriteReg;
   HTS221_ReadReg_Func       ReadReg;
   HTS221_GetTick_Func       GetTick;
+  HTS221_Delay_Func         Delay;
 } HTS221_IO_t;
 
 typedef struct

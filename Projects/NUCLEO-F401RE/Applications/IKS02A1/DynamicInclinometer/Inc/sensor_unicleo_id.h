@@ -57,9 +57,10 @@ extern "C" {
 #define LIS2DTW12_UNICLEO_ID_ACC    28
 #define ISM330IS_UNICLEO_ID         29
 #define LIS2DU12_UNICLEO_ID         30
-#define RESERVED_UNICLEO_ID         31
+#define LSM6DSV16X_UNICLEO_ID       31
 #define LSM6DSO16IS_UNICLEO_ID      32
 #define ASM330LHHX_UNICLEO_ID       33
+#define LSM6DSV16BX_UNICLEO_ID      34
 
 #define LIS3MDL_UNICLEO_ID          1
 #define LSM303AGR_UNICLEO_ID_MAG    2

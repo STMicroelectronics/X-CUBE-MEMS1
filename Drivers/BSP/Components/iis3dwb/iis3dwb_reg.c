@@ -83,6 +83,26 @@ int32_t iis3dwb_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
   */
 
 /**
+  * @defgroup  Private functions
+  * @brief     Section collect all the utility functions needed by APIs.
+  * @{
+  *
+  */
+
+static void bytecpy(uint8_t *target, uint8_t *source)
+{
+  if ((target != NULL) && (source != NULL))
+  {
+    *target = *source;
+  }
+}
+
+/**
+  * @}
+  *
+  */
+
+/**
   * @defgroup    IIS3DWB_Sensitivity
   * @brief       These functions convert raw-data into engineering units.
   * @{
@@ -556,7 +576,7 @@ int32_t iis3dwb_temp_flag_data_ready_get(stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer X-axis user offset correction expressed in two’s
+  * @brief  Accelerometer X-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[set]
   *
@@ -575,7 +595,7 @@ int32_t iis3dwb_xl_usr_offset_x_set(stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer X-axis user offset correction expressed in two’s
+  * @brief  Accelerometer X-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[get]
   *
@@ -594,7 +614,7 @@ int32_t iis3dwb_xl_usr_offset_x_get(stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer Y-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Y-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[set]
   *
@@ -613,7 +633,7 @@ int32_t iis3dwb_xl_usr_offset_y_set(stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer Y-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Y-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[get]
   *
@@ -632,7 +652,7 @@ int32_t iis3dwb_xl_usr_offset_y_get(stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer Z-axis user offset correction expressed in two’s
+  * @brief  Accelerometer Z-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[set]
   *
@@ -651,7 +671,7 @@ int32_t iis3dwb_xl_usr_offset_z_set(stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer X-axis user offset correction expressed in two’s
+  * @brief  Accelerometer X-axis user offset correction expressed in two's
   *         complement, weight depends on USR_OFF_W in CTRL6_C (15h).
   *         The value must be in the range [-127 127].[get]
   *
@@ -742,7 +762,7 @@ int32_t iis3dwb_timestamp_get(stmdev_ctx_t *ctx, uint8_t *val)
 /**
   * @brief  Timestamp first data output register (r).
   *         The value is expressed as a 32-bit word and the bit resolution
-  *         is 25 μs.[get]
+  *         is 25 us.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores data read
@@ -836,7 +856,7 @@ int32_t iis3dwb_rounding_mode_get(stmdev_ctx_t *ctx,
 
 /**
   * @brief  Temperature data output register (r).
-  *         L and H registers together express a 16-bit word in two’s
+  *         L and H registers together express a 16-bit word in two's
   *         complement.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
@@ -858,7 +878,7 @@ int32_t iis3dwb_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val)
 
 /**
   * @brief  Linear acceleration output register. The value is expressed as a
-  *         16-bit word in two’s complement.[get]
+  *         16-bit word in two's complement.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores data read
@@ -889,11 +909,64 @@ int32_t iis3dwb_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t iis3dwb_fifo_out_raw_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t iis3dwb_fifo_out_raw_get(stmdev_ctx_t *ctx, iis3dwb_fifo_out_raw_t *val)
+{
+  iis3dwb_fifo_data_out_tag_t fifo_data_out_tag;
+  uint8_t buff[7];
+  int32_t ret;
+
+  ret = iis3dwb_read_reg(ctx, IIS3DWB_FIFO_DATA_OUT_TAG, buff,
+                         sizeof(iis3dwb_fifo_out_raw_t));
+  bytecpy((uint8_t*)&fifo_data_out_tag, &buff[0]);
+
+  switch (fifo_data_out_tag.tag_sensor)
+  {
+    case IIS3DWB_XL_TAG:
+      val->tag = IIS3DWB_XL_TAG;
+      break;
+
+    case IIS3DWB_TEMPERATURE_TAG:
+      val->tag = IIS3DWB_TEMPERATURE_TAG;
+      break;
+
+    case IIS3DWB_TIMESTAMP_TAG:
+      val->tag = IIS3DWB_TIMESTAMP_TAG;
+      break;
+
+    default:
+      val->tag = IIS3DWB_XL_TAG;
+      break;
+  }
+
+  val->data[0] = buff[1];
+  val->data[1] = buff[2];
+  val->data[2] = buff[3];
+  val->data[3] = buff[4];
+  val->data[4] = buff[5];
+  val->data[5] = buff[6];
+
+  return ret;
+}
+
+/**
+  * @brief  FIFO data multi output.[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  buff   Buffer that stores data read
+  * @param  num    Number of FIFO entries to be read
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
+int32_t iis3dwb_fifo_out_multi_raw_get(stmdev_ctx_t *ctx,
+                                       iis3dwb_fifo_out_raw_t *fdata,
+                                       uint16_t num)
 {
   int32_t ret;
 
-  ret = iis3dwb_read_reg(ctx, IIS3DWB_FIFO_DATA_OUT_X_L, buff, 6);
+  /* read out all FIFO entries in a single read */
+  ret = iis3dwb_read_reg(ctx, IIS3DWB_FIFO_DATA_OUT_TAG,
+                         (uint8_t *)fdata,
+                         sizeof(iis3dwb_fifo_out_raw_t) * num);
 
   return ret;
 }
@@ -2818,8 +2891,8 @@ int32_t iis3dwb_fifo_temp_batch_get(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t iis3dwb_fifo_timestamp_decimation_set(stmdev_ctx_t *ctx,
-                                              iis3dwb_odr_ts_batch_t val)
+int32_t iis3dwb_fifo_timestamp_batch_set(stmdev_ctx_t *ctx,
+                                         iis3dwb_fifo_timestamp_batch_t val)
 {
   iis3dwb_fifo_ctrl4_t fifo_ctrl4;
   int32_t ret;
@@ -2848,8 +2921,8 @@ int32_t iis3dwb_fifo_timestamp_decimation_set(stmdev_ctx_t *ctx,
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
-int32_t iis3dwb_fifo_timestamp_decimation_get(stmdev_ctx_t *ctx,
-                                              iis3dwb_odr_ts_batch_t *val)
+int32_t iis3dwb_fifo_timestamp_batch_get(stmdev_ctx_t *ctx,
+                                         iis3dwb_fifo_timestamp_batch_t *val)
 {
   iis3dwb_fifo_ctrl4_t fifo_ctrl4;
   int32_t ret;
@@ -2885,7 +2958,7 @@ int32_t iis3dwb_fifo_timestamp_decimation_get(stmdev_ctx_t *ctx,
 
 /**
   * @brief  Resets the internal counter of batching events for a single sensor.
-  *         This bit is automatically reset to zero if it was set to ‘1’.[set]
+  *         This bit is automatically reset to zero if it was set to '1'.[set]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  val    Change the values of rst_counter_bdr in reg COUNTER_BDR_REG1
@@ -2912,7 +2985,7 @@ int32_t iis3dwb_rst_batch_counter_set(stmdev_ctx_t *ctx, uint8_t val)
 
 /**
   * @brief  Resets the internal counter of batching events for a single sensor.
-  *         This bit is automatically reset to zero if it was set to ‘1’.[get]
+  *         This bit is automatically reset to zero if it was set to '1'.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  val    Change the values of rst_counter_bdr in reg COUNTER_BDR_REG1
@@ -3037,119 +3110,25 @@ int32_t iis3dwb_fifo_data_level_get(stmdev_ctx_t *ctx, uint16_t *val)
   *
   */
 int32_t iis3dwb_fifo_status_get(stmdev_ctx_t *ctx,
-                                iis3dwb_fifo_status2_t *val)
+                                iis3dwb_fifo_status_t *val)
 {
+  uint8_t buff[2];
+  iis3dwb_fifo_status2_t status;
   int32_t ret;
 
-  ret = iis3dwb_read_reg(ctx, IIS3DWB_FIFO_STATUS2, (uint8_t *)val, 1);
+  ret = iis3dwb_read_reg(ctx, IIS3DWB_FIFO_STATUS1, (uint8_t *)&buff[0], 2);
+  bytecpy((uint8_t *)&status, &buff[1]);
+
+  val->fifo_bdr = status.counter_bdr_ia;
+  val->fifo_ovr = status.fifo_ovr_ia | status.fifo_ovr_latched;
+  val->fifo_full = status.fifo_full_ia;
+  val->fifo_th = status.fifo_wtm_ia;
+
+  val->fifo_level = (uint16_t)buff[1] & 0x03U;
+  val->fifo_level = (val->fifo_level * 256U) + buff[0];
 
   return ret;
 }
-
-/**
-  * @brief  Smart FIFO full status.[get]
-  *
-  * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Change the values of fifo_full_ia in reg FIFO_STATUS2
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
-int32_t iis3dwb_fifo_full_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
-{
-  iis3dwb_fifo_status2_t fifo_status2;
-  int32_t ret;
-
-  ret = iis3dwb_read_reg(ctx, IIS3DWB_FIFO_STATUS2,
-                         (uint8_t *)&fifo_status2, 1);
-  *val = fifo_status2.fifo_full_ia;
-
-  return ret;
-}
-
-/**
-  * @brief  FIFO overrun status.[get]
-  *
-  * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Change the values of  fifo_over_run_latched in
-  *                reg FIFO_STATUS2
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
-int32_t iis3dwb_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
-{
-  iis3dwb_fifo_status2_t fifo_status2;
-  int32_t ret;
-
-  ret = iis3dwb_read_reg(ctx, IIS3DWB_FIFO_STATUS2,
-                         (uint8_t *)&fifo_status2, 1);
-  *val = fifo_status2. fifo_ovr_ia;
-
-  return ret;
-}
-
-/**
-  * @brief  FIFO watermark status.[get]
-  *
-  * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Change the values of fifo_wtm_ia in reg FIFO_STATUS2
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
-int32_t iis3dwb_fifo_wtm_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
-{
-  iis3dwb_fifo_status2_t fifo_status2;
-  int32_t ret;
-
-  ret = iis3dwb_read_reg(ctx, IIS3DWB_FIFO_STATUS2,
-                         (uint8_t *)&fifo_status2, 1);
-  *val = fifo_status2.fifo_wtm_ia;
-
-  return ret;
-}
-
-/**
-  * @brief  Identifies the sensor in FIFO_DATA_OUT.[get]
-  *
-  * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Change the values of tag_sensor in reg FIFO_DATA_OUT_TAG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
-int32_t iis3dwb_fifo_sensor_tag_get(stmdev_ctx_t *ctx,
-                                    iis3dwb_fifo_tag_t *val)
-{
-  iis3dwb_fifo_data_out_tag_t fifo_data_out_tag;
-  int32_t ret;
-
-  ret = iis3dwb_read_reg(ctx, IIS3DWB_FIFO_DATA_OUT_TAG,
-                         (uint8_t *)&fifo_data_out_tag, 1);
-
-  switch (fifo_data_out_tag.tag_sensor)
-  {
-    case IIS3DWB_XL_TAG:
-      *val = IIS3DWB_XL_TAG;
-      break;
-
-    case IIS3DWB_TEMPERATURE_TAG:
-      *val = IIS3DWB_TEMPERATURE_TAG;
-      break;
-
-    case IIS3DWB_TIMESTAMP_TAG:
-      *val = IIS3DWB_TIMESTAMP_TAG;
-      break;
-
-    default:
-      *val = IIS3DWB_XL_TAG;
-      break;
-  }
-
-  return ret;
-}
-
-/**
-  * @}
-  *
-  */
 
 /**
   * @}

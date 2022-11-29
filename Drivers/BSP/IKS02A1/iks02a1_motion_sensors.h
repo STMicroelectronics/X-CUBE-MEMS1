@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2022 STMicroelectronics.
+  * Copyright (c) 2019 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -48,6 +48,14 @@ extern "C" {
 #define USE_IKS02A1_MOTION_SENSOR_ASM330LHHX_0       0
 #endif
 
+#ifndef USE_IKS02A1_MOTION_SENSOR_LSM6DSV16X_0
+#define USE_IKS02A1_MOTION_SENSOR_LSM6DSV16X_0       0
+#endif
+
+#ifndef USE_IKS02A1_MOTION_SENSOR_LSM6DSV16BX_0
+#define USE_IKS02A1_MOTION_SENSOR_LSM6DSV16BX_0      0
+#endif
+
 #if (USE_IKS02A1_MOTION_SENSOR_ISM330DHCX_0 == 1)
 #include "ism330dhcx.h"
 #endif
@@ -66,6 +74,14 @@ extern "C" {
 
 #if (USE_IKS02A1_MOTION_SENSOR_ASM330LHHX_0 == 1)
 #include "asm330lhhx.h"
+#endif
+
+#if (USE_IKS02A1_MOTION_SENSOR_LSM6DSV16X_0 == 1)
+#include "lsm6dsv16x.h"
+#endif
+
+#if (USE_IKS02A1_MOTION_SENSOR_LSM6DSV16BX_0 == 1)
+#include "lsm6dsv16bx.h"
 #endif
 
 /** @addtogroup BSP BSP
@@ -147,9 +163,26 @@ typedef struct
 
 #if (USE_IKS02A1_MOTION_SENSOR_ASM330LHHX_0 == 1)
 #define IKS02A1_ASM330LHHX_0  (USE_IKS02A1_MOTION_SENSOR_ISM330DHCX_0 + \
-                             USE_IKS02A1_MOTION_SENSOR_IIS2DLPC_0 + \
-                             USE_IKS02A1_MOTION_SENSOR_IIS2MDC_0 + \
-                             USE_IKS02A1_MOTION_SENSOR_IIS2ICLX_0)
+                               USE_IKS02A1_MOTION_SENSOR_IIS2DLPC_0 + \
+                               USE_IKS02A1_MOTION_SENSOR_IIS2MDC_0 + \
+                               USE_IKS02A1_MOTION_SENSOR_IIS2ICLX_0)
+#endif
+
+#if (USE_IKS02A1_MOTION_SENSOR_LSM6DSV16X_0 == 1)
+#define IKS02A1_LSM6DSV16X_0  (USE_IKS02A1_MOTION_SENSOR_ISM330DHCX_0 + \
+                               USE_IKS02A1_MOTION_SENSOR_IIS2DLPC_0 + \
+                               USE_IKS02A1_MOTION_SENSOR_IIS2MDC_0 + \
+                               USE_IKS02A1_MOTION_SENSOR_IIS2ICLX_0 + \
+                               USE_IKS02A1_MOTION_SENSOR_ASM330LHHX_0)
+#endif
+
+#if (USE_IKS02A1_MOTION_SENSOR_LSM6DSV16BX_0 == 1)
+#define IKS02A1_LSM6DSV16BX_0  (USE_IKS02A1_MOTION_SENSOR_ISM330DHCX_0 + \
+                                USE_IKS02A1_MOTION_SENSOR_IIS2DLPC_0 + \
+                                USE_IKS02A1_MOTION_SENSOR_IIS2MDC_0 + \
+                                USE_IKS02A1_MOTION_SENSOR_IIS2ICLX_0 + \
+                                USE_IKS02A1_MOTION_SENSOR_ASM330LHHX_0 + \
+                                USE_IKS02A1_MOTION_SENSOR_LSM6DSV16X_0)
 #endif
 
 #ifndef MOTION_GYRO
@@ -167,7 +200,9 @@ typedef struct
                                          USE_IKS02A1_MOTION_SENSOR_IIS2DLPC_0 + \
                                          USE_IKS02A1_MOTION_SENSOR_IIS2MDC_0 + \
                                          USE_IKS02A1_MOTION_SENSOR_IIS2ICLX_0 + \
-                                         USE_IKS02A1_MOTION_SENSOR_ASM330LHHX_0)
+                                         USE_IKS02A1_MOTION_SENSOR_ASM330LHHX_0 + \
+                                         USE_IKS02A1_MOTION_SENSOR_LSM6DSV16X_0 + \
+                                         USE_IKS02A1_MOTION_SENSOR_LSM6DSV16BX_0)
 
 #if (IKS02A1_MOTION_INSTANCES_NBR == 0)
 #error "No motion sensor instance has been selected"

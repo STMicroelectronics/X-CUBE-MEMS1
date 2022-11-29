@@ -48,6 +48,7 @@ extern "C"
 typedef int32_t (*ISM330DLC_Init_Func)(void);
 typedef int32_t (*ISM330DLC_DeInit_Func)(void);
 typedef int32_t (*ISM330DLC_GetTick_Func)(void);
+typedef void    (*ISM330DLC_Delay_Func)(uint32_t);
 typedef int32_t (*ISM330DLC_WriteReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 typedef int32_t (*ISM330DLC_ReadReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 
@@ -66,6 +67,7 @@ typedef struct
   ISM330DLC_WriteReg_Func      WriteReg;
   ISM330DLC_ReadReg_Func       ReadReg;
   ISM330DLC_GetTick_Func       GetTick;
+  ISM330DLC_Delay_Func         Delay;
 } ISM330DLC_IO_t;
 
 typedef struct

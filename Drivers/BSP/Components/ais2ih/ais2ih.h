@@ -48,6 +48,7 @@ extern "C"
 typedef int32_t (*AIS2IH_Init_Func)(void);
 typedef int32_t (*AIS2IH_DeInit_Func)(void);
 typedef int32_t (*AIS2IH_GetTick_Func)(void);
+typedef void    (*AIS2IH_Delay_Func)(uint32_t);
 typedef int32_t (*AIS2IH_WriteReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 typedef int32_t (*AIS2IH_ReadReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 
@@ -66,6 +67,7 @@ typedef struct
   AIS2IH_WriteReg_Func     WriteReg;
   AIS2IH_ReadReg_Func      ReadReg;
   AIS2IH_GetTick_Func      GetTick;
+  AIS2IH_Delay_Func        Delay;
 } AIS2IH_IO_t;
 
 

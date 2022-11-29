@@ -39,7 +39,7 @@
 volatile uint8_t DataLoggerActive;
 
 /* Private variables ---------------------------------------------------------*/
-static uint8_t PresentationString[] = {"MEMS shield demo,101,9.3.0,0.0.0,IKS01A2"};
+static uint8_t PresentationString[] = {"MEMS shield demo,101,9.4.0,0.0.0,IKS01A2"};
 static volatile uint8_t DataStreamingDest = 1;
 
 /* Private function prototypes -----------------------------------------------*/

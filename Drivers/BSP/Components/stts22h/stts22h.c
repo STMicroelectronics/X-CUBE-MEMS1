@@ -96,6 +96,7 @@ int32_t STTS22H_RegisterBusIO(STTS22H_Object_t *pObj, STTS22H_IO_t *pIO)
 
     pObj->Ctx.read_reg  = ReadRegWrap;
     pObj->Ctx.write_reg = WriteRegWrap;
+    pObj->Ctx.mdelay    = pIO->Delay;
     pObj->Ctx.handle   = pObj;
 
     if (pObj->IO.Init != NULL)

@@ -48,6 +48,7 @@ extern "C"
 typedef int32_t (*ISM330DHCX_Init_Func)(void);
 typedef int32_t (*ISM330DHCX_DeInit_Func)(void);
 typedef int32_t (*ISM330DHCX_GetTick_Func)(void);
+typedef void    (*ISM330DHCX_Delay_Func)(uint32_t);
 typedef int32_t (*ISM330DHCX_WriteReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 typedef int32_t (*ISM330DHCX_ReadReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 
@@ -66,6 +67,7 @@ typedef struct
   ISM330DHCX_WriteReg_Func      WriteReg;
   ISM330DHCX_ReadReg_Func       ReadReg;
   ISM330DHCX_GetTick_Func       GetTick;
+  ISM330DHCX_Delay_Func         Delay;
 } ISM330DHCX_IO_t;
 
 typedef struct

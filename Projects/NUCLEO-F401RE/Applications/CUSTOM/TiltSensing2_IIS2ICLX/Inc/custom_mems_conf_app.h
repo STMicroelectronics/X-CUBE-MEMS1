@@ -766,6 +766,52 @@ extern "C" {
   #endif
 #endif
 
+#ifdef USE_CUSTOM_MOTION_SENSOR_LSM6DSV16X_0
+  #if (USE_CUSTOM_MOTION_SENSOR_LSM6DSV16X_0 == 1)
+    #ifndef CUSTOM_ACC_INSTANCE_0
+      #define CUSTOM_ACC_INSTANCE_0 CUSTOM_LSM6DSV16X_0
+      #define CUSTOM_ACC_INSTANCE_NAME_0 "LSM6DSV16X"
+      #define CUSTOM_ACC_INSTANCE_ODR_0 {12, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680} /* Hz */
+      #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
+      #ifndef ACC_GYR_UNICLEO_ID
+        #define ACC_GYR_UNICLEO_ID LSM6DSV16X_UNICLEO_ID
+      #endif
+    #endif
+    #ifndef CUSTOM_GYR_INSTANCE_0
+      #define CUSTOM_GYR_INSTANCE_0 CUSTOM_LSM6DSV16X_0
+      #define CUSTOM_GYR_INSTANCE_NAME_0 "LSM6DSV16X"
+      #define CUSTOM_GYR_INSTANCE_ODR_0 {11, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680} /* Hz */
+      #define CUSTOM_GYR_INSTANCE_FS_0 {6, 125, 250, 500, 1000, 2000, 4000} /* dps */
+      #ifndef ACC_GYR_UNICLEO_ID
+        #define ACC_GYR_UNICLEO_ID LSM6DSV16X_UNICLEO_ID
+      #endif
+    #endif
+  #endif
+#endif
+
+#ifdef USE_CUSTOM_MOTION_SENSOR_LSM6DSV16BX_0
+  #if (USE_CUSTOM_MOTION_SENSOR_LSM6DSV16BX_0 == 1)
+    #ifndef CUSTOM_ACC_INSTANCE_0
+      #define CUSTOM_ACC_INSTANCE_0 CUSTOM_LSM6DSV16BX_0
+      #define CUSTOM_ACC_INSTANCE_NAME_0 "LSM6DSV16BX"
+      #define CUSTOM_ACC_INSTANCE_ODR_0 {12, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680} /* Hz */
+      #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
+      #ifndef ACC_GYR_UNICLEO_ID
+        #define ACC_GYR_UNICLEO_ID LSM6DSV16BX_UNICLEO_ID
+      #endif
+    #endif
+    #ifndef CUSTOM_GYR_INSTANCE_0
+      #define CUSTOM_GYR_INSTANCE_0 CUSTOM_LSM6DSV16BX_0
+      #define CUSTOM_GYR_INSTANCE_NAME_0 "LSM6DSV16BX"
+      #define CUSTOM_GYR_INSTANCE_ODR_0 {11, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680} /* Hz */
+      #define CUSTOM_GYR_INSTANCE_FS_0 {6, 125, 250, 500, 1000, 2000, 4000} /* dps */
+      #ifndef ACC_GYR_UNICLEO_ID
+        #define ACC_GYR_UNICLEO_ID LSM6DSV16BX_UNICLEO_ID
+      #endif
+    #endif
+  #endif
+#endif
+
 #ifdef __cplusplus
 }
 #endif

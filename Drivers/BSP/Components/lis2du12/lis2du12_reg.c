@@ -415,51 +415,58 @@ int32_t lis2du12_pin_conf_get(stmdev_ctx_t *ctx, lis2du12_pin_conf_t *val)
 int32_t lis2du12_all_sources_get(stmdev_ctx_t *ctx,
                                  lis2du12_all_sources_t *val)
 {
-  lis2du12_status_register_t status_register;
-  lis2du12_fifo_status1_t fifo_status1;
-  lis2du12_fifo_status2_t fifo_status2;
   lis2du12_all_int_src_t all_int_src;
-  lis2du12_wake_up_src_t wake_up_src;
-  lis2du12_sixd_src_t sixd_src;
-  lis2du12_tap_src_t tap_src;
-  uint8_t reg[7];
-  int32_t ret;
+  int32_t ret = 0;
 
-  ret = lis2du12_read_reg(ctx, LIS2DU12_WAKE_UP_SRC, (uint8_t *)&reg, 7);
+  ret = lis2du12_read_reg(ctx, LIS2DU12_ALL_INT_SRC, (uint8_t *)&all_int_src, 1);
+  if (ret == 0 && all_int_src.int_global == 1)
+  {
+    val->free_fall    = all_int_src.ff_ia_all;
 
-  bytecpy((uint8_t *)&wake_up_src, &reg[0]);
-  bytecpy((uint8_t *)&tap_src, &reg[1]);
-  bytecpy((uint8_t *)&sixd_src, &reg[2]);
-  bytecpy((uint8_t *)&all_int_src, &reg[3]);
-  bytecpy((uint8_t *)&status_register, &reg[4]);
-  bytecpy((uint8_t *)&fifo_status1, &reg[5]);
-  bytecpy((uint8_t *)&fifo_status2, &reg[6]);
+    if (all_int_src.d6d_ia_all)
+    {
+      lis2du12_sixd_src_t sixd_src;
 
-  val->base_int     = all_int_src.int_global;
-  val->drdy_xl      = status_register.drdy;
-  val->free_fall    = all_int_src.ff_ia_all;
-  val->wake_up      = all_int_src.wu_ia_all;
-  val->wake_up_z    = wake_up_src.z_wu;
-  val->wake_up_y    = wake_up_src.y_wu;
-  val->wake_up_x    = wake_up_src.x_wu;
-  val->single_tap   = all_int_src.single_tap_all;
-  val->double_tap   = all_int_src.double_tap_all;
-  val->tap_z        = tap_src.z_tap;
-  val->tap_y        = tap_src.y_tap;
-  val->tap_x        = tap_src.x_tap;
-  val->tap_sign     = tap_src.tap_ia;
-  val->six_d        = all_int_src.sixd_ia_all;
-  val->six_d_xl     = sixd_src.xl;
-  val->six_d_xh     = sixd_src.xh;
-  val->six_d_yl     = sixd_src.yl;
-  val->six_d_yh     = sixd_src.yh;
-  val->six_d_zl     = sixd_src.zl;
-  val->six_d_zh     = sixd_src.zh;
-  val->sleep_change = wake_up_src.sleep_change_ia;
-  val->sleep_state  = wake_up_src.sleep_state;
-  val->fifo_full    = (fifo_status2.fss & 0x80U) >> 7;
-  val->fifo_ovr     = fifo_status1.fifo_ovr;
-  val->fifo_th      = fifo_status1.fth;
+      ret = lis2du12_read_reg(ctx, LIS2DU12_SIXD_SRC, (uint8_t *)&sixd_src, 1);
+
+      val->six_d = 1;
+      val->six_d_xl = sixd_src.xl;
+      val->six_d_xh = sixd_src.xh;
+      val->six_d_yl = sixd_src.yl;
+      val->six_d_yh = sixd_src.yh;
+      val->six_d_zl = sixd_src.zl;
+      val->six_d_zh = sixd_src.zh;
+    }
+
+    if (all_int_src.wu_ia_all == 1 || all_int_src.sleep_change_ia_all)
+    {
+      lis2du12_wake_up_src_t wu_src;
+
+      ret = lis2du12_read_reg(ctx, LIS2DU12_WAKE_UP_SRC, (uint8_t *)&wu_src, 1);
+
+      val->wake_up = wu_src.wu_ia;
+      val->wake_up_z = wu_src.z_wu;
+      val->wake_up_y = wu_src.y_wu;
+      val->wake_up_x = wu_src.z_wu;
+
+      val->sleep_change = wu_src.sleep_change_ia;
+      val->sleep_state = wu_src.sleep_state;
+    }
+
+    if (all_int_src.single_tap_all || all_int_src.double_tap_all)
+    {
+      lis2du12_tap_src_t tap_src;
+
+      ret = lis2du12_read_reg(ctx, LIS2DU12_TAP_SRC, (uint8_t *)&tap_src, 1);
+
+      val->single_tap   = all_int_src.single_tap_all;
+      val->double_tap   = all_int_src.double_tap_all;
+      val->tap_z        = tap_src.z_tap;
+      val->tap_y        = tap_src.y_tap;
+      val->tap_x        = tap_src.x_tap;
+      val->tap_sign     = tap_src.tap_ia;
+    }
+  }
 
   return ret;
 }
@@ -692,7 +699,7 @@ int32_t lis2du12_self_test_sign_set(stmdev_ctx_t *ctx, lis2du12_st_t val)
   if (ret == 0)
   {
     st_sign.stsign = (uint8_t) val;
-    ret = lis2du12_write_reg(ctx, LIS2DU12_CTRL3, (uint8_t *)&st_sign, 1);
+    ret = lis2du12_write_reg(ctx, LIS2DU12_ST_SIGN, (uint8_t *)&st_sign, 1);
   }
   return ret;
 }
@@ -719,6 +726,28 @@ int32_t lis2du12_self_test_start(stmdev_ctx_t *ctx, uint8_t val)
   if (ret == 0)
   {
     ctrl3.st = (uint8_t) val;
+    ret = lis2du12_write_reg(ctx, LIS2DU12_CTRL3, (uint8_t *)&ctrl3, 1);
+  }
+  return ret;
+}
+
+/**
+  * @brief  Configures the self test.[stop]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  val   valid values 2 (1st step) or 1 (2nd step)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lis2du12_self_test_stop(stmdev_ctx_t *ctx)
+{
+  lis2du12_ctrl3_t ctrl3;
+  int32_t ret;
+
+  ret = lis2du12_read_reg(ctx, LIS2DU12_CTRL3, (uint8_t *)&ctrl3, 1);
+  if (ret == 0)
+  {
+    ctrl3.st = 0;
     ret = lis2du12_write_reg(ctx, LIS2DU12_CTRL3, (uint8_t *)&ctrl3, 1);
   }
   return ret;
@@ -838,6 +867,19 @@ int32_t lis2du12_fifo_mode_get(stmdev_ctx_t *ctx, lis2du12_fifo_md_t *val)
   }
 
   val->watermark = fifo_wtm.fth;
+
+  return ret;
+}
+
+int32_t lis2du12_fifo_status_get(stmdev_ctx_t *ctx, lis2du12_fifo_status_t *val)
+{
+  lis2du12_fifo_status1_t fifo_status1;
+  int32_t ret;
+
+  ret = lis2du12_read_reg(ctx, LIS2DU12_FIFO_STATUS1, (uint8_t *)&fifo_status1, 1);
+
+  val->fifo_fth = fifo_status1.fth;
+  val->fifo_ovr = fifo_status1.fifo_ovr;
 
   return ret;
 }
@@ -1050,7 +1092,7 @@ int32_t lis2du12_pin_int1_route_set(stmdev_ctx_t *ctx,
   ctrl2.int1_f_ovr = val->fifo_ovr;
   ctrl2.int1_f_full = val->fifo_full;
 
-  md1_cfg.int1_tap = val->tap;
+  md1_cfg.int1_double_tap = val->double_tap;
   md1_cfg.int1_6d = val->six_d;
   md1_cfg.int1_wu = val->wake_up;
   md1_cfg.int1_ff = val->free_fall;
@@ -1102,7 +1144,7 @@ int32_t lis2du12_pin_int1_route_get(stmdev_ctx_t *ctx,
   val->fifo_ovr = ctrl2.int1_f_ovr;
   val->fifo_full = ctrl2.int1_f_full;
 
-  val->tap = md1_cfg.int1_tap;
+  val->double_tap = md1_cfg.int1_double_tap;
   val->six_d = md1_cfg.int1_6d;
   val->wake_up = md1_cfg.int1_wu;
   val->free_fall = md1_cfg.int1_ff;
@@ -1149,7 +1191,7 @@ int32_t lis2du12_pin_int2_route_set(stmdev_ctx_t *ctx,
   ctrl3.int2_f_ovr = val->fifo_ovr;
   ctrl3.int2_f_full = val->fifo_full;
 
-  md2_cfg.int2_tap = val->tap;
+  md2_cfg.int2_double_tap = val->double_tap;
   md2_cfg.int2_6d = val->six_d;
   md2_cfg.int2_wu = val->wake_up;
   md2_cfg.int2_ff = val->free_fall;
@@ -1201,7 +1243,7 @@ int32_t lis2du12_pin_int2_route_get(stmdev_ctx_t *ctx,
   val->fifo_ovr = ctrl3.int2_f_ovr;
   val->fifo_full = ctrl3.int2_f_full;
 
-  val->tap = md2_cfg.int2_tap;
+  val->double_tap = md2_cfg.int2_double_tap;
   val->six_d = md2_cfg.int2_6d;
   val->wake_up = md2_cfg.int2_wu;
   val->free_fall = md2_cfg.int2_ff;
@@ -1434,7 +1476,7 @@ int32_t lis2du12_tap_mode_set(stmdev_ctx_t *ctx, lis2du12_tap_md_t *val)
 
   tap_ths_y.tap_priority = (uint8_t)val->priority;
 
-  wake_up_ths.single_double_tap = ~val->tap_double.en;
+  wake_up_ths.single_double_tap = val->tap_double.en;
   int_dur.latency = val->tap_double.latency;
 
   interrupt_cfg.interrupts_enable = PROPERTY_ENABLE;
@@ -1514,7 +1556,7 @@ int32_t lis2du12_tap_mode_get(stmdev_ctx_t *ctx, lis2du12_tap_md_t *val)
       break;
   }
 
-  val->tap_double.en = ~wake_up_ths.single_double_tap;
+  val->tap_double.en = wake_up_ths.single_double_tap;
   val->tap_double.latency = int_dur.latency;
 
   return ret;

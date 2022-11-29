@@ -110,12 +110,15 @@ typedef struct
 
 typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
 typedef struct
 {
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
+  /** Component optional fields **/
+  stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
 } stmdev_ctx_t;
@@ -233,9 +236,9 @@ typedef struct
   uint8_t fifo_mode                : 3;
   uint8_t not_used_01              : 1;
   uint8_t odr_t_batch              : 2;
-  uint8_t odr_ts_batch             : 2;
+  uint8_t dec_ts_batch             : 2;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t odr_ts_batch             : 2;
+  uint8_t dec_ts_batch             : 2;
   uint8_t odr_t_batch              : 2;
   uint8_t not_used_01              : 1;
   uint8_t fifo_mode                : 3;
@@ -246,8 +249,8 @@ typedef struct
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t cnt_bdr_th               : 3;
-  uint8_t not_used_01              : 2;
+  uint8_t cnt_bdr_th               : 2;
+  uint8_t not_used_01              : 3;
   uint8_t trig_counter_bdr         : 1;
   uint8_t rst_counter_bdr          : 1;
   uint8_t dataready_pulsed         : 1;
@@ -255,8 +258,8 @@ typedef struct
   uint8_t dataready_pulsed         : 1;
   uint8_t rst_counter_bdr          : 1;
   uint8_t trig_counter_bdr         : 1;
-  uint8_t not_used_01              : 2;
-  uint8_t cnt_bdr_th               : 3;
+  uint8_t not_used_01              : 3;
+  uint8_t cnt_bdr_th               : 2;
 #endif /* DRV_BYTE_ORDER */
 } asm330lhh_counter_bdr_reg1_t;
 
@@ -416,11 +419,9 @@ typedef struct
   uint8_t ftype                    : 3;
   uint8_t usr_off_w                : 1;
   uint8_t not_used_01              : 1;
-uint8_t den_mode                 :
-  3;   /* trig_en + lvl1_en + lvl2_en */
+  uint8_t den_mode                 : 3;   /* trig_en + lvl1_en + lvl2_en */
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-uint8_t den_mode                 :
-  3;   /* trig_en + lvl1_en + lvl2_en */
+  uint8_t den_mode                 : 3;   /* trig_en + lvl1_en + lvl2_en */
   uint8_t not_used_01              : 1;
   uint8_t usr_off_w                : 1;
   uint8_t ftype                    : 3;
@@ -511,13 +512,13 @@ typedef struct
   uint8_t wu_ia                    : 1;
   uint8_t not_used_01              : 2;
   uint8_t d6d_ia                   : 1;
-  uint8_t sleep_change             : 1;
+  uint8_t sleep_change_ia          : 1;
   uint8_t not_used_02              : 1;
   uint8_t timestamp_endcount       : 1;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
   uint8_t timestamp_endcount       : 1;
   uint8_t not_used_02              : 1;
-  uint8_t sleep_change             : 1;
+  uint8_t sleep_change_ia          : 1;
   uint8_t d6d_ia                   : 1;
   uint8_t not_used_01              : 2;
   uint8_t wu_ia                    : 1;
@@ -533,43 +534,21 @@ typedef struct
   uint8_t y_wu                     : 1;
   uint8_t x_wu                     : 1;
   uint8_t wu_ia                    : 1;
-  uint8_t sleep_change             : 1;
+  uint8_t sleep_state              : 1;
   uint8_t ff_ia                    : 1;
-  uint8_t not_used_01              : 2;
+  uint8_t sleep_change_ia          : 1;
+  uint8_t not_used_01              : 1;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t not_used_01              : 2;
+  uint8_t not_used_01              : 1;
+  uint8_t sleep_change_ia          : 1;
   uint8_t ff_ia                    : 1;
-  uint8_t sleep_change             : 1;
+  uint8_t sleep_state              : 1;
   uint8_t wu_ia                    : 1;
   uint8_t x_wu                     : 1;
   uint8_t y_wu                     : 1;
   uint8_t z_wu                     : 1;
 #endif /* DRV_BYTE_ORDER */
 } asm330lhh_wake_up_src_t;
-
-#define ASM330LHH_TAP_SRC                      0x1CU
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t z_tap                    : 1;
-  uint8_t y_tap                    : 1;
-  uint8_t x_tap                    : 1;
-  uint8_t tap_sign                 : 1;
-  uint8_t double_tap               : 1;
-  uint8_t single_tap               : 1;
-  uint8_t tap_ia                   : 1;
-  uint8_t not_used_01              : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t not_used_01              : 1;
-  uint8_t tap_ia                   : 1;
-  uint8_t single_tap               : 1;
-  uint8_t double_tap               : 1;
-  uint8_t tap_sign                 : 1;
-  uint8_t x_tap                    : 1;
-  uint8_t y_tap                    : 1;
-  uint8_t z_tap                    : 1;
-#endif /* DRV_BYTE_ORDER */
-} asm330lhh_tap_src_t;
 
 #define ASM330LHH_D6D_SRC                      0x1DU
 typedef struct
@@ -637,7 +616,7 @@ typedef struct
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t diff_fifo                : 2;
   uint8_t not_used_01              : 1;
-  uint8_t over_run_latched         : 1;
+  uint8_t fifo_ovr_latched         : 1;
   uint8_t counter_bdr_ia           : 1;
   uint8_t fifo_full_ia             : 1;
   uint8_t fifo_ovr_ia              : 1;
@@ -647,7 +626,7 @@ typedef struct
   uint8_t fifo_ovr_ia              : 1;
   uint8_t fifo_full_ia             : 1;
   uint8_t counter_bdr_ia           : 1;
-  uint8_t over_run_latched         : 1;
+  uint8_t fifo_ovr_latched         : 1;
   uint8_t not_used_01              : 1;
   uint8_t diff_fifo                : 2;
 #endif /* DRV_BYTE_ORDER */
@@ -704,20 +683,6 @@ typedef struct
   uint8_t not_used_01              : 5;
 #endif /* DRV_BYTE_ORDER */
 } asm330lhh_ths_6d_t;
-
-#define ASM330LHH_INT_DUR2                     0x5AU
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t shock                    : 2;
-  uint8_t quiet                    : 2;
-  uint8_t dur                      : 4;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t dur                      : 4;
-  uint8_t quiet                    : 2;
-  uint8_t shock                    : 2;
-#endif /* DRV_BYTE_ORDER */
-} asm330lhh_int_dur2_t;
 
 #define ASM330LHH_WAKE_UP_THS                  0x5BU
 typedef struct
@@ -879,7 +844,6 @@ typedef union
   asm330lhh_int_cfg0_t                      int_cfg0;
   asm330lhh_int_cfg1_t                      int_cfg1;
   asm330lhh_ths_6d_t                        ths_6d;
-  asm330lhh_int_dur2_t                      int_dur2;
   asm330lhh_wake_up_ths_t                   wake_up_ths;
   asm330lhh_wake_up_dur_t                   wake_up_dur;
   asm330lhh_free_fall_t                     free_fall;
@@ -939,7 +903,7 @@ typedef enum
   ASM330LHH_XL_ODR_52Hz   = 3,
   ASM330LHH_XL_ODR_104Hz  = 4,
   ASM330LHH_XL_ODR_208Hz  = 5,
-  ASM330LHH_XL_ODR_416Hz  = 6,
+  ASM330LHH_XL_ODR_417Hz  = 6,
   ASM330LHH_XL_ODR_833Hz  = 7,
   ASM330LHH_XL_ODR_1667Hz = 8,
   ASM330LHH_XL_ODR_3333Hz = 9,
@@ -972,7 +936,7 @@ typedef enum
   ASM330LHH_GY_ODR_52Hz   = 3,
   ASM330LHH_GY_ODR_104Hz  = 4,
   ASM330LHH_GY_ODR_208Hz  = 5,
-  ASM330LHH_GY_ODR_416Hz  = 6,
+  ASM330LHH_GY_ODR_417Hz  = 6,
   ASM330LHH_GY_ODR_833Hz  = 7,
   ASM330LHH_GY_ODR_1667Hz = 8,
   ASM330LHH_GY_ODR_3333Hz = 9,
@@ -1002,7 +966,6 @@ typedef struct
 {
   asm330lhh_all_int_src_t       all_int_src;
   asm330lhh_wake_up_src_t       wake_up_src;
-  asm330lhh_tap_src_t           tap_src;
   asm330lhh_d6d_src_t           d6d_src;
   asm330lhh_status_reg_t        status_reg;
 } asm330lhh_all_sources_t;
@@ -1420,7 +1383,7 @@ typedef enum
   ASM330LHH_GY_BATCHED_AT_1667Hz   = 8,
   ASM330LHH_GY_BATCHED_AT_3333Hz   = 9,
   ASM330LHH_GY_BATCHED_AT_6667Hz   = 10,
-  ASM330LHH_GY_BATCHED_6Hz5        = 11,
+  ASM330LHH_GY_BATCHED_AT_6Hz5     = 11,
 } asm330lhh_bdr_gy_t;
 int32_t asm330lhh_fifo_gy_batch_set(stmdev_ctx_t *ctx,
                                     asm330lhh_bdr_gy_t val);
@@ -1564,3 +1527,5 @@ int32_t asm330lhh_den_mark_axis_z_get(stmdev_ctx_t *ctx,
 #endif
 
 #endif /* ASM330LHH_REGS_H */
+
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

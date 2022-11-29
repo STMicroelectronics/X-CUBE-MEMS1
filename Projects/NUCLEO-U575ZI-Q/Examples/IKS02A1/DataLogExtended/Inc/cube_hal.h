@@ -100,18 +100,6 @@
 #define RTC_SYNCH_PREDIV_LSE   0x00FF
 #endif
 
-// TODO: Update
-// #ifdef USE_STM32U5XX_NUCLEO
-// #define USARTx_TX_AF                     GPIO_AF7_USART1
-// #define USARTx_RX_AF                     GPIO_AF7_USART1
-//
-// #define RTC_ASYNCH_PREDIV_LSI  0x7F
-// #define RTC_SYNCH_PREDIV_LSI   0xF9
-//
-// #define RTC_ASYNCH_PREDIV_LSE  0x7F
-// #define RTC_SYNCH_PREDIV_LSE   0x00FF
-// #endif
-
 void SystemClock_Config(void);
 uint32_t Get_DMA_Flag_Status(DMA_HandleTypeDef *handle_dma);
 uint32_t Get_DMA_Counter(DMA_HandleTypeDef *handle_dma);
