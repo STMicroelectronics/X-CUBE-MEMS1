@@ -497,8 +497,8 @@ int32_t LPS22HH_TEMP_Get_DRDY_Status(LPS22HH_Object_t *pObj, uint8_t *Status)
 /**
   * @brief  Get the LPS22HH register value
   * @param  pObj the device pObj
-  * @param  Reg address to be written
-  * @param  Data value to be written
+  * @param  Reg address to be read
+  * @param  Data value to be read
   * @retval 0 in case of success, an error code otherwise
   */
 int32_t LPS22HH_Read_Reg(LPS22HH_Object_t *pObj, uint8_t Reg, uint8_t *Data)
@@ -535,27 +535,6 @@ int32_t LPS22HH_Write_Reg(LPS22HH_Object_t *pObj, uint8_t Reg, uint8_t Data)
 /** @defgroup LPS22HH_Private_Functions LPS22HH Private Functions
   * @{
   */
-
-/**
-  * @brief  Get the LPS22HH FIFO get temp data
-  * @param  pObj the device pObj
-  * @param  Status the status of data ready bit
-  * @retval 0 in case of success, an error code otherwise
-  */
-int32_t LPS22HH_Get_Temp(LPS22HH_Object_t *pObj, float *Data)
-{
-  lps22hh_axis1bit16_t data_raw_temperature;
-
-  (void)memset(data_raw_temperature.u8bit, 0x00, sizeof(int16_t));
-  if (lps22hh_temperature_raw_get(&(pObj->Ctx), &data_raw_temperature.i16bit) != LPS22HH_OK)
-  {
-    return LPS22HH_ERROR;
-  }
-
-  *Data = ((float)data_raw_temperature.i16bit) / 100.0f;
-
-  return LPS22HH_OK;
-}
 
 /**
   * @brief  Get output data rate
@@ -710,7 +689,8 @@ static int32_t LPS22HH_Initialize(LPS22HH_Object_t *pObj)
 /**
   * @brief  Get the LPS22HH FIFO data level
   * @param  pObj the device pObj
-  * @param  Status the status of data ready bit
+  * @param  Press the pressure data
+  * @param  Temp the temperature data
   * @retval 0 in case of success, an error code otherwise
   */
 int32_t LPS22HH_FIFO_Get_Data(LPS22HH_Object_t *pObj, float *Press, float *Temp)
@@ -904,7 +884,7 @@ int32_t LPS22HH_FIFO_Set_Mode(LPS22HH_Object_t *pObj, uint8_t Mode)
 /**
   * @brief  Set the LPS22HH FIFO data level
   * @param  pObj the device pObj
-  * @param  Status the status of data ready bit
+  * @param  Watermark the watermark level
   * @retval 0 in case of success, an error code otherwise
   */
 int32_t LPS22HH_FIFO_Set_Watermark_Level(LPS22HH_Object_t *pObj, uint8_t Watermark)

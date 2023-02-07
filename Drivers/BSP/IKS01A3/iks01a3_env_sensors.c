@@ -65,6 +65,10 @@ static IKS01A3_ENV_SENSOR_Ctx_t EnvCtx[IKS01A3_ENV_INSTANCES_NBR];
 static int32_t HTS221_0_Probe(uint32_t Functions);
 #endif
 
+#if (USE_IKS01A3_ENV_SENSOR_SHT40AD1B_0 == 1)
+static int32_t SHT40AD1B_0_Probe(uint32_t Functions);
+#endif
+
 #if (USE_IKS01A3_ENV_SENSOR_LPS22HH_0 == 1)
 static int32_t LPS22HH_0_Probe(uint32_t Functions);
 #endif
@@ -139,6 +143,31 @@ int32_t IKS01A3_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
 #if (USE_IKS01A3_ENV_SENSOR_HTS221_0 == 1)
     case IKS01A3_HTS221_0:
       if (HTS221_0_Probe(Functions) != BSP_ERROR_NONE)
+      {
+        return BSP_ERROR_NO_INIT;
+      }
+      if (EnvDrv[Instance]->GetCapabilities(EnvCompObj[Instance], (void *)&cap) != BSP_ERROR_NONE)
+      {
+        return BSP_ERROR_UNKNOWN_COMPONENT;
+      }
+      if (cap.Temperature == 1U)
+      {
+        component_functions |= ENV_TEMPERATURE;
+      }
+      if (cap.Humidity == 1U)
+      {
+        component_functions |= ENV_HUMIDITY;
+      }
+      if (cap.Pressure == 1U)
+      {
+        component_functions |= ENV_PRESSURE;
+      }
+      break;
+#endif
+
+#if (USE_IKS01A3_ENV_SENSOR_SHT40AD1B_0 == 1)
+    case IKS01A3_SHT40AD1B_0:
+      if (SHT40AD1B_0_Probe(Functions) != BSP_ERROR_NONE)
       {
         return BSP_ERROR_NO_INIT;
       }
@@ -749,8 +778,8 @@ int32_t IKS01A3_ENV_SENSOR_GetValue(uint32_t Instance, uint32_t Function, float 
 static int32_t HTS221_0_Probe(uint32_t Functions)
 {
   HTS221_IO_t            io_ctx;
-  uint8_t              id;
-  int32_t              ret = BSP_ERROR_NONE;
+  uint8_t                id;
+  int32_t                ret = BSP_ERROR_NONE;
   static HTS221_Object_t hts221_obj_0;
   HTS221_Capabilities_t  cap;
 
@@ -805,6 +834,92 @@ static int32_t HTS221_0_Probe(uint32_t Functions)
       EnvFuncDrv[IKS01A3_HTS221_0][FunctionIndex[ENV_HUMIDITY]] = (ENV_SENSOR_FuncDrv_t *)(void *)&HTS221_HUM_Driver;
 
       if (EnvDrv[IKS01A3_HTS221_0]->Init(EnvCompObj[IKS01A3_HTS221_0]) != HTS221_OK)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_PRESSURE) == ENV_PRESSURE))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+  }
+
+  return ret;
+}
+#endif
+
+#if (USE_IKS01A3_ENV_SENSOR_SHT40AD1B_0 == 1)
+/**
+  * @brief  Register Bus IOs for instance 0 if component ID is OK
+  * @param  Functions Environmental sensor functions. Could be :
+  *         - ENV_TEMPERATURE and/or ENV_HUMIDITY
+  * @retval BSP status
+  */
+static int32_t SHT40AD1B_0_Probe(uint32_t Functions)
+{
+  SHT40AD1B_IO_t            io_ctx;
+  uint8_t                   id;
+  int32_t                   ret = BSP_ERROR_NONE;
+  static SHT40AD1B_Object_t sht40ad1b_obj_0;
+  SHT40AD1B_Capabilities_t  cap;
+
+  /* Configure the environmental sensor driver */
+  io_ctx.BusType  = SHT40AD1B_I2C_BUS; /* I2C */
+  io_ctx.Address  = SHT40AD1B_I2C_ADDRESS;
+  io_ctx.Init     = IKS01A3_I2C_Init;
+  io_ctx.DeInit   = IKS01A3_I2C_DeInit;
+  io_ctx.Read     = IKS01A3_I2C_Read;
+  io_ctx.Write    = IKS01A3_I2C_Write;
+  io_ctx.GetTick  = IKS01A3_GetTick;
+  io_ctx.Delay    = IKS01A3_Delay;
+
+  if (SHT40AD1B_RegisterBusIO(&sht40ad1b_obj_0, &io_ctx) != SHT40AD1B_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (SHT40AD1B_ReadID(&sht40ad1b_obj_0, &id) != SHT40AD1B_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (id != SHT40AD1B_ID)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else
+  {
+    (void)SHT40AD1B_GetCapabilities(&sht40ad1b_obj_0, &cap);
+    EnvCtx[IKS01A3_SHT40AD1B_0].Functions = ((uint32_t)cap.Temperature) | ((uint32_t)cap.Pressure << 1) | ((
+                                              uint32_t)cap.Humidity << 2);
+
+    EnvCompObj[IKS01A3_SHT40AD1B_0] = &sht40ad1b_obj_0;
+    /* The second cast (void *) is added to bypass Misra R11.3 rule */
+    EnvDrv[IKS01A3_SHT40AD1B_0] = (ENV_SENSOR_CommonDrv_t *)(void *)&SHT40AD1B_COMMON_Driver;
+
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_TEMPERATURE) == ENV_TEMPERATURE) && (cap.Temperature == 1U))
+    {
+      /* The second cast (void *) is added to bypass Misra R11.3 rule */
+      EnvFuncDrv[IKS01A3_SHT40AD1B_0][FunctionIndex[ENV_TEMPERATURE]] = (ENV_SENSOR_FuncDrv_t *)(void *)&SHT40AD1B_TEMP_Driver;
+
+      if (EnvDrv[IKS01A3_SHT40AD1B_0]->Init(EnvCompObj[IKS01A3_SHT40AD1B_0]) != SHT40AD1B_OK)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_HUMIDITY) == ENV_HUMIDITY) && (cap.Humidity == 1U))
+    {
+      /* The second cast (void *) is added to bypass Misra R11.3 rule */
+      EnvFuncDrv[IKS01A3_SHT40AD1B_0][FunctionIndex[ENV_HUMIDITY]] = (ENV_SENSOR_FuncDrv_t *)(void *)&SHT40AD1B_HUM_Driver;
+
+      if (EnvDrv[IKS01A3_SHT40AD1B_0]->Init(EnvCompObj[IKS01A3_SHT40AD1B_0]) != SHT40AD1B_OK)
       {
         ret = BSP_ERROR_COMPONENT_FAILURE;
       }

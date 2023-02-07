@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2022 STMicroelectronics.
+  * Copyright (c) 2023 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -22,7 +22,7 @@
 #define  __RTE_COMPONENTS_H__
 
 /* Defines ------------------------------------------------------------------*/
-/* STMicroelectronics.X-CUBE-MEMS1.9.4.0 */
+/* STMicroelectronics.X-CUBE-MEMS1.9.5.0 */
 #define BSP_MOTION_SENSORS
 #define IIS2ICLX_ACC_I2C
 #define ACCELCALIBRATION2_IIS2ICLX_DEMO

@@ -48,9 +48,8 @@ uint32_t MagInstance = 0xFFFFFFFF;
 /* Private variables ---------------------------------------------------------*/
 /* Supported sensor names. Please verify that second index of array is HIGHER than longest string in array!!! */
 static uint8_t AccNameList[][SENSOR_NAME_MAX_LENGTH] = {"ISM330DHCX", "IIS2DLPC", "IIS2ICLX (DIL24)",
-                                                        "ASM330LHHX (DIL24)", "LSM6DSV16X (DIL24)", "LSM6DSV16BX (DIL24)"};
-static uint8_t GyrNameList[][SENSOR_NAME_MAX_LENGTH] = {"ISM330DHCX", "ASM330LHHX (DIL24)", "LSM6DSV16X (DIL24)",
-                                                        "LSM6DSV16BX (DIL24)"};
+                                                        "ASM330LHHX (DIL24)"};
+static uint8_t GyrNameList[][SENSOR_NAME_MAX_LENGTH] = {"ISM330DHCX", "ASM330LHHX (DIL24)"};
 static uint8_t MagNameList[][SENSOR_NAME_MAX_LENGTH] = {"IIS2MDC"};
 
 /* Supported sensor instances (have to correspond with supported sensor names above) */
@@ -59,14 +58,10 @@ static uint32_t AccInstanceList[] = {
   IKS02A1_IIS2DLPC_0,
   IKS02A1_IIS2ICLX_0,
   IKS02A1_ASM330LHHX_0,
-  IKS02A1_LSM6DSV16X_0,
-  IKS02A1_LSM6DSV16BX_0,
 };
 static uint32_t GyrInstanceList[] = {
   IKS02A1_ISM330DHCX_0,
   IKS02A1_ASM330LHHX_0,
-  IKS02A1_LSM6DSV16X_0,
-  IKS02A1_LSM6DSV16BX_0,
 };
 static uint32_t MagInstanceList[] = {
   IKS02A1_IIS2MDC_0,
@@ -79,14 +74,10 @@ static uint32_t AccFsList[][5] = { /* g */
   {4, 2, 4, 8, 16},                /* IIS2DLPC */
   {4, 500, 1000, 2000, 3000},      /* IIS2ICLX [mg] */
   {4, 2, 4, 8, 16},                /* ASM330LHHX */
-  {4, 2, 4, 8, 16},                /* LSM6DSV16X */
-  {4, 2, 4, 8, 16},                /* LSM6DSV16BX */
 };
 static uint32_t GyrFsList[][7] = {      /* dps */
   {6, 125, 250, 500, 1000, 2000, 4000}, /* ISM330DHCX */
   {6, 125, 250, 500, 1000, 2000, 4000}, /* ASM330LHHX */
-  {6, 125, 250, 500, 1000, 2000, 4000}, /* LSM6DSV16X */
-  {6, 125, 250, 500, 1000, 2000, 4000}, /* LSM6DSV16BX */
 };
 static uint32_t MagFsList[][2] = { /* Ga */
   {1, 50},                         /* IIS2MDC */
@@ -99,14 +90,10 @@ static float AccOdrList[][12] = {                                /* Hz */
   {8, 12.5, 25, 50, 100, 200, 400, 800, 1600},                   /* IIS2DLPC */
   {7, 12.5, 26, 52, 104, 208, 416, 833},                         /* IIS2ICLX */
   {11, 1.6, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667}, /* ASM330LHHX */
-  {11, 1.6, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667}, /* LSM6DSV16X */
-  {11, 1.6, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667}, /* LSM6DSV16BX */
 };
 static float GyrOdrList[][11] = {                           /* Hz */
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1666, 3332, 6667}, /* ISM330DHCX */
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667}, /* ASM330LHHX */
-  {10, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667}, /* LSM6DSV16X */
-  {10, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667}, /* LSM6DSV16BX */
 };
 static float MagOdrList[][5] = { /* Hz */
   {4, 10, 20, 50, 100},          /* IIS2MDC */

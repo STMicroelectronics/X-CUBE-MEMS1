@@ -4194,9 +4194,9 @@ typedef struct
   uint8_t den_z                : 1;
   enum
   {
-    DEN_NOT_DEFINED = 0x00,
-    LEVEL_TRIGGER   = 0x02,
-    LEVEL_LATCHED   = 0x03,
+    LSM6DSV16X_DEN_NOT_DEFINED = 0x00,
+    LSM6DSV16X_LEVEL_TRIGGER   = 0x02,
+    LSM6DSV16X_LEVEL_LATCHED   = 0x03,
   } mode;
 } lsm6dsv16x_den_conf_t;
 int32_t lsm6dsv16x_den_conf_set(stmdev_ctx_t *ctx, lsm6dsv16x_den_conf_t val);

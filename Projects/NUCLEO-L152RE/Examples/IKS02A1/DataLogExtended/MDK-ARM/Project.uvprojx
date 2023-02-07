@@ -10,8 +10,9 @@
       <TargetName>STM32L152RE_NUCLEO</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
-      <uAC6>0</uAC6>
+      <pArmCC>6180000::V6.18::ARMCLANG</pArmCC>
+      <pCCUsed>6180000::V6.18::ARMCLANG</pCCUsed>
+      <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32L152RE</Device>
@@ -323,24 +324,24 @@
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>2</wLevel>
+            <wLevel>3</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
-            <uC99>0</uC99>
+            <uC99>1</uC99>
             <uGnu>0</uGnu>
             <useXO>0</useXO>
-            <v6Lang>0</v6Lang>
-            <v6LangP>0</v6LangP>
-            <vShortEn>0</vShortEn>
-            <vShortWch>0</vShortWch>
+            <v6Lang>3</v6Lang>
+            <v6LangP>5</v6LangP>
+            <vShortEn>1</vShortEn>
+            <vShortWch>1</vShortWch>
             <v6Lto>0</v6Lto>
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls>--C99</MiscControls>
+              <MiscControls></MiscControls>
               <Define>STM32L152xE,USE_HAL_DRIVER,USE_STM32L1XX_NUCLEO</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Inc;..\..\..\..\..\..\Drivers\BSP\Components\Common;..\..\..\..\..\..\Drivers\BSP\Components\ism330dhcx;..\..\..\..\..\..\Drivers\BSP\STM32L1xx_Nucleo;..\..\..\..\..\..\Drivers\BSP\IKS02A1;..\..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32L1xx\Include;..\..\..\..\..\..\Drivers\CMSIS\Include;..\..\..\..\..\..\Drivers\STM32L1xx_HAL_Driver\Inc;..\..\..\..\..\..\Drivers\BSP\Components\iis2dlpc;..\..\..\..\..\..\Drivers\BSP\Components\iis2iclx;..\..\..\..\..\..\Drivers\BSP\Components\iis2mdc;..\..\..\..\..\..\Drivers\BSP\Components\asm330lhhx;..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16x;..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16bx</IncludePath>
+              <IncludePath>..\Inc;..\..\..\..\..\..\Drivers\BSP\Components\Common;..\..\..\..\..\..\Drivers\BSP\Components\ism330dhcx;..\..\..\..\..\..\Drivers\BSP\STM32L1xx_Nucleo;..\..\..\..\..\..\Drivers\BSP\IKS02A1;..\..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32L1xx\Include;..\..\..\..\..\..\Drivers\CMSIS\Include;..\..\..\..\..\..\Drivers\STM32L1xx_HAL_Driver\Inc;..\..\..\..\..\..\Drivers\BSP\Components\iis2dlpc;..\..\..\..\..\..\Drivers\BSP\Components\iis2iclx;..\..\..\..\..\..\Drivers\BSP\Components\iis2mdc;..\..\..\..\..\..\Drivers\BSP\Components\asm330lhhx</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -433,26 +434,6 @@
               <FileName>asm330lhhx_reg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\asm330lhhx\asm330lhhx_reg.c</FilePath>
-            </File>
-            <File>
-              <FileName>lsm6dsv16x.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16x\lsm6dsv16x.c</FilePath>
-            </File>
-            <File>
-              <FileName>lsm6dsv16x_reg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16x\lsm6dsv16x_reg.c</FilePath>
-            </File>
-            <File>
-              <FileName>lsm6dsv16bx.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16bx\lsm6dsv16bx.c</FilePath>
-            </File>
-            <File>
-              <FileName>lsm6dsv16bx_reg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16bx\lsm6dsv16bx_reg.c</FilePath>
             </File>
           </Files>
         </Group>

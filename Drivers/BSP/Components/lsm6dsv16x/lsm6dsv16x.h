@@ -248,6 +248,54 @@ int32_t LSM6DSV16X_ACC_SetFullScale(LSM6DSV16X_Object_t *pObj, int32_t FullScale
 int32_t LSM6DSV16X_ACC_GetAxesRaw(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_AxesRaw_t *Value);
 int32_t LSM6DSV16X_ACC_GetAxes(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_Axes_t *Acceleration);
 
+int32_t LSM6DSV16X_ACC_Get_Event_Status(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_Event_Status_t *Status);
+
+int32_t LSM6DSV16X_ACC_Enable_Free_Fall_Detection(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_SensorIntPin_t IntPin);
+int32_t LSM6DSV16X_ACC_Disable_Free_Fall_Detection(LSM6DSV16X_Object_t *pObj);
+int32_t LSM6DSV16X_ACC_Set_Free_Fall_Threshold(LSM6DSV16X_Object_t *pObj, uint8_t Threshold);
+int32_t LSM6DSV16X_ACC_Set_Free_Fall_Duration(LSM6DSV16X_Object_t *pObj, uint8_t Duration);
+
+int32_t LSM6DSV16X_ACC_Enable_Wake_Up_Detection(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_SensorIntPin_t IntPin);
+int32_t LSM6DSV16X_ACC_Disable_Wake_Up_Detection(LSM6DSV16X_Object_t *pObj);
+int32_t LSM6DSV16X_ACC_Set_Wake_Up_Threshold(LSM6DSV16X_Object_t *pObj, uint32_t Threshold);
+int32_t LSM6DSV16X_ACC_Set_Wake_Up_Duration(LSM6DSV16X_Object_t *pObj, uint8_t Duration);
+
+int32_t LSM6DSV16X_ACC_Enable_Single_Tap_Detection(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_SensorIntPin_t IntPin);
+int32_t LSM6DSV16X_ACC_Disable_Single_Tap_Detection(LSM6DSV16X_Object_t *pObj);
+int32_t LSM6DSV16X_ACC_Enable_Double_Tap_Detection(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_SensorIntPin_t IntPin);
+int32_t LSM6DSV16X_ACC_Disable_Double_Tap_Detection(LSM6DSV16X_Object_t *pObj);
+int32_t LSM6DSV16X_ACC_Set_Tap_Threshold(LSM6DSV16X_Object_t *pObj, uint8_t Threshold);
+int32_t LSM6DSV16X_ACC_Set_Tap_Shock_Time(LSM6DSV16X_Object_t *pObj, uint8_t Time);
+int32_t LSM6DSV16X_ACC_Set_Tap_Quiet_Time(LSM6DSV16X_Object_t *pObj, uint8_t Time);
+int32_t LSM6DSV16X_ACC_Set_Tap_Duration_Time(LSM6DSV16X_Object_t *pObj, uint8_t Time);
+
+int32_t LSM6DSV16X_ACC_Enable_6D_Orientation(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_SensorIntPin_t IntPin);
+int32_t LSM6DSV16X_ACC_Disable_6D_Orientation(LSM6DSV16X_Object_t *pObj);
+int32_t LSM6DSV16X_ACC_Set_6D_Orientation_Threshold(LSM6DSV16X_Object_t *pObj, uint8_t Threshold);
+int32_t LSM6DSV16X_ACC_Get_6D_Orientation_XL(LSM6DSV16X_Object_t *pObj, uint8_t *XLow);
+int32_t LSM6DSV16X_ACC_Get_6D_Orientation_XH(LSM6DSV16X_Object_t *pObj, uint8_t *XHigh);
+int32_t LSM6DSV16X_ACC_Get_6D_Orientation_YL(LSM6DSV16X_Object_t *pObj, uint8_t *YLow);
+int32_t LSM6DSV16X_ACC_Get_6D_Orientation_YH(LSM6DSV16X_Object_t *pObj, uint8_t *YHigh);
+int32_t LSM6DSV16X_ACC_Get_6D_Orientation_ZL(LSM6DSV16X_Object_t *pObj, uint8_t *ZLow);
+int32_t LSM6DSV16X_ACC_Get_6D_Orientation_ZH(LSM6DSV16X_Object_t *pObj, uint8_t *ZHigh);
+
+int32_t LSM6DSV16X_ACC_Enable_Single_Tap_Detection(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_SensorIntPin_t IntPin);
+int32_t LSM6DSV16X_ACC_Disable_Single_Tap_Detection(LSM6DSV16X_Object_t *pObj);
+int32_t LSM6DSV16X_ACC_Enable_Double_Tap_Detection(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_SensorIntPin_t IntPin);
+int32_t LSM6DSV16X_ACC_Disable_Double_Tap_Detection(LSM6DSV16X_Object_t *pObj);
+int32_t LSM6DSV16X_ACC_Set_Tap_Threshold(LSM6DSV16X_Object_t *pObj, uint8_t Threshold);
+int32_t LSM6DSV16X_ACC_Set_Tap_Shock_Time(LSM6DSV16X_Object_t *pObj, uint8_t Time);
+int32_t LSM6DSV16X_ACC_Set_Tap_Quiet_Time(LSM6DSV16X_Object_t *pObj, uint8_t Time);
+int32_t LSM6DSV16X_ACC_Set_Tap_Duration_Time(LSM6DSV16X_Object_t *pObj, uint8_t Time);
+
+int32_t LSM6DSV16X_ACC_Enable_Tilt_Detection(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_SensorIntPin_t IntPin);
+int32_t LSM6DSV16X_ACC_Disable_Tilt_Detection(LSM6DSV16X_Object_t *pObj);
+
+int32_t LSM6DSV16X_ACC_Enable_Pedometer(LSM6DSV16X_Object_t *pObj,LSM6DSV16X_SensorIntPin_t IntPin);
+int32_t LSM6DSV16X_ACC_Disable_Pedometer(LSM6DSV16X_Object_t *pObj);
+int32_t LSM6DSV16X_ACC_Get_Step_Count(LSM6DSV16X_Object_t *pObj, uint16_t *StepCount);
+int32_t LSM6DSV16X_ACC_Step_Counter_Reset(LSM6DSV16X_Object_t *pObj);
+
 int32_t LSM6DSV16X_GYRO_Enable(LSM6DSV16X_Object_t *pObj);
 int32_t LSM6DSV16X_GYRO_Disable(LSM6DSV16X_Object_t *pObj);
 int32_t LSM6DSV16X_GYRO_GetSensitivity(LSM6DSV16X_Object_t *pObj, float *Sensitivity);
@@ -269,8 +317,6 @@ int32_t LSM6DSV16X_ACC_Set_Power_Mode(LSM6DSV16X_Object_t *pObj, uint8_t PowerMo
 int32_t LSM6DSV16X_GYRO_Set_Power_Mode(LSM6DSV16X_Object_t *pObj, uint8_t PowerMode);
 int32_t LSM6DSV16X_ACC_Set_Filter_Mode(LSM6DSV16X_Object_t *pObj, uint8_t LowHighPassFlag, uint8_t FilterMode);
 int32_t LSM6DSV16X_GYRO_Set_Filter_Mode(LSM6DSV16X_Object_t *pObj, uint8_t LowHighPassFlag, uint8_t FilterMode);
-
-
 
 /**
  * @}

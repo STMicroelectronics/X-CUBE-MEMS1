@@ -198,9 +198,6 @@ int32_t LPS22HH_TEMP_Get_DRDY_Status(LPS22HH_Object_t *pObj, uint8_t *Status);
 int32_t LPS22HH_Read_Reg(LPS22HH_Object_t *pObj, uint8_t reg, uint8_t *Data);
 int32_t LPS22HH_Write_Reg(LPS22HH_Object_t *pObj, uint8_t reg, uint8_t Data);
 
-int32_t LPS22HH_Get_Press(LPS22HH_Object_t *pObj, float *Data);
-int32_t LPS22HH_Get_Temp(LPS22HH_Object_t *pObj, float *Data);
-
 int32_t LPS22HH_FIFO_Get_Data(LPS22HH_Object_t *pObj, float *Press, float *Temp);
 int32_t LPS22HH_FIFO_Get_FTh_Status(LPS22HH_Object_t *pObj, uint8_t *Status);
 int32_t LPS22HH_FIFO_Get_Full_Status(LPS22HH_Object_t *pObj, uint8_t *Status);

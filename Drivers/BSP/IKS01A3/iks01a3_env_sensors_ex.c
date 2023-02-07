@@ -93,6 +93,37 @@ int32_t IKS01A3_ENV_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Function,
       break;
 #endif
 
+#if (USE_IKS01A3_ENV_SENSOR_SHT40AD1B_0 == 1)
+    case IKS01A3_SHT40AD1B_0:
+      if ((Function & ENV_HUMIDITY) == ENV_HUMIDITY)
+      {
+        if (SHT40AD1B_HUM_Get_DRDY_Status(EnvCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else if ((Function & ENV_TEMPERATURE) == ENV_TEMPERATURE)
+      {
+        if (SHT40AD1B_TEMP_Get_DRDY_Status(EnvCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
 #if (USE_IKS01A3_ENV_SENSOR_LPS22HH_0 == 1)
     case IKS01A3_LPS22HH_0:
       if ((Function & ENV_PRESSURE) == ENV_PRESSURE)

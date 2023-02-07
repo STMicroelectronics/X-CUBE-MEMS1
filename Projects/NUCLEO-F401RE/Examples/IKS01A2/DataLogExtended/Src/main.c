@@ -401,7 +401,7 @@ static void Time_Handler(TMsg *Msg)
   else if (AutoInit != 0U)
   {
     time_us = DWT_GetTickUS() - StartTime;
-    (void)snprintf(DataOut, MAX_BUF_SIZE, "TimeStamp: %ld\r\n", time_us);
+    (void)snprintf(DataOut, MAX_BUF_SIZE, "TimeStamp: %lu\r\n", (unsigned long)time_us);
     (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
   }
   else

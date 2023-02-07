@@ -775,6 +775,108 @@ int32_t IKS01A3_MOTION_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Functi
       break;
 #endif
 
+#if (USE_IKS01A3_MOTION_SENSOR_LSM6DSV_0 == 1)
+    case IKS01A3_LSM6DSV_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (LSM6DSV_ACC_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else if ((Function & MOTION_GYRO) == MOTION_GYRO)
+      {
+        if (LSM6DSV_GYRO_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
+#if (USE_IKS01A3_MOTION_SENSOR_LSM6DSV16B_0 == 1)
+    case IKS01A3_LSM6DSV16B_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (LSM6DSV16B_ACC_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else if ((Function & MOTION_GYRO) == MOTION_GYRO)
+      {
+        if (LSM6DSV16B_GYRO_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
+#if (USE_IKS01A3_MOTION_SENSOR_LIS2DUX12_0 == 1)
+    case IKS01A3_LIS2DUX12_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (LIS2DUX12_ACC_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
+#if (USE_IKS01A3_MOTION_SENSOR_LIS2DUXS12_0 == 1)
+    case IKS01A3_LIS2DUXS12_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (LIS2DUXS12_ACC_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -1162,6 +1264,58 @@ int32_t IKS01A3_MOTION_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint
       break;
 #endif
 
+#if (USE_IKS01A3_MOTION_SENSOR_LSM6DSV_0 == 1)
+    case IKS01A3_LSM6DSV_0:
+      if (LSM6DSV_Read_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+#if (USE_IKS01A3_MOTION_SENSOR_LSM6DSV16B_0 == 1)
+    case IKS01A3_LSM6DSV16B_0:
+      if (LSM6DSV16B_Read_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+#if (USE_IKS01A3_MOTION_SENSOR_LIS2DUX12_0 == 1)
+    case IKS01A3_LIS2DUX12_0:
+      if (LIS2DUX12_Read_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+#if (USE_IKS01A3_MOTION_SENSOR_LIS2DUXS12_0 == 1)
+    case IKS01A3_LIS2DUXS12_0:
+      if (LIS2DUXS12_Read_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -1539,6 +1693,58 @@ int32_t IKS01A3_MOTION_SENSOR_Write_Register(uint32_t Instance, uint8_t Reg, uin
 #if (USE_IKS01A3_MOTION_SENSOR_LSM6DSV16BX_0 == 1)
     case IKS01A3_LSM6DSV16BX_0:
       if (LSM6DSV16BX_Write_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+#if (USE_IKS01A3_MOTION_SENSOR_LSM6DSV_0 == 1)
+    case IKS01A3_LSM6DSV_0:
+      if (LSM6DSV_Write_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+#if (USE_IKS01A3_MOTION_SENSOR_LSM6DSV16B_0 == 1)
+    case IKS01A3_LSM6DSV16B_0:
+      if (LSM6DSV16B_Write_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+#if (USE_IKS01A3_MOTION_SENSOR_LIS2DUX12_0 == 1)
+    case IKS01A3_LIS2DUX12_0:
+      if (LIS2DUX12_Write_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+#if (USE_IKS01A3_MOTION_SENSOR_LIS2DUXS12_0 == 1)
+    case IKS01A3_LIS2DUXS12_0:
+      if (LIS2DUXS12_Write_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
       {
         ret = BSP_ERROR_COMPONENT_FAILURE;
       }

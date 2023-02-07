@@ -76,6 +76,10 @@ extern "C" {
 #define USE_IKS01A3_ENV_SENSOR_LPS28DFW_0        0
 #endif
 
+#ifndef USE_IKS01A3_ENV_SENSOR_SHT40AD1B_0
+#define USE_IKS01A3_ENV_SENSOR_SHT40AD1B_0       0
+#endif
+
 #if (USE_IKS01A3_ENV_SENSOR_HTS221_0 == 1)
 #include "hts221.h"
 #endif
@@ -122,6 +126,10 @@ extern "C" {
 
 #if (USE_IKS01A3_ENV_SENSOR_LPS28DFW_0 == 1)
 #include "lps28dfw.h"
+#endif
+
+#if (USE_IKS01A3_ENV_SENSOR_SHT40AD1B_0 == 1)
+#include "sht40ad1b.h"
 #endif
 
 /** @addtogroup BSP BSP
@@ -268,6 +276,21 @@ typedef struct
                             USE_IKS01A3_ENV_SENSOR_ILPS28QSW_0)
 #endif
 
+#if (USE_IKS01A3_ENV_SENSOR_SHT40AD1B_0 == 1)
+#define IKS01A3_SHT40AD1B_0 (USE_IKS01A3_ENV_SENSOR_HTS221_0 + \
+                            USE_IKS01A3_ENV_SENSOR_LPS22HH_0 + \
+                            USE_IKS01A3_ENV_SENSOR_STTS751_0 + \
+                            USE_IKS01A3_ENV_SENSOR_LPS33HW_0 + \
+                            USE_IKS01A3_ENV_SENSOR_STTS22H_0 + \
+                            USE_IKS01A3_ENV_SENSOR_LPS33K_0 + \
+                            USE_IKS01A3_ENV_SENSOR_LPS22CH_0 + \
+                            USE_IKS01A3_ENV_SENSOR_LPS27HHTW_0 + \
+                            USE_IKS01A3_ENV_SENSOR_LPS22DF_0 + \
+                            USE_IKS01A3_ENV_SENSOR_ILPS22QS_0 + \
+                            USE_IKS01A3_ENV_SENSOR_ILPS28QSW_0 + \
+                            USE_IKS01A3_ENV_SENSOR_LPS28DFW_0)
+#endif
+
 #ifndef ENV_TEMPERATURE
 #define ENV_TEMPERATURE      1U
 #endif
@@ -290,7 +313,8 @@ typedef struct
                                       USE_IKS01A3_ENV_SENSOR_LPS22DF_0 + \
                                       USE_IKS01A3_ENV_SENSOR_ILPS22QS_0 + \
                                       USE_IKS01A3_ENV_SENSOR_ILPS28QSW_0 + \
-                                      USE_IKS01A3_ENV_SENSOR_LPS28DFW_0)
+                                      USE_IKS01A3_ENV_SENSOR_LPS28DFW_0 + \
+                                      USE_IKS01A3_ENV_SENSOR_SHT40AD1B_0)
 
 #if (IKS01A3_ENV_INSTANCES_NBR == 0)
 #error "No environmental sensor instance has been selected"

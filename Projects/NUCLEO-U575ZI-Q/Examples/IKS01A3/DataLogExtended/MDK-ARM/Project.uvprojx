@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>STM32U575xx,USE_HAL_DRIVER,USE_STM32U5XX_NUCLEO</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;../../../../../../Drivers/BSP/Components/Common;../../../../../../Drivers/BSP/Components/a3g4250d;../../../../../../Drivers/BSP/Components/ais2dw12;../../../../../../Drivers/BSP/Components/ais2ih;../../../../../../Drivers/BSP/Components/ais328dq;../../../../../../Drivers/BSP/Components/ais3624dq;../../../../../../Drivers/BSP/Components/asm330lhh;../../../../../../Drivers/BSP/Components/asm330lhhx;../../../../../../Drivers/BSP/Components/h3lis331dl;../../../../../../Drivers/BSP/Components/hts221;../../../../../../Drivers/BSP/Components/iis2dlpc;../../../../../../Drivers/BSP/Components/iis2iclx;../../../../../../Drivers/BSP/Components/iis2mdc;../../../../../../Drivers/BSP/Components/ilps22qs;../../../../../../Drivers/BSP/Components/ilps28qsw;../../../../../../Drivers/BSP/Components/ism303dac;../../../../../../Drivers/BSP/Components/ism330dlc;../../../../../../Drivers/BSP/Components/ism330dhcx;../../../../../../Drivers/BSP/Components/lis2dh12;../../../../../../Drivers/BSP/Components/lis2dtw12;../../../../../../Drivers/BSP/Components/lis2du12;../../../../../../Drivers/BSP/Components/lis2dw12;../../../../../../Drivers/BSP/Components/lis2mdl;../../../../../../Drivers/BSP/Components/lis3mdl;../../../../../../Drivers/BSP/Components/lps22ch;../../../../../../Drivers/BSP/Components/lps22df;../../../../../../Drivers/BSP/Components/lps22hh;../../../../../../Drivers/BSP/Components/lps27hhtw;../../../../../../Drivers/BSP/Components/lps28dfw;../../../../../../Drivers/BSP/Components/lps33hw;../../../../../../Drivers/BSP/Components/lps33k;../../../../../../Drivers/BSP/Components/lsm6dso;../../../../../../Drivers/BSP/Components/lsm6dso32;../../../../../../Drivers/BSP/Components/lsm6dso32x;../../../../../../Drivers/BSP/Components/lsm6dsox;../../../../../../Drivers/BSP/Components/lsm6dsr;../../../../../../Drivers/BSP/Components/lsm6dsrx;../../../../../../Drivers/BSP/Components/stts22h;../../../../../../Drivers/BSP/Components/stts751;../../../../../../Drivers/BSP/IKS01A3;../../../../../../Drivers/STM32U5xx_HAL_Driver/Inc;../../../../../../Drivers/CMSIS/Device/ST/STM32U5xx/Include;..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16x;..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16bx</IncludePath>
+              <IncludePath>../Inc;../../../../../../Drivers/BSP/Components/Common;../../../../../../Drivers/BSP/Components/a3g4250d;../../../../../../Drivers/BSP/Components/ais2dw12;../../../../../../Drivers/BSP/Components/ais2ih;../../../../../../Drivers/BSP/Components/ais328dq;../../../../../../Drivers/BSP/Components/ais3624dq;../../../../../../Drivers/BSP/Components/asm330lhh;../../../../../../Drivers/BSP/Components/asm330lhhx;../../../../../../Drivers/BSP/Components/h3lis331dl;../../../../../../Drivers/BSP/Components/hts221;../../../../../../Drivers/BSP/Components/iis2dlpc;../../../../../../Drivers/BSP/Components/iis2iclx;../../../../../../Drivers/BSP/Components/iis2mdc;../../../../../../Drivers/BSP/Components/ilps22qs;../../../../../../Drivers/BSP/Components/ilps28qsw;../../../../../../Drivers/BSP/Components/ism303dac;../../../../../../Drivers/BSP/Components/ism330dlc;../../../../../../Drivers/BSP/Components/ism330dhcx;../../../../../../Drivers/BSP/Components/lis2dh12;../../../../../../Drivers/BSP/Components/lis2dtw12;../../../../../../Drivers/BSP/Components/lis2du12;../../../../../../Drivers/BSP/Components/lis2dw12;../../../../../../Drivers/BSP/Components/lis2mdl;../../../../../../Drivers/BSP/Components/lis3mdl;../../../../../../Drivers/BSP/Components/lps22ch;../../../../../../Drivers/BSP/Components/lps22df;../../../../../../Drivers/BSP/Components/lps22hh;../../../../../../Drivers/BSP/Components/lps27hhtw;../../../../../../Drivers/BSP/Components/lps28dfw;../../../../../../Drivers/BSP/Components/lps33hw;../../../../../../Drivers/BSP/Components/lps33k;../../../../../../Drivers/BSP/Components/lsm6dso;../../../../../../Drivers/BSP/Components/lsm6dso32;../../../../../../Drivers/BSP/Components/lsm6dso32x;../../../../../../Drivers/BSP/Components/lsm6dsox;../../../../../../Drivers/BSP/Components/lsm6dsr;../../../../../../Drivers/BSP/Components/lsm6dsrx;../../../../../../Drivers/BSP/Components/stts22h;../../../../../../Drivers/BSP/Components/stts751;../../../../../../Drivers/BSP/IKS01A3;../../../../../../Drivers/STM32U5xx_HAL_Driver/Inc;../../../../../../Drivers/CMSIS/Device/ST/STM32U5xx/Include;..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16x;..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16bx;..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv;..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16b;..\..\..\..\..\..\Drivers\BSP\Components\lis2dux12;..\..\..\..\..\..\Drivers\BSP\Components\lis2duxs12;..\..\..\..\..\..\Drivers\BSP\Components\sht40ad1b</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -783,6 +783,56 @@
               <FileName>lsm6dsv16bx_reg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16bx\lsm6dsv16bx_reg.c</FilePath>
+            </File>
+            <File>
+              <FileName>lsm6dsv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv\lsm6dsv.c</FilePath>
+            </File>
+            <File>
+              <FileName>lsm6dsv_reg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv\lsm6dsv_reg.c</FilePath>
+            </File>
+            <File>
+              <FileName>lsm6dsv16b.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16b\lsm6dsv16b.c</FilePath>
+            </File>
+            <File>
+              <FileName>lsm6dsv16b_reg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lsm6dsv16b\lsm6dsv16b_reg.c</FilePath>
+            </File>
+            <File>
+              <FileName>lis2dux12.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lis2dux12\lis2dux12.c</FilePath>
+            </File>
+            <File>
+              <FileName>lis2dux12_reg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lis2dux12\lis2dux12_reg.c</FilePath>
+            </File>
+            <File>
+              <FileName>lis2duxs12.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lis2duxs12\lis2duxs12.c</FilePath>
+            </File>
+            <File>
+              <FileName>lis2duxs12_reg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\lis2duxs12\lis2duxs12_reg.c</FilePath>
+            </File>
+            <File>
+              <FileName>sht40ad1b.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\sht40ad1b\sht40ad1b.c</FilePath>
+            </File>
+            <File>
+              <FileName>sht40ad1b_reg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\sht40ad1b\sht40ad1b_reg.c</FilePath>
             </File>
           </Files>
         </Group>
