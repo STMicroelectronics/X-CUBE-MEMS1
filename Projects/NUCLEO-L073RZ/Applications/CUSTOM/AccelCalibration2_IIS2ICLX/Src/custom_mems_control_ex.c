@@ -30,14 +30,14 @@
 void BSP_SENSOR_ACC_Read_Register(uint8_t Reg, uint8_t *Data)
 {
 #if (defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_HYBRID_SENSOR_Read_Register(CUSTOM_ACC_INSTANCE_0, Reg, Data);
-  #endif
+#endif
 #else
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Read_Register(CUSTOM_ACC_INSTANCE_0, Reg, Data);
-  #endif
+#endif
 #endif
 #endif
 }
@@ -51,9 +51,9 @@ void BSP_SENSOR_ACC_Read_Register(uint8_t Reg, uint8_t *Data)
 void BSP_SENSOR_GYR_Read_Register(uint8_t Reg, uint8_t *Data)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_GYR_INSTANCE_0
+#ifdef CUSTOM_GYR_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Read_Register(CUSTOM_GYR_INSTANCE_0, Reg, Data);
-  #endif
+#endif
 #endif
 }
 
@@ -66,9 +66,9 @@ void BSP_SENSOR_GYR_Read_Register(uint8_t Reg, uint8_t *Data)
 void BSP_SENSOR_MAG_Read_Register(uint8_t Reg, uint8_t *Data)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_MAG_INSTANCE_0
+#ifdef CUSTOM_MAG_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Read_Register(CUSTOM_MAG_INSTANCE_0, Reg, Data);
-  #endif
+#endif
 #endif
 }
 
@@ -81,9 +81,9 @@ void BSP_SENSOR_MAG_Read_Register(uint8_t Reg, uint8_t *Data)
 void BSP_SENSOR_PRESS_Read_Register(uint8_t Reg, uint8_t *Data)
 {
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_PRESS_INSTANCE_0
+#ifdef CUSTOM_PRESS_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Read_Register(CUSTOM_PRESS_INSTANCE_0, Reg, Data);
-  #endif
+#endif
 #endif
 }
 
@@ -96,14 +96,14 @@ void BSP_SENSOR_PRESS_Read_Register(uint8_t Reg, uint8_t *Data)
 void BSP_SENSOR_TEMP_Read_Register(uint8_t Reg, uint8_t *Data)
 {
 #if (defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_TEMP_INSTANCE_0
+#ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_HYBRID_SENSOR_Read_Register(CUSTOM_TEMP_INSTANCE_0, Reg, Data);
-  #endif
+#endif
 #else
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_TEMP_INSTANCE_0
+#ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Read_Register(CUSTOM_TEMP_INSTANCE_0, Reg, Data);
-  #endif
+#endif
 #endif
 #endif
 }
@@ -117,9 +117,9 @@ void BSP_SENSOR_TEMP_Read_Register(uint8_t Reg, uint8_t *Data)
 void BSP_SENSOR_HUM_Read_Register(uint8_t Reg, uint8_t *Data)
 {
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_HUM_INSTANCE_0
+#ifdef CUSTOM_HUM_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Read_Register(CUSTOM_HUM_INSTANCE_0, Reg, Data);
-  #endif
+#endif
 #endif
 }
 
@@ -132,14 +132,14 @@ void BSP_SENSOR_HUM_Read_Register(uint8_t Reg, uint8_t *Data)
 void BSP_SENSOR_ACC_Write_Register(uint8_t Reg, uint8_t Data)
 {
 #if (defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_HYBRID_SENSOR_Write_Register(CUSTOM_ACC_INSTANCE_0, Reg, Data);
-  #endif
+#endif
 #else
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Write_Register(CUSTOM_ACC_INSTANCE_0, Reg, Data);
-  #endif
+#endif
 #endif
 #endif
 }
@@ -153,9 +153,9 @@ void BSP_SENSOR_ACC_Write_Register(uint8_t Reg, uint8_t Data)
 void BSP_SENSOR_GYR_Write_Register(uint8_t Reg, uint8_t Data)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_GYR_INSTANCE_0
+#ifdef CUSTOM_GYR_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Write_Register(CUSTOM_GYR_INSTANCE_0, Reg, Data);
-  #endif
+#endif
 #endif
 }
 
@@ -168,9 +168,9 @@ void BSP_SENSOR_GYR_Write_Register(uint8_t Reg, uint8_t Data)
 void BSP_SENSOR_MAG_Write_Register(uint8_t Reg, uint8_t Data)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_MAG_INSTANCE_0
+#ifdef CUSTOM_MAG_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Write_Register(CUSTOM_MAG_INSTANCE_0, Reg, Data);
-  #endif
+#endif
 #endif
 }
 
@@ -183,9 +183,9 @@ void BSP_SENSOR_MAG_Write_Register(uint8_t Reg, uint8_t Data)
 void BSP_SENSOR_PRESS_Write_Register(uint8_t Reg, uint8_t Data)
 {
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_PRESS_INSTANCE_0
+#ifdef CUSTOM_PRESS_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Write_Register(CUSTOM_PRESS_INSTANCE_0, Reg, Data);
-  #endif
+#endif
 #endif
 }
 
@@ -198,14 +198,14 @@ void BSP_SENSOR_PRESS_Write_Register(uint8_t Reg, uint8_t Data)
 void BSP_SENSOR_TEMP_Write_Register(uint8_t Reg, uint8_t Data)
 {
 #if (defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_TEMP_INSTANCE_0
+#ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_HYBRID_SENSOR_Write_Register(CUSTOM_TEMP_INSTANCE_0, Reg, Data);
-  #endif
+#endif
 #else
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_TEMP_INSTANCE_0
+#ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Write_Register(CUSTOM_TEMP_INSTANCE_0, Reg, Data);
-  #endif
+#endif
 #endif
 #endif
 }
@@ -219,9 +219,9 @@ void BSP_SENSOR_TEMP_Write_Register(uint8_t Reg, uint8_t Data)
 void BSP_SENSOR_HUM_Write_Register(uint8_t Reg, uint8_t Data)
 {
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_HUM_INSTANCE_0
+#ifdef CUSTOM_HUM_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Write_Register(CUSTOM_HUM_INSTANCE_0, Reg, Data);
-  #endif
+#endif
 #endif
 }
 
@@ -234,11 +234,11 @@ void BSP_SENSOR_HUM_Write_Register(uint8_t Reg, uint8_t Data)
 void BSP_SENSOR_ACC_GetOrientation(char *Orientation)
 {
 #if (defined BSP_MOTION_SENSORS || defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
     Orientation[0] = 's';
     Orientation[1] = 'e';
     Orientation[2] = 'u';
-  #endif
+#endif
 #endif
 }
 #endif
@@ -252,11 +252,11 @@ void BSP_SENSOR_ACC_GetOrientation(char *Orientation)
 void BSP_SENSOR_GYR_GetOrientation(char *Orientation)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_GYR_INSTANCE_0
+#ifdef CUSTOM_GYR_INSTANCE_0
     Orientation[0] = 's';
     Orientation[1] = 'e';
     Orientation[2] = 'u';
-  #endif
+#endif
 #endif
 }
 #endif
@@ -270,11 +270,11 @@ void BSP_SENSOR_GYR_GetOrientation(char *Orientation)
 void BSP_SENSOR_MAG_GetOrientation(char *Orientation)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_MAG_INSTANCE_0
+#ifdef CUSTOM_MAG_INSTANCE_0
     Orientation[0] = 'n';
     Orientation[1] = 'e';
     Orientation[2] = 'u';
-  #endif
+#endif
 #endif
 }
 #endif
@@ -288,7 +288,7 @@ void BSP_SENSOR_MAG_GetOrientation(char *Orientation)
 void BSP_SENSOR_ACC_SetDRDYMode(uint8_t Mode)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
 /*
   Example:
   if (Mode == 1)
@@ -300,12 +300,10 @@ void BSP_SENSOR_ACC_SetDRDYMode(uint8_t Mode)
     (void)CUSTOM_MOTION_SENSOR_DRDY_Set_Mode(CUSTOM_ACC_INSTANCE_0, DRDY_LATCHED);
   }
 */
-  #endif
+#endif
 #endif
 }
-#endif
 
-#if (defined CUSTOM_ALGOBUILDER_FW_TEMPLATE)
 /**
   * @brief  Set DRDY interrupt mode for gyroscope
   * @param  Mode Mode to be set (1 means pulsed mode otherwise latched mode)
@@ -314,7 +312,7 @@ void BSP_SENSOR_ACC_SetDRDYMode(uint8_t Mode)
 void BSP_SENSOR_GYR_SetDRDYMode(uint8_t Mode)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_GYR_INSTANCE_0
+#ifdef CUSTOM_GYR_INSTANCE_0
 /*
   Example:
   if (Mode == 1)
@@ -326,12 +324,10 @@ void BSP_SENSOR_GYR_SetDRDYMode(uint8_t Mode)
     (void)CUSTOM_MOTION_SENSOR_DRDY_Set_Mode(CUSTOM_GYR_INSTANCE_0, DRDY_LATCHED);
   }
 */
-  #endif
+#endif
 #endif
 }
-#endif
 
-#if (defined CUSTOM_ALGOBUILDER_FW_TEMPLATE)
 /**
   * @brief  Enables/Disables DRDY signal from accelerometer
   * @param  Enable Define if DRDY signal is enabled or disabled
@@ -340,7 +336,7 @@ void BSP_SENSOR_GYR_SetDRDYMode(uint8_t Mode)
 void BSP_SENSOR_ACC_SetDRDYInt(uint8_t Enable)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
 /*
   Example:
   uint8_t reg = 0;
@@ -358,12 +354,10 @@ void BSP_SENSOR_ACC_SetDRDYInt(uint8_t Enable)
 
   (void)CUSTOM_MOTION_SENSOR_Write_Register(CUSTOM_ACC_INSTANCE_0, INT1_CTRL, reg);
 */
-  #endif
+#endif
 #endif
 }
-#endif
 
-#if (defined CUSTOM_ALGOBUILDER_FW_TEMPLATE)
 /**
   * @brief  Enables/Disables DRDY signal from gyroscope
   * @param  Enable Define if DRDY signal is enabled or disabled
@@ -372,7 +366,7 @@ void BSP_SENSOR_ACC_SetDRDYInt(uint8_t Enable)
 void BSP_SENSOR_GYR_SetDRDYInt(uint8_t Enable)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_GYR_INSTANCE_0
+#ifdef CUSTOM_GYR_INSTANCE_0
 /*
   Example:
   uint8_t reg = 0;
@@ -390,12 +384,10 @@ void BSP_SENSOR_GYR_SetDRDYInt(uint8_t Enable)
 
   (void)CUSTOM_MOTION_SENSOR_Write_Register(CUSTOM_GYR_INSTANCE_0, INT1_CTRL, reg);
 */
-  #endif
+#endif
 #endif
 }
-#endif
 
-#if (defined CUSTOM_ALGOBUILDER_FW_TEMPLATE)
 /**
   * @brief  Reads data from FSM
   * @param  Data pointer where the value is written to
@@ -404,7 +396,7 @@ void BSP_SENSOR_GYR_SetDRDYInt(uint8_t Enable)
 void BSP_ACC_GYR_Read_FSM_Data(uint8_t *Data)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #if (defined(CUSTOM_ACC_INSTANCE_0) | defined (CUSTOM_GYR_INSTANCE_0))
+#if (defined(CUSTOM_ACC_INSTANCE_0) | defined (CUSTOM_GYR_INSTANCE_0))
 /*
   Example for LSM6DSOX:
   (void)CUSTOM_MOTION_SENSOR_Write_Register(LSM6DSOX_0, LSM6DSOX_FUNC_CFG_ACCESS, 0x80);
@@ -426,12 +418,10 @@ void BSP_ACC_GYR_Read_FSM_Data(uint8_t *Data)
   (void)CUSTOM_MOTION_SENSOR_Read_Register(LSM6DSOX_0, LSM6DSOX_FSM_OUTS16, &Data[15]);
   (void)CUSTOM_MOTION_SENSOR_Write_Register(LSM6DSOX_0, LSM6DSOX_FUNC_CFG_ACCESS, 0x00);
 */
-  #endif
+#endif
 #endif
 }
-#endif
 
-#if (defined CUSTOM_ALGOBUILDER_FW_TEMPLATE)
 /**
   * @brief  Reads data from MLC
   * @param  Data pointer where the value is written to
@@ -440,7 +430,7 @@ void BSP_ACC_GYR_Read_FSM_Data(uint8_t *Data)
 void BSP_ACC_GYR_Read_MLC_Data(uint8_t *Data)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #if (defined(CUSTOM_ACC_INSTANCE_0) | defined (CUSTOM_GYR_INSTANCE_0))
+#if (defined(CUSTOM_ACC_INSTANCE_0) | defined (CUSTOM_GYR_INSTANCE_0))
 /*
   Example for LSM6DSOX:
   (void)CUSTOM_MOTION_SENSOR_Write_Register(LSM6DSOX_0, LSM6DSOX_FUNC_CFG_ACCESS, 0x80);
@@ -454,7 +444,107 @@ void BSP_ACC_GYR_Read_MLC_Data(uint8_t *Data)
   (void)CUSTOM_MOTION_SENSOR_Read_Register(LSM6DSOX_0, LSM6DSOX_MLC7_SRC, &Data[7]);
   (void)CUSTOM_MOTION_SENSOR_Write_Register(LSM6DSOX_0, LSM6DSOX_FUNC_CFG_ACCESS, 0x00);
 */
-  #endif
+#endif
 #endif
 }
+#endif /* CUSTOM_ALGOBUILDER_FW_TEMPLATE */
+
+#if (defined PRESENCEDETECTION_STHS34PF80_DEMO)
+/**
+  * @brief  Get the TAmbRaw value from infrared temperature sensor
+  * @param  Value pointer where the value is written to
+  * @retval None
+  */
+void BSP_SENSOR_TEMP_GetTAmbRaw(int16_t *Value)
+{
+#if (defined BSP_ENV_SENSORS)
+#ifdef CUSTOM_TEMP_INSTANCE_0
+  (void)CUSTOM_ENV_SENSOR_Get_TAmbRaw(CUSTOM_TEMP_INSTANCE_0, Value);
 #endif
+#endif
+}
+
+/**
+  * @brief  Get the TObjRaw value from infrared temperature sensor
+  * @param  Value pointer where the value is written to
+  * @retval None
+  */
+void BSP_SENSOR_TEMP_GetTObjRaw(int16_t *Value)
+{
+#if (defined BSP_ENV_SENSORS)
+#ifdef CUSTOM_TEMP_INSTANCE_0
+  (void)CUSTOM_ENV_SENSOR_Get_TObjRaw(CUSTOM_TEMP_INSTANCE_0, Value);
+#endif
+#endif
+}
+
+/**
+  * @brief  Get the AvgTmos value from infrared temperature sensor
+  * @param  Value pointer where the value is written to
+  * @retval None
+  */
+void BSP_SENSOR_TEMP_GetAvgTmos(uint16_t *Value)
+{
+#if (defined BSP_ENV_SENSORS)
+#ifdef CUSTOM_TEMP_INSTANCE_0
+  (void)CUSTOM_ENV_SENSOR_Get_AvgTmos(CUSTOM_TEMP_INSTANCE_0, Value);
+#endif
+#endif
+}
+
+/**
+  * @brief  Set the AvgTmos value to infrared temperature sensor
+  * @param  Value the value to be written to
+  * @retval None
+  */
+void BSP_SENSOR_TEMP_SetAvgTmos(uint16_t Value)
+{
+#if (defined BSP_ENV_SENSORS)
+#ifdef CUSTOM_TEMP_INSTANCE_0
+  (void)CUSTOM_ENV_SENSOR_Set_AvgTmos(CUSTOM_TEMP_INSTANCE_0, Value);
+#endif
+#endif
+}
+
+/**
+  * @brief  Get the AvgT value from infrared temperature sensor
+  * @param  Value pointer where the value is written to
+  * @retval None
+  */
+void BSP_SENSOR_TEMP_GetAvgT(uint8_t *Value)
+{
+#if (defined BSP_ENV_SENSORS)
+#ifdef CUSTOM_TEMP_INSTANCE_0
+  (void)CUSTOM_ENV_SENSOR_Get_AvgT(CUSTOM_TEMP_INSTANCE_0, Value);
+#endif
+#endif
+}
+
+/**
+  * @brief  Get the GainFactor value from infrared temperature sensor
+  * @param  Value pointer where the value is written to
+  * @retval None
+  */
+void BSP_SENSOR_TEMP_GetGainFactor(uint8_t *Value)
+{
+#if (defined BSP_ENV_SENSORS)
+#ifdef CUSTOM_TEMP_INSTANCE_0
+  (void)CUSTOM_ENV_SENSOR_Get_GainFactor(CUSTOM_TEMP_INSTANCE_0, Value);
+#endif
+#endif
+}
+
+/**
+  * @brief  Get the Sensitivity value from infrared temperature sensor
+  * @param  Value pointer where the value is written to
+  * @retval None
+  */
+void BSP_SENSOR_TEMP_GetSensitivity(uint16_t *Value)
+{
+#if (defined BSP_ENV_SENSORS)
+#ifdef CUSTOM_TEMP_INSTANCE_0
+  (void)CUSTOM_ENV_SENSOR_Get_Sensitivity(CUSTOM_TEMP_INSTANCE_0, Value);
+#endif
+#endif
+}
+#endif /* PRESENCEDETECTION_STHS34PF80_DEMO */

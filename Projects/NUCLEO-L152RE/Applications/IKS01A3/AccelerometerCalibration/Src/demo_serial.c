@@ -31,8 +31,8 @@
 #endif
 
 /** @addtogroup MOTION_APPLICATIONS MOTION APPLICATIONS
- * @{
- */
+  * @{
+  */
 
 /* Private defines -----------------------------------------------------------*/
 #ifndef ACC_GYR_UNICLEO_ID
@@ -55,12 +55,12 @@
 static volatile uint8_t DataStreamingDest = 1;
 
 /* Private function prototypes -----------------------------------------------*/
-/* Exported functions ------------------------------------------------------- */
+/* Exported functions --------------------------------------------------------*/
 /**
- * @brief  Build the reply header
- * @param  Msg the pointer to the message to be built
- * @retval None
- */
+  * @brief  Build the reply header
+  * @param  Msg the pointer to the message to be built
+  * @retval None
+  */
 void BUILD_REPLY_HEADER(TMsg *Msg)
 {
   Msg->Data[0] = Msg->Data[1];
@@ -69,10 +69,10 @@ void BUILD_REPLY_HEADER(TMsg *Msg)
 }
 
 /**
- * @brief  Initialize the streaming header
- * @param  Msg the pointer to the header to be initialized
- * @retval None
- */
+  * @brief  Initialize the streaming header
+  * @param  Msg the pointer to the header to be initialized
+  * @retval None
+  */
 void INIT_STREAMING_HEADER(TMsg *Msg)
 {
   Msg->Data[0] = DataStreamingDest;
@@ -82,10 +82,10 @@ void INIT_STREAMING_HEADER(TMsg *Msg)
 }
 
 /**
- * @brief  Initialize the streaming message
- * @param  Msg the pointer to the message to be initialized
- * @retval None
- */
+  * @brief  Initialize the streaming message
+  * @param  Msg the pointer to the message to be initialized
+  * @retval None
+  */
 void INIT_STREAMING_MSG(TMsg *Msg)
 {
   uint32_t i;
@@ -102,10 +102,10 @@ void INIT_STREAMING_MSG(TMsg *Msg)
 }
 
 /**
- * @brief  Handle a message
- * @param  Msg the pointer to the message to be handled
- * @retval 1 if the message is correctly handled, 0 otherwise
- */
+  * @brief  Handle a message
+  * @param  Msg the pointer to the message to be handled
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
 int HandleMSG(TMsg *Msg)
 /*  DestAddr | SourceAddr | CMD | PAYLOAD
  *      1          1         1       N
@@ -428,13 +428,13 @@ int HandleMSG(TMsg *Msg)
 }
 
 /**
- * @brief  Configures the current date
- * @param  y the year value to be set
- * @param  m the month value to be set
- * @param  d the day value to be set
- * @param  dw the day-week value to be set
- * @retval None
- */
+  * @brief  Configures the current date
+  * @param  y the year value to be set
+  * @param  m the month value to be set
+  * @param  d the day value to be set
+  * @param  dw the day-week value to be set
+  * @retval None
+  */
 void RTC_DateRegulate(uint8_t y, uint8_t m, uint8_t d, uint8_t dw)
 {
   RTC_DateTypeDef sdatestructure;
@@ -452,12 +452,12 @@ void RTC_DateRegulate(uint8_t y, uint8_t m, uint8_t d, uint8_t dw)
 }
 
 /**
- * @brief  Configures the current time
- * @param  hh the hour value to be set
- * @param  mm the minute value to be set
- * @param  ss the second value to be set
- * @retval None
- */
+  * @brief  Configures the current time
+  * @param  hh the hour value to be set
+  * @param  mm the minute value to be set
+  * @param  ss the second value to be set
+  * @retval None
+  */
 void RTC_TimeRegulate(uint8_t hh, uint8_t mm, uint8_t ss)
 {
   RTC_TimeTypeDef stimestructure;
@@ -480,11 +480,11 @@ void RTC_TimeRegulate(uint8_t hh, uint8_t mm, uint8_t ss)
 }
 
 /**
- * @brief  Gets Presentation string
- * @param  PresentationString the Presentation string
- * @param  Length the length of Presentation string
- * @retval None
- */
+  * @brief  Gets Presentation string
+  * @param  PresentationString the Presentation string
+  * @param  Length the length of Presentation string
+  * @retval None
+  */
 void Get_PresentationString(char *PresentationString, uint32_t *Length)
 {
   const uint8_t string_pointer_shift = strlen("ST MotionXX v"); /* Shift string pointer by this amount */
@@ -495,7 +495,7 @@ void Get_PresentationString(char *PresentationString, uint32_t *Length)
 
   MotionAC_manager_get_version(lib_version_string, &lib_version_len);
 
-  /* Shorten library version string (e.g.: ST MotionXX v1.0.0 resp. ST MotionXXX v1.0.0) to contain version number only (e.g.: 1.0.0) */
+  /* Shorten library version string (e.g.: ST MotionXX v1.0.0 resp. ST MotionXXX v1.0.0 resp. ST InfraredXX v1.0.0) to contain version number only (e.g.: 1.0.0) */
   if (lib_version_len > string_pointer_shift)
   {
     lib_version_num = lib_version_string + string_pointer_shift;
@@ -509,6 +509,5 @@ void Get_PresentationString(char *PresentationString, uint32_t *Length)
 }
 
 /**
- * @}
- */
-
+  * @}
+  */

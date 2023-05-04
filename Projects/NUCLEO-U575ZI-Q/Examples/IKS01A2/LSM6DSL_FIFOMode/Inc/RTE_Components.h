@@ -22,7 +22,7 @@
 #define  __RTE_COMPONENTS_H__
 
 /* Defines ------------------------------------------------------------------*/
-/* STMicroelectronics.X-CUBE-MEMS1.9.5.0 */
+/* STMicroelectronics.X-CUBE-MEMS1.9.6.0 */
 #define IKS01A2
 #define IKS01A2_LSM6DSL_FIFOMODE_DEMO
 

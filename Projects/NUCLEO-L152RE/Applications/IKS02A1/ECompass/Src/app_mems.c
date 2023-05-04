@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.5.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.6.0 instances.
   ******************************************************************************
   * @attention
   *
@@ -123,11 +123,11 @@ void MX_MEMS_Process(void)
 
 /* Exported functions --------------------------------------------------------*/
 /**
- * @brief  Period elapsed callback
- * @param  htim pointer to a TIM_HandleTypeDef structure that contains
- *              the configuration information for TIM module.
- * @retval None
- */
+  * @brief  Period elapsed callback
+  * @param  htim pointer to a TIM_HandleTypeDef structure that contains
+  *              the configuration information for TIM module.
+  * @retval None
+  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   if (htim->Instance == BSP_IP_TIM_Handle.Instance)
@@ -237,15 +237,16 @@ static void MX_ECompass_Process(void)
         SensorReadRequest = 1;
       }
     }
+
     UART_SendMsg(&msg_dat);
   }
 }
 
 /**
- * @brief  Initialize all sensors
- * @param  None
- * @retval None
- */
+  * @brief  Initialize all sensors
+  * @param  None
+  * @retval None
+  */
 static void Init_Sensors(void)
 {
   BSP_SENSOR_ACC_Init();
@@ -261,10 +262,10 @@ static void Init_Sensors(void)
 }
 
 /**
- * @brief  Handles the time+date getting/sending
- * @param  Msg the time+date part of the stream
- * @retval None
- */
+  * @brief  Handles the time+date getting/sending
+  * @param  Msg the time+date part of the stream
+  * @retval None
+  */
 static void RTC_Handler(TMsg *Msg)
 {
   uint8_t sub_sec = 0;
@@ -306,10 +307,10 @@ static void RTC_Handler(TMsg *Msg)
 }
 
 /**
- * @brief  Magnetometer Calibration data handler
- * @param  Msg the Magnetometer Calibration data part of the stream
- * @retval None
- */
+  * @brief  Magnetometer Calibration data handler
+  * @param  Msg the Magnetometer Calibration data part of the stream
+  * @retval None
+  */
 static void MC_Data_Handler(TMsg *Msg)
 {
   MMC_Input_t data_in;
@@ -349,10 +350,10 @@ static void MC_Data_Handler(TMsg *Msg)
 }
 
 /**
- * @brief  E-Compass data handler
- * @param  Msg the E-Compass data part of the stream
- * @retval None
- */
+  * @brief  E-Compass data handler
+  * @param  Msg the E-Compass data part of the stream
+  * @retval None
+  */
 static void EC_Data_Handler(TMsg *Msg)
 {
   uint32_t elapsed_time_us = 0U;
@@ -426,10 +427,10 @@ static void EC_Data_Handler(TMsg *Msg)
 }
 
 /**
- * @brief  Handles the ACC axes data getting/sending
- * @param  Msg the ACC part of the stream
- * @retval None
- */
+  * @brief  Handles the ACC axes data getting/sending
+  * @param  Msg the ACC part of the stream
+  * @retval None
+  */
 static void Accelero_Sensor_Handler(TMsg *Msg)
 {
   if ((SensorsEnabled & ACCELEROMETER_SENSOR) == ACCELEROMETER_SENSOR)
@@ -452,10 +453,10 @@ static void Accelero_Sensor_Handler(TMsg *Msg)
 }
 
 /**
- * @brief  Handles the GYR axes data getting/sending
- * @param  Msg the GYR part of the stream
- * @retval None
- */
+  * @brief  Handles the GYR axes data getting/sending
+  * @param  Msg the GYR part of the stream
+  * @retval None
+  */
 static void Gyro_Sensor_Handler(TMsg *Msg)
 {
   if ((SensorsEnabled & GYROSCOPE_SENSOR) == GYROSCOPE_SENSOR)
@@ -478,10 +479,10 @@ static void Gyro_Sensor_Handler(TMsg *Msg)
 }
 
 /**
- * @brief  Handles the MAG axes data getting/sending
- * @param  Msg the MAG part of the stream
- * @retval None
- */
+  * @brief  Handles the MAG axes data getting/sending
+  * @param  Msg the MAG part of the stream
+  * @retval None
+  */
 static void Magneto_Sensor_Handler(TMsg *Msg)
 {
   if ((SensorsEnabled & MAGNETIC_SENSOR) == MAGNETIC_SENSOR)
@@ -504,10 +505,10 @@ static void Magneto_Sensor_Handler(TMsg *Msg)
 }
 
 /**
- * @brief  Handles the PRESS sensor data getting/sending.
- * @param  Msg the PRESS part of the stream
- * @retval None
- */
+  * @brief  Handles the PRESS sensor data getting/sending.
+  * @param  Msg the PRESS part of the stream
+  * @retval None
+  */
 static void Pressure_Sensor_Handler(TMsg *Msg)
 {
   if ((SensorsEnabled & PRESSURE_SENSOR) == PRESSURE_SENSOR)
@@ -526,10 +527,10 @@ static void Pressure_Sensor_Handler(TMsg *Msg)
 }
 
 /**
- * @brief  Handles the TEMP axes data getting/sending
- * @param  Msg the TEMP part of the stream
- * @retval None
- */
+  * @brief  Handles the TEMP axes data getting/sending
+  * @param  Msg the TEMP part of the stream
+  * @retval None
+  */
 static void Temperature_Sensor_Handler(TMsg *Msg)
 {
   if ((SensorsEnabled & TEMPERATURE_SENSOR) == TEMPERATURE_SENSOR)
@@ -548,10 +549,10 @@ static void Temperature_Sensor_Handler(TMsg *Msg)
 }
 
 /**
- * @brief  Handles the HUM axes data getting/sending
- * @param  Msg the HUM part of the stream
- * @retval None
- */
+  * @brief  Handles the HUM axes data getting/sending
+  * @param  Msg the HUM part of the stream
+  * @retval None
+  */
 static void Humidity_Sensor_Handler(TMsg *Msg)
 {
   if ((SensorsEnabled & HUMIDITY_SENSOR) == HUMIDITY_SENSOR)
@@ -570,10 +571,10 @@ static void Humidity_Sensor_Handler(TMsg *Msg)
 }
 
 /**
- * @brief  Timer configuration
- * @param  Freq the desired Timer frequency
- * @retval None
- */
+  * @brief  Timer configuration
+  * @param  Freq the desired Timer frequency
+  * @retval None
+  */
 static void TIM_Config(uint32_t Freq)
 {
   const uint32_t tim_counter_clock = 2000; /* TIM counter clock 2 kHz */
@@ -592,10 +593,10 @@ static void TIM_Config(uint32_t Freq)
 }
 
 /**
- * @brief  Initialize DWT register for counting clock cycles purpose
- * @param  None
- * @retval None
- */
+  * @brief  Initialize DWT register for counting clock cycles purpose
+  * @param  None
+  * @retval None
+  */
 static void DWT_Init(void)
 {
   CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
@@ -603,10 +604,10 @@ static void DWT_Init(void)
 }
 
 /**
- * @brief  Start counting clock cycles
- * @param  None
- * @retval None
- */
+  * @brief  Start counting clock cycles
+  * @param  None
+  * @retval None
+  */
 static void DWT_Start(void)
 {
   DWT->CYCCNT = 0; /* Clear count of clock cycles */
@@ -614,10 +615,10 @@ static void DWT_Start(void)
 }
 
 /**
- * @brief  Stop counting clock cycles and calculate elapsed time in [us]
- * @param  None
- * @retval Elapsed time in [us]
- */
+  * @brief  Stop counting clock cycles and calculate elapsed time in [us]
+  * @param  None
+  * @retval Elapsed time in [us]
+  */
 static uint32_t DWT_Stop(void)
 {
   volatile uint32_t cycles_count = 0U;
@@ -634,4 +635,3 @@ static uint32_t DWT_Stop(void)
 #ifdef __cplusplus
 }
 #endif
-

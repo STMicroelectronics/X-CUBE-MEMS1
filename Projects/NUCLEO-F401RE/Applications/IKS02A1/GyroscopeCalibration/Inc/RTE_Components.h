@@ -22,7 +22,7 @@
 #define  __RTE_COMPONENTS_H__
 
 /* Defines ------------------------------------------------------------------*/
-/* STMicroelectronics.X-CUBE-MEMS1.9.5.0 */
+/* STMicroelectronics.X-CUBE-MEMS1.9.6.0 */
 #define IKS02A1
 #define IKS02A1_GYROSCOPECALIBRATION_DEMO
 

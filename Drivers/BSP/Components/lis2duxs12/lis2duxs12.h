@@ -237,6 +237,23 @@ int32_t LIS2DUXS12_ACC_Set_SelfTest(LIS2DUXS12_Object_t *pObj, uint8_t Val);
 int32_t LIS2DUXS12_ACC_Get_DRDY_Status(LIS2DUXS12_Object_t *pObj, uint8_t *Status);
 int32_t LIS2DUXS12_ACC_Get_Init_Status(LIS2DUXS12_Object_t *pObj, uint8_t *Status);
 
+int32_t LIS2DUXS12_ACC_Get_Event_Status(LIS2DUXS12_Object_t *pObj, LIS2DUXS12_Event_Status_t *Status);
+
+int32_t LIS2DUXS12_ACC_Enable_Wake_Up_Detection(LIS2DUXS12_Object_t *pObj, LIS2DUXS12_SensorIntPin_t IntPin);
+int32_t LIS2DUXS12_ACC_Disable_Wake_Up_Detection(LIS2DUXS12_Object_t *pObj);
+int32_t LIS2DUXS12_ACC_Set_Wake_Up_Threshold(LIS2DUXS12_Object_t *pObj, uint32_t Threshold);
+int32_t LIS2DUXS12_ACC_Set_Wake_Up_Duration(LIS2DUXS12_Object_t *pObj, uint8_t Duration);
+
+int32_t LIS2DUXS12_ACC_Enable_6D_Orientation(LIS2DUXS12_Object_t *pObj, LIS2DUXS12_SensorIntPin_t IntPin);
+int32_t LIS2DUXS12_ACC_Disable_6D_Orientation(LIS2DUXS12_Object_t *pObj);
+int32_t LIS2DUXS12_ACC_Set_6D_Orientation_Threshold(LIS2DUXS12_Object_t *pObj, uint8_t Threshold);
+int32_t LIS2DUXS12_ACC_Get_6D_Orientation_XL(LIS2DUXS12_Object_t *pObj, uint8_t *XLow);
+int32_t LIS2DUXS12_ACC_Get_6D_Orientation_XH(LIS2DUXS12_Object_t *pObj, uint8_t *XHigh);
+int32_t LIS2DUXS12_ACC_Get_6D_Orientation_YL(LIS2DUXS12_Object_t *pObj, uint8_t *YLow);
+int32_t LIS2DUXS12_ACC_Get_6D_Orientation_YH(LIS2DUXS12_Object_t *pObj, uint8_t *YHigh);
+int32_t LIS2DUXS12_ACC_Get_6D_Orientation_ZL(LIS2DUXS12_Object_t *pObj, uint8_t *ZLow);
+int32_t LIS2DUXS12_ACC_Get_6D_Orientation_ZH(LIS2DUXS12_Object_t *pObj, uint8_t *ZHigh);
+
 /**
   * @}
   */

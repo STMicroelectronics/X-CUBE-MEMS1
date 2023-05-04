@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.h
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.5.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.6.0 instances.
   ******************************************************************************
   * @attention
   *
@@ -21,7 +21,7 @@
 #define __APP_MEMS_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -37,4 +37,3 @@ void MX_MEMS_Process(void);
 #endif
 
 #endif /* __APP_MEMS_H */
-

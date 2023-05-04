@@ -30,6 +30,8 @@ extern "C" {
 #include "nucleo_f401re_errno.h"
 #include "iks02a1_motion_sensors.h"
 #include "iks02a1_motion_sensors_ex.h"
+#include "iks02a1_env_sensors.h"
+#include "iks02a1_env_sensors_ex.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/

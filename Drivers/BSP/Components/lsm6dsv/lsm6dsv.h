@@ -117,13 +117,13 @@ typedef struct
 
 typedef struct
 {
-  LSM6DSV_IO_t           IO;
+  LSM6DSV_IO_t              IO;
   stmdev_ctx_t              Ctx;
   uint8_t                   is_initialized;
   uint8_t                   acc_is_enabled;
   uint8_t                   gyro_is_enabled;
-  lsm6dsv_xl_data_rate_t acc_odr;
-  lsm6dsv_gy_data_rate_t gyro_odr;
+  lsm6dsv_data_rate_t       acc_odr;
+  lsm6dsv_data_rate_t       gyro_odr;
 } LSM6DSV_Object_t;
 
 typedef struct

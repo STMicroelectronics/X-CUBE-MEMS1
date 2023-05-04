@@ -2295,12 +2295,46 @@ int32_t ISM330DHCX_FIFO_Get_Full_Status(ISM330DHCX_Object_t *pObj, uint8_t *Stat
 {
   ism330dhcx_reg_t reg;
 
+  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_FIFO_STATUS1, &reg.byte, 1) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
   if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_FIFO_STATUS2, &reg.byte, 1) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
 
   *Status = reg.fifo_status2.fifo_full_ia;
+
+  return ISM330DHCX_OK;
+}
+
+/**
+  * @brief  Get the ISM330DHCX FIFO all status
+  * @param  pObj the device pObj
+  * @param  Status FIFO register content
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t ISM330DHCX_FIFO_Get_All_Status(ISM330DHCX_Object_t *pObj, ISM330DHCX_Fifo_Status_t *Status)
+{
+  ism330dhcx_reg_t reg;
+
+  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_FIFO_STATUS1, &reg.byte, 1) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
+  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_FIFO_STATUS2, &reg.byte, 1) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
+  Status->FifoWatermark = reg.fifo_status2.fifo_wtm_ia;
+  Status->FifoFull = reg.fifo_status2.fifo_full_ia;
+  Status->FifoOverrun = reg.fifo_status2.fifo_ovr_ia;
+  Status->FifoOverrunLatched = reg.fifo_status2.over_run_latched;
+  Status->CounterBdr = reg.fifo_status2.counter_bdr_ia;
 
   return ISM330DHCX_OK;
 }
@@ -2389,9 +2423,59 @@ int32_t ISM330DHCX_FIFO_Set_INT1_FIFO_Full(ISM330DHCX_Object_t *pObj, uint8_t St
 }
 
 /**
+  * @brief  Set the ISM330DHCX FIFO threshold interrupt on INT1 pin
+  * @param  pObj the device pObj
+  * @param  Status FIFO threshold interrupt on INT1 pin status
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t ISM330DHCX_FIFO_Set_INT1_FIFO_Threshold(ISM330DHCX_Object_t *pObj, uint8_t Status)
+{
+  ism330dhcx_reg_t reg;
+
+  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_INT1_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
+  reg.int1_ctrl.int1_fifo_th = Status;
+
+  if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT1_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
+  return ISM330DHCX_OK;
+}
+
+/**
+  * @brief  Set the ISM330DHCX FIFO overrun interrupt on INT1 pin
+  * @param  pObj the device pObj
+  * @param  Status FIFO overrun interrupt on INT1 pin status
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t ISM330DHCX_FIFO_Set_INT1_FIFO_Overrun(ISM330DHCX_Object_t *pObj, uint8_t Status)
+{
+  ism330dhcx_reg_t reg;
+
+  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_INT1_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
+  reg.int1_ctrl.int1_fifo_ovr = Status;
+
+  if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT1_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
+  return ISM330DHCX_OK;
+}
+
+/**
   * @brief  Set the ISM330DHCX FIFO full interrupt on INT2 pin
   * @param  pObj the device pObj
-  * @param  Status FIFO full interrupt on INT1 pin status
+  * @param  Status FIFO full interrupt on INT2 pin status
   * @retval 0 in case of success, an error code otherwise
   */
 int32_t ISM330DHCX_FIFO_Set_INT2_FIFO_Full(ISM330DHCX_Object_t *pObj, uint8_t Status)
@@ -2404,6 +2488,56 @@ int32_t ISM330DHCX_FIFO_Set_INT2_FIFO_Full(ISM330DHCX_Object_t *pObj, uint8_t St
   }
 
   reg.int2_ctrl.int2_fifo_full = Status;
+
+  if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
+  return ISM330DHCX_OK;
+}
+
+/**
+  * @brief  Set the ISM330DHCX FIFO threshold interrupt on INT2 pin
+  * @param  pObj the device pObj
+  * @param  Status FIFO threshold interrupt on INT2 pin status
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t ISM330DHCX_FIFO_Set_INT2_FIFO_Threshold(ISM330DHCX_Object_t *pObj, uint8_t Status)
+{
+  ism330dhcx_reg_t reg;
+
+  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
+  reg.int2_ctrl.int2_fifo_th = Status;
+
+  if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
+  return ISM330DHCX_OK;
+}
+
+/**
+  * @brief  Set the ISM330DHCX FIFO overrun interrupt on INT2 pin
+  * @param  pObj the device pObj
+  * @param  Status FIFO overrun interrupt on INT2 pin status
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t ISM330DHCX_FIFO_Set_INT2_FIFO_Overrun(ISM330DHCX_Object_t *pObj, uint8_t Status)
+{
+  ism330dhcx_reg_t reg;
+
+  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
+  reg.int2_ctrl.int2_fifo_ovr = Status;
 
   if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
   {

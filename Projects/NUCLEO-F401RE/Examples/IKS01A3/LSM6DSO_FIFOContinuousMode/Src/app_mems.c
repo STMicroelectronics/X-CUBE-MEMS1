@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.5.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.6.0 instances.
   ******************************************************************************
   * @attention
   *
@@ -423,4 +423,3 @@ static int32_t LSM6DSO_Read_Single_FIFO_Data(uint16_t SampleIndex)
 #ifdef __cplusplus
 }
 #endif
-

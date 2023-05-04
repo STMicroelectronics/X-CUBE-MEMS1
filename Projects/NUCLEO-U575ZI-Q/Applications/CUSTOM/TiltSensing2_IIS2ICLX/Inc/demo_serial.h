@@ -31,7 +31,8 @@ extern "C" {
 #include "motion_tl2_manager.h"
 
 /* Exported types ------------------------------------------------------------*/
-typedef struct {
+typedef struct
+{
   uint8_t hours;
   uint8_t minutes;
   uint8_t seconds;
@@ -99,4 +100,3 @@ void Get_PresentationString(char *PresentationString, uint32_t *Length);
 #endif
 
 #endif /* DEMO_SERIAL_H */
-

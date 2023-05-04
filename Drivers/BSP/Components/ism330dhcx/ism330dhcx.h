@@ -48,7 +48,7 @@ extern "C"
 typedef int32_t (*ISM330DHCX_Init_Func)(void);
 typedef int32_t (*ISM330DHCX_DeInit_Func)(void);
 typedef int32_t (*ISM330DHCX_GetTick_Func)(void);
-typedef void    (*ISM330DHCX_Delay_Func)(uint32_t);
+typedef void (*ISM330DHCX_Delay_Func)(uint32_t);
 typedef int32_t (*ISM330DHCX_WriteReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 typedef int32_t (*ISM330DHCX_ReadReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 
@@ -95,6 +95,15 @@ typedef struct
   unsigned int D6DOrientationStatus : 1;
   unsigned int SleepStatus : 1;
 } ISM330DHCX_Event_Status_t;
+
+typedef struct
+{
+  unsigned int FifoWatermark : 1;
+  unsigned int FifoOverrun : 1;
+  unsigned int FifoFull : 1;
+  unsigned int CounterBdr : 1;
+  unsigned int FifoOverrunLatched : 1;
+} ISM330DHCX_Fifo_Status_t;
 
 typedef struct
 {
@@ -288,10 +297,15 @@ int32_t ISM330DHCX_GYRO_Get_Init_Status(ISM330DHCX_Object_t *pObj, uint8_t *Stat
 
 int32_t ISM330DHCX_FIFO_Get_Num_Samples(ISM330DHCX_Object_t *pObj, uint16_t *NumSamples);
 int32_t ISM330DHCX_FIFO_Get_Full_Status(ISM330DHCX_Object_t *pObj, uint8_t *Status);
+int32_t ISM330DHCX_FIFO_Get_All_Status(ISM330DHCX_Object_t *pObj, ISM330DHCX_Fifo_Status_t *Status);
 int32_t ISM330DHCX_FIFO_ACC_Set_BDR(ISM330DHCX_Object_t *pObj, float Bdr);
 int32_t ISM330DHCX_FIFO_GYRO_Set_BDR(ISM330DHCX_Object_t *pObj, float Bdr);
 int32_t ISM330DHCX_FIFO_Set_INT1_FIFO_Full(ISM330DHCX_Object_t *pObj, uint8_t Status);
+int32_t ISM330DHCX_FIFO_Set_INT1_FIFO_Threshold(ISM330DHCX_Object_t *pObj, uint8_t Status);
+int32_t ISM330DHCX_FIFO_Set_INT1_FIFO_Overrun(ISM330DHCX_Object_t *pObj, uint8_t Status);
 int32_t ISM330DHCX_FIFO_Set_INT2_FIFO_Full(ISM330DHCX_Object_t *pObj, uint8_t Status);
+int32_t ISM330DHCX_FIFO_Set_INT2_FIFO_Threshold(ISM330DHCX_Object_t *pObj, uint8_t Status);
+int32_t ISM330DHCX_FIFO_Set_INT2_FIFO_Overrun(ISM330DHCX_Object_t *pObj, uint8_t Status);
 int32_t ISM330DHCX_FIFO_Set_Watermark_Level(ISM330DHCX_Object_t *pObj, uint16_t Watermark);
 int32_t ISM330DHCX_FIFO_Set_Stop_On_Fth(ISM330DHCX_Object_t *pObj, uint8_t Status);
 int32_t ISM330DHCX_FIFO_Set_Mode(ISM330DHCX_Object_t *pObj, uint8_t Mode);

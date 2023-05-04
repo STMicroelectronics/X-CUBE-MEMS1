@@ -235,7 +235,7 @@ int32_t BSP_I2C1_Send(uint16_t DevAddr, uint8_t *pData, uint16_t len)
 
   if (HAL_I2C_Master_Transmit(&hbusi2c1, DevAddr, pData, len, TIMEOUT_DURATION) == HAL_OK)
   {
-    ret = len;
+    ret = BSP_ERROR_NONE;
   }
 
   return ret;
@@ -254,7 +254,7 @@ int32_t BSP_I2C1_Recv(uint16_t DevAddr, uint8_t *pData, uint16_t len)
 
   if (HAL_I2C_Master_Receive(&hbusi2c1, DevAddr, pData, len, TIMEOUT_DURATION) == HAL_OK)
   {
-    ret = len;
+    ret = BSP_ERROR_NONE;
   }
 
   return ret;
@@ -279,7 +279,7 @@ int32_t BSP_I2C1_SendRecv(uint16_t DevAddr, uint8_t *pTxdata, uint8_t *pRxdata, 
   if ((BSP_I2C1_Send(DevAddr, pTxdata, len) == len) && \
       (BSP_I2C1_Recv(DevAddr, pRxdata, len) == len))
   {
-    ret = len;
+    ret = BSP_ERROR_NONE;
   }
 
   return ret;

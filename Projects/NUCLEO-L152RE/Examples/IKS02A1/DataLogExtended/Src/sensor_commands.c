@@ -18,6 +18,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "com.h"
 #include "demo_serial.h"
+#include "iks02a1_env_sensors.h"
+#include "iks02a1_env_sensors_ex.h"
 #include "iks02a1_motion_sensors.h"
 #include "iks02a1_motion_sensors_ex.h"
 #include "nucleo_l152re_errno.h"
@@ -44,6 +46,8 @@
 uint32_t AccInstance = 0xFFFFFFFF;
 uint32_t GyrInstance = 0xFFFFFFFF;
 uint32_t MagInstance = 0xFFFFFFFF;
+uint32_t HumInstance = 0xFFFFFFFF;
+uint32_t TmpInstance = 0xFFFFFFFF;
 
 /* Private variables ---------------------------------------------------------*/
 /* Supported sensor names. Please verify that second index of array is HIGHER than longest string in array!!! */
@@ -51,6 +55,8 @@ static uint8_t AccNameList[][SENSOR_NAME_MAX_LENGTH] = {"ISM330DHCX", "IIS2DLPC"
                                                         "ASM330LHHX (DIL24)"};
 static uint8_t GyrNameList[][SENSOR_NAME_MAX_LENGTH] = {"ISM330DHCX", "ASM330LHHX (DIL24)"};
 static uint8_t MagNameList[][SENSOR_NAME_MAX_LENGTH] = {"IIS2MDC"};
+static uint8_t HumNameList[][SENSOR_NAME_MAX_LENGTH] = {"SHT40AD1B (DIL24)"};
+static uint8_t TmpNameList[][SENSOR_NAME_MAX_LENGTH] = {"SHT40AD1B (DIL24)"};
 
 /* Supported sensor instances (have to correspond with supported sensor names above) */
 static uint32_t AccInstanceList[] = {
@@ -65,6 +71,12 @@ static uint32_t GyrInstanceList[] = {
 };
 static uint32_t MagInstanceList[] = {
   IKS02A1_IIS2MDC_0,
+};
+static uint32_t HumInstanceList[] = {
+  IKS02A1_SHT40AD1B_0,
+};
+static uint32_t TmpInstanceList[] = {
+  IKS02A1_SHT40AD1B_0,
 };
 
 /* Sensor fullscale lists (have to correspond with supported sensor names above)
@@ -82,6 +94,12 @@ static uint32_t GyrFsList[][7] = {      /* dps */
 static uint32_t MagFsList[][2] = { /* Ga */
   {1, 50},                         /* IIS2MDC */
 };
+static uint32_t HumFsList[][1] = { /* % */
+  {0},                             /* SHT40AD1B */
+};
+static uint32_t TmpFsList[][1] = { /* C */
+  {0},                             /* SHT40AD1B */
+};
 
 /* Sensor output data rate lists (have to correspond with supported sensor names above)
  * Please verify that second index of array is equal to or higher than count of longest sub-array items */
@@ -98,16 +116,26 @@ static float GyrOdrList[][11] = {                           /* Hz */
 static float MagOdrList[][5] = { /* Hz */
   {4, 10, 20, 50, 100},          /* IIS2MDC */
 };
+static float HumOdrList[][2] = { /* Hz */
+  {0},                           /* SHT40AD1B */
+};
+static float TmpOdrList[][2] = { /* Hz */
+  {0},                           /* SHT40AD1B */
+};
 
 /* Supported sensor names of same kind in one string (comma separated) */
 static uint8_t AccNamesString[sizeof(AccNameList) + sizeof(AccNameList) / SENSOR_NAME_MAX_LENGTH];
 static uint8_t GyrNamesString[sizeof(GyrNameList) + sizeof(GyrNameList) / SENSOR_NAME_MAX_LENGTH];
 static uint8_t MagNamesString[sizeof(MagNameList) + sizeof(MagNameList) / SENSOR_NAME_MAX_LENGTH];
+static uint8_t TmpNamesString[sizeof(TmpNameList) + sizeof(TmpNameList) / SENSOR_NAME_MAX_LENGTH];
+static uint8_t HumNamesString[sizeof(HumNameList) + sizeof(HumNameList) / SENSOR_NAME_MAX_LENGTH];
 
 /* Currently selected sensor indexes */
 static uint8_t AccIndex;
 static uint8_t GyrIndex;
 static uint8_t MagIndex;
+static uint8_t HumIndex;
+static uint8_t TmpIndex;
 
 /* Private function prototypes -----------------------------------------------*/
 static int SC_Get_Sensor_Name(TMsg *Msg);
@@ -222,6 +250,14 @@ static int SC_Get_Sensor_Name(TMsg *Msg)
       Send_Sensor_Name(Msg, MagNameList[MagIndex]);
       break;
 
+    case SC_TEMPERATURE:
+      Send_Sensor_Name(Msg, TmpNameList[TmpIndex]);
+      break;
+
+    case SC_HUMIDITY:
+      Send_Sensor_Name(Msg, HumNameList[HumIndex]);
+      break;
+
     default:
       ret = 0;
       break;
@@ -259,6 +295,20 @@ static int SC_Read_Register(TMsg *Msg)
 
     case SC_MAGNETOMETER:
       if (IKS02A1_MOTION_SENSOR_Read_Register(MagInstance, Msg->Data[5], &reg_value) != BSP_ERROR_NONE)
+      {
+        return 0;
+      }
+      break;
+
+    case SC_TEMPERATURE:
+      if (IKS02A1_ENV_SENSOR_Read_Register(TmpInstance, Msg->Data[5], &reg_value) != BSP_ERROR_NONE)
+      {
+        return 0;
+      }
+      break;
+
+    case SC_HUMIDITY:
+      if (IKS02A1_ENV_SENSOR_Read_Register(HumInstance, Msg->Data[5], &reg_value) != BSP_ERROR_NONE)
       {
         return 0;
       }
@@ -314,6 +364,20 @@ static int SC_Write_Register(TMsg *Msg)
       }
       break;
 
+    case SC_TEMPERATURE:
+      if (IKS02A1_ENV_SENSOR_Write_Register(TmpInstance, Msg->Data[5], Msg->Data[6]) != BSP_ERROR_NONE)
+      {
+        return 0;
+      }
+      break;
+
+    case SC_HUMIDITY:
+      if (IKS02A1_ENV_SENSOR_Write_Register(HumInstance, Msg->Data[5], Msg->Data[6]) != BSP_ERROR_NONE)
+      {
+        return 0;
+      }
+      break;
+
     default:
       ret = 0;
       break;
@@ -352,6 +416,14 @@ static int SC_Get_Full_Scale_List(TMsg *Msg)
 
     case SC_MAGNETOMETER:
       Send_Sensor_FS_List(Msg, MagFsList[MagIndex]);
+      break;
+
+    case SC_TEMPERATURE:
+      Send_Sensor_FS_List(Msg, TmpFsList[TmpIndex]);
+      break;
+
+    case SC_HUMIDITY:
+      Send_Sensor_FS_List(Msg, HumFsList[HumIndex]);
       break;
 
     default:
@@ -394,6 +466,10 @@ static int SC_Set_Full_Scale(TMsg *Msg)
       {
         return 0;
       }
+      break;
+
+    case SC_TEMPERATURE:
+    case SC_HUMIDITY:
       break;
 
     default:
@@ -446,6 +522,10 @@ static int SC_Get_Full_Scale(TMsg *Msg)
       }
       break;
 
+    case SC_TEMPERATURE:
+    case SC_HUMIDITY:
+      break;
+
     default:
       ret = 0;
       break;
@@ -487,6 +567,14 @@ static int SC_Get_ODR_List(TMsg *Msg)
       Send_Sensor_ODR_List(Msg, MagOdrList[MagIndex]);
       break;
 
+    case SC_TEMPERATURE:
+      Send_Sensor_ODR_List(Msg, TmpOdrList[TmpIndex]);
+      break;
+
+    case SC_HUMIDITY:
+      Send_Sensor_ODR_List(Msg, HumOdrList[HumIndex]);
+      break;
+
     default:
       ret = 0;
       break;
@@ -526,6 +614,20 @@ static int SC_Set_ODR(TMsg *Msg)
 
     case SC_MAGNETOMETER:
       if (IKS02A1_MOTION_SENSOR_SetOutputDataRate(MagInstance, MOTION_MAGNETO, odr) != BSP_ERROR_NONE)
+      {
+        return 0;
+      }
+      break;
+
+    case SC_TEMPERATURE:
+      if (IKS02A1_ENV_SENSOR_SetOutputDataRate(TmpInstance, ENV_TEMPERATURE, odr) != BSP_ERROR_NONE)
+      {
+        return 0;
+      }
+      break;
+
+    case SC_HUMIDITY:
+      if (IKS02A1_ENV_SENSOR_SetOutputDataRate(HumInstance, ENV_HUMIDITY, odr) != BSP_ERROR_NONE)
       {
         return 0;
       }
@@ -576,6 +678,20 @@ static int SC_Get_ODR(TMsg *Msg)
 
     case SC_MAGNETOMETER:
       if (IKS02A1_MOTION_SENSOR_GetOutputDataRate(MagInstance, MOTION_MAGNETO, &odr) != BSP_ERROR_NONE)
+      {
+        return 0;
+      }
+      break;
+
+    case SC_TEMPERATURE:
+      if (IKS02A1_ENV_SENSOR_GetOutputDataRate(TmpInstance, ENV_TEMPERATURE, &odr) != BSP_ERROR_NONE)
+      {
+        return 0;
+      }
+      break;
+
+    case SC_HUMIDITY:
+      if (IKS02A1_ENV_SENSOR_GetOutputDataRate(HumInstance, ENV_HUMIDITY, &odr) != BSP_ERROR_NONE)
       {
         return 0;
       }
@@ -654,6 +770,36 @@ static int SC_Get_Sensor_List(TMsg *Msg)
         (void)strcat((char *)MagNamesString, (char *)MagNameList[i]);
       }
       Send_Sensor_Name(Msg, MagNamesString);
+      break;
+
+    case SC_TEMPERATURE:
+      /* Concatenate all sensor names of same kind to one string (comma separated) */
+      for (i = 0; i < sizeof(TmpNamesString); i++)
+      {
+        TmpNamesString[i] = '\0';
+      }
+      (void)strcat((char *)TmpNamesString, (char *)TmpNameList[0]);
+      for (i = 1; i < sizeof(TmpNameList) / SENSOR_NAME_MAX_LENGTH; i++)
+      {
+        (void)strcat((char *)TmpNamesString, ",");
+        (void)strcat((char *)TmpNamesString, (char *)TmpNameList[i]);
+      }
+      Send_Sensor_Name(Msg, TmpNamesString);
+      break;
+
+    case SC_HUMIDITY:
+      /* Concatenate all sensor names of same kind to one string (comma separated) */
+      for (i = 0; i < sizeof(HumNamesString); i++)
+      {
+        HumNamesString[i] = '\0';
+      }
+      (void)strcat((char *)HumNamesString, (char *)HumNameList[0]);
+      for (i = 1; i < sizeof(HumNameList) / SENSOR_NAME_MAX_LENGTH; i++)
+      {
+        (void)strcat((char *)HumNamesString, ",");
+        (void)strcat((char *)HumNamesString, (char *)HumNameList[i]);
+      }
+      Send_Sensor_Name(Msg, HumNamesString);
       break;
 
     default:
@@ -750,6 +896,58 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
         if (ret != 0)
         {
           MagInstance = MagInstanceList[MagIndex];
+        }
+      }
+      break;
+
+    case SC_TEMPERATURE:
+      TmpIndex = Msg->Data[5];
+      if ((TmpInstance != TmpInstanceList[TmpIndex]))
+      {
+        if (TmpInstance != 0xFFFFFFFF)
+        {
+          if (IKS02A1_ENV_SENSOR_Disable(TmpInstance, ENV_TEMPERATURE) != BSP_ERROR_NONE)
+          {
+            ret = 0;
+          }
+        }
+        if (IKS02A1_ENV_SENSOR_Init(TmpInstanceList[TmpIndex], ENV_TEMPERATURE) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+        if (ret != 0 && Is_DIL24_Sensor(&TmpNameList[TmpIndex][0]) == 1)
+        {
+          DIL24_INT1_Init();
+        }
+        if (ret != 0)
+        {
+          TmpInstance = TmpInstanceList[TmpIndex];
+        }
+      }
+      break;
+
+    case SC_HUMIDITY:
+      HumIndex = Msg->Data[5];
+      if (HumInstance != HumInstanceList[HumIndex])
+      {
+        if (HumInstance != 0xFFFFFFFF)
+        {
+          if (IKS02A1_ENV_SENSOR_Disable(HumInstance, ENV_HUMIDITY) != BSP_ERROR_NONE)
+          {
+            ret = 0;
+          }
+        }
+        if (IKS02A1_ENV_SENSOR_Init(HumInstanceList[HumIndex], ENV_HUMIDITY) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+        if (ret != 0 && Is_DIL24_Sensor(&HumNameList[HumIndex][0]) == 1)
+        {
+          DIL24_INT1_Init();
+        }
+        if (ret != 0)
+        {
+          HumInstance = HumInstanceList[HumIndex];
         }
       }
       break;

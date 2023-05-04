@@ -78,6 +78,7 @@ extern "C" {
 #define USE_IKS01A3_MOTION_SENSOR_LSM6DSV16B_0                  1U
 #define USE_IKS01A3_MOTION_SENSOR_LIS2DUX12_0                   1U
 #define USE_IKS01A3_MOTION_SENSOR_LIS2DUXS12_0                  1U
+#define USE_IKS01A3_MOTION_SENSOR_LSM6DSV32X_0                  1U
 
 #define USE_IKS01A3_HYBRID_SENSOR_LIS2DTW12_0                   1U
 

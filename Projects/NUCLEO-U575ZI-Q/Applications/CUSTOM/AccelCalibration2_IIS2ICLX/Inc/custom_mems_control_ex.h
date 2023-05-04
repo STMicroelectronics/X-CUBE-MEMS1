@@ -16,7 +16,7 @@
   ******************************************************************************
   */
 
- /* Define to prevent recursive inclusion -------------------------------------*/
+/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef CUSTOM_MEMS_CONTROL_EX_H
 #define CUSTOM_MEMS_CONTROL_EX_H
 
@@ -67,22 +67,22 @@ void BSP_SENSOR_MAG_GetOrientation(char *Orientation);
 
 #if (defined CUSTOM_ALGOBUILDER_FW_TEMPLATE)
 void BSP_SENSOR_ACC_SetDRDYMode(uint8_t Mode);
-#endif
-#if (defined CUSTOM_ALGOBUILDER_FW_TEMPLATE)
 void BSP_SENSOR_GYR_SetDRDYMode(uint8_t Mode);
-#endif
-#if (defined CUSTOM_ALGOBUILDER_FW_TEMPLATE)
 void BSP_SENSOR_ACC_SetDRDYInt(uint8_t Enable);
-#endif
-#if (defined CUSTOM_ALGOBUILDER_FW_TEMPLATE)
 void BSP_SENSOR_GYR_SetDRDYInt(uint8_t Enable);
-#endif
 
-#if (defined CUSTOM_ALGOBUILDER_FW_TEMPLATE)
 void BSP_ACC_GYR_Read_FSM_Data(uint8_t *Data);
-#endif
-#if (defined CUSTOM_ALGOBUILDER_FW_TEMPLATE)
 void BSP_ACC_GYR_Read_MLC_Data(uint8_t *Data);
-#endif
+#endif /* CUSTOM_ALGOBUILDER_FW_TEMPLATE */
+
+#if (defined PRESENCEDETECTION_STHS34PF80_DEMO)
+void BSP_SENSOR_TEMP_GetTAmbRaw(int16_t *Value);
+void BSP_SENSOR_TEMP_GetTObjRaw(int16_t *Value);
+void BSP_SENSOR_TEMP_GetAvgTmos(uint16_t *Value);
+void BSP_SENSOR_TEMP_SetAvgTmos(uint16_t Value);
+void BSP_SENSOR_TEMP_GetAvgT(uint8_t *Value);
+void BSP_SENSOR_TEMP_GetGainFactor(uint8_t *Value);
+void BSP_SENSOR_TEMP_GetSensitivity(uint16_t *Value);
+#endif /* PRESENCEDETECTION_STHS34PF80_DEMO */
 
 #endif /* CUSTOM_MEMS_CONTROL_EX_H */

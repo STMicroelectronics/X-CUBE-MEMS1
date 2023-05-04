@@ -182,10 +182,10 @@ int32_t LSM6DSV_Init(LSM6DSV_Object_t *pObj)
   }
 
   /* Select default output data rate. */
-  pObj->acc_odr = LSM6DSV_XL_ODR_AT_120Hz;
+  pObj->acc_odr = LSM6DSV_ODR_AT_120Hz;
 
   /* Output data rate selection - power down. */
-  if (lsm6dsv_xl_data_rate_set(&(pObj->Ctx), LSM6DSV_XL_ODR_OFF) != LSM6DSV_OK)
+  if (lsm6dsv_xl_data_rate_set(&(pObj->Ctx), LSM6DSV_ODR_OFF) != LSM6DSV_OK)
   {
     return LSM6DSV_ERROR;
   }
@@ -197,10 +197,10 @@ int32_t LSM6DSV_Init(LSM6DSV_Object_t *pObj)
   }
 
   /* Select default output data rate. */
-  pObj->gyro_odr = LSM6DSV_GY_ODR_AT_120Hz;
+  pObj->gyro_odr = LSM6DSV_ODR_AT_120Hz;
 
   /* Output data rate selection - power down. */
-  if (lsm6dsv_gy_data_rate_set(&(pObj->Ctx), LSM6DSV_GY_ODR_OFF) != LSM6DSV_OK)
+  if (lsm6dsv_gy_data_rate_set(&(pObj->Ctx), LSM6DSV_ODR_OFF) != LSM6DSV_OK)
   {
     return LSM6DSV_ERROR;
   }
@@ -235,8 +235,8 @@ int32_t LSM6DSV_DeInit(LSM6DSV_Object_t *pObj)
   }
 
   /* Reset output data rate. */
-  pObj->acc_odr = LSM6DSV_XL_ODR_OFF;
-  pObj->gyro_odr = LSM6DSV_GY_ODR_OFF;
+  pObj->acc_odr = LSM6DSV_ODR_OFF;
+  pObj->gyro_odr = LSM6DSV_ODR_OFF;
 
   pObj->is_initialized = 0;
 
@@ -327,7 +327,7 @@ int32_t LSM6DSV_ACC_Disable(LSM6DSV_Object_t *pObj)
   }
 
   /* Output data rate selection - power down. */
-  if (lsm6dsv_xl_data_rate_set(&(pObj->Ctx), LSM6DSV_XL_ODR_OFF) != LSM6DSV_OK)
+  if (lsm6dsv_xl_data_rate_set(&(pObj->Ctx), LSM6DSV_ODR_OFF) != LSM6DSV_OK)
   {
     return LSM6DSV_ERROR;
   }
@@ -390,7 +390,7 @@ int32_t LSM6DSV_ACC_GetSensitivity(LSM6DSV_Object_t *pObj, float_t *Sensitivity)
 int32_t LSM6DSV_ACC_GetOutputDataRate(LSM6DSV_Object_t *pObj, float_t *Odr)
 {
   int32_t ret = LSM6DSV_OK;
-  lsm6dsv_xl_data_rate_t odr_low_level;
+  lsm6dsv_data_rate_t odr_low_level;
 
   /* Get current output data rate. */
   if (lsm6dsv_xl_data_rate_get(&(pObj->Ctx), &odr_low_level) != LSM6DSV_OK)
@@ -400,55 +400,55 @@ int32_t LSM6DSV_ACC_GetOutputDataRate(LSM6DSV_Object_t *pObj, float_t *Odr)
 
   switch (odr_low_level)
   {
-    case LSM6DSV_XL_ODR_OFF:
+    case LSM6DSV_ODR_OFF:
       *Odr = 0.0f;
       break;
 
-    case LSM6DSV_XL_ODR_AT_1Hz875:
+    case LSM6DSV_ODR_AT_1Hz875:
       *Odr = 1.875f;
       break;
 
-    case LSM6DSV_XL_ODR_AT_7Hz5:
+    case LSM6DSV_ODR_AT_7Hz5:
       *Odr = 7.5f;
       break;
 
-    case LSM6DSV_XL_ODR_AT_15Hz:
+    case LSM6DSV_ODR_AT_15Hz:
       *Odr = 15.0f;
       break;
 
-    case LSM6DSV_XL_ODR_AT_30Hz:
+    case LSM6DSV_ODR_AT_30Hz:
       *Odr = 30.0f;
       break;
 
-    case LSM6DSV_XL_ODR_AT_60Hz:
+    case LSM6DSV_ODR_AT_60Hz:
       *Odr = 60.0f;
       break;
 
-    case LSM6DSV_XL_ODR_AT_120Hz:
+    case LSM6DSV_ODR_AT_120Hz:
       *Odr = 120.0f;
       break;
 
-    case LSM6DSV_XL_ODR_AT_240Hz:
+    case LSM6DSV_ODR_AT_240Hz:
       *Odr = 240.0f;
       break;
 
-    case LSM6DSV_XL_ODR_AT_480Hz:
+    case LSM6DSV_ODR_AT_480Hz:
       *Odr = 480.0f;
       break;
 
-    case LSM6DSV_XL_ODR_AT_960Hz:
+    case LSM6DSV_ODR_AT_960Hz:
       *Odr = 960.0f;
       break;
 
-    case LSM6DSV_XL_ODR_AT_1920Hz:
+    case LSM6DSV_ODR_AT_1920Hz:
       *Odr = 1920.0f;
       break;
 
-    case LSM6DSV_XL_ODR_AT_3840Hz:
+    case LSM6DSV_ODR_AT_3840Hz:
       *Odr = 3840.0f;
       break;
 
-    case LSM6DSV_XL_ODR_AT_7680Hz:
+    case LSM6DSV_ODR_AT_7680Hz:
       *Odr = 7680.0f;
       break;
 
@@ -740,7 +740,7 @@ int32_t LSM6DSV_GYRO_Disable(LSM6DSV_Object_t *pObj)
   }
 
   /* Output data rate selection - power down. */
-  if (lsm6dsv_gy_data_rate_set(&(pObj->Ctx), LSM6DSV_GY_ODR_OFF) != LSM6DSV_OK)
+  if (lsm6dsv_gy_data_rate_set(&(pObj->Ctx), LSM6DSV_ODR_OFF) != LSM6DSV_OK)
   {
     return LSM6DSV_ERROR;
   }
@@ -811,7 +811,7 @@ int32_t LSM6DSV_GYRO_GetSensitivity(LSM6DSV_Object_t *pObj, float_t *Sensitivity
 int32_t LSM6DSV_GYRO_GetOutputDataRate(LSM6DSV_Object_t *pObj, float_t *Odr)
 {
   int32_t ret = LSM6DSV_OK;
-  lsm6dsv_gy_data_rate_t odr_low_level;
+  lsm6dsv_data_rate_t odr_low_level;
 
   /* Get current output data rate. */
   if (lsm6dsv_gy_data_rate_get(&(pObj->Ctx), &odr_low_level) != LSM6DSV_OK)
@@ -821,51 +821,51 @@ int32_t LSM6DSV_GYRO_GetOutputDataRate(LSM6DSV_Object_t *pObj, float_t *Odr)
 
   switch (odr_low_level)
   {
-    case LSM6DSV_GY_ODR_OFF:
+    case LSM6DSV_ODR_OFF:
       *Odr = 0.0f;
       break;
 
-    case LSM6DSV_GY_ODR_AT_7Hz5:
+    case LSM6DSV_ODR_AT_7Hz5:
       *Odr = 7.5f;
       break;
 
-    case LSM6DSV_GY_ODR_AT_15Hz:
+    case LSM6DSV_ODR_AT_15Hz:
       *Odr = 15.0f;
       break;
 
-    case LSM6DSV_GY_ODR_AT_30Hz:
+    case LSM6DSV_ODR_AT_30Hz:
       *Odr = 30.0f;
       break;
 
-    case LSM6DSV_GY_ODR_AT_60Hz:
+    case LSM6DSV_ODR_AT_60Hz:
       *Odr = 60.0f;
       break;
 
-    case LSM6DSV_GY_ODR_AT_120Hz:
+    case LSM6DSV_ODR_AT_120Hz:
       *Odr = 120.0f;
       break;
 
-    case LSM6DSV_GY_ODR_AT_240Hz:
+    case LSM6DSV_ODR_AT_240Hz:
       *Odr = 240.0f;
       break;
 
-    case LSM6DSV_GY_ODR_AT_480Hz:
+    case LSM6DSV_ODR_AT_480Hz:
       *Odr = 480.0f;
       break;
 
-    case LSM6DSV_GY_ODR_AT_960Hz:
+    case LSM6DSV_ODR_AT_960Hz:
       *Odr = 960.0f;
       break;
 
-    case LSM6DSV_GY_ODR_AT_1920Hz:
+    case LSM6DSV_ODR_AT_1920Hz:
       *Odr = 1920.0f;
       break;
 
-    case LSM6DSV_GY_ODR_AT_3840Hz:
+    case LSM6DSV_ODR_AT_3840Hz:
       *Odr = 3840.0f;
       break;
 
-    case LSM6DSV_GY_ODR_AT_7680Hz:
+    case LSM6DSV_ODR_AT_7680Hz:
       *Odr = 7680.0f;
       break;
 
@@ -1173,20 +1173,20 @@ int32_t LSM6DSV_GYRO_Get_DRDY_Status(LSM6DSV_Object_t *pObj, uint8_t *Status)
  */
 static int32_t LSM6DSV_ACC_SetOutputDataRate_When_Enabled(LSM6DSV_Object_t *pObj, float_t Odr)
 {
-  lsm6dsv_xl_data_rate_t new_odr;
+  lsm6dsv_data_rate_t new_odr;
 
-  new_odr = (Odr <=    1.875f) ? LSM6DSV_XL_ODR_AT_1Hz875
-            : (Odr <=    7.5f) ? LSM6DSV_XL_ODR_AT_7Hz5
-            : (Odr <=   15.0f) ? LSM6DSV_XL_ODR_AT_15Hz
-            : (Odr <=   30.0f) ? LSM6DSV_XL_ODR_AT_30Hz
-            : (Odr <=   60.0f) ? LSM6DSV_XL_ODR_AT_60Hz
-            : (Odr <=  120.0f) ? LSM6DSV_XL_ODR_AT_120Hz
-            : (Odr <=  240.0f) ? LSM6DSV_XL_ODR_AT_240Hz
-            : (Odr <=  480.0f) ? LSM6DSV_XL_ODR_AT_480Hz
-            : (Odr <=  960.0f) ? LSM6DSV_XL_ODR_AT_960Hz
-            : (Odr <= 1920.0f) ? LSM6DSV_XL_ODR_AT_1920Hz
-            : (Odr <= 3840.0f) ? LSM6DSV_XL_ODR_AT_3840Hz
-            :                      LSM6DSV_XL_ODR_AT_7680Hz;
+  new_odr = (Odr <=    1.875f) ? LSM6DSV_ODR_AT_1Hz875
+            : (Odr <=    7.5f) ? LSM6DSV_ODR_AT_7Hz5
+            : (Odr <=   15.0f) ? LSM6DSV_ODR_AT_15Hz
+            : (Odr <=   30.0f) ? LSM6DSV_ODR_AT_30Hz
+            : (Odr <=   60.0f) ? LSM6DSV_ODR_AT_60Hz
+            : (Odr <=  120.0f) ? LSM6DSV_ODR_AT_120Hz
+            : (Odr <=  240.0f) ? LSM6DSV_ODR_AT_240Hz
+            : (Odr <=  480.0f) ? LSM6DSV_ODR_AT_480Hz
+            : (Odr <=  960.0f) ? LSM6DSV_ODR_AT_960Hz
+            : (Odr <= 1920.0f) ? LSM6DSV_ODR_AT_1920Hz
+            : (Odr <= 3840.0f) ? LSM6DSV_ODR_AT_3840Hz
+            :                    LSM6DSV_ODR_AT_7680Hz;
 
   /* Output data rate selection. */
   if (lsm6dsv_xl_data_rate_set(&(pObj->Ctx), new_odr) != LSM6DSV_OK)
@@ -1205,18 +1205,18 @@ static int32_t LSM6DSV_ACC_SetOutputDataRate_When_Enabled(LSM6DSV_Object_t *pObj
  */
 static int32_t LSM6DSV_ACC_SetOutputDataRate_When_Disabled(LSM6DSV_Object_t *pObj, float_t Odr)
 {
-  pObj->acc_odr = (Odr <=    1.875f) ? LSM6DSV_XL_ODR_AT_1Hz875
-                  : (Odr <=    7.5f) ? LSM6DSV_XL_ODR_AT_7Hz5
-                  : (Odr <=   15.0f) ? LSM6DSV_XL_ODR_AT_15Hz
-                  : (Odr <=   30.0f) ? LSM6DSV_XL_ODR_AT_30Hz
-                  : (Odr <=   60.0f) ? LSM6DSV_XL_ODR_AT_60Hz
-                  : (Odr <=  120.0f) ? LSM6DSV_XL_ODR_AT_120Hz
-                  : (Odr <=  240.0f) ? LSM6DSV_XL_ODR_AT_240Hz
-                  : (Odr <=  480.0f) ? LSM6DSV_XL_ODR_AT_480Hz
-                  : (Odr <=  960.0f) ? LSM6DSV_XL_ODR_AT_960Hz
-                  : (Odr <= 1920.0f) ? LSM6DSV_XL_ODR_AT_1920Hz
-                  : (Odr <= 3840.0f) ? LSM6DSV_XL_ODR_AT_3840Hz
-                  :                      LSM6DSV_XL_ODR_AT_7680Hz;
+  pObj->acc_odr = (Odr <=    1.875f) ? LSM6DSV_ODR_AT_1Hz875
+                  : (Odr <=    7.5f) ? LSM6DSV_ODR_AT_7Hz5
+                  : (Odr <=   15.0f) ? LSM6DSV_ODR_AT_15Hz
+                  : (Odr <=   30.0f) ? LSM6DSV_ODR_AT_30Hz
+                  : (Odr <=   60.0f) ? LSM6DSV_ODR_AT_60Hz
+                  : (Odr <=  120.0f) ? LSM6DSV_ODR_AT_120Hz
+                  : (Odr <=  240.0f) ? LSM6DSV_ODR_AT_240Hz
+                  : (Odr <=  480.0f) ? LSM6DSV_ODR_AT_480Hz
+                  : (Odr <=  960.0f) ? LSM6DSV_ODR_AT_960Hz
+                  : (Odr <= 1920.0f) ? LSM6DSV_ODR_AT_1920Hz
+                  : (Odr <= 3840.0f) ? LSM6DSV_ODR_AT_3840Hz
+                  :                    LSM6DSV_ODR_AT_7680Hz;
 
   return LSM6DSV_OK;
 }
@@ -1229,19 +1229,19 @@ static int32_t LSM6DSV_ACC_SetOutputDataRate_When_Disabled(LSM6DSV_Object_t *pOb
  */
 static int32_t LSM6DSV_GYRO_SetOutputDataRate_When_Enabled(LSM6DSV_Object_t *pObj, float_t Odr)
 {
-  lsm6dsv_gy_data_rate_t new_odr;
+  lsm6dsv_data_rate_t new_odr;
 
-  new_odr = (Odr <=    7.5f) ? LSM6DSV_GY_ODR_AT_7Hz5
-            : (Odr <=   15.0f) ? LSM6DSV_GY_ODR_AT_15Hz
-            : (Odr <=   30.0f) ? LSM6DSV_GY_ODR_AT_30Hz
-            : (Odr <=   60.0f) ? LSM6DSV_GY_ODR_AT_60Hz
-            : (Odr <=  120.0f) ? LSM6DSV_GY_ODR_AT_120Hz
-            : (Odr <=  240.0f) ? LSM6DSV_GY_ODR_AT_240Hz
-            : (Odr <=  480.0f) ? LSM6DSV_GY_ODR_AT_480Hz
-            : (Odr <=  960.0f) ? LSM6DSV_GY_ODR_AT_960Hz
-            : (Odr <= 1920.0f) ? LSM6DSV_GY_ODR_AT_1920Hz
-            : (Odr <= 3840.0f) ? LSM6DSV_GY_ODR_AT_3840Hz
-            :                    LSM6DSV_GY_ODR_AT_7680Hz;
+  new_odr = (Odr <=    7.5f) ? LSM6DSV_ODR_AT_7Hz5
+            : (Odr <=   15.0f) ? LSM6DSV_ODR_AT_15Hz
+            : (Odr <=   30.0f) ? LSM6DSV_ODR_AT_30Hz
+            : (Odr <=   60.0f) ? LSM6DSV_ODR_AT_60Hz
+            : (Odr <=  120.0f) ? LSM6DSV_ODR_AT_120Hz
+            : (Odr <=  240.0f) ? LSM6DSV_ODR_AT_240Hz
+            : (Odr <=  480.0f) ? LSM6DSV_ODR_AT_480Hz
+            : (Odr <=  960.0f) ? LSM6DSV_ODR_AT_960Hz
+            : (Odr <= 1920.0f) ? LSM6DSV_ODR_AT_1920Hz
+            : (Odr <= 3840.0f) ? LSM6DSV_ODR_AT_3840Hz
+            :                    LSM6DSV_ODR_AT_7680Hz;
 
   /* Output data rate selection. */
   if (lsm6dsv_gy_data_rate_set(&(pObj->Ctx), new_odr) != LSM6DSV_OK)
@@ -1260,17 +1260,17 @@ static int32_t LSM6DSV_GYRO_SetOutputDataRate_When_Enabled(LSM6DSV_Object_t *pOb
  */
 static int32_t LSM6DSV_GYRO_SetOutputDataRate_When_Disabled(LSM6DSV_Object_t *pObj, float_t Odr)
 {
-  pObj->gyro_odr = (Odr <=    7.5f) ? LSM6DSV_GY_ODR_AT_7Hz5
-                   : (Odr <=   15.0f) ? LSM6DSV_GY_ODR_AT_15Hz
-                   : (Odr <=   30.0f) ? LSM6DSV_GY_ODR_AT_30Hz
-                   : (Odr <=   60.0f) ? LSM6DSV_GY_ODR_AT_60Hz
-                   : (Odr <=  120.0f) ? LSM6DSV_GY_ODR_AT_120Hz
-                   : (Odr <=  240.0f) ? LSM6DSV_GY_ODR_AT_240Hz
-                   : (Odr <=  480.0f) ? LSM6DSV_GY_ODR_AT_480Hz
-                   : (Odr <=  960.0f) ? LSM6DSV_GY_ODR_AT_960Hz
-                   : (Odr <= 1920.0f) ? LSM6DSV_GY_ODR_AT_1920Hz
-                   : (Odr <= 3840.0f) ? LSM6DSV_GY_ODR_AT_3840Hz
-                   :                    LSM6DSV_GY_ODR_AT_7680Hz;
+  pObj->gyro_odr = (Odr <=    7.5f) ? LSM6DSV_ODR_AT_7Hz5
+                   : (Odr <=   15.0f) ? LSM6DSV_ODR_AT_15Hz
+                   : (Odr <=   30.0f) ? LSM6DSV_ODR_AT_30Hz
+                   : (Odr <=   60.0f) ? LSM6DSV_ODR_AT_60Hz
+                   : (Odr <=  120.0f) ? LSM6DSV_ODR_AT_120Hz
+                   : (Odr <=  240.0f) ? LSM6DSV_ODR_AT_240Hz
+                   : (Odr <=  480.0f) ? LSM6DSV_ODR_AT_480Hz
+                   : (Odr <=  960.0f) ? LSM6DSV_ODR_AT_960Hz
+                   : (Odr <= 1920.0f) ? LSM6DSV_ODR_AT_1920Hz
+                   : (Odr <= 3840.0f) ? LSM6DSV_ODR_AT_3840Hz
+                   :                    LSM6DSV_ODR_AT_7680Hz;
 
   return LSM6DSV_OK;
 }

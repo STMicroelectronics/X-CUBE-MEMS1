@@ -28,14 +28,14 @@
 void BSP_SENSOR_ACC_Init(void)
 {
 #if (defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_HYBRID_SENSOR_Init(CUSTOM_ACC_INSTANCE_0, HYBRID_ACCELERO);
-  #endif
+#endif
 #else
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Init(CUSTOM_ACC_INSTANCE_0, MOTION_ACCELERO);
-  #endif
+#endif
 #endif
 #endif
 }
@@ -48,9 +48,9 @@ void BSP_SENSOR_ACC_Init(void)
 void BSP_SENSOR_GYR_Init(void)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_GYR_INSTANCE_0
+#ifdef CUSTOM_GYR_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Init(CUSTOM_GYR_INSTANCE_0, MOTION_GYRO);
-  #endif
+#endif
 #endif
 }
 
@@ -62,9 +62,9 @@ void BSP_SENSOR_GYR_Init(void)
 void BSP_SENSOR_MAG_Init(void)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_MAG_INSTANCE_0
+#ifdef CUSTOM_MAG_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Init(CUSTOM_MAG_INSTANCE_0, MOTION_MAGNETO);
-  #endif
+#endif
 #endif
 }
 
@@ -76,9 +76,9 @@ void BSP_SENSOR_MAG_Init(void)
 void BSP_SENSOR_PRESS_Init(void)
 {
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_PRESS_INSTANCE_0
+#ifdef CUSTOM_PRESS_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Init(CUSTOM_PRESS_INSTANCE_0, ENV_PRESSURE);
-  #endif
+#endif
 #endif
 }
 
@@ -90,14 +90,14 @@ void BSP_SENSOR_PRESS_Init(void)
 void BSP_SENSOR_TEMP_Init(void)
 {
 #if (defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_TEMP_INSTANCE_0
+#ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_HYBRID_SENSOR_Init(CUSTOM_TEMP_INSTANCE_0, HYBRID_TEMPERATURE);
-  #endif
+#endif
 #else
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_TEMP_INSTANCE_0
+#ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Init(CUSTOM_TEMP_INSTANCE_0, ENV_TEMPERATURE);
-  #endif
+#endif
 #endif
 #endif
 }
@@ -110,9 +110,9 @@ void BSP_SENSOR_TEMP_Init(void)
 void BSP_SENSOR_HUM_Init(void)
 {
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_HUM_INSTANCE_0
+#ifdef CUSTOM_HUM_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Init(CUSTOM_HUM_INSTANCE_0, ENV_HUMIDITY);
-  #endif
+#endif
 #endif
 }
 
@@ -124,14 +124,14 @@ void BSP_SENSOR_HUM_Init(void)
 void BSP_SENSOR_ACC_Enable(void)
 {
 #if (defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_HYBRID_MOTION_SENSOR_Enable(CUSTOM_ACC_INSTANCE_0, HYBRID_ACCELERO);
-  #endif
+#endif
 #else
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Enable(CUSTOM_ACC_INSTANCE_0, MOTION_ACCELERO);
-  #endif
+#endif
 #endif
 #endif
 }
@@ -144,9 +144,9 @@ void BSP_SENSOR_ACC_Enable(void)
 void BSP_SENSOR_GYR_Enable(void)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_GYR_INSTANCE_0
+#ifdef CUSTOM_GYR_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Enable(CUSTOM_GYR_INSTANCE_0, MOTION_GYRO);
-  #endif
+#endif
 #endif
 }
 
@@ -158,9 +158,9 @@ void BSP_SENSOR_GYR_Enable(void)
 void BSP_SENSOR_MAG_Enable(void)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_MAG_INSTANCE_0
+#ifdef CUSTOM_MAG_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Enable(CUSTOM_MAG_INSTANCE_0, MOTION_MAGNETO);
-  #endif
+#endif
 #endif
 }
 
@@ -172,9 +172,9 @@ void BSP_SENSOR_MAG_Enable(void)
 void BSP_SENSOR_PRESS_Enable(void)
 {
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_PRESS_INSTANCE_0
+#ifdef CUSTOM_PRESS_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Enable(CUSTOM_PRESS_INSTANCE_0, ENV_PRESSURE);
-  #endif
+#endif
 #endif
 }
 
@@ -186,14 +186,14 @@ void BSP_SENSOR_PRESS_Enable(void)
 void BSP_SENSOR_TEMP_Enable(void)
 {
 #if (defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_TEMP_INSTANCE_0
+#ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_HYBRID_ENV_SENSOR_Enable(CUSTOM_TEMP_INSTANCE_0, HYBRID_TEMPERATURE);
-  #endif
+#endif
 #else
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_TEMP_INSTANCE_0
+#ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Enable(CUSTOM_TEMP_INSTANCE_0, ENV_TEMPERATURE);
-  #endif
+#endif
 #endif
 #endif
 }
@@ -206,9 +206,9 @@ void BSP_SENSOR_TEMP_Enable(void)
 void BSP_SENSOR_HUM_Enable(void)
 {
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_HUM_INSTANCE_0
+#ifdef CUSTOM_HUM_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Enable(CUSTOM_HUM_INSTANCE_0, ENV_HUMIDITY);
-  #endif
+#endif
 #endif
 }
 
@@ -220,14 +220,14 @@ void BSP_SENSOR_HUM_Enable(void)
 void BSP_SENSOR_ACC_Disable(void)
 {
 #if (defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_HYBRID_MOTION_SENSOR_Disable(CUSTOM_ACC_INSTANCE_0, HYBRID_ACCELERO);
-  #endif
+#endif
 #else
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Disable(CUSTOM_ACC_INSTANCE_0, MOTION_ACCELERO);
-  #endif
+#endif
 #endif
 #endif
 }
@@ -240,9 +240,9 @@ void BSP_SENSOR_ACC_Disable(void)
 void BSP_SENSOR_GYR_Disable(void)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_GYR_INSTANCE_0
+#ifdef CUSTOM_GYR_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Disable(CUSTOM_GYR_INSTANCE_0, MOTION_GYRO);
-  #endif
+#endif
 #endif
 }
 
@@ -254,9 +254,9 @@ void BSP_SENSOR_GYR_Disable(void)
 void BSP_SENSOR_MAG_Disable(void)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_MAG_INSTANCE_0
+#ifdef CUSTOM_MAG_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Disable(CUSTOM_MAG_INSTANCE_0, MOTION_MAGNETO);
-  #endif
+#endif
 #endif
 }
 
@@ -268,9 +268,9 @@ void BSP_SENSOR_MAG_Disable(void)
 void BSP_SENSOR_PRESS_Disable(void)
 {
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_PRESS_INSTANCE_0
+#ifdef CUSTOM_PRESS_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Disable(CUSTOM_PRESS_INSTANCE_0, ENV_PRESSURE);
-  #endif
+#endif
 #endif
 }
 
@@ -282,14 +282,14 @@ void BSP_SENSOR_PRESS_Disable(void)
 void BSP_SENSOR_TEMP_Disable(void)
 {
 #if (defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_TEMP_INSTANCE_0
+#ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_HYBRID_ENV_SENSOR_Disable(CUSTOM_TEMP_INSTANCE_0, HYBRID_TEMPERATURE);
-  #endif
+#endif
 #else
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_TEMP_INSTANCE_0
+#ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Disable(CUSTOM_TEMP_INSTANCE_0, ENV_TEMPERATURE);
-  #endif
+#endif
 #endif
 #endif
 }
@@ -302,9 +302,9 @@ void BSP_SENSOR_TEMP_Disable(void)
 void BSP_SENSOR_HUM_Disable(void)
 {
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_HUM_INSTANCE_0
+#ifdef CUSTOM_HUM_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Disable(CUSTOM_HUM_INSTANCE_0, ENV_HUMIDITY);
-  #endif
+#endif
 #endif
 }
 
@@ -316,22 +316,22 @@ void BSP_SENSOR_HUM_Disable(void)
 void BSP_SENSOR_ACC_GetAxes(MOTION_SENSOR_Axes_t *Axes)
 {
 #if (defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_HYBRID_MOTION_SENSOR_GetAxes(CUSTOM_ACC_INSTANCE_0, HYBRID_ACCELERO, (CUSTOM_HYBRID_MOTION_SENSOR_Axes_t *)Axes);
-  #else
+#else
   Axes->x = 0;
   Axes->y = 0;
   Axes->z = 0;
-  #endif
+#endif
 #else
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_GetAxes(CUSTOM_ACC_INSTANCE_0, MOTION_ACCELERO, (CUSTOM_MOTION_SENSOR_Axes_t *)Axes);
-  #else
+#else
   Axes->x = 0;
   Axes->y = 0;
   Axes->z = 0;
-  #endif
+#endif
 #endif
 #endif
 }
@@ -344,13 +344,13 @@ void BSP_SENSOR_ACC_GetAxes(MOTION_SENSOR_Axes_t *Axes)
 void BSP_SENSOR_GYR_GetAxes(MOTION_SENSOR_Axes_t *Axes)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_GYR_INSTANCE_0
+#ifdef CUSTOM_GYR_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_GetAxes(CUSTOM_GYR_INSTANCE_0, MOTION_GYRO, (CUSTOM_MOTION_SENSOR_Axes_t *)Axes);
-  #else
+#else
   Axes->x = 0;
   Axes->y = 0;
   Axes->z = 0;
-  #endif
+#endif
 #endif
 }
 
@@ -362,13 +362,13 @@ void BSP_SENSOR_GYR_GetAxes(MOTION_SENSOR_Axes_t *Axes)
 void BSP_SENSOR_MAG_GetAxes(MOTION_SENSOR_Axes_t *Axes)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_MAG_INSTANCE_0
+#ifdef CUSTOM_MAG_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_GetAxes(CUSTOM_MAG_INSTANCE_0, MOTION_MAGNETO, (CUSTOM_MOTION_SENSOR_Axes_t *)Axes);
-  #else
+#else
   Axes->x = 0;
   Axes->y = 0;
   Axes->z = 0;
-  #endif
+#endif
 #endif
 }
 
@@ -380,11 +380,11 @@ void BSP_SENSOR_MAG_GetAxes(MOTION_SENSOR_Axes_t *Axes)
 void BSP_SENSOR_PRESS_GetValue(float *Value)
 {
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_PRESS_INSTANCE_0
+#ifdef CUSTOM_PRESS_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_GetValue(CUSTOM_PRESS_INSTANCE_0, ENV_PRESSURE, Value);
-  #else
+#else
   *Value = 0.0f;
-  #endif
+#endif
 #endif
 }
 
@@ -396,18 +396,18 @@ void BSP_SENSOR_PRESS_GetValue(float *Value)
 void BSP_SENSOR_TEMP_GetValue(float *Value)
 {
 #if (defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_TEMP_INSTANCE_0
+#ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_HYBRID_ENV_SENSOR_GetValue(CUSTOM_TEMP_INSTANCE_0, HYBRID_TEMPERATURE, Value);
-  #else
+#else
   *Value = 0.0f;
-  #endif
+#endif
 #else
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_TEMP_INSTANCE_0
+#ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_GetValue(CUSTOM_TEMP_INSTANCE_0, ENV_TEMPERATURE, Value);
-  #else
+#else
   *Value = 0.0f;
-  #endif
+#endif
 #endif
 #endif
 }
@@ -420,11 +420,11 @@ void BSP_SENSOR_TEMP_GetValue(float *Value)
 void BSP_SENSOR_HUM_GetValue(float *Value)
 {
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_HUM_INSTANCE_0
+#ifdef CUSTOM_HUM_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_GetValue(CUSTOM_HUM_INSTANCE_0, ENV_HUMIDITY, Value);
-  #else
+#else
   *Value = 0.0f;
-  #endif
+#endif
 #endif
 }
 
@@ -436,14 +436,14 @@ void BSP_SENSOR_HUM_GetValue(float *Value)
 void BSP_SENSOR_ACC_SetOutputDataRate(float Odr)
 {
 #if (defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_HYBRID_MOTION_SENSOR_SetOutputDataRate(CUSTOM_ACC_INSTANCE_0, HYBRID_ACCELERO, Odr);
-  #endif
+#endif
 #else
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_SetOutputDataRate(CUSTOM_ACC_INSTANCE_0, MOTION_ACCELERO, Odr);
-  #endif
+#endif
 #endif
 #endif
 }
@@ -456,9 +456,9 @@ void BSP_SENSOR_ACC_SetOutputDataRate(float Odr)
 void BSP_SENSOR_GYR_SetOutputDataRate(float Odr)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_GYR_INSTANCE_0
+#ifdef CUSTOM_GYR_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_SetOutputDataRate(CUSTOM_GYR_INSTANCE_0, MOTION_GYRO, Odr);
-  #endif
+#endif
 #endif
 }
 
@@ -470,9 +470,9 @@ void BSP_SENSOR_GYR_SetOutputDataRate(float Odr)
 void BSP_SENSOR_MAG_SetOutputDataRate(float Odr)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_MAG_INSTANCE_0
+#ifdef CUSTOM_MAG_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_SetOutputDataRate(CUSTOM_MAG_INSTANCE_0, MOTION_MAGNETO, Odr);
-  #endif
+#endif
 #endif
 }
 
@@ -484,9 +484,9 @@ void BSP_SENSOR_MAG_SetOutputDataRate(float Odr)
 void BSP_SENSOR_PRESS_SetOutputDataRate(float Odr)
 {
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_PRESS_INSTANCE_0
+#ifdef CUSTOM_PRESS_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_SetOutputDataRate(CUSTOM_PRESS_INSTANCE_0, ENV_PRESSURE, Odr);
-  #endif
+#endif
 #endif
 }
 
@@ -498,14 +498,14 @@ void BSP_SENSOR_PRESS_SetOutputDataRate(float Odr)
 void BSP_SENSOR_TEMP_SetOutputDataRate(float Odr)
 {
 #if (defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_TEMP_INSTANCE_0
+#ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_HYBRID_ENV_SENSOR_SetOutputDataRate(CUSTOM_TEMP_INSTANCE_0, HYBRID_TEMPERATURE, Odr);
-  #endif
+#endif
 #else
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_TEMP_INSTANCE_0
+#ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_SetOutputDataRate(CUSTOM_TEMP_INSTANCE_0, ENV_TEMPERATURE, Odr);
-  #endif
+#endif
 #endif
 #endif
 }
@@ -518,9 +518,9 @@ void BSP_SENSOR_TEMP_SetOutputDataRate(float Odr)
 void BSP_SENSOR_HUM_SetOutputDataRate(float Odr)
 {
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_HUM_INSTANCE_0
+#ifdef CUSTOM_HUM_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_SetOutputDataRate(CUSTOM_HUM_INSTANCE_0, ENV_HUMIDITY, Odr);
-  #endif
+#endif
 #endif
 }
 
@@ -532,14 +532,14 @@ void BSP_SENSOR_HUM_SetOutputDataRate(float Odr)
 void BSP_SENSOR_ACC_GetOutputDataRate(float *Odr)
 {
 #if (defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_HYBRID_MOTION_SENSOR_GetOutputDataRate(CUSTOM_ACC_INSTANCE_0, HYBRID_ACCELERO, Odr);
-  #endif
+#endif
 #else
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_GetOutputDataRate(CUSTOM_ACC_INSTANCE_0, MOTION_ACCELERO, Odr);
-  #endif
+#endif
 #endif
 #endif
 }
@@ -552,9 +552,9 @@ void BSP_SENSOR_ACC_GetOutputDataRate(float *Odr)
 void BSP_SENSOR_GYR_GetOutputDataRate(float *Odr)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_GYR_INSTANCE_0
+#ifdef CUSTOM_GYR_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_GetOutputDataRate(CUSTOM_GYR_INSTANCE_0, MOTION_GYRO, Odr);
-  #endif
+#endif
 #endif
 }
 
@@ -566,9 +566,9 @@ void BSP_SENSOR_GYR_GetOutputDataRate(float *Odr)
 void BSP_SENSOR_MAG_GetOutputDataRate(float *Odr)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_MAG_INSTANCE_0
+#ifdef CUSTOM_MAG_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_GetOutputDataRate(CUSTOM_MAG_INSTANCE_0, MOTION_MAGNETO, Odr);
-  #endif
+#endif
 #endif
 }
 
@@ -580,9 +580,9 @@ void BSP_SENSOR_MAG_GetOutputDataRate(float *Odr)
 void BSP_SENSOR_PRESS_GetOutputDataRate(float *Odr)
 {
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_PRESS_INSTANCE_0
+#ifdef CUSTOM_PRESS_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_GetOutputDataRate(CUSTOM_PRESS_INSTANCE_0, ENV_PRESSURE, Odr);
-  #endif
+#endif
 #endif
 }
 
@@ -594,14 +594,14 @@ void BSP_SENSOR_PRESS_GetOutputDataRate(float *Odr)
 void BSP_SENSOR_TEMP_GetOutputDataRate(float *Odr)
 {
 #if (defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_TEMP_INSTANCE_0
+#ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_HYBRID_ENV_SENSOR_GetOutputDataRate(CUSTOM_TEMP_INSTANCE_0, HYBRID_TEMPERATURE, Odr);
-  #endif
+#endif
 #else
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_TEMP_INSTANCE_0
+#ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_GetOutputDataRate(CUSTOM_TEMP_INSTANCE_0, ENV_TEMPERATURE, Odr);
-  #endif
+#endif
 #endif
 #endif
 }
@@ -614,9 +614,9 @@ void BSP_SENSOR_TEMP_GetOutputDataRate(float *Odr)
 void BSP_SENSOR_HUM_GetOutputDataRate(float *Odr)
 {
 #if (defined BSP_ENV_SENSORS)
-  #ifdef CUSTOM_HUM_INSTANCE_0
+#ifdef CUSTOM_HUM_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_GetOutputDataRate(CUSTOM_HUM_INSTANCE_0, ENV_HUMIDITY, Odr);
-  #endif
+#endif
 #endif
 }
 
@@ -628,14 +628,14 @@ void BSP_SENSOR_HUM_GetOutputDataRate(float *Odr)
 void BSP_SENSOR_ACC_SetFullScale(int32_t Fullscale)
 {
 #if (defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_HYBRID_MOTION_SENSOR_SetFullScale(CUSTOM_ACC_INSTANCE_0, HYBRID_ACCELERO, Fullscale);
-  #endif
+#endif
 #else
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_SetFullScale(CUSTOM_ACC_INSTANCE_0, MOTION_ACCELERO, Fullscale);
-  #endif
+#endif
 #endif
 #endif
 }
@@ -648,9 +648,9 @@ void BSP_SENSOR_ACC_SetFullScale(int32_t Fullscale)
 void BSP_SENSOR_GYR_SetFullScale(int32_t Fullscale)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_GYR_INSTANCE_0
+#ifdef CUSTOM_GYR_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_SetFullScale(CUSTOM_GYR_INSTANCE_0, MOTION_GYRO, Fullscale);
-  #endif
+#endif
 #endif
 }
 
@@ -662,9 +662,9 @@ void BSP_SENSOR_GYR_SetFullScale(int32_t Fullscale)
 void BSP_SENSOR_MAG_SetFullScale(int32_t Fullscale)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_MAG_INSTANCE_0
+#ifdef CUSTOM_MAG_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_SetFullScale(CUSTOM_MAG_INSTANCE_0, MOTION_MAGNETO, Fullscale);
-  #endif
+#endif
 #endif
 }
 
@@ -676,14 +676,14 @@ void BSP_SENSOR_MAG_SetFullScale(int32_t Fullscale)
 void BSP_SENSOR_ACC_GetFullScale(int32_t *Fullscale)
 {
 #if (defined BSP_HYBRID_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_HYBRID_MOTION_SENSOR_GetFullScale(CUSTOM_ACC_INSTANCE_0, HYBRID_ACCELERO, Fullscale);
-  #endif
+#endif
 #else
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_ACC_INSTANCE_0
+#ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_GetFullScale(CUSTOM_ACC_INSTANCE_0, MOTION_ACCELERO, Fullscale);
-  #endif
+#endif
 #endif
 #endif
 }
@@ -696,9 +696,9 @@ void BSP_SENSOR_ACC_GetFullScale(int32_t *Fullscale)
 void BSP_SENSOR_GYR_GetFullScale(int32_t *Fullscale)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_GYR_INSTANCE_0
+#ifdef CUSTOM_GYR_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_GetFullScale(CUSTOM_GYR_INSTANCE_0, MOTION_GYRO, Fullscale);
-  #endif
+#endif
 #endif
 }
 
@@ -710,8 +710,8 @@ void BSP_SENSOR_GYR_GetFullScale(int32_t *Fullscale)
 void BSP_SENSOR_MAG_GetFullScale(int32_t *Fullscale)
 {
 #if (defined BSP_MOTION_SENSORS)
-  #ifdef CUSTOM_MAG_INSTANCE_0
+#ifdef CUSTOM_MAG_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_GetFullScale(CUSTOM_MAG_INSTANCE_0, MOTION_MAGNETO, Fullscale);
-  #endif
+#endif
 #endif
 }

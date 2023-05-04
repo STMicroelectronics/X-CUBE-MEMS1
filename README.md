@@ -9,7 +9,7 @@ The X-CUBE-MEMS1 expansion software package for STM32Cube runs on the STM32 and 
 - Complete software to build applications using the following sensors:
 
   - temperature and humidity sensors: HTS221 for X-NUCLEO-IKS01A2 and X-NUCLEO-IKS01A3
-  - pressure sensor: LPS22HB for X-NUCLEO-IKS01A2, LPS22HH for XNUCLEO-IKS01A3
+  - pressure sensor: LPS22HB for X-NUCLEO-IKS01A2, LPS22HH for X-NUCLEO-IKS01A3
   - temperature sensors: STTS751 for X-NUCLEO-IKS01A3
   - motion sensors: LSM303AGR and LSM6DSL for X-NUCLEO-IKS01A2, LIS2MDL, LIS2DW12 and LSM6DSO for X-NUCLEO-IKS01A3, ISM330DHCX, IIS2DLPC and IIS2MDC for X-NUCLEO-IKS02A1
   - audio sensor: IMP34DT05 for X-NUCLEO-IKS02A1
@@ -20,7 +20,7 @@ The X-CUBE-MEMS1 expansion software package for STM32Cube runs on the STM32 and 
 
 - Compatible with the Unicleo-GUI graphical user interface to display sensor data and configure outputs
 
-- Sample implementation available on the X-NUCLEO-IKS01A2, X-NUCLEOIKS01A3 and X-NUCLEO-IKS02A1 boards connected to a NUCLEO-F401RE, NUCLEO-L152RE, NUCLEO-L476RG or NUCLEO-L073RZ development board
+- Sample implementation available on the X-NUCLEO-IKS01A2, X-NUCLEOIKS01A3 and X-NUCLEO-IKS02A1 boards connected to a NUCLEO-F401RE, NUCLEO-L152RE, NUCLEO-L073RZ or NUCLEO-U575ZI-Q development board
 
 - Advanced motion libraries with sample applications
 

@@ -43,6 +43,7 @@ typedef struct displayFloatToInt_s
 #define MAX_BUF_SIZE    256
 #define MLC_STATUS_MAX    8
 #define FSM_STATUS_MAX   18
+#define SHT40AD1B_ODR  1000U
 
 /* Private macro -------------------------------------------------------------*/
 #define DELAY(x)  for (__IO uint32_t counter = (x); counter > 0U; counter--) {}
@@ -275,7 +276,6 @@ int main(void)
 }
 
 /* Private functions ---------------------------------------------------------*/
-
 /**
   * @brief GPIO Initialization Function
   * @param None
@@ -646,6 +646,19 @@ static void Temp_Sensor_Handler(TMsg *Msg, uint32_t Instance)
       drdy = 0;
     }
   }
+  else if (Instance == IKS01A3_SHT40AD1B_0)
+  {
+    time = HAL_GetTick();
+    if ((time - last_time) >= SHT40AD1B_ODR)
+    {
+      drdy = 1;
+      last_time = time;
+    }
+    else
+    {
+      drdy = 0;
+    }
+  }
   else
   {
     if (IKS01A3_ENV_SENSOR_Get_DRDY_Status(Instance, ENV_TEMPERATURE, &status) == BSP_ERROR_NONE && status == 1U)
@@ -702,8 +715,31 @@ static void Hum_Sensor_Handler(TMsg *Msg, uint32_t Instance)
 {
   float humidity;
   uint8_t status = 0;
+  static uint32_t last_time = 0;
+  uint32_t time = 0;
 
-  if (IKS01A3_ENV_SENSOR_Get_DRDY_Status(Instance, ENV_HUMIDITY, &status) == BSP_ERROR_NONE && status == 1U)
+  if (Instance == IKS01A3_SHT40AD1B_0)
+  {
+    time = HAL_GetTick();
+    if ((time - last_time) >= SHT40AD1B_ODR)
+    {
+      status = 1;
+      last_time = time;
+    }
+    else
+    {
+      status = 0;
+    }
+  }
+  else
+  {
+    if (IKS01A3_ENV_SENSOR_Get_DRDY_Status(Instance, ENV_HUMIDITY, &status) != BSP_ERROR_NONE)
+    {
+      status = 0;
+    }
+  }
+
+  if (status == 1U)
   {
     NewData++;
     NewDataFlags |= 4U;
@@ -1108,6 +1144,23 @@ static void MLC_Handler(TMsg *Msg)
     (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LIS2DUXS12_0, LIS2DUXS12_MLC4_SRC, &mlc_status[3]);
 
     (void)IKS01A3_MOTION_SENSOR_Write_Register(IKS01A3_LIS2DUXS12_0, LIS2DUXS12_FUNC_CFG_ACCESS, LIS2DUXS12_MAIN_MEM_BANK << 7);
+  }
+  else if ((AccInstance == IKS01A3_LSM6DSV32X_0) && (GyrInstance == IKS01A3_LSM6DSV32X_0))
+  {
+    mlc_status_max = 4;
+
+#if (MLC_STATUS_MAX < 4)
+#error "ERROR: Array index out of bounds!"
+#endif
+
+    (void)IKS01A3_MOTION_SENSOR_Write_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_FUNC_CFG_ACCESS, LSM6DSV32X_EMBED_FUNC_MEM_BANK << 7);
+
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_MLC1_SRC, &mlc_status[0]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_MLC2_SRC, &mlc_status[1]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_MLC3_SRC, &mlc_status[2]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_MLC4_SRC, &mlc_status[3]);
+
+    (void)IKS01A3_MOTION_SENSOR_Write_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_FUNC_CFG_ACCESS, LSM6DSV32X_MAIN_MEM_BANK << 7);
   }
   else
   {
@@ -1522,6 +1575,29 @@ static void FSM_Handler(TMsg *Msg)
 
     (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV16B_0, LSM6DSV16B_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
+  else if ((AccInstance == IKS01A3_LSM6DSV32X_0) && (GyrInstance == IKS01A3_LSM6DSV32X_0))
+  {
+    fsm_status_max = 9;
+
+#if (FSM_STATUS_MAX < 9)
+#error "ERROR: Array index out of bounds!"
+#endif
+
+    (void)IKS01A3_MOTION_SENSOR_Write_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_FUNC_CFG_ACCESS, LSM6DSV32X_EMBED_FUNC_MEM_BANK << 7);
+
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_FSM_OUTS1, &fsm_status[0]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_FSM_OUTS2, &fsm_status[1]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_FSM_OUTS3, &fsm_status[2]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_FSM_OUTS4, &fsm_status[3]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_FSM_OUTS5, &fsm_status[4]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_FSM_OUTS6, &fsm_status[5]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_FSM_OUTS7, &fsm_status[6]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_FSM_OUTS8, &fsm_status[7]);
+
+    (void)IKS01A3_MOTION_SENSOR_Write_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_FUNC_CFG_ACCESS, LSM6DSV32X_MAIN_MEM_BANK << 7);
+
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_FSM_STATUS_MAINPAGE, &fsm_status[8]);
+  }
   else
   {
     fsm_status_max = 18;
@@ -1597,10 +1673,16 @@ static void QVAR_Handler(TMsg *Msg, uint32_t Instance)
     {
       qvar_data_available = (NewDataFlags & 8U) >> 3;
     }
-    else 
+    else
     {
       IKS01A3_MOTION_SENSOR_Get_DRDY_Status(Instance, MOTION_ACCELERO, &qvar_data_available);
     }
+  }
+  else if ((AccInstance == IKS01A3_LSM6DSV32X_0) && (GyrInstance == IKS01A3_LSM6DSV32X_0))
+  {
+    lsm6dsv32x_status_reg_t status;
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_STATUS_REG, (uint8_t *)&status);
+    qvar_data_available = status.ah_qvarda;
   }
   else
   {
@@ -1663,6 +1745,12 @@ static void QVAR_Handler(TMsg *Msg, uint32_t Instance)
       }
 
       qvar_mv = value.i16bit / (LIS2DUXS12_QVAR_GAIN * multiplier);
+    }
+    else if ((AccInstance == IKS01A3_LSM6DSV32X_0) && (GyrInstance == IKS01A3_LSM6DSV32X_0))
+    {
+      (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_AH_QVAR_OUT_L, &value.u8bit[0]);
+      (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV32X_0, LSM6DSV32X_AH_QVAR_OUT_H, &value.u8bit[1]);
+      qvar_mv = value.i16bit / LSM6DSV32X_QVAR_GAIN;
     }
     else
     {

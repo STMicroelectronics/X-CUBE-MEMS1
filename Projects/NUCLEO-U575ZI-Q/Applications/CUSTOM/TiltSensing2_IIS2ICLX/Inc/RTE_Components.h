@@ -22,7 +22,7 @@
 #define  __RTE_COMPONENTS_H__
 
 /* Defines ------------------------------------------------------------------*/
-/* STMicroelectronics.X-CUBE-MEMS1.9.5.0 */
+/* STMicroelectronics.X-CUBE-MEMS1.9.6.0 */
 #define BSP_MOTION_SENSORS
 #define IIS2ICLX_ACC_I2C
 #define TILTSENSING2_IIS2ICLX_DEMO

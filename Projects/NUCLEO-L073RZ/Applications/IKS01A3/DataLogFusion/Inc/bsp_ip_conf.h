@@ -44,4 +44,3 @@ extern RTC_HandleTypeDef hrtc;
 #endif
 
 #endif /* __BSP_IP_CONF_H__ */
-

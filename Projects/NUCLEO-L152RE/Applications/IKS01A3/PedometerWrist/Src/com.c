@@ -20,8 +20,8 @@
 #include "com.h"
 
 /** @addtogroup MOTION_APPLICATIONS MOTION APPLICATIONS
- * @{
- */
+  * @{
+  */
 
 /* Private types -------------------------------------------------------------*/
 /* Private defines -----------------------------------------------------------*/
@@ -41,10 +41,10 @@ static uint32_t Get_DMA_Counter(DMA_HandleTypeDef *handle_dma);
 
 /* Exported functions --------------------------------------------------------*/
 /**
- * @brief  Check if a message is received via UART
- * @param  Msg the pointer to the message to be received
- * @retval 1 if a complete message is found, 0 otherwise
- */
+  * @brief  Check if a message is received via UART
+  * @param  Msg the pointer to the message to be received
+  * @retval 1 if a complete message is found, 0 otherwise
+  */
 int UART_ReceivedMSG(TMsg *Msg)
 {
   uint16_t i, j, k, j2;
@@ -131,10 +131,10 @@ int UART_ReceivedMSG(TMsg *Msg)
 }
 
 /**
- * @brief  Send a message via UART
- * @param  Msg the pointer to the message to be sent
- * @retval None
- */
+  * @brief  Send a message via UART
+  * @param  Msg the pointer to the message to be sent
+  * @retval None
+  */
 void UART_SendMsg(TMsg *Msg)
 {
   uint16_t count_out;
@@ -149,10 +149,10 @@ void UART_SendMsg(TMsg *Msg)
 }
 
 /**
- * @brief  Start receiving messages via DMA
- * @param  None
- * @retval None
- */
+  * @brief  Start receiving messages via DMA
+  * @param  None
+  * @retval None
+  */
 void UART_StartReceiveMsg(void)
 {
   hcom_uart[COM1].pRxBuffPtr = (uint8_t *)UartRxBuffer; /* MISRA C-2012 rule 11.8 violation for purpose */
@@ -168,26 +168,25 @@ void UART_StartReceiveMsg(void)
 /* Private functions ---------------------------------------------------------*/
 
 /**
- * @brief  Get the DMA Stream pending flags
- * @param  handle_dma DMA handle
- * @retval The state of FLAG (SET or RESET)
- */
+  * @brief  Get the DMA Stream pending flags
+  * @param  handle_dma DMA handle
+  * @retval The state of FLAG (SET or RESET)
+  */
 static uint32_t Get_DMA_Flag_Status(DMA_HandleTypeDef *handle_dma)
 {
   return (__HAL_DMA_GET_FLAG(handle_dma, __HAL_DMA_GET_TE_FLAG_INDEX(handle_dma)));
 }
 
 /**
- * @brief  Returns the number of remaining data units in the current DMAy Streamx transfer
- * @param  handle_dma DMA handle
- * @retval The number of remaining data units in the current DMA Stream transfer
- */
+  * @brief  Returns the number of remaining data units in the current DMAy Streamx transfer
+  * @param  handle_dma DMA handle
+  * @retval The number of remaining data units in the current DMA Stream transfer
+  */
 static uint32_t Get_DMA_Counter(DMA_HandleTypeDef *handle_dma)
 {
   return (__HAL_DMA_GET_COUNTER(handle_dma));
 }
 
 /**
- * @}
- */
-
+  * @}
+  */

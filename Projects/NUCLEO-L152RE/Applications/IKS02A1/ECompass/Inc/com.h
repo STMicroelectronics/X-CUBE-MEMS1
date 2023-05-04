@@ -31,8 +31,8 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /**
- * @brief  Serial message engine structure definition
- */
+  * @brief  Serial message engine structure definition
+  */
 typedef struct
 {
   uint8_t *pDMA_Buffer;

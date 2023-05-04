@@ -16,7 +16,7 @@
   ******************************************************************************
   */
 
- /* Define to prevent recursive inclusion -------------------------------------*/
+/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef CUSTOM_MEMS_CONTROL_H
 #define CUSTOM_MEMS_CONTROL_H
 

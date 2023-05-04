@@ -8,182 +8,233 @@
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
   <link rel="stylesheet" href="_htmresc/mini-st_2020.css" />
+  <link rel="icon" type="image/x-icon" href="_htmresc/favicon.png" />
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-  <link rel="icon" type="image/x-icon" href="_htmresc/favicon.png" />
 </head>
 <body>
 <div class="row">
 <div class="col-sm-12 col-lg-4">
 <center>
-<h1 id="release-notes-for-motionmc-magnetometer-calibration-library">Release Notes for MotionMC Magnetometer Calibration Library</h1>
+<h1
+id="release-notes-for-motionmc-magnetometer-calibration-library">Release
+Notes for MotionMC Magnetometer Calibration Library</h1>
 <p>Copyright © 2022 STMicroelectronics<br />
 </p>
-<a href="https://www.st.com" class="logo"><img src="_htmresc/st_logo_2020.png" alt="ST logo" /></a>
+<a href="https://www.st.com" class="logo"><img
+src="_htmresc/st_logo_2020.png" alt="ST logo" /></a>
 </center>
-<h1 id="license">License</h1>
-<p>This software component is licensed by ST under Software License Agreement SLA0077, the “License”. You may not use this component except in compliance with the License. You may obtain a copy of the License at:</p>
-<p><a href="https://www.st.com/content/ccc/resource/legal/legal_agreement/license_agreement/group0/62/6a/48/15/b4/12/47/7a/DM00367782/files/DM00367782.pdf/jcr:content/translations/en.DM00367782.pdf">Software License Agreement SLA0077</a></p>
 <h1 id="purpose">Purpose</h1>
 <p><strong>What is MotionMC?</strong></p>
 <ul>
 <li>The MotionMC provides real-time magnetometer calibration.</li>
-<li>The library acquires data from the magnetometer and counts the hard iron (HI) and scale factor (SF) (diagonal elements of soft iron matrix) coefficients together with the calibration quality value. The HI and SF coefficients are then used to compensate raw data from the magnetometer.</li>
+<li>The library acquires data from the magnetometer and counts the hard
+iron (HI) and scale factor (SF) (diagonal elements of soft iron matrix)
+coefficients together with the calibration quality value. The HI and SF
+coefficients are then used to compensate raw data from the
+magnetometer.</li>
 </ul>
-<p>The library is generated for each ARM Cortex-M core with EABI compiler thus the library might be used with any other compiler which supports ARM EABI specification.</p>
-<p>The library is available for two different wchar variable lengths - 16 bit (wc16) and 32bit (wc32).</p>
-<p>By default the libraries are compiled with option -mfloat-abi=softfp which allows use of floating-point instructions but maintains compatibility with the soft-float ABI. The libraries ending with suffix hard are compiled with option -mfloat-abi=hard and uses floating-point instructions and the floating-point ABI.</p>
+<p>The library is generated for each ARM Cortex-M core with EABI
+compiler thus the library might be used with any other compiler which
+supports ARM EABI specification.</p>
+<p>The library is available for two different wchar variable lengths -
+16 bit (wc16) and 32bit (wc32).</p>
+<p>By default the libraries are compiled with option -mfloat-abi=softfp
+which allows use of floating-point instructions but maintains
+compatibility with the soft-float ABI. The libraries ending with suffix
+hard are compiled with option -mfloat-abi=hard and uses floating-point
+instructions and the floating-point ABI.</p>
 <p>Here is the list of references to the user documents:</p>
 <ul>
-<li><a href="https://www.st.com/resource/en/user_manual/dm00382798-getting-started-with-motionmc-magnetometer-calibration-library-in-xcubemems1-expansion-for-stm32cube-stmicroelectronics.pdf">Getting started with MotionMC magnetometer calibration library in X-CUBE-MEMS1 expansion for STM32Cube</a></li>
-<li><a href="https://www.st.com/resource/en/user_manual/dm00157069-getting-started-with-the-xcubemems1-motion-mems-and-environmental-sensor-software-expansion-for-stm32cube-stmicroelectronics.pdf">Getting started with the X-CUBE-MEMS1 motion MEMS and environmental sensor software expansion for STM32Cube</a></li>
+<li><a
+href="https://www.st.com/resource/en/user_manual/dm00382798-getting-started-with-motionmc-magnetometer-calibration-library-in-xcubemems1-expansion-for-stm32cube-stmicroelectronics.pdf">Getting
+started with MotionMC magnetometer calibration library in X-CUBE-MEMS1
+expansion for STM32Cube</a></li>
+<li><a
+href="https://www.st.com/resource/en/user_manual/dm00157069-getting-started-with-the-xcubemems1-motion-mems-and-environmental-sensor-software-expansion-for-stm32cube-stmicroelectronics.pdf">Getting
+started with the X-CUBE-MEMS1 motion MEMS and environmental sensor
+software expansion for STM32Cube</a></li>
 </ul>
 </div>
 <section id="update-history" class="col-sm-12 col-lg-8">
 <h1>Update history</h1>
 <div class="collapse">
-<input type="checkbox" id="collapse-section13" checked aria-hidden="true"> <label for="collapse-section13" aria-hidden="true">V2.6.0 / 02-August-2022</label>
+<input type="checkbox" id="collapse-section14" checked aria-hidden="true">
+<label for="collapse-section14" aria-hidden="true">V2.7.0 /
+06-March-2023</label>
 <div>
 <h2 id="main-changes">Main changes</h2>
 <h3 id="maintenance-release">Maintenance release</h3>
 <ul>
+<li>Improve visibility of functions and variables</li>
+</ul>
+<h2 id="development-toolchains-and-compilers">Development toolchains and
+compilers</h2>
+<ul>
+<li>STM32CubeIDE V1.12.0</li>
+</ul>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section13" aria-hidden="true">
+<label for="collapse-section13" aria-hidden="true">V2.6.0 /
+02-August-2022</label>
+<div>
+<h2 id="main-changes-1">Main changes</h2>
+<h3 id="maintenance-release-1">Maintenance release</h3>
+<ul>
 <li>Added support for Cortex-M4 in STM32MP1</li>
 </ul>
-<h2 id="development-toolchains-and-compilers">Development toolchains and compilers</h2>
+<h2 id="development-toolchains-and-compilers-1">Development toolchains
+and compilers</h2>
 <ul>
 <li>IAR Embedded Workbench for ARM (EWARM) toolchain V9.20.1</li>
-<li>RealView Microcontroller Development Kit (MDK-ARM) toolchain V5.37.0</li>
+<li>RealView Microcontroller Development Kit (MDK-ARM) toolchain
+V5.37.0</li>
 <li>STM32CubeIDE V1.9.0</li>
 </ul>
 </div>
 </div>
 <div class="collapse">
-<input type="checkbox" id="collapse-section12" aria-hidden="true"> <label for="collapse-section12" aria-hidden="true">V2.5.1 / 10-May-2021</label>
+<input type="checkbox" id="collapse-section12" aria-hidden="true">
+<label for="collapse-section12" aria-hidden="true">V2.5.1 /
+10-May-2021</label>
 <div>
-<h2 id="main-changes-1">Main changes</h2>
+<h2 id="main-changes-2">Main changes</h2>
 <h3 id="patch-release">Patch release</h3>
 <ul>
 <li>Changed FPU DP to SP for CM7</li>
 </ul>
-<h2 id="development-toolchains-and-compilers-1">Development toolchains and compilers</h2>
+<h2 id="development-toolchains-and-compilers-2">Development toolchains
+and compilers</h2>
 <ul>
 <li>IAR Embedded Workbench for ARM (EWARM) toolchain V8.50.9</li>
-<li>RealView Microcontroller Development Kit (MDK-ARM) toolchain V5.32.0</li>
+<li>RealView Microcontroller Development Kit (MDK-ARM) toolchain
+V5.32.0</li>
 <li>STM32CubeIDE V1.7.0</li>
 </ul>
 </div>
 </div>
 <div class="collapse">
-<input type="checkbox" id="collapse-section11" aria-hidden="true"> <label for="collapse-section11" aria-hidden="true">V2.5.0 / 06-May-2021</label>
+<input type="checkbox" id="collapse-section11" aria-hidden="true">
+<label for="collapse-section11" aria-hidden="true">V2.5.0 /
+06-May-2021</label>
 <div>
-<h2 id="main-changes-2">Main changes</h2>
-<h3 id="maintenance-release-1">Maintenance release</h3>
+<h2 id="main-changes-3">Main changes</h2>
+<h3 id="maintenance-release-2">Maintenance release</h3>
 <ul>
 <li>Added CM33F support</li>
 <li>Updated Release Notes to new format</li>
 </ul>
-<h2 id="development-toolchains-and-compilers-2">Development toolchains and compilers</h2>
+<h2 id="development-toolchains-and-compilers-3">Development toolchains
+and compilers</h2>
 <ul>
 <li>IAR Embedded Workbench for ARM (EWARM) toolchain V8.50.9</li>
-<li>RealView Microcontroller Development Kit (MDK-ARM) toolchain V5.32.0</li>
+<li>RealView Microcontroller Development Kit (MDK-ARM) toolchain
+V5.32.0</li>
 <li>STM32CubeIDE V1.6.1</li>
 </ul>
 </div>
 </div>
 <div class="collapse">
-<input type="checkbox" id="collapse-section10" aria-hidden="true"> <label for="collapse-section10" aria-hidden="true">V2.4.0 / 16-December-2020</label>
+<input type="checkbox" id="collapse-section10" aria-hidden="true">
+<label for="collapse-section10" aria-hidden="true">V2.4.0 /
+16-December-2020</label>
 <div>
-<h2 id="main-changes-3">Main changes</h2>
-<h3 id="maintenance-release-2">Maintenance release</h3>
+<h2 id="main-changes-4">Main changes</h2>
+<h3 id="maintenance-release-3">Maintenance release</h3>
 <ul>
 <li>Update STM32 device check</li>
 <li>Add BlueNRG-LP device check</li>
 <li>Update library algorithm and interface</li>
 </ul>
-<h2 id="development-toolchains-and-compilers-3">Development toolchains and compilers</h2>
+<h2 id="development-toolchains-and-compilers-4">Development toolchains
+and compilers</h2>
 <ul>
 <li>STM32CubeIDE V1.5.1</li>
 </ul>
 </div>
 </div>
 <div class="collapse">
-<input type="checkbox" id="collapse-section9" aria-hidden="true"> <label for="collapse-section9" aria-hidden="true">V2.3.1 / 19-June-2020</label>
+<input type="checkbox" id="collapse-section9" aria-hidden="true">
+<label for="collapse-section9" aria-hidden="true">V2.3.1 /
+19-June-2020</label>
 <div>
-<h2 id="main-changes-4">Main changes</h2>
+<h2 id="main-changes-5">Main changes</h2>
 <h3 id="patch-release-1">Patch release</h3>
 <ul>
 <li>Library compiled in STM32CubeIDE</li>
 </ul>
-<h2 id="development-toolchains-and-compilers-4">Development toolchains and compilers</h2>
+<h2 id="development-toolchains-and-compilers-5">Development toolchains
+and compilers</h2>
 <ul>
 <li>STM32CubeIDE V1.3.1</li>
 </ul>
 </div>
 </div>
 <div class="collapse">
-<input type="checkbox" id="collapse-section8" aria-hidden="true"> <label for="collapse-section8" aria-hidden="true">V2.3.0 / 10-February-2020</label>
+<input type="checkbox" id="collapse-section8" aria-hidden="true">
+<label for="collapse-section8" aria-hidden="true">V2.3.0 /
+10-February-2020</label>
 <div>
-<h2 id="main-changes-5">Main changes</h2>
-<h3 id="maintenance-release-3">Maintenance release</h3>
+<h2 id="main-changes-6">Main changes</h2>
+<h3 id="maintenance-release-4">Maintenance release</h3>
 <ul>
 <li>Added Cortex-M7 support</li>
 <li>Updated STM32 CRC Lock</li>
 </ul>
-<h2 id="development-toolchains-and-compilers-5">Development toolchains and compilers</h2>
+<h2 id="development-toolchains-and-compilers-6">Development toolchains
+and compilers</h2>
 <ul>
 <li>System Workbench for STM32 V2.7.0</li>
 </ul>
 </div>
 </div>
 <div class="collapse">
-<input type="checkbox" id="collapse-section6" aria-hidden="true"> <label for="collapse-section6" aria-hidden="true">V2.2.1 / 15-February-2019</label>
+<input type="checkbox" id="collapse-section6" aria-hidden="true">
+<label for="collapse-section6" aria-hidden="true">V2.2.1 /
+15-February-2019</label>
 <div>
-<h2 id="main-changes-6">Main changes</h2>
+<h2 id="main-changes-7">Main changes</h2>
 <h3 id="patch-release-2">Patch release</h3>
 <ul>
-<li>Unification of the libraries to single EABI library per Cortex core and wchar size</li>
+<li>Unification of the libraries to single EABI library per Cortex core
+and wchar size</li>
 </ul>
-<h2 id="development-toolchains-and-compilers-6">Development toolchains and compilers</h2>
+<h2 id="development-toolchains-and-compilers-7">Development toolchains
+and compilers</h2>
 <ul>
 <li>System Workbench for STM32 V2.6.0</li>
 </ul>
 </div>
 </div>
 <div class="collapse">
-<input type="checkbox" id="collapse-section7" aria-hidden="true"> <label for="collapse-section7" aria-hidden="true">V2.2.0 / 20-June-2018</label>
-<div>
-<h2 id="main-changes-7">Main changes</h2>
-<h3 id="maintenance-release-4">Maintenance release</h3>
-<ul>
-<li>Cortex-M0+ library update to be able to run also on BlueNRG-1 and BlueNRG-2 devices</li>
-<li>Remove dynamic memory alocation</li>
-</ul>
-<h2 id="development-toolchains-and-compilers-7">Development toolchains and compilers</h2>
-<ul>
-<li>IAR Embedded Workbench for ARM (EWARM) toolchain V7.80.4</li>
-<li>IAR Embedded Workbench for ARM (EWARM) toolchain V8.11.2</li>
-<li>uVision(MDK-ARM) toolchain 5.22</li>
-<li>System Workbench for STM32 V1.13.1</li>
-</ul>
-</div>
-</div>
-<div class="collapse">
-<input type="checkbox" id="collapse-section5" aria-hidden="true"> <label for="collapse-section5" aria-hidden="true">V2.1.0 / 20-March-2018</label>
+<input type="checkbox" id="collapse-section7" aria-hidden="true">
+<label for="collapse-section7" aria-hidden="true">V2.2.0 /
+20-June-2018</label>
 <div>
 <h2 id="main-changes-8">Main changes</h2>
 <h3 id="maintenance-release-5">Maintenance release</h3>
 <ul>
-<li>Add library and dedicated header file (motion_mc_cm0p.h) for Cortex-M0+</li>
+<li>Cortex-M0+ library update to be able to run also on BlueNRG-1 and
+BlueNRG-2 devices</li>
+<li>Remove dynamic memory alocation</li>
 </ul>
-<h2 id="development-toolchains-and-compilers-8">Development toolchains and compilers</h2>
+<h2 id="development-toolchains-and-compilers-8">Development toolchains
+and compilers</h2>
 <ul>
 <li>IAR Embedded Workbench for ARM (EWARM) toolchain V7.80.4</li>
 <li>IAR Embedded Workbench for ARM (EWARM) toolchain V8.11.2</li>
@@ -193,14 +244,18 @@
 </div>
 </div>
 <div class="collapse">
-<input type="checkbox" id="collapse-section3" aria-hidden="true"> <label for="collapse-section3" aria-hidden="true">V2.0.1 / 01-September-2017</label>
+<input type="checkbox" id="collapse-section5" aria-hidden="true">
+<label for="collapse-section5" aria-hidden="true">V2.1.0 /
+20-March-2018</label>
 <div>
 <h2 id="main-changes-9">Main changes</h2>
-<h3 id="patch-release-3">Patch release</h3>
+<h3 id="maintenance-release-6">Maintenance release</h3>
 <ul>
-<li>Add library for EWARM 8 IDE. Due to the changes in EWARM 8 dedicated library for this environment must be used. The name of the library for EWARM 8 ends by _IAR8_ot.</li>
+<li>Add library and dedicated header file (motion_mc_cm0p.h) for
+Cortex-M0+</li>
 </ul>
-<h2 id="development-toolchains-and-compilers-9">Development toolchains and compilers</h2>
+<h2 id="development-toolchains-and-compilers-9">Development toolchains
+and compilers</h2>
 <ul>
 <li>IAR Embedded Workbench for ARM (EWARM) toolchain V7.80.4</li>
 <li>IAR Embedded Workbench for ARM (EWARM) toolchain V8.11.2</li>
@@ -210,14 +265,40 @@
 </div>
 </div>
 <div class="collapse">
-<input type="checkbox" id="collapse-section2" aria-hidden="true"> <label for="collapse-section2" aria-hidden="true">V2.0.0 / 01-May-2017</label>
+<input type="checkbox" id="collapse-section3" aria-hidden="true">
+<label for="collapse-section3" aria-hidden="true">V2.0.1 /
+01-September-2017</label>
 <div>
 <h2 id="main-changes-10">Main changes</h2>
+<h3 id="patch-release-3">Patch release</h3>
+<ul>
+<li>Add library for EWARM 8 IDE. Due to the changes in EWARM 8 dedicated
+library for this environment must be used. The name of the library for
+EWARM 8 ends by _IAR8_ot.</li>
+</ul>
+<h2 id="development-toolchains-and-compilers-10">Development toolchains
+and compilers</h2>
+<ul>
+<li>IAR Embedded Workbench for ARM (EWARM) toolchain V7.80.4</li>
+<li>IAR Embedded Workbench for ARM (EWARM) toolchain V8.11.2</li>
+<li>uVision(MDK-ARM) toolchain 5.22</li>
+<li>System Workbench for STM32 V1.13.1</li>
+</ul>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section2" aria-hidden="true">
+<label for="collapse-section2" aria-hidden="true">V2.0.0 /
+01-May-2017</label>
+<div>
+<h2 id="main-changes-11">Main changes</h2>
 <h3 id="product-update">Product update</h3>
 <ul>
-<li>First version of the library published under the ODE initiative. Previously released as part of OSX framework.</li>
+<li>First version of the library published under the ODE initiative.
+Previously released as part of OSX framework.</li>
 </ul>
-<h2 id="development-toolchains-and-compilers-10">Development toolchains and compilers</h2>
+<h2 id="development-toolchains-and-compilers-11">Development toolchains
+and compilers</h2>
 <ul>
 <li>IAR Embedded Workbench for ARM (EWARM) toolchain V7.80.4</li>
 <li>uVision(MDK-ARM) toolchain 5.22</li>
@@ -226,14 +307,17 @@
 </div>
 </div>
 <div class="collapse">
-<input type="checkbox" id="collapse-section1" aria-hidden="true"> <label for="collapse-section1" aria-hidden="true">V1.0.0 / 01-September-2016</label>
+<input type="checkbox" id="collapse-section1" aria-hidden="true">
+<label for="collapse-section1" aria-hidden="true">V1.0.0 /
+01-September-2016</label>
 <div>
-<h2 id="main-changes-11">Main changes</h2>
+<h2 id="main-changes-12">Main changes</h2>
 <h3 id="first-release">First release</h3>
 <ul>
 <li>First official release</li>
 </ul>
-<h2 id="development-toolchains-and-compilers-11">Development toolchains and compilers</h2>
+<h2 id="development-toolchains-and-compilers-12">Development toolchains
+and compilers</h2>
 <ul>
 <li>IAR Embedded Workbench for ARM (EWARM) toolchain V7.60</li>
 <li>uVision(MDK-ARM) toolchain 5.21</li>
@@ -246,7 +330,8 @@
 <footer class="sticky">
 <div class="columns">
 <div class="column" style="width:95%;">
-<p>For complete documentation on <strong>MotionMC</strong> , visit: <a href="https://www.st.com/en/embedded-software/x-cube-mems1.html">X-CUBE-MEMS1</a></p>
+<p>For complete documentation on <strong>MotionMC</strong> , visit: <a
+href="https://www.st.com/en/embedded-software/x-cube-mems1.html">X-CUBE-MEMS1</a></p>
 </div><div class="column" style="width:5%;">
 <p><abbr title="Based on template cx566953 version 2.0">Info</abbr></p>
 </div>

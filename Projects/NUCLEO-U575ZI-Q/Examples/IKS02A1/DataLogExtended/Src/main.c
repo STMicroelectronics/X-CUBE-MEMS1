@@ -5,7 +5,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2022 STMicroelectronics.
+  * Copyright (c) 2014-2022 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -43,6 +43,7 @@ typedef struct displayFloatToInt_s
 #define MAX_BUF_SIZE    256
 #define MLC_STATUS_MAX    8
 #define FSM_STATUS_MAX   18
+#define SHT40AD1B_ODR  1000U
 
 /* Private macro -------------------------------------------------------------*/
 /* Public variables ----------------------------------------------------------*/
@@ -75,8 +76,11 @@ static void MX_CRC_Init(void);
 static void MX_RTC_Init(void);
 
 static void Enable_Disable_Sensors(void);
+static void Float_To_Int(float In, displayFloatToInt_t *OutValue, int32_t DecPrec);
 
 static void Time_Handler(TMsg *Msg);
+static void Temp_Sensor_Handler(TMsg *Msg, uint32_t Instance);
+static void Hum_Sensor_Handler(TMsg *Msg, uint32_t Instance);
 static void Accelero_Sensor_Handler(TMsg *Msg, uint32_t Instance);
 static void Gyro_Sensor_Handler(TMsg *Msg, uint32_t Instance);
 static void Magneto_Sensor_Handler(TMsg *Msg, uint32_t Instance);
@@ -197,6 +201,16 @@ int main(void)
     {
       Time_Handler(&msg_dat);
 
+      if ((SensorsEnabled & TEMPERATURE_SENSOR_ENABLED) == TEMPERATURE_SENSOR_ENABLED)
+      {
+        Temp_Sensor_Handler(&msg_dat, TmpInstance);
+      }
+
+      if ((SensorsEnabled & HUMIDITY_SENSOR_ENABLED) == HUMIDITY_SENSOR_ENABLED)
+      {
+        Hum_Sensor_Handler(&msg_dat, HumInstance);
+      }
+
       if ((SensorsEnabled & ACCELEROMETER_SENSOR_ENABLED) == ACCELEROMETER_SENSOR_ENABLED)
       {
         Accelero_Sensor_Handler(&msg_dat, AccInstance);
@@ -248,7 +262,6 @@ int main(void)
 }
 
 /* Private functions ---------------------------------------------------------*/
-
 /**
   * @brief GPIO Initialization Function
   * @param None
@@ -412,6 +425,48 @@ static void Enable_Disable_Sensors(void)
   {
     (void)IKS02A1_MOTION_SENSOR_Disable(MagInstance, MOTION_MAGNETO);
   }
+
+  if ((SensorsEnabled & HUMIDITY_SENSOR_ENABLED) == HUMIDITY_SENSOR_ENABLED)
+  {
+    (void)IKS02A1_ENV_SENSOR_Enable(HumInstance, ENV_HUMIDITY);
+  }
+  else
+  {
+    (void)IKS02A1_ENV_SENSOR_Disable(HumInstance, ENV_HUMIDITY);
+  }
+
+  if ((SensorsEnabled & TEMPERATURE_SENSOR_ENABLED) == TEMPERATURE_SENSOR_ENABLED)
+  {
+    (void)IKS02A1_ENV_SENSOR_Enable(TmpInstance, ENV_TEMPERATURE);
+  }
+  else
+  {
+    (void)IKS02A1_ENV_SENSOR_Disable(TmpInstance, ENV_TEMPERATURE);
+  }
+}
+
+/**
+ * @brief  Splits a float into two integer values
+ * @param  In the float value as input
+ * @param  OutValue the pointer to the output integer structure
+ * @param  DecPrec the decimal precision to be used
+ * @retval None
+ */
+static void Float_To_Int(float In, displayFloatToInt_t *OutValue, int32_t DecPrec)
+{
+  if (In >= 0.0f)
+  {
+    OutValue->sign = 0;
+  }
+  else
+  {
+    OutValue->sign = 1;
+    In = -In;
+  }
+
+  OutValue->out_int = (uint32_t)In;
+  In = In - (float)(OutValue->out_int);
+  OutValue->out_dec = (uint32_t)trunc(In * pow(10.0f, (float)DecPrec));
 }
 
 /**
@@ -438,6 +493,127 @@ static void Time_Handler(TMsg *Msg)
   else
   {
     /* Nothing to do */
+  }
+}
+
+/**
+ * @brief  Handles the TEMPERATURE sensor data getting/sending
+ * @param  Msg the TEMPERATURE part of the stream
+ * @param  Instance the device instance
+ * @retval None
+ */
+static void Temp_Sensor_Handler(TMsg *Msg, uint32_t Instance)
+{
+  float temperature;
+  uint8_t status = 0;
+  static uint32_t last_time = 0;
+  uint32_t time = 0;
+
+  if (Instance == IKS02A1_SHT40AD1B_0)
+  {
+    time = HAL_GetTick();
+    if ((time - last_time) >= SHT40AD1B_ODR)
+    {
+      status = 1;
+      last_time = time;
+    }
+    else
+    {
+      status = 0;
+    }
+  }
+  else
+  {
+    if (IKS02A1_ENV_SENSOR_Get_DRDY_Status(Instance, ENV_TEMPERATURE, &status) != BSP_ERROR_NONE)
+    {
+      status = 0;
+    }
+  }
+
+  if (status == 1U)
+  {
+    NewData++;
+    NewDataFlags |= 2U;
+
+    (void)IKS02A1_ENV_SENSOR_GetValue(Instance, ENV_TEMPERATURE, &temperature);
+
+    if (DataLoggerActive != 0U)
+    {
+      (void)memcpy(&Msg->Data[MsgIndex], (void *)&temperature, 4);
+      MsgIndex = MsgIndex + 4;
+    }
+    else if (AutoInit != 0U)
+    {
+      displayFloatToInt_t out_value;
+      Float_To_Int(temperature, &out_value, 2);
+      (void)snprintf(DataOut, MAX_BUF_SIZE, "TEMP: %c%d.%02d\r\n", ((out_value.sign != 0) ? '-' : '+'),
+                     (int)out_value.out_int, (int)out_value.out_dec);
+      (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
+    }
+    else
+    {
+      /* Nothing to do */
+    }
+  }
+}
+
+/**
+ * @brief  Handles the HUMIDITY sensor data getting/sending
+ * @param  Msg the HUMIDITY part of the stream
+ * @param  Instance the device instance
+ * @retval None
+ */
+static void Hum_Sensor_Handler(TMsg *Msg, uint32_t Instance)
+{
+  float humidity;
+  uint8_t status = 0;
+  static uint32_t last_time = 0;
+  uint32_t time = 0;
+
+  if (Instance == IKS02A1_SHT40AD1B_0)
+  {
+    time = HAL_GetTick();
+    if ((time - last_time) >= SHT40AD1B_ODR)
+    {
+      status = 1;
+      last_time = time;
+    }
+    else
+    {
+      status = 0;
+    }
+  }
+  else
+  {
+    if (IKS02A1_ENV_SENSOR_Get_DRDY_Status(Instance, ENV_HUMIDITY, &status) != BSP_ERROR_NONE)
+    {
+      status = 0;
+    }
+  }
+
+  if (status == 1U)
+  {
+    NewData++;
+    NewDataFlags |= 4U;
+
+    (void)IKS02A1_ENV_SENSOR_GetValue(Instance, ENV_HUMIDITY, &humidity);
+
+    if (DataLoggerActive != 0U)
+    {
+      (void)memcpy(&Msg->Data[MsgIndex], (void *)&humidity, 4);
+      MsgIndex = MsgIndex + 4;
+    }
+    else if (AutoInit != 0U)
+    {
+      displayFloatToInt_t out_value;
+      Float_To_Int(humidity, &out_value, 2);
+      (void)snprintf(DataOut, MAX_BUF_SIZE, "HUM: %d.%02d\r\n", (int)out_value.out_int, (int)out_value.out_dec);
+      (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
+    }
+    else
+    {
+      /* Nothing to do */
+    }
   }
 }
 
@@ -582,7 +758,8 @@ static void Sensors_Interrupt_Handler(TMsg *Msg)
   if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_10) == GPIO_PIN_SET) int_status |= (1 << 2); else int_status &= ~(1 << 2);
   if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_1) == GPIO_PIN_SET) int_status |= (1 << 3); else int_status &= ~(1 << 3);
 
-  if (DIL24_INT1_Event == 1) {
+  if (DIL24_INT1_Event == 1)
+  {
     DIL24_INT1_Event = 0;
     int_status |= (1 << 4);
   }

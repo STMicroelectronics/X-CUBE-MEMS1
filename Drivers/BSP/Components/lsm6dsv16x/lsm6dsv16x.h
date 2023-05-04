@@ -48,7 +48,7 @@ extern "C"
 typedef int32_t (*LSM6DSV16X_Init_Func)(void);
 typedef int32_t (*LSM6DSV16X_DeInit_Func)(void);
 typedef int32_t (*LSM6DSV16X_GetTick_Func)(void);
-typedef void    (*LSM6DSV16X_Delay_Func)(uint32_t);
+typedef void (*LSM6DSV16X_Delay_Func)(uint32_t);
 typedef int32_t (*LSM6DSV16X_WriteReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 typedef int32_t (*LSM6DSV16X_ReadReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 
@@ -174,22 +174,26 @@ typedef struct
   int32_t (*GetAxesRaw)(LSM6DSV16X_Object_t *, LSM6DSV16X_AxesRaw_t *);
 } LSM6DSV16X_GYRO_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } lsm6dsv16x_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } lsm6dsv16x_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } lsm6dsv16x_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } lsm6dsv16x_axis1bit32_t;
@@ -291,10 +295,24 @@ int32_t LSM6DSV16X_ACC_Set_Tap_Duration_Time(LSM6DSV16X_Object_t *pObj, uint8_t 
 int32_t LSM6DSV16X_ACC_Enable_Tilt_Detection(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_SensorIntPin_t IntPin);
 int32_t LSM6DSV16X_ACC_Disable_Tilt_Detection(LSM6DSV16X_Object_t *pObj);
 
-int32_t LSM6DSV16X_ACC_Enable_Pedometer(LSM6DSV16X_Object_t *pObj,LSM6DSV16X_SensorIntPin_t IntPin);
+int32_t LSM6DSV16X_ACC_Enable_Pedometer(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_SensorIntPin_t IntPin);
 int32_t LSM6DSV16X_ACC_Disable_Pedometer(LSM6DSV16X_Object_t *pObj);
 int32_t LSM6DSV16X_ACC_Get_Step_Count(LSM6DSV16X_Object_t *pObj, uint16_t *StepCount);
 int32_t LSM6DSV16X_ACC_Step_Counter_Reset(LSM6DSV16X_Object_t *pObj);
+
+int32_t LSM6DSV16X_FIFO_Get_Num_Samples(LSM6DSV16X_Object_t *pObj, uint16_t *NumSamples);
+int32_t LSM6DSV16X_FIFO_Get_Full_Status(LSM6DSV16X_Object_t *pObj, uint8_t *Status);
+int32_t LSM6DSV16X_FIFO_Set_INT1_FIFO_Full(LSM6DSV16X_Object_t *pObj, uint8_t Status);
+int32_t LSM6DSV16X_FIFO_Set_INT2_FIFO_Full(LSM6DSV16X_Object_t *pObj, uint8_t Status);
+int32_t LSM6DSV16X_FIFO_Set_Watermark_Level(LSM6DSV16X_Object_t *pObj, uint8_t Watermark);
+int32_t LSM6DSV16X_FIFO_Set_Stop_On_Fth(LSM6DSV16X_Object_t *pObj, uint8_t Status);
+int32_t LSM6DSV16X_FIFO_Set_Mode(LSM6DSV16X_Object_t *pObj, uint8_t Mode);
+int32_t LSM6DSV16X_FIFO_Get_Tag(LSM6DSV16X_Object_t *pObj, uint8_t *Tag);
+int32_t LSM6DSV16X_FIFO_Get_Data(LSM6DSV16X_Object_t *pObj, uint8_t *Data);
+int32_t LSM6DSV16X_FIFO_ACC_Get_Axes(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_Axes_t *Acceleration);
+int32_t LSM6DSV16X_FIFO_ACC_Set_BDR(LSM6DSV16X_Object_t *pObj, float_t Bdr);
+int32_t LSM6DSV16X_FIFO_GYRO_Get_Axes(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_Axes_t *AngularVelocity);
+int32_t LSM6DSV16X_FIFO_GYRO_Set_BDR(LSM6DSV16X_Object_t *pObj, float_t Bdr);
 
 int32_t LSM6DSV16X_GYRO_Enable(LSM6DSV16X_Object_t *pObj);
 int32_t LSM6DSV16X_GYRO_Disable(LSM6DSV16X_Object_t *pObj);
@@ -335,7 +353,8 @@ extern LSM6DSV16X_GYRO_Drv_t LSM6DSV16X_GYRO_Driver;
  */
 
 
-typedef enum {
+typedef enum
+{
   LSM6DSV16X_ULTRA_LIGHT  = 0,
   LSM6DSV16X_VERY_LIGHT   = 1,
   LSM6DSV16X_LIGHT        = 2,
@@ -346,7 +365,8 @@ typedef enum {
   LSM6DSV16X_XTREME       = 7,
 } lsm6dsv16x_ftype_t;
 
-typedef enum {
+typedef enum
+{
   LSM6DSV16X_HP_FILTER_NONE     = 0x00,
   LSM6DSV16X_HP_FILTER_16mHz    = 0x80,
   LSM6DSV16X_HP_FILTER_65mHz    = 0x81,
@@ -354,7 +374,8 @@ typedef enum {
   LSM6DSV16X_HP_FILTER_1Hz04    = 0x83,
 } lsm6dsv16x_hpm_g_t;
 
-typedef enum {
+typedef enum
+{
   LSM6DSV16X_HP_PATH_DISABLE_ON_OUT    = 0x00,
   LSM6DSV16X_SLOPE_ODR_DIV_4           = LSM6DSV16X_GY_ULTRA_LIGHT,
   LSM6DSV16X_HP_ODR_DIV_10             = LSM6DSV16X_GY_VERY_LIGHT,

@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.5.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.6.0 instances.
   ******************************************************************************
   * @attention
   *
@@ -120,11 +120,11 @@ void MX_MEMS_Process(void)
 
 /* Exported functions --------------------------------------------------------*/
 /**
- * @brief  Period elapsed callback
- * @param  htim pointer to a TIM_HandleTypeDef structure that contains
- *              the configuration information for TIM module.
- * @retval None
- */
+  * @brief  Period elapsed callback
+  * @param  htim pointer to a TIM_HandleTypeDef structure that contains
+  *              the configuration information for TIM module.
+  * @retval None
+  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   if (htim->Instance == BSP_IP_TIM_Handle.Instance)
@@ -262,15 +262,16 @@ static void MX_TiltSensing2_Process(void)
         SensorReadRequest = 1;
       }
     }
+
     UART_SendMsg(&msg_dat);
   }
 }
 
 /**
- * @brief  Initialize all sensors
- * @param  None
- * @retval None
- */
+  * @brief  Initialize all sensors
+  * @param  None
+  * @retval None
+  */
 static void Init_Sensors(void)
 {
   BSP_SENSOR_ACC_Init();
@@ -285,10 +286,10 @@ static void Init_Sensors(void)
 }
 
 /**
- * @brief  Handles the time+date getting/sending
- * @param  Msg the time+date part of the stream
- * @retval None
- */
+  * @brief  Handles the time+date getting/sending
+  * @param  Msg the time+date part of the stream
+  * @retval None
+  */
 static void RTC_Handler(TMsg *Msg)
 {
   uint8_t sub_sec = 0;
@@ -330,10 +331,10 @@ static void RTC_Handler(TMsg *Msg)
 }
 
 /**
- * @brief  Accelerometer Calibration 2-axis data handler
- * @param  Msg the Accelerometer Calibration data part of the stream
- * @retval None
- */
+  * @brief  Accelerometer Calibration 2-axis data handler
+  * @param  Msg the Accelerometer Calibration data part of the stream
+  * @retval None
+  */
 static void AC2_Data_Handler(TMsg *Msg)
 {
   uint8_t is_calibrated = 0U;
@@ -376,10 +377,10 @@ static void AC2_Data_Handler(TMsg *Msg)
 }
 
 /**
- * @brief  Tilt Sensing 2-axis data handler
- * @param  Msg the Tilt Sensing data part of the stream
- * @retval None
- */
+  * @brief  Tilt Sensing 2-axis data handler
+  * @param  Msg the Tilt Sensing data part of the stream
+  * @retval None
+  */
 static void TL2_Data_Handler(TMsg *Msg)
 {
   uint32_t elapsed_time_us = 0U;
@@ -414,10 +415,10 @@ static void TL2_Data_Handler(TMsg *Msg)
 }
 
 /**
- * @brief  Handles the ACC 2-axis data getting/sending
- * @param  Msg the ACC part of the stream
- * @retval None
- */
+  * @brief  Handles the ACC 2-axis data getting/sending
+  * @param  Msg the ACC part of the stream
+  * @retval None
+  */
 static void Accelero2_Sensor_Handler(TMsg *Msg)
 {
   if ((SensorsEnabled & ACCELEROMETER_SENSOR) == ACCELEROMETER_SENSOR)
@@ -438,10 +439,10 @@ static void Accelero2_Sensor_Handler(TMsg *Msg)
 }
 
 /**
- * @brief  Timer configuration
- * @param  Freq the desired Timer frequency
- * @retval None
- */
+  * @brief  Timer configuration
+  * @param  Freq the desired Timer frequency
+  * @retval None
+  */
 static void TIM_Config(uint32_t Freq)
 {
   const uint32_t tim_counter_clock = 2000; /* TIM counter clock 2 kHz */
@@ -461,10 +462,10 @@ static void TIM_Config(uint32_t Freq)
 
 #ifdef BSP_IP_MEMS_INT1_PIN_NUM
 /**
- * @brief  Force MEMS INT1 pin low
- * @param  None
- * @retval None
- */
+  * @brief  Force MEMS INT1 pin low
+  * @param  None
+  * @retval None
+  */
 static void MEMS_INT1_Force_Low(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -478,10 +479,10 @@ static void MEMS_INT1_Force_Low(void)
 }
 
 /**
- * @brief  Configure MEMS INT1 pin to the default state
- * @param  None
- * @retval None
- */
+  * @brief  Configure MEMS INT1 pin to the default state
+  * @param  None
+  * @retval None
+  */
 static void MEMS_INT1_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -494,10 +495,10 @@ static void MEMS_INT1_Init(void)
 #endif
 
 /**
- * @brief  Initialize DWT register for counting clock cycles purpose
- * @param  None
- * @retval None
- */
+  * @brief  Initialize DWT register for counting clock cycles purpose
+  * @param  None
+  * @retval None
+  */
 static void DWT_Init(void)
 {
   CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
@@ -505,10 +506,10 @@ static void DWT_Init(void)
 }
 
 /**
- * @brief  Start counting clock cycles
- * @param  None
- * @retval None
- */
+  * @brief  Start counting clock cycles
+  * @param  None
+  * @retval None
+  */
 static void DWT_Start(void)
 {
   DWT->CYCCNT = 0; /* Clear count of clock cycles */
@@ -516,10 +517,10 @@ static void DWT_Start(void)
 }
 
 /**
- * @brief  Stop counting clock cycles and calculate elapsed time in [us]
- * @param  None
- * @retval Elapsed time in [us]
- */
+  * @brief  Stop counting clock cycles and calculate elapsed time in [us]
+  * @param  None
+  * @retval Elapsed time in [us]
+  */
 static uint32_t DWT_Stop(void)
 {
   volatile uint32_t cycles_count = 0U;
@@ -536,4 +537,3 @@ static uint32_t DWT_Stop(void)
 #ifdef __cplusplus
 }
 #endif
-

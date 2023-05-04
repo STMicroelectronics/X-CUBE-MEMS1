@@ -73,10 +73,6 @@ typedef struct
   uint8_t         temp_is_enabled;
   float           hum_odr;
   float           temp_odr;
-  uint32_t        hum_read_time;
-  uint32_t        temp_read_time;
-  uint8_t         hum_new_data;
-  uint8_t         temp_new_data;
   float           hum_value;
   float           temp_value;
 } SHT40AD1B_Object_t;
@@ -186,11 +182,6 @@ int32_t SHT40AD1B_TEMP_Get_DRDY_Status(SHT40AD1B_Object_t *pObj, uint8_t *Status
 
 int32_t SHT40AD1B_Read_Reg(SHT40AD1B_Object_t *pObj, uint8_t Reg, uint8_t *Data);
 int32_t SHT40AD1B_Write_Reg(SHT40AD1B_Object_t *pObj, uint8_t Reg, uint8_t Data);
-
-int32_t SHT40AD1B_Set_One_Shot(SHT40AD1B_Object_t *pObj);
-int32_t SHT40AD1B_Get_One_Shot_Status(SHT40AD1B_Object_t *pObj, uint8_t *Status);
-
-int32_t SHT40AD1B_Enable_DRDY_Interrupt(SHT40AD1B_Object_t *pObj);
 
 /**
   * @}

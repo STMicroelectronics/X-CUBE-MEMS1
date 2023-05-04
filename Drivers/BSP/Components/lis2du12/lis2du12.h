@@ -231,6 +231,7 @@ int32_t LIS2DU12_ACC_Set_SelfTest(LIS2DU12_Object_t *pObj, uint8_t Val);
 int32_t LIS2DU12_ACC_Get_DRDY_Status(LIS2DU12_Object_t *pObj, uint8_t *Status);
 int32_t LIS2DU12_ACC_Get_Init_Status(LIS2DU12_Object_t *pObj, uint8_t *Status);
 
+int32_t LIS2DU12_ACC_Set_Filter_Mode(LIS2DU12_Object_t *pObj, uint8_t FilterMode);
 /**
   * @}
   */

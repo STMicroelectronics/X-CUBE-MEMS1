@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.5.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.6.0 instances.
   ******************************************************************************
   * @attention
   *
@@ -194,4 +194,3 @@ void MX_IKS01A3_LSM6DSO_WakeUp_Process(void)
 #ifdef __cplusplus
 }
 #endif
-

@@ -129,20 +129,9 @@ int32_t SHT40AD1B_RegisterBusIO(SHT40AD1B_Object_t *pObj, SHT40AD1B_IO_t *pIO)
   */
 int32_t SHT40AD1B_Init(SHT40AD1B_Object_t *pObj)
 {
-  volatile uint32_t time;
-  time = pObj->IO.GetTick();
-
-  if (pObj->is_initialized == 0U)
-  {
-    /* Select default output data rate. */
-    pObj->hum_odr  = 0.25f;
-    pObj->temp_odr = 0.5f;
-
-    pObj->hum_read_time  = time;
-    pObj->temp_read_time = time;
-    pObj->hum_new_data   = 0;
-    pObj->temp_new_data  = 0;
-  }
+  /* This device doesn't support ODR, works more like one-shot measurement */
+  pObj->hum_odr  = 0.0f;
+  pObj->temp_odr = 0.0f;
 
   pObj->is_initialized = 1;
 
@@ -156,16 +145,6 @@ int32_t SHT40AD1B_Init(SHT40AD1B_Object_t *pObj)
   */
 int32_t SHT40AD1B_DeInit(SHT40AD1B_Object_t *pObj)
 {
-  if (pObj->is_initialized == 1U)
-  {
-    /* Reset output data rate. */
-    pObj->hum_odr  = 0.0f;
-    pObj->temp_odr = 0.0f;
-
-    pObj->hum_new_data  = 0;
-    pObj->temp_new_data = 0;
-  }
-
   pObj->is_initialized = 0;
 
   return SHT40AD1B_OK;
@@ -197,8 +176,8 @@ int32_t SHT40AD1B_GetCapabilities(SHT40AD1B_Object_t *pObj, SHT40AD1B_Capabiliti
   Capabilities->Pressure    = 0;
   Capabilities->Temperature = 1;
   Capabilities->LowPower    = 0;
-  Capabilities->HumMaxOdr   = 0.25f;
-  Capabilities->TempMaxOdr  = 0.5f;
+  Capabilities->HumMaxOdr   = 0.0f;
+  Capabilities->TempMaxOdr  = 0.0f;
   Capabilities->PressMaxOdr = 0.0f;
   return SHT40AD1B_OK;
 }
@@ -266,6 +245,7 @@ int32_t SHT40AD1B_HUM_Disable(SHT40AD1B_Object_t *pObj)
 int32_t SHT40AD1B_HUM_GetOutputDataRate(SHT40AD1B_Object_t *pObj, float_t *Odr)
 {
   *Odr = pObj->hum_odr;
+
   return SHT40AD1B_OK;
 }
 
@@ -277,7 +257,7 @@ int32_t SHT40AD1B_HUM_GetOutputDataRate(SHT40AD1B_Object_t *pObj, float_t *Odr)
   */
 int32_t SHT40AD1B_HUM_SetOutputDataRate(SHT40AD1B_Object_t *pObj, float_t Odr)
 {
-  pObj->hum_odr = (Odr <= 0.25f) ? Odr : 0.25f;
+  /* This device doesn't support ODR, works more like one-shot measurement */
   return SHT40AD1B_OK;
 }
 
@@ -289,13 +269,13 @@ int32_t SHT40AD1B_HUM_SetOutputDataRate(SHT40AD1B_Object_t *pObj, float_t Odr)
   */
 int32_t SHT40AD1B_HUM_GetHumidity(SHT40AD1B_Object_t *pObj, float_t *Value)
 {
-  if (pObj->hum_new_data == 0U)
+  if (GetData(pObj) != SHT40AD1B_OK)
   {
     return SHT40AD1B_ERROR;
   }
 
   *Value = pObj->hum_value;
-  pObj->hum_new_data = 0;
+
   return SHT40AD1B_OK;
 }
 
@@ -307,18 +287,8 @@ int32_t SHT40AD1B_HUM_GetHumidity(SHT40AD1B_Object_t *pObj, float_t *Value)
   */
 int32_t SHT40AD1B_HUM_Get_DRDY_Status(SHT40AD1B_Object_t *pObj, uint8_t *Status)
 {
-  if (pObj->hum_new_data == 1U)
-  {
-    *Status = pObj->hum_new_data;
-    return SHT40AD1B_OK;
-  }
+  *Status = 1;
 
-  if (GetData(pObj) != SHT40AD1B_OK)
-  {
-    return SHT40AD1B_ERROR;
-  }
-
-  *Status = pObj->hum_new_data;
   return SHT40AD1B_OK;
 }
 
@@ -367,6 +337,7 @@ int32_t SHT40AD1B_TEMP_Disable(SHT40AD1B_Object_t *pObj)
 int32_t SHT40AD1B_TEMP_GetOutputDataRate(SHT40AD1B_Object_t *pObj, float_t *Odr)
 {
   *Odr = pObj->temp_odr;
+
   return SHT40AD1B_OK;
 }
 
@@ -378,7 +349,7 @@ int32_t SHT40AD1B_TEMP_GetOutputDataRate(SHT40AD1B_Object_t *pObj, float_t *Odr)
   */
 int32_t SHT40AD1B_TEMP_SetOutputDataRate(SHT40AD1B_Object_t *pObj, float_t Odr)
 {
-  pObj->temp_odr = (Odr <= 0.5f) ? Odr : 0.5f;
+  /* This device doesn't support ODR, works more like one-shot measurement */
   return SHT40AD1B_OK;
 }
 
@@ -390,13 +361,13 @@ int32_t SHT40AD1B_TEMP_SetOutputDataRate(SHT40AD1B_Object_t *pObj, float_t Odr)
   */
 int32_t SHT40AD1B_TEMP_GetTemperature(SHT40AD1B_Object_t *pObj, float_t *Value)
 {
-  if (pObj->temp_new_data == 0U)
+  if (GetData(pObj) != SHT40AD1B_OK)
   {
     return SHT40AD1B_ERROR;
   }
 
   *Value = pObj->temp_value;
-  pObj->temp_new_data = 0;
+
   return SHT40AD1B_OK;
 }
 
@@ -408,18 +379,8 @@ int32_t SHT40AD1B_TEMP_GetTemperature(SHT40AD1B_Object_t *pObj, float_t *Value)
   */
 int32_t SHT40AD1B_TEMP_Get_DRDY_Status(SHT40AD1B_Object_t *pObj, uint8_t *Status)
 {
-  if (pObj->temp_new_data == 1U)
-  {
-    *Status = pObj->temp_new_data;
-    return SHT40AD1B_OK;
-  }
+  *Status = 1;
 
-  if (GetData(pObj) != SHT40AD1B_OK)
-  {
-    return SHT40AD1B_ERROR;
-  }
-
-  *Status = pObj->temp_new_data;
   return SHT40AD1B_OK;
 }
 
@@ -439,35 +400,15 @@ int32_t SHT40AD1B_TEMP_Get_DRDY_Status(SHT40AD1B_Object_t *pObj, uint8_t *Status
   */
 static int32_t GetData(SHT40AD1B_Object_t *pObj)
 {
-  volatile uint32_t time;
   float_t data[2];  /* humidity, temperature */
 
-  time = pObj->IO.GetTick();
-  uint32_t hum_read_period      = time - pObj->hum_read_time;
-  uint32_t hum_read_period_min  = (uint32_t)(1000.0f / pObj->hum_odr);
-  uint32_t temp_read_period     = time - pObj->temp_read_time;
-  uint32_t temp_read_period_min = (uint32_t)(1000.0f / pObj->temp_odr);
-  if ((hum_read_period >= hum_read_period_min) || (temp_read_period >= temp_read_period_min))
+  if (sht40ad1b_data_get(&(pObj->Ctx), data) != 0)
   {
-    if (sht40ad1b_data_get(&(pObj->Ctx), data) != 0)
-    {
-      return SHT40AD1B_ERROR;
-    }
-
-    if (hum_read_period >= hum_read_period_min)
-    {
-      pObj->hum_new_data = 1;
-      pObj->hum_read_time = time;
-      pObj->hum_value = data[0];
-    }
-
-    if (temp_read_period >= temp_read_period_min)
-    {
-      pObj->temp_new_data = 1;
-      pObj->temp_read_time = time;
-      pObj->temp_value = data[1];
-    }
+    return SHT40AD1B_ERROR;
   }
+
+  pObj->hum_value = data[0];
+  pObj->temp_value = data[1];
 
   return SHT40AD1B_OK;
 }

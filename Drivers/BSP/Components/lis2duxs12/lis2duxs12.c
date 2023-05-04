@@ -837,6 +837,725 @@ static int32_t LIS2DUXS12_ACC_SetOutputDataRate_When_Disabled(LIS2DUXS12_Object_
 }
 
 /**
+  * @brief  Get the status of all hardware events
+  * @param  pObj the device pObj
+  * @param  Status the status of all hardware events
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LIS2DUXS12_ACC_Get_Event_Status(LIS2DUXS12_Object_t *pObj, LIS2DUXS12_Event_Status_t *Status)
+{
+  lis2duxs12_all_int_src_t all_int_src_reg;
+  lis2duxs12_md1_cfg_t md1_cfg_reg;
+  lis2duxs12_md2_cfg_t md2_cfg_reg;
+
+  (void)memset((void *)Status, 0x0, sizeof(LIS2DUXS12_Event_Status_t));
+
+  if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_ALL_INT_SRC, (uint8_t *)&all_int_src_reg, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_MD1_CFG, (uint8_t *)&md1_cfg_reg, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_MD2_CFG, (uint8_t *)&md2_cfg_reg, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  if ((md1_cfg_reg.int1_wu == 1U) || (md2_cfg_reg.int2_wu == 1U))
+  {
+    if (all_int_src_reg.wu_ia_all == 1U)
+    {
+      Status->WakeUpStatus = 1;
+    }
+  }
+
+  if ((md1_cfg_reg.int1_6d == 1U) || (md2_cfg_reg.int2_6d == 1U))
+  {
+    if (all_int_src_reg.d6d_ia_all == 1U)
+    {
+      Status->D6DOrientationStatus = 1;
+    }
+  }
+
+  return LIS2DUXS12_OK;
+}
+
+/**
+  * @brief  Enable wake up detection
+  * @param  pObj the device pObj
+  * @param  IntPin interrupt pin line to be used
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LIS2DUXS12_ACC_Enable_Wake_Up_Detection(LIS2DUXS12_Object_t *pObj, LIS2DUXS12_SensorIntPin_t IntPin)
+{
+  int32_t ret = LIS2DUXS12_OK;
+  lis2duxs12_md1_cfg_t val1;
+  lis2duxs12_md2_cfg_t val2;
+  lis2duxs12_interrupt_cfg_t interrupt_cfg;
+  lis2duxs12_ctrl1_t ctrl1;
+
+  /* Output Data Rate selection */
+  if (LIS2DUXS12_ACC_SetOutputDataRate(pObj, 200.0f) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  /* Full scale selection */
+  if (LIS2DUXS12_ACC_SetFullScale(pObj, 2) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  /* Set wake-up threshold */
+  if (LIS2DUXS12_ACC_Set_Wake_Up_Threshold(pObj, 63) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  /* Set wake-up duration */
+  if (LIS2DUXS12_ACC_Set_Wake_Up_Duration(pObj, 0) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  /* Enable wake-up event on the 3-axis */
+  if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_CTRL1, (uint8_t *)&ctrl1, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  ctrl1.wu_x_en = PROPERTY_ENABLE;
+  ctrl1.wu_y_en = PROPERTY_ENABLE;
+  ctrl1.wu_z_en = PROPERTY_ENABLE;
+
+  if (lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_CTRL1, (uint8_t *)&ctrl1, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  /* Enable wake up event on either INT1 or INT2 pin */
+  switch (IntPin)
+  {
+    case LIS2DUXS12_INT1_PIN:
+      if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_MD1_CFG, (uint8_t *)&val1, 1) != LIS2DUXS12_OK)
+      {
+        return LIS2DUXS12_ERROR;
+      }
+
+      val1.int1_wu = PROPERTY_ENABLE;
+
+      if (lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_MD1_CFG, (uint8_t *)&val1, 1) != LIS2DUXS12_OK)
+      {
+        return LIS2DUXS12_ERROR;
+      }
+
+      if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_INTERRUPT_CFG, (uint8_t *)&interrupt_cfg, 1) != LIS2DUXS12_OK)
+      {
+        return LIS2DUXS12_ERROR;
+      }
+
+      interrupt_cfg.interrupts_enable = PROPERTY_ENABLE;
+
+      if (lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_INTERRUPT_CFG, (uint8_t *)&interrupt_cfg, 1) != LIS2DUXS12_OK)
+      {
+        return LIS2DUXS12_ERROR;
+      }
+      break;
+
+    case LIS2DUXS12_INT2_PIN:
+      if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_MD2_CFG, (uint8_t *)&val2, 1) != LIS2DUXS12_OK)
+      {
+        return LIS2DUXS12_ERROR;
+      }
+
+      val2.int2_wu = PROPERTY_ENABLE;
+
+      if (lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_MD2_CFG, (uint8_t *)&val2, 1) != LIS2DUXS12_OK)
+      {
+        return LIS2DUXS12_ERROR;
+      }
+
+      if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_INTERRUPT_CFG, (uint8_t *)&interrupt_cfg, 1) != LIS2DUXS12_OK)
+      {
+        return LIS2DUXS12_ERROR;
+      }
+
+      interrupt_cfg.interrupts_enable = PROPERTY_ENABLE;
+
+      if (lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_INTERRUPT_CFG, (uint8_t *)&interrupt_cfg, 1) != LIS2DUXS12_OK)
+      {
+        return LIS2DUXS12_ERROR;
+      }
+      break;
+
+    default:
+      ret = LIS2DUXS12_ERROR;
+      break;
+  }
+
+  return ret;
+}
+
+/**
+  * @brief  Disable wake up detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LIS2DUXS12_ACC_Disable_Wake_Up_Detection(LIS2DUXS12_Object_t *pObj)
+{
+  lis2duxs12_md1_cfg_t val1;
+  lis2duxs12_md2_cfg_t val2;
+  lis2duxs12_ctrl1_t ctrl1;
+
+  /* Disable wake up event on both INT1 and INT2 pins */
+  if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_MD1_CFG, (uint8_t *)&val1, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  val1.int1_wu = PROPERTY_DISABLE;
+
+  if (lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_MD1_CFG, (uint8_t *)&val1, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_MD2_CFG, (uint8_t *)&val2, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  val2.int2_wu = PROPERTY_DISABLE;
+
+  if (lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_MD2_CFG, (uint8_t *)&val2, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  /* Disable wake-up event on the 3-axis */
+  if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_CTRL1, (uint8_t *)&ctrl1, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  ctrl1.wu_x_en = PROPERTY_DISABLE;
+  ctrl1.wu_y_en = PROPERTY_DISABLE;
+  ctrl1.wu_z_en = PROPERTY_DISABLE;
+
+  if (lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_CTRL1, (uint8_t *)&ctrl1, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  /* Reset wake-up threshold */
+  if (LIS2DUXS12_ACC_Set_Wake_Up_Threshold(pObj, 0) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  /* Reset wake-up duration */
+  if (LIS2DUXS12_ACC_Set_Wake_Up_Duration(pObj, 0) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  return LIS2DUXS12_OK;
+}
+
+/**
+  * @brief  Set wake up threshold
+  * @param  pObj the device pObj
+  * @param  Threshold wake up detection threshold
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LIS2DUXS12_ACC_Set_Wake_Up_Threshold(LIS2DUXS12_Object_t *pObj, uint32_t Threshold)
+{
+  int32_t fs;
+  int32_t ret = LIS2DUXS12_OK;
+  float_t tmp;
+  lis2duxs12_interrupt_cfg_t interrupt_cfg;
+  lis2duxs12_wake_up_ths_t wup_ths;
+
+  if (LIS2DUXS12_ACC_GetFullScale(pObj, &fs) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  if(lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_INTERRUPT_CFG, (uint8_t *)&interrupt_cfg, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  if(lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_WAKE_UP_THS, (uint8_t *)&wup_ths, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  switch(fs)
+  {
+    case 2:
+      if(Threshold < (uint32_t)(7.8125f * 63.0f))
+      {
+        interrupt_cfg.wake_ths_w = 1;
+        tmp = (float_t)Threshold / 7.8125f;
+        wup_ths.wk_ths = (uint8_t)tmp;
+      }
+      else if (Threshold < (uint32_t)(31.25f * 63.0f))
+      {
+        interrupt_cfg.wake_ths_w = 0;
+        tmp = (float_t)Threshold / 31.25f;
+        wup_ths.wk_ths = (uint8_t)tmp;
+      }
+      else // Out of limit, we set it to the maximum possible value
+      {
+        interrupt_cfg.wake_ths_w = 0;
+        wup_ths.wk_ths = 63;
+      }
+      break;
+
+    case 4:
+      if(Threshold < (uint32_t)(15.625f * 63.0f))
+      {
+        interrupt_cfg.wake_ths_w = 1;
+        tmp = (float_t)Threshold / 15.625f;
+        wup_ths.wk_ths = (uint8_t)tmp;
+      }
+      else if (Threshold < (uint32_t)(62.5f * 63.0f))
+      {
+        interrupt_cfg.wake_ths_w = 0;
+        tmp = (float_t)Threshold / 62.5f;
+        wup_ths.wk_ths = (uint8_t)tmp;
+      }
+      else // Out of limit, we set it to the maximum possible value
+      {
+        interrupt_cfg.wake_ths_w = 0;
+        wup_ths.wk_ths = 63;
+      }
+      break;
+
+    case 8:
+      if(Threshold < (uint32_t)(31.25f * 63.0f))
+      {
+        interrupt_cfg.wake_ths_w = 1;
+        tmp = (float_t)Threshold / 31.25f;
+        wup_ths.wk_ths = (uint8_t)tmp;
+      }
+      else if (Threshold < (uint32_t)(125.0f * 63.0f))
+      {
+        interrupt_cfg.wake_ths_w = 0;
+        tmp = (float_t)Threshold / 125.0f;
+        wup_ths.wk_ths = (uint8_t)tmp;
+      }
+      else // Out of limit, we set it to the maximum possible value
+      {
+        interrupt_cfg.wake_ths_w = 0;
+        wup_ths.wk_ths = 63;
+      }
+      break;
+
+    case 16:
+      if(Threshold < (uint32_t)(62.5f * 63.0f))
+      {
+        interrupt_cfg.wake_ths_w = 1;
+        tmp = (float_t)Threshold / 62.5f;
+        wup_ths.wk_ths = (uint8_t)tmp;
+      }
+      else if (Threshold < (uint32_t)(250.0f * 63.0f))
+      {
+        interrupt_cfg.wake_ths_w = 0;
+        tmp = (float_t)Threshold / 250.0f;
+        wup_ths.wk_ths = (uint8_t)tmp;
+      }
+      else // Out of limit, we set it to the maximum possible value
+      {
+        interrupt_cfg.wake_ths_w = 0;
+        wup_ths.wk_ths = 63;
+      }
+      break;
+
+    default:
+      ret = LIS2DUXS12_ERROR;
+      break;  
+  }
+
+  if(ret != LIS2DUXS12_ERROR)
+  {
+    if(lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_INTERRUPT_CFG, (uint8_t *)&interrupt_cfg, 1) != LIS2DUXS12_OK)
+    {
+      return LIS2DUXS12_ERROR;
+    }
+
+    if(lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_WAKE_UP_THS, (uint8_t *)&wup_ths, 1) != LIS2DUXS12_OK)
+    {
+      return LIS2DUXS12_ERROR;
+    }
+  }
+
+  return ret;
+}
+
+/**
+  * @brief  Set wake up duration
+  * @param  pObj the device pObj
+  * @param  Duration wake up detection duration
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LIS2DUXS12_ACC_Set_Wake_Up_Duration(LIS2DUXS12_Object_t *pObj, uint8_t Duration)
+{
+  lis2duxs12_wake_up_dur_t wup_dur;
+  lis2duxs12_wake_up_dur_ext_t wup_dur_ext;
+
+  /* Check if the duration is one of the possible values */
+  if(Duration != 0 && Duration != 1 && Duration != 2 && Duration != 3 && Duration != 7 && Duration != 11 && Duration != 15)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_WAKE_UP_DUR, (uint8_t *)&wup_dur, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_WAKE_UP_DUR_EXT, (uint8_t *)&wup_dur_ext, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  if (Duration == 0 || Duration == 1 || Duration == 2)
+  {
+    wup_dur_ext.wu_dur_extended = 0;
+    wup_dur.wake_dur = Duration;
+  }
+  else
+  {
+    wup_dur_ext.wu_dur_extended = 1;
+    if (Duration == 3)
+    {
+      wup_dur.wake_dur = 0;
+    }
+    else if (Duration == 7)
+    {
+      wup_dur.wake_dur = 1;
+    }
+    else if (Duration == 11)
+    {
+      wup_dur.wake_dur = 2;
+    }
+    else // Duration = 15
+    {
+      wup_dur.wake_dur = 3;
+    }
+  }
+
+  if (lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_WAKE_UP_DUR, (uint8_t *)&wup_dur, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  if (lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_WAKE_UP_DUR_EXT, (uint8_t *)&wup_dur_ext, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  return LIS2DUXS12_OK;
+}
+
+/**
+  * @brief  Enable 6d orientation
+  * @param  pObj the device pObj
+  * @param  IntPin interrupt pin line to be used
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LIS2DUXS12_ACC_Enable_6D_Orientation(LIS2DUXS12_Object_t *pObj, LIS2DUXS12_SensorIntPin_t IntPin)
+{
+  int32_t ret = LIS2DUXS12_OK;
+  lis2duxs12_md1_cfg_t val1;
+  lis2duxs12_md2_cfg_t val2;
+  lis2duxs12_interrupt_cfg_t interrupt_cfg;
+
+  /* Output Data Rate selection */
+  if (LIS2DUXS12_ACC_SetOutputDataRate(pObj, 400.0f) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  /* Full scale selection */
+  if (LIS2DUXS12_ACC_SetFullScale(pObj, 2) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  /* Threshold selection*/
+  if (LIS2DUXS12_ACC_Set_6D_Orientation_Threshold(pObj, 2) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  /* Enable 6D orientation event on either INT1 or INT2 pin */
+  switch (IntPin)
+  {
+    case LIS2DUXS12_INT1_PIN:
+      if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_MD1_CFG, (uint8_t *)&val1, 1) != LIS2DUXS12_OK)
+      {
+        return LIS2DUXS12_ERROR;
+      }
+
+      val1.int1_6d = PROPERTY_ENABLE;
+
+      if (lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_MD1_CFG, (uint8_t *)&val1, 1) != LIS2DUXS12_OK)
+      {
+        return LIS2DUXS12_ERROR;
+      }
+
+      if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_INTERRUPT_CFG, (uint8_t *)&interrupt_cfg, 1) != LIS2DUXS12_OK)
+      {
+        return LIS2DUXS12_ERROR;
+      }
+
+      interrupt_cfg.interrupts_enable = PROPERTY_ENABLE;
+
+      if (lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_INTERRUPT_CFG, (uint8_t *)&interrupt_cfg, 1) != LIS2DUXS12_OK)
+      {
+        return LIS2DUXS12_ERROR;
+      }
+      break;
+
+    case LIS2DUXS12_INT2_PIN:
+      if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_MD2_CFG, (uint8_t *)&val2, 1) != LIS2DUXS12_OK)
+      {
+        return LIS2DUXS12_ERROR;
+      }
+
+      val2.int2_6d = PROPERTY_ENABLE;
+
+      if (lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_MD2_CFG, (uint8_t *)&val2, 1) != LIS2DUXS12_OK)
+      {
+        return LIS2DUXS12_ERROR;
+      }
+
+      if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_INTERRUPT_CFG, (uint8_t *)&interrupt_cfg, 1) != LIS2DUXS12_OK)
+      {
+        return LIS2DUXS12_ERROR;
+      }
+
+      interrupt_cfg.interrupts_enable = PROPERTY_ENABLE;
+
+      if (lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_INTERRUPT_CFG, (uint8_t *)&interrupt_cfg, 1) != LIS2DUXS12_OK)
+      {
+        return LIS2DUXS12_ERROR;
+      }
+      break;
+
+    default:
+      ret = LIS2DUXS12_ERROR;
+      break;
+  }
+
+  return ret;
+
+}
+
+
+/**
+  * @brief  Disable 6D orientation detection
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LIS2DUXS12_ACC_Disable_6D_Orientation(LIS2DUXS12_Object_t *pObj)
+{
+  lis2duxs12_md1_cfg_t val1;
+  lis2duxs12_md2_cfg_t val2;
+
+  /* Reset threshold */
+  if (LIS2DUXS12_ACC_Set_6D_Orientation_Threshold(pObj, 0) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  /* Disable 6D orientation event on both INT1 and INT2 pins */
+  if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_MD1_CFG, (uint8_t *)&val1, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  val1.int1_6d = PROPERTY_DISABLE;
+
+  if (lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_MD1_CFG, (uint8_t *)&val1, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_MD2_CFG, (uint8_t *)&val2, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  val2.int2_6d = PROPERTY_DISABLE;
+
+  if (lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_MD2_CFG, (uint8_t *)&val2, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  return LIS2DUXS12_OK;
+}
+
+/**
+  * @brief  Set 6D orientation threshold
+  * @param  pObj the device pObj
+  * @param  Threshold free fall detection threshold
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LIS2DUXS12_ACC_Set_6D_Orientation_Threshold(LIS2DUXS12_Object_t *pObj, uint8_t Threshold)
+{
+  lis2duxs12_sixd_t sixd;
+
+  if (Threshold > 3)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_SIXD, (uint8_t *)&sixd, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  sixd.d6d_ths = Threshold;
+
+  if (lis2duxs12_write_reg(&(pObj->Ctx), LIS2DUXS12_SIXD, (uint8_t *)&sixd, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  return LIS2DUXS12_OK;
+
+}
+
+/**
+  * @brief  Get the status of XLow orientation
+  * @param  pObj the device pObj
+  * @param  XLow the status of XLow orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LIS2DUXS12_ACC_Get_6D_Orientation_XL(LIS2DUXS12_Object_t *pObj, uint8_t *XLow)
+{
+  lis2duxs12_sixd_src_t data;
+
+  if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_SIXD_SRC, (uint8_t *)&data, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  *XLow = data.xl;
+
+  return LIS2DUXS12_OK;
+}
+
+/**
+  * @brief  Get the status of XHigh orientation
+  * @param  pObj the device pObj
+  * @param  XHigh the status of XHigh orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LIS2DUXS12_ACC_Get_6D_Orientation_XH(LIS2DUXS12_Object_t *pObj, uint8_t *XHigh)
+{
+  lis2duxs12_sixd_src_t data;
+
+  if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_SIXD_SRC, (uint8_t *)&data, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  *XHigh = data.xh;
+
+  return LIS2DUXS12_OK;
+}
+
+/**
+  * @brief  Get the status of YLow orientation
+  * @param  pObj the device pObj
+  * @param  YLow the status of YLow orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LIS2DUXS12_ACC_Get_6D_Orientation_YL(LIS2DUXS12_Object_t *pObj, uint8_t *YLow)
+{
+  lis2duxs12_sixd_src_t data;
+
+  if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_SIXD_SRC, (uint8_t *)&data, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  *YLow = data.yl;
+
+  return LIS2DUXS12_OK;
+}
+
+/**
+  * @brief  Get the status of YHigh orientation
+  * @param  pObj the device pObj
+  * @param  YHigh the status of YHigh orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LIS2DUXS12_ACC_Get_6D_Orientation_YH(LIS2DUXS12_Object_t *pObj, uint8_t *YHigh)
+{
+  lis2duxs12_sixd_src_t data;
+
+  if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_SIXD_SRC, (uint8_t *)&data, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  *YHigh = data.yh;
+
+  return LIS2DUXS12_OK;
+}
+
+/**
+  * @brief  Get the status of ZLow orientation
+  * @param  pObj the device pObj
+  * @param  ZLow the status of ZLow orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LIS2DUXS12_ACC_Get_6D_Orientation_ZL(LIS2DUXS12_Object_t *pObj, uint8_t *ZLow)
+{
+  lis2duxs12_sixd_src_t data;
+
+  if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_SIXD_SRC, (uint8_t *)&data, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  *ZLow = data.zl;
+
+  return LIS2DUXS12_OK;
+}
+
+/**
+  * @brief  Get the status of ZHigh orientation
+  * @param  pObj the device pObj
+  * @param  ZHigh the status of ZHigh orientation
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LIS2DUXS12_ACC_Get_6D_Orientation_ZH(LIS2DUXS12_Object_t *pObj, uint8_t *ZHigh)
+{
+  lis2duxs12_sixd_src_t data;
+
+  if (lis2duxs12_read_reg(&(pObj->Ctx), LIS2DUXS12_SIXD_SRC, (uint8_t *)&data, 1) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+  *ZHigh = data.zh;
+
+  return LIS2DUXS12_OK;
+}
+
+/**
   * @brief  Wrap Read register component function to Bus IO function
   * @param  Handle the device handler
   * @param  Reg the register address

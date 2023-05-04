@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.5.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.6.0 instances.
   ******************************************************************************
   * @attention
   *
@@ -492,4 +492,3 @@ static void floatToInt(float in, displayFloatToInt_t *out_value, int32_t dec_pre
 #ifdef __cplusplus
 }
 #endif
-

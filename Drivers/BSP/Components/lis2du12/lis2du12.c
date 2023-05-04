@@ -941,6 +941,36 @@ static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t 
   return pObj->IO.WriteReg(pObj->IO.Address, Reg, pData, Length);
 }
 
+
+
+/**
+  * @brief  Set the LIS2DU12 accelerometer filter mode
+  * @param  pObj the device pObj
+  * @param  LowHighPassFlag 0/1 for setting low-pass/high-pass filter mode
+  * @param  FilterMode Value of the filter Mode
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LIS2DU12_ACC_Set_Filter_Mode(LIS2DU12_Object_t *pObj, uint8_t FilterMode)
+{
+  lis2du12_md_t mode;
+
+  if (lis2du12_mode_get(&(pObj->Ctx), &mode) != LIS2DU12_OK)
+  {
+    return LIS2DU12_ERROR;
+  }
+  mode.bw = (FilterMode == 0) ? LIS2DU12_ODR_div_2
+             : (FilterMode == 1) ? LIS2DU12_ODR_div_4
+             : (FilterMode == 2) ? LIS2DU12_ODR_div_8
+             :                     LIS2DU12_ODR_div_16;
+
+  if (lis2du12_mode_set(&(pObj->Ctx), &mode) != LIS2DU12_OK)
+  {
+    return LIS2DU12_ERROR;
+  }
+  return LIS2DU12_OK;
+}
+
+
 /**
   * @}
   */

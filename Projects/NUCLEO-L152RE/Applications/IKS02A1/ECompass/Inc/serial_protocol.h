@@ -36,8 +36,8 @@
 
 /* Exported types ------------------------------------------------------------*/
 /**
- * @brief  Serial message structure definition
- */
+  * @brief  Serial message structure definition
+  */
 typedef struct
 {
   uint32_t Len;
@@ -61,4 +61,3 @@ void Serialize_s32(uint8_t *Dest, int32_t Source, uint32_t Len);
 void FloatToArray(uint8_t *Dest, float Data);
 
 #endif /* SERIAL_PROTOCOL_H */
-

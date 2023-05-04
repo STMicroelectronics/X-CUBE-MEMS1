@@ -341,7 +341,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F401xE,USE_HAL_DRIVER,USE_STM32F4XX_NUCLEO</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Inc;..\..\..\..\..\..\Drivers\BSP\Components\Common;..\..\..\..\..\..\Drivers\BSP\Components\ism330dhcx;..\..\..\..\..\..\Drivers\BSP\STM32F4xx-Nucleo;..\..\..\..\..\..\Drivers\BSP\IKS02A1;..\..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include;..\..\..\..\..\..\Drivers\CMSIS\Include;..\..\..\..\..\..\Drivers\STM32F4xx_HAL_Driver\Inc;..\..\..\..\..\..\Drivers\BSP\Components\iis2dlpc;..\..\..\..\..\..\Drivers\BSP\Components\iis2iclx;..\..\..\..\..\..\Drivers\BSP\Components\iis2mdc;..\..\..\..\..\..\Drivers\BSP\Components\asm330lhhx</IncludePath>
+              <IncludePath>..\Inc;..\..\..\..\..\..\Drivers\BSP\Components\Common;..\..\..\..\..\..\Drivers\BSP\Components\ism330dhcx;..\..\..\..\..\..\Drivers\BSP\STM32F4xx-Nucleo;..\..\..\..\..\..\Drivers\BSP\IKS02A1;..\..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include;..\..\..\..\..\..\Drivers\CMSIS\Include;..\..\..\..\..\..\Drivers\STM32F4xx_HAL_Driver\Inc;..\..\..\..\..\..\Drivers\BSP\Components\iis2dlpc;..\..\..\..\..\..\Drivers\BSP\Components\iis2iclx;..\..\..\..\..\..\Drivers\BSP\Components\iis2mdc;..\..\..\..\..\..\Drivers\BSP\Components\asm330lhhx;..\..\..\..\..\..\Drivers\BSP\Components\sht40ad1b</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -435,6 +435,16 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\asm330lhhx\asm330lhhx_reg.c</FilePath>
             </File>
+            <File>
+              <FileName>sht40ad1b.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\sht40ad1b\sht40ad1b.c</FilePath>
+            </File>
+            <File>
+              <FileName>sht40ad1b_reg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\sht40ad1b\sht40ad1b_reg.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -459,6 +469,16 @@
               <FileName>iks02a1_motion_sensors_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\Drivers\BSP\IKS02A1\iks02a1_motion_sensors_ex.c</FilePath>
+            </File>
+            <File>
+              <FileName>iks02a1_env_sensors.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\IKS02A1\iks02a1_env_sensors.c</FilePath>
+            </File>
+            <File>
+              <FileName>iks02a1_env_sensors_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\IKS02A1\iks02a1_env_sensors_ex.c</FilePath>
             </File>
           </Files>
         </Group>

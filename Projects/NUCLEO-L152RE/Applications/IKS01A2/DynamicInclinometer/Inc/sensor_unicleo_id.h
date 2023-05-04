@@ -65,6 +65,7 @@ extern "C" {
 #define LSM6DSV16B_UNICLEO_ID       36
 #define LIS2DUX12_UNICLEO_ID        37
 #define LIS2DUXS12_UNICLEO_ID       38
+#define LSM6DSV32X_UNICLEO_ID       39
 
 #define LIS3MDL_UNICLEO_ID          1
 #define LSM303AGR_UNICLEO_ID_MAG    2
@@ -90,6 +91,7 @@ extern "C" {
 #define STTS22H_UNICLEO_ID          3
 #define LIS2DTW12_UNICLEO_ID_TEMP   4
 #define SHT40AD1B_UNICLEO_ID        5
+#define STHS34PF80_UNICLEO_ID       6
 
 #ifdef __cplusplus
 }
