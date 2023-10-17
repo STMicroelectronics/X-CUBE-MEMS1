@@ -1,0 +1,34 @@
+include:
+  - local: python-wrapper/.gitlab-ci.yml
+
+variables:
+  RASPI_EXAMPLE_FOLDER: examples/raspberry-pi
+  RASPI_OUTPUT_FOLDER: raspi-gas-index-algorithm-example
+
+stages:
+  - prepare
+  - validate
+  - build
+  - deploy
+
+c_syntax_check:
+  stage: validate
+  image:
+      name: registry.gitlab.sensirion.lokal/mso-sw/drivers/docker-driver-generator:0.1.0
+  tags: [linux, docker]
+  script:
+    - find . -type f -iregex ".*\.\(c\|h\|cpp\|ino\)" -exec clang-format-6.0 -i -style=file {} \; && git diff --exit-code
+
+raspberry-pi-example:
+  stage: build
+  image:
+      name: sensirion/embedded-ci:2.4.0
+  tags: [linux, docker]
+  before_script:
+  script:
+    - cd ${RASPI_EXAMPLE_FOLDER} && make download
+    - cp -r ${CI_PROJECT_DIR}/${RASPI_EXAMPLE_FOLDER} ${CI_PROJECT_DIR}/${RASPI_OUTPUT_FOLDER}
+  artifacts:
+    name: Raspberry-Pi-Gas-Index-Algorithm-Example
+    paths:
+      - $RASPI_OUTPUT_FOLDER

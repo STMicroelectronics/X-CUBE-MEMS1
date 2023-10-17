@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    bsp_ip_conf.h
-  * @author  MEMS Application Team
+  * @author  MEMS Software Solutions Team
   * @brief   BSP IP configuration file
   ******************************************************************************
   * @attention

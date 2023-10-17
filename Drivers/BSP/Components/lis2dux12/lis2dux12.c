@@ -101,6 +101,7 @@ int32_t LIS2DUX12_RegisterBusIO(LIS2DUX12_Object_t *pObj, LIS2DUX12_IO_t *pIO)
     pObj->IO.WriteReg  = pIO->WriteReg;
     pObj->IO.ReadReg   = pIO->ReadReg;
     pObj->IO.GetTick   = pIO->GetTick;
+    pObj->IO.Delay     = pIO->Delay;
 
     pObj->Ctx.read_reg  = ReadRegWrap;
     pObj->Ctx.write_reg = WriteRegWrap;
@@ -122,10 +123,37 @@ int32_t LIS2DUX12_RegisterBusIO(LIS2DUX12_Object_t *pObj, LIS2DUX12_IO_t *pIO)
         /* Enable the SPI 3-Wires support only the first time */
         if (pObj->is_initialized == 0U)
         {
+          /* Exit from deep power down only the first time in SPI mode */
+          if (LIS2DUX12_ExitDeepPowerDownSPI(pObj) != LIS2DUX12_OK)
+          {
+            ret = LIS2DUX12_ERROR;
+          }
           /* Enable SPI 3-Wires on the component */
           uint8_t data = 0x50;
 
           if (LIS2DUX12_Write_Reg(pObj, LIS2DUX12_CTRL1, data) != LIS2DUX12_OK)
+          {
+            ret = LIS2DUX12_ERROR;
+          }
+        }
+      }
+      else if (pObj->IO.BusType == LIS2DUX12_SPI_4WIRES_BUS)
+      {
+        /* Exit from deep power down only the first time in SPI mode */
+        if (pObj->is_initialized == 0U)
+        {
+          if (LIS2DUX12_ExitDeepPowerDownSPI(pObj) != LIS2DUX12_OK)
+          {
+            ret = LIS2DUX12_ERROR;
+          }
+        }
+      }
+      else if (pObj->IO.BusType == LIS2DUX12_I2C_BUS)
+      {
+        /* Exit from deep power down only the first time in I2C mode */
+        if (pObj->is_initialized == 0U)
+        {
+          if (LIS2DUX12_ExitDeepPowerDownI2C(pObj) != LIS2DUX12_OK)
           {
             ret = LIS2DUX12_ERROR;
           }
@@ -146,15 +174,18 @@ int32_t LIS2DUX12_Init(LIS2DUX12_Object_t *pObj)
 {
   lis2dux12_i3c_cfg_t val;
 
-  /* Disable I3C */
-  if (lis2dux12_i3c_configure_get(&(pObj->Ctx), &val) != LIS2DUX12_OK)
+  if(pObj->IO.BusType != LIS2DUX12_I3C_BUS)
   {
-    return LIS2DUX12_ERROR;
-  }
-  val.asf_on = PROPERTY_ENABLE;
-  if (lis2dux12_i3c_configure_set(&(pObj->Ctx), &val) != LIS2DUX12_OK)
-  {
-    return LIS2DUX12_ERROR;
+    /* Disable I3C */
+    if (lis2dux12_i3c_configure_get(&(pObj->Ctx), &val) != LIS2DUX12_OK)
+    {
+      return LIS2DUX12_ERROR;
+    }
+    val.asf_on = PROPERTY_ENABLE;
+    if (lis2dux12_i3c_configure_set(&(pObj->Ctx), &val) != LIS2DUX12_OK)
+    {
+      return LIS2DUX12_ERROR;
+    }
   }
 
   /* Enable register address automatically incremented during a multiple byte
@@ -223,16 +254,32 @@ int32_t LIS2DUX12_DeInit(LIS2DUX12_Object_t *pObj)
 }
 
 /**
-  * @brief  Disable I3C
+  * @brief  Exit from deep power down in I2C
   * @param  pObj the device pObj
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LIS2DUX12_DisableI3C(LIS2DUX12_Object_t *pObj)
+int32_t LIS2DUX12_ExitDeepPowerDownI2C(LIS2DUX12_Object_t *pObj)
 {
   uint8_t val;
 
-  /* Perform dummy read in order to disable I3C and enable I2C */
+  /* Perform dummy read in order to exit from deep power down in I2C mode*/
   (void)lis2dux12_device_id_get(&(pObj->Ctx), &val);
+
+  /* Wait for 25 ms based on datasheet */
+  pObj->Ctx.mdelay(25);
+
+  return LIS2DUX12_OK;
+}
+
+/**
+  * @brief  Exit from deep power down in SPI
+  * @param  pObj the device pObj
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LIS2DUX12_ExitDeepPowerDownSPI(LIS2DUX12_Object_t *pObj)
+{
+  /* Write IF_WAKE_UP register to exit from deep power down in SPI mode*/
+  (void)lis2dux12_exit_deep_power_down(&(pObj->Ctx));
 
   /* Wait for 25 ms based on datasheet */
   pObj->Ctx.mdelay(25);
@@ -315,10 +362,27 @@ int32_t LIS2DUX12_ACC_Enable(LIS2DUX12_Object_t *pObj)
   */
 int32_t LIS2DUX12_ACC_Disable(LIS2DUX12_Object_t *pObj)
 {
+  float_t Odr;
   /* Check if the component is already disabled */
   if (pObj->acc_is_enabled == 0U)
   {
     return LIS2DUX12_OK;
+  }
+
+  if (LIS2DUX12_ACC_GetOutputDataRate(pObj, &Odr) != LIS2DUX12_OK)
+  {
+    return LIS2DUX12_ERROR;
+  }
+
+  if (Odr == 800.0f)
+  {
+    if (LIS2DUX12_ACC_SetOutputDataRate(pObj, 400.0f) != LIS2DUX12_OK)
+    {
+      return LIS2DUX12_ERROR;
+    }
+
+    /* Wait for 3 ms based on datasheet */
+    pObj->Ctx.mdelay(3);
   }
 
   /* Output data rate selection - power down. */
@@ -409,51 +473,51 @@ int32_t LIS2DUX12_ACC_GetOutputDataRate(LIS2DUX12_Object_t *pObj, float_t *Odr)
       *Odr = 0.0f;
       break;
 
-    case LIS2DUX12_1Hz5_ULP:
-      *Odr = 1.5f;
+    case LIS2DUX12_1Hz6_ULP:
+      *Odr = 1.6f;
       break;
 
     case LIS2DUX12_3Hz_ULP:
       *Odr = 3.0f;
       break;
 
-    case LIS2DUX12_6Hz:
+    case LIS2DUX12_6Hz_LP:
     case LIS2DUX12_6Hz_HP:
       *Odr = 6.0f;
       break;
 
-    case LIS2DUX12_12Hz5:
+    case LIS2DUX12_12Hz5_LP:
     case LIS2DUX12_12Hz5_HP:
       *Odr = 12.5f;
       break;
 
     case LIS2DUX12_25Hz_ULP:
-    case LIS2DUX12_25Hz:
+    case LIS2DUX12_25Hz_LP:
     case LIS2DUX12_25Hz_HP:
       *Odr = 25.0f;
       break;
 
-    case LIS2DUX12_50Hz:
+    case LIS2DUX12_50Hz_LP:
     case LIS2DUX12_50Hz_HP:
       *Odr = 50.0f;
       break;
 
-    case LIS2DUX12_100Hz:
+    case LIS2DUX12_100Hz_LP:
     case LIS2DUX12_100Hz_HP:
       *Odr = 100.0f;
       break;
 
-    case LIS2DUX12_200Hz:
+    case LIS2DUX12_200Hz_LP:
     case LIS2DUX12_200Hz_HP:
       *Odr = 200.0f;
       break;
 
-    case LIS2DUX12_400Hz:
+    case LIS2DUX12_400Hz_LP:
     case LIS2DUX12_400Hz_HP:
       *Odr = 400.0f;
       break;
 
-    case LIS2DUX12_800Hz:
+    case LIS2DUX12_800Hz_LP:
     case LIS2DUX12_800Hz_HP:
       *Odr = 800.0f;
       break;
@@ -728,20 +792,20 @@ static int32_t LIS2DUX12_ACC_SetOutputDataRate_When_Enabled(LIS2DUX12_Object_t *
 
   if (Power == LIS2DUX12_ULTRA_LOW_POWER)
   {
-    mode.odr = (Odr <= 1.5f) ? LIS2DUX12_1Hz5_ULP
+    mode.odr = (Odr <= 1.6f) ? LIS2DUX12_1Hz6_ULP
                : (Odr <= 3.0f) ? LIS2DUX12_3Hz_ULP
                :                 LIS2DUX12_25Hz_ULP;
   }
   else if (Power == LIS2DUX12_LOW_POWER)
   {
-    mode.odr = (Odr <=   6.0f) ? LIS2DUX12_6Hz
-               : (Odr <=  12.5f) ? LIS2DUX12_12Hz5
-               : (Odr <=  25.0f) ? LIS2DUX12_25Hz
-               : (Odr <=  50.0f) ? LIS2DUX12_50Hz
-               : (Odr <= 100.0f) ? LIS2DUX12_100Hz
-               : (Odr <= 200.0f) ? LIS2DUX12_200Hz
-               : (Odr <= 400.0f) ? LIS2DUX12_400Hz
-               :                   LIS2DUX12_800Hz;
+    mode.odr = (Odr <=   6.0f) ? LIS2DUX12_6Hz_LP
+               : (Odr <=  12.5f) ? LIS2DUX12_12Hz5_LP
+               : (Odr <=  25.0f) ? LIS2DUX12_25Hz_LP
+               : (Odr <=  50.0f) ? LIS2DUX12_50Hz_LP
+               : (Odr <= 100.0f) ? LIS2DUX12_100Hz_LP
+               : (Odr <= 200.0f) ? LIS2DUX12_200Hz_LP
+               : (Odr <= 400.0f) ? LIS2DUX12_400Hz_LP
+               :                   LIS2DUX12_800Hz_LP;
   }
   else if (Power == LIS2DUX12_HIGH_PERFORMANCE)
   {
@@ -765,24 +829,24 @@ static int32_t LIS2DUX12_ACC_SetOutputDataRate_When_Enabled(LIS2DUX12_Object_t *
   }
 
   /* Store the current Odr value */
-  pObj->acc_odr = (mode.odr == LIS2DUX12_1Hz5_ULP) ?   1.5f
+  pObj->acc_odr = (mode.odr == LIS2DUX12_1Hz6_ULP) ?   1.6f
                   : (mode.odr == LIS2DUX12_3Hz_ULP)  ?   3.0f
-                  : (mode.odr == LIS2DUX12_6Hz)      ?   6.0f
+                  : (mode.odr == LIS2DUX12_6Hz_LP)      ?   6.0f
                   : (mode.odr == LIS2DUX12_6Hz_HP)   ?   6.0f
-                  : (mode.odr == LIS2DUX12_12Hz5)    ?  12.5f
+                  : (mode.odr == LIS2DUX12_12Hz5_LP)    ?  12.5f
                   : (mode.odr == LIS2DUX12_12Hz5_HP) ?  12.5f
                   : (mode.odr == LIS2DUX12_25Hz_ULP) ?  25.0f
-                  : (mode.odr == LIS2DUX12_25Hz)     ?  25.0f
+                  : (mode.odr == LIS2DUX12_25Hz_LP)     ?  25.0f
                   : (mode.odr == LIS2DUX12_25Hz_HP)  ?  25.0f
-                  : (mode.odr == LIS2DUX12_50Hz)     ?  50.0f
+                  : (mode.odr == LIS2DUX12_50Hz_LP)     ?  50.0f
                   : (mode.odr == LIS2DUX12_50Hz_HP)  ?  50.0f
-                  : (mode.odr == LIS2DUX12_100Hz)    ? 100.0f
+                  : (mode.odr == LIS2DUX12_100Hz_LP)    ? 100.0f
                   : (mode.odr == LIS2DUX12_100Hz_HP) ? 100.0f
-                  : (mode.odr == LIS2DUX12_200Hz)    ? 200.0f
+                  : (mode.odr == LIS2DUX12_200Hz_LP)    ? 200.0f
                   : (mode.odr == LIS2DUX12_200Hz_HP) ? 200.0f
-                  : (mode.odr == LIS2DUX12_400Hz)    ? 400.0f
+                  : (mode.odr == LIS2DUX12_400Hz_LP)    ? 400.0f
                   : (mode.odr == LIS2DUX12_400Hz_HP) ? 400.0f
-                  : (mode.odr == LIS2DUX12_800Hz)    ? 800.0f
+                  : (mode.odr == LIS2DUX12_800Hz_LP)    ? 800.0f
                   : (mode.odr == LIS2DUX12_800Hz_HP) ? 800.0f
                   :                                     -1.0f;
 

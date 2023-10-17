@@ -246,6 +246,16 @@ typedef struct
 #endif /* DRV_BYTE_ORDER */
 } lsm6dsv_if_cfg_t;
 
+#define LSM6DSV_ODR_TRIG_CFG                 0x6U
+typedef struct
+{
+#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
+  uint8_t odr_trig_nodr        : 8;
+#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
+  uint8_t odr_trig_nodr        : 8;
+#endif /* DRV_BYTE_ORDER */
+} lsm6dsv_odr_trig_cfg_t;
+
 #define LSM6DSV_FIFO_CTRL1                   0x7U
 typedef struct
 {
@@ -1040,6 +1050,28 @@ typedef struct
 #endif /* DRV_BYTE_ORDER */
 } lsm6dsv_d6d_src_t;
 
+#define LSM6DSV_STATUS_MASTER_MAINPAGE      0x48U
+typedef struct
+{
+#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
+  uint8_t sens_hub_endop       : 1;
+  uint8_t not_used0            : 2;
+  uint8_t slave0_nack          : 1;
+  uint8_t slave1_nack          : 1;
+  uint8_t slave2_nack          : 1;
+  uint8_t slave3_nack          : 1;
+  uint8_t wr_once_done         : 1;
+#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
+  uint8_t wr_once_done         : 1;
+  uint8_t slave3_nack          : 1;
+  uint8_t slave2_nack          : 1;
+  uint8_t slave1_nack          : 1;
+  uint8_t slave0_nack          : 1;
+  uint8_t not_used0            : 2;
+  uint8_t sens_hub_endop       : 1;
+#endif /* DRV_BYTE_ORDER */
+} lsm6dsv_status_master_mainpage_t;
+
 #define LSM6DSV_EMB_FUNC_STATUS_MAINPAGE    0x49U
 typedef struct
 {
@@ -1331,6 +1363,18 @@ typedef struct
   uint8_t int2_timestamp       : 1;
 #endif /* DRV_BYTE_ORDER */
 } lsm6dsv_md2_cfg_t;
+
+#define LSM6DSV_HAODR_CFG                  0x62U
+typedef struct
+{
+#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
+  uint8_t haodr_sel            : 2;
+  uint8_t not_used0            : 6;
+#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
+  uint8_t not_used0            : 6;
+  uint8_t haodr_sel            : 2;
+#endif /* DRV_BYTE_ORDER */
+} lsm6dsv_haodr_cfg_t;
 
 #define LSM6DSV_EMB_FUNC_CFG               0x63U
 typedef struct
@@ -1900,7 +1944,9 @@ typedef struct
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t not_used0            : 3;
+  uint8_t not_used0            : 1;
+  uint8_t sflp_game_en         : 1;
+  uint8_t not_used2            : 1;
   uint8_t pedo_en              : 1;
   uint8_t tilt_en              : 1;
   uint8_t sign_motion_en       : 1;
@@ -1910,7 +1956,9 @@ typedef struct
   uint8_t sign_motion_en       : 1;
   uint8_t tilt_en              : 1;
   uint8_t pedo_en              : 1;
-  uint8_t not_used0            : 3;
+  uint8_t not_used2            : 1;
+  uint8_t sflp_game_en         : 1;
+  uint8_t not_used0            : 1;
 #endif /* DRV_BYTE_ORDER */
 } lsm6dsv_emb_func_en_a_t;
 
@@ -2070,7 +2118,6 @@ typedef struct
   uint8_t is_step_det          : 1;
   uint8_t not_used0            : 3;
 #endif /* DRV_BYTE_ORDER */
-
 } lsm6dsv_emb_func_status_t;
 
 #define LSM6DSV_FSM_STATUS                 0x13U
@@ -2095,7 +2142,6 @@ typedef struct
   uint8_t is_fsm2              : 1;
   uint8_t is_fsm1              : 1;
 #endif /* DRV_BYTE_ORDER */
-
 } lsm6dsv_fsm_status_t;
 
 #define LSM6DSV_PAGE_RW                    0x17U
@@ -2118,13 +2164,21 @@ typedef struct
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t not_used0            : 6;
+  uint8_t not_used0            : 1;
+  uint8_t sflp_game_fifo_en    : 1;
+  uint8_t not_used1            : 2;
+  uint8_t sflp_gravity_fifo_en : 1;
+  uint8_t sflp_gbias_fifo_en   : 1;
   uint8_t step_counter_fifo_en : 1;
-  uint8_t not_used1            : 1;
+  uint8_t not_used2            : 1;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t not_used1            : 1;
+  uint8_t not_used2            : 1;
   uint8_t step_counter_fifo_en : 1;
-  uint8_t not_used0            : 6;
+  uint8_t sflp_gbias_fifo_en   : 1;
+  uint8_t sflp_gravity_fifo_en : 1;
+  uint8_t not_used1            : 2;
+  uint8_t sflp_game_fifo_en    : 1;
+  uint8_t not_used0            : 1;
 #endif /* DRV_BYTE_ORDER */
 } lsm6dsv_emb_func_fifo_en_a_t;
 
@@ -2374,6 +2428,20 @@ typedef struct
 #endif /* DRV_BYTE_ORDER */
 } lsm6dsv_fsm_outs8_t;
 
+#define LSM6DSV_SFLP_ODR                   0x5EU
+typedef struct
+{
+#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
+  uint8_t not_used0            : 3;
+  uint8_t sflp_game_odr        : 3;
+  uint8_t not_used1            : 2;
+#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
+  uint8_t not_used1            : 2;
+  uint8_t sflp_game_odr        : 3;
+  uint8_t not_used0            : 3;
+#endif /* DRV_BYTE_ORDER */
+} lsm6dsv_sflp_odr_t;
+
 #define LSM6DSV_FSM_ODR                    0x5FU
 typedef struct
 {
@@ -2386,7 +2454,6 @@ typedef struct
   uint8_t fsm_odr              : 3;
   uint8_t not_used0            : 3;
 #endif /* DRV_BYTE_ORDER */
-
 } lsm6dsv_fsm_odr_t;
 
 #define LSM6DSV_STEP_COUNTER_L             0x62U
@@ -2435,7 +2502,9 @@ typedef struct
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t not_used0            : 3;
+  uint8_t not_used0            : 1;
+  uint8_t sflp_game_init       : 1;
+  uint8_t not_used2            : 1;
   uint8_t step_det_init        : 1;
   uint8_t tilt_init            : 1;
   uint8_t sig_mot_init         : 1;
@@ -2445,7 +2514,9 @@ typedef struct
   uint8_t sig_mot_init         : 1;
   uint8_t tilt_init            : 1;
   uint8_t step_det_init        : 1;
-  uint8_t not_used0            : 3;
+  uint8_t not_used2            : 1;
+  uint8_t sflp_game_init       : 1;
+  uint8_t not_used0            : 1;
 #endif /* DRV_BYTE_ORDER */
 } lsm6dsv_emb_func_init_a_t;
 
@@ -2475,6 +2546,66 @@ typedef struct
   *
   */
 #define LSM6DSV_EMB_ADV_PG_0              0x000U
+
+#define LSM6DSV_SFLP_GAME_GBIASX_L        0x6EU
+typedef struct
+{
+#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
+  uint8_t gbiasx               : 8;
+#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
+  uint8_t gbiasx               : 8;
+#endif /* DRV_BYTE_ORDER */
+} lsm6dsv_sflp_game_gbiasx_l_t;
+
+#define LSM6DSV_SFLP_GAME_GBIASX_H        0x6FU
+typedef struct
+{
+#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
+  uint8_t gbiasx               : 8;
+#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
+  uint8_t gbiasx               : 8;
+#endif /* DRV_BYTE_ORDER */
+} lsm6dsv_sflp_game_gbiasx_h_t;
+
+#define LSM6DSV_SFLP_GAME_GBIASY_L        0x70U
+typedef struct
+{
+#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
+  uint8_t gbiasy               : 8;
+#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
+  uint8_t gbiasy               : 8;
+#endif /* DRV_BYTE_ORDER */
+} lsm6dsv_sflp_game_gbiasy_l_t;
+
+#define LSM6DSV_SFLP_GAME_GBIASY_H        0x71U
+typedef struct
+{
+#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
+  uint8_t gbiasy               : 8;
+#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
+  uint8_t gbiasy               : 8;
+#endif /* DRV_BYTE_ORDER */
+} lsm6dsv_sflp_game_gbiasy_h_t;
+
+#define LSM6DSV_SFLP_GAME_GBIASZ_L        0x72U
+typedef struct
+{
+#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
+  uint8_t gbiasz               : 8;
+#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
+  uint8_t gbiasz               : 8;
+#endif /* DRV_BYTE_ORDER */
+} lsm6dsv_sflp_game_gbiasz_l_t;
+
+#define LSM6DSV_SFLP_GAME_GBIASZ_H        0x73U
+typedef struct
+{
+#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
+  uint8_t gbiasz               : 8;
+#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
+  uint8_t gbiasz               : 8;
+#endif /* DRV_BYTE_ORDER */
+} lsm6dsv_sflp_game_gbiasz_h_t;
 
 #define LSM6DSV_FSM_EXT_SENSITIVITY_L     0xBAU
 typedef struct
@@ -3279,11 +3410,24 @@ typedef struct
   *
   */
 
+/**
+  * @defgroup LSM6DSV_Register_Union
+  * @brief    This union group all the registers having a bit-field
+  *           description.
+  *           This union is useful but it's not needed by the driver.
+  *
+  *           REMOVING this union you are compliant with:
+  *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
+  *
+  * @{
+  *
+  */
 typedef union
 {
   lsm6dsv_func_cfg_access_t          func_cfg_access;
   lsm6dsv_pin_ctrl_t                 pin_ctrl;
   lsm6dsv_if_cfg_t                   if_cfg;
+  lsm6dsv_odr_trig_cfg_t             odr_trig_cfg;
   lsm6dsv_fifo_ctrl1_t               fifo_ctrl1;
   lsm6dsv_fifo_ctrl2_t               fifo_ctrl2;
   lsm6dsv_fifo_ctrl3_t               fifo_ctrl3;
@@ -3342,6 +3486,7 @@ typedef union
   lsm6dsv_wake_up_src_t              wake_up_src;
   lsm6dsv_tap_src_t                  tap_src;
   lsm6dsv_d6d_src_t                  d6d_src;
+  lsm6dsv_status_master_mainpage_t   status_master_mainpage;
   lsm6dsv_emb_func_status_mainpage_t emb_func_status_mainpage;
   lsm6dsv_fsm_status_mainpage_t      fsm_status_mainpage;
   lsm6dsv_internal_freq_t            internal_freq;
@@ -3528,6 +3673,7 @@ int32_t lsm6dsv_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
                           uint8_t *data,
                           uint16_t len);
 
+float_t lsm6dsv_from_sflp_to_mg(int16_t lsb);
 float_t lsm6dsv_from_fs2_to_mg(int16_t lsb);
 float_t lsm6dsv_from_fs4_to_mg(int16_t lsb);
 float_t lsm6dsv_from_fs8_to_mg(int16_t lsb);
@@ -3594,6 +3740,26 @@ typedef enum
   LSM6DSV_ODR_AT_1920Hz        = 0xA,
   LSM6DSV_ODR_AT_3840Hz        = 0xB,
   LSM6DSV_ODR_AT_7680Hz        = 0xC,
+  LSM6DSV_ODR_HA01_AT_15Hz625  = 0x13,
+  LSM6DSV_ODR_HA01_AT_31Hz25   = 0x14,
+  LSM6DSV_ODR_HA01_AT_62Hz5    = 0x15,
+  LSM6DSV_ODR_HA01_AT_125Hz    = 0x16,
+  LSM6DSV_ODR_HA01_AT_250Hz    = 0x17,
+  LSM6DSV_ODR_HA01_AT_500Hz    = 0x18,
+  LSM6DSV_ODR_HA01_AT_1000Hz   = 0x19,
+  LSM6DSV_ODR_HA01_AT_2000Hz   = 0x1A,
+  LSM6DSV_ODR_HA01_AT_4000Hz   = 0x1B,
+  LSM6DSV_ODR_HA01_AT_8000Hz   = 0x1C,
+  LSM6DSV_ODR_HA02_AT_12Hz5    = 0x23,
+  LSM6DSV_ODR_HA02_AT_25Hz     = 0x24,
+  LSM6DSV_ODR_HA02_AT_50Hz     = 0x25,
+  LSM6DSV_ODR_HA02_AT_100Hz    = 0x26,
+  LSM6DSV_ODR_HA02_AT_200Hz    = 0x27,
+  LSM6DSV_ODR_HA02_AT_400Hz    = 0x28,
+  LSM6DSV_ODR_HA02_AT_800Hz    = 0x29,
+  LSM6DSV_ODR_HA02_AT_1600Hz   = 0x2A,
+  LSM6DSV_ODR_HA02_AT_3200Hz   = 0x2B,
+  LSM6DSV_ODR_HA02_AT_6400Hz   = 0x2C,
 } lsm6dsv_data_rate_t;
 int32_t lsm6dsv_xl_data_rate_set(stmdev_ctx_t *ctx,
                                  lsm6dsv_data_rate_t val);
@@ -3604,10 +3770,12 @@ int32_t lsm6dsv_gy_data_rate_set(stmdev_ctx_t *ctx,
 int32_t lsm6dsv_gy_data_rate_get(stmdev_ctx_t *ctx,
                                  lsm6dsv_data_rate_t *val);
 
+
 typedef enum
 {
   LSM6DSV_XL_HIGH_PERFORMANCE_MD   = 0x0,
   LSM6DSV_XL_HIGH_ACCURACY_ODR_MD = 0x1,
+  LSM6DSV_XL_ODR_TRIGGERED_MD      = 0x3,
   LSM6DSV_XL_LOW_POWER_2_AVG_MD    = 0x4,
   LSM6DSV_XL_LOW_POWER_4_AVG_MD    = 0x5,
   LSM6DSV_XL_LOW_POWER_8_AVG_MD    = 0x6,
@@ -3631,6 +3799,9 @@ int32_t lsm6dsv_auto_increment_get(stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t lsm6dsv_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsv_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val);
+
+int32_t lsm6dsv_odr_trig_cfg_set(stmdev_ctx_t *ctx, uint8_t val);
+int32_t lsm6dsv_odr_trig_cfg_get(stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
@@ -4075,6 +4246,9 @@ typedef struct
     LSM6DSV_SENSORHUB_SLAVE2_TAG          = 0x10,
     LSM6DSV_SENSORHUB_SLAVE3_TAG          = 0x11,
     LSM6DSV_STEP_COUNTER_TAG              = 0x12,
+    LSM6DSV_SFLP_GAME_ROTATION_VECTOR_TAG = 0x13,
+    LSM6DSV_SFLP_GYROSCOPE_BIAS_TAG       = 0x16,
+    LSM6DSV_SFLP_GRAVITY_VECTOR_TAG       = 0x17,
     LSM6DSV_SENSORHUB_NACK_TAG            = 0x19,
     LSM6DSV_XL_DUAL_CORE                  = 0x1D,
     LSM6DSV_GY_ENHANCED_EIS               = 0x1E,
@@ -4088,17 +4262,19 @@ int32_t lsm6dsv_fifo_out_raw_get(stmdev_ctx_t *ctx,
 int32_t lsm6dsv_fifo_stpcnt_batch_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsv_fifo_stpcnt_batch_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lsm6dsv_fifo_batch_sh_slave_0_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsv_fifo_batch_sh_slave_0_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dsv_fifo_sh_batch_slave_set(stmdev_ctx_t *ctx, uint8_t idx, uint8_t val);
+int32_t lsm6dsv_fifo_sh_batch_slave_get(stmdev_ctx_t *ctx, uint8_t idx, uint8_t *val);
 
-int32_t lsm6dsv_fifo_batch_sh_slave_1_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsv_fifo_batch_sh_slave_1_get(stmdev_ctx_t *ctx, uint8_t *val);
-
-int32_t lsm6dsv_fifo_batch_sh_slave_2_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsv_fifo_batch_sh_slave_2_get(stmdev_ctx_t *ctx, uint8_t *val);
-
-int32_t lsm6dsv_fifo_batch_sh_slave_3_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsv_fifo_batch_sh_slave_3_get(stmdev_ctx_t *ctx, uint8_t *val);
+typedef struct
+{
+  uint8_t game_rotation        : 1;
+  uint8_t gravity              : 1;
+  uint8_t gbias                : 1;
+} lsm6dsv_fifo_sflp_raw_t;
+int32_t lsm6dsv_fifo_sflp_batch_set(stmdev_ctx_t *ctx,
+                                       lsm6dsv_fifo_sflp_raw_t val);
+int32_t lsm6dsv_fifo_sflp_batch_get(stmdev_ctx_t *ctx,
+                                       lsm6dsv_fifo_sflp_raw_t *val);
 
 typedef enum
 {
@@ -4516,29 +4692,7 @@ int32_t lsm6dsv_sh_master_interface_pull_up_set(stmdev_ctx_t *ctx,
 int32_t lsm6dsv_sh_master_interface_pull_up_get(stmdev_ctx_t *ctx,
                                                 uint8_t *val);
 
-typedef struct
-{
-  lsm6dsv_sensor_hub_1_t   sh_byte_1;
-  lsm6dsv_sensor_hub_2_t   sh_byte_2;
-  lsm6dsv_sensor_hub_3_t   sh_byte_3;
-  lsm6dsv_sensor_hub_4_t   sh_byte_4;
-  lsm6dsv_sensor_hub_5_t   sh_byte_5;
-  lsm6dsv_sensor_hub_6_t   sh_byte_6;
-  lsm6dsv_sensor_hub_7_t   sh_byte_7;
-  lsm6dsv_sensor_hub_8_t   sh_byte_8;
-  lsm6dsv_sensor_hub_9_t   sh_byte_9;
-  lsm6dsv_sensor_hub_10_t  sh_byte_10;
-  lsm6dsv_sensor_hub_11_t  sh_byte_11;
-  lsm6dsv_sensor_hub_12_t  sh_byte_12;
-  lsm6dsv_sensor_hub_13_t  sh_byte_13;
-  lsm6dsv_sensor_hub_14_t  sh_byte_14;
-  lsm6dsv_sensor_hub_15_t  sh_byte_15;
-  lsm6dsv_sensor_hub_16_t  sh_byte_16;
-  lsm6dsv_sensor_hub_17_t  sh_byte_17;
-  lsm6dsv_sensor_hub_18_t  sh_byte_18;
-} lsm6dsv_emb_sh_read_t;
-int32_t lsm6dsv_sh_read_data_raw_get(stmdev_ctx_t *ctx,
-                                     lsm6dsv_emb_sh_read_t *val,
+int32_t lsm6dsv_sh_read_data_raw_get(stmdev_ctx_t *ctx, uint8_t *val,
                                      uint8_t len);
 
 typedef enum
@@ -4610,14 +4764,11 @@ typedef struct
   uint8_t   slv_subadd;
   uint8_t   slv_len;
 } lsm6dsv_sh_cfg_read_t;
-int32_t lsm6dsv_sh_slv0_cfg_read(stmdev_ctx_t *ctx,
-                                 lsm6dsv_sh_cfg_read_t *val);
-int32_t lsm6dsv_sh_slv1_cfg_read(stmdev_ctx_t *ctx,
-                                 lsm6dsv_sh_cfg_read_t *val);
-int32_t lsm6dsv_sh_slv2_cfg_read(stmdev_ctx_t *ctx,
-                                 lsm6dsv_sh_cfg_read_t *val);
-int32_t lsm6dsv_sh_slv3_cfg_read(stmdev_ctx_t *ctx,
-                                 lsm6dsv_sh_cfg_read_t *val);
+int32_t lsm6dsv_sh_slv_cfg_read(stmdev_ctx_t *ctx, uint8_t idx,
+                                   lsm6dsv_sh_cfg_read_t *val);
+
+int32_t lsm6dsv_sh_status_get(stmdev_ctx_t *ctx,
+                              lsm6dsv_status_master_t *val);
 
 int32_t lsm6dsv_ui_sdo_pull_up_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsv_ui_sdo_pull_up_get(stmdev_ctx_t *ctx, uint8_t *val);
@@ -4658,7 +4809,6 @@ int32_t lsm6dsv_sigmot_mode_get(stmdev_ctx_t *ctx, uint8_t *val);
 typedef struct
 {
   uint8_t step_counter_enable  : 1;
-  uint8_t false_step_rej       : 1;
 } lsm6dsv_stpcnt_mode_t;
 int32_t lsm6dsv_stpcnt_mode_set(stmdev_ctx_t *ctx,
                                 lsm6dsv_stpcnt_mode_t val);
@@ -4675,6 +4825,32 @@ int32_t lsm6dsv_stpcnt_debounce_get(stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t lsm6dsv_stpcnt_period_set(stmdev_ctx_t *ctx, uint16_t val);
 int32_t lsm6dsv_stpcnt_period_get(stmdev_ctx_t *ctx, uint16_t *val);
+
+int32_t lsm6dsv_sflp_game_rotation_set(stmdev_ctx_t *ctx, uint8_t val);
+int32_t lsm6dsv_sflp_game_rotation_get(stmdev_ctx_t *ctx, uint8_t *val);
+
+typedef struct
+{
+  float_t gbias_x; /* dps */
+  float_t gbias_y; /* dps */
+  float_t gbias_z; /* dps */
+} lsm6dsv_sflp_gbias_t;
+int32_t lsm6dsv_sflp_game_gbias_set(stmdev_ctx_t *ctx,
+                                       lsm6dsv_sflp_gbias_t *val);
+
+typedef enum
+{
+  LSM6DSV_SFLP_15Hz  = 0x0,
+  LSM6DSV_SFLP_30Hz  = 0x1,
+  LSM6DSV_SFLP_60Hz  = 0x2,
+  LSM6DSV_SFLP_120Hz = 0x3,
+  LSM6DSV_SFLP_240Hz = 0x4,
+  LSM6DSV_SFLP_480Hz = 0x5,
+} lsm6dsv_sflp_data_rate_t;
+int32_t lsm6dsv_sflp_data_rate_set(stmdev_ctx_t *ctx,
+                                      lsm6dsv_sflp_data_rate_t val);
+int32_t lsm6dsv_sflp_data_rate_get(stmdev_ctx_t *ctx,
+                                      lsm6dsv_sflp_data_rate_t *val);
 
 typedef struct
 {

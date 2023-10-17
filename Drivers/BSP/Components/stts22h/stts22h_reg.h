@@ -169,6 +169,8 @@ typedef struct
 
 /** I2C Device Address 8 bit format **/
 #define STTS22H_I2C_ADD_H       0x71U
+#define STTS22H_I2C_ADD_15K     0x79U
+#define STTS22H_I2C_ADD_56K     0x7DU
 #define STTS22H_I2C_ADD_L       0x7FU
 
 /** Device Identification (Who am I) **/
@@ -278,6 +280,19 @@ typedef union
   * @}
   *
   */
+
+#ifndef __weak
+#define __weak __attribute__((weak))
+#endif /* __weak */
+
+/*
+ * These are the basic platform dependent I/O routines to read
+ * and write device registers connected on a standard bus.
+ * The driver keeps offering a default implementation based on function
+ * pointers to read/write routines for backward compatibility.
+ * The __weak directive allows the final application to overwrite
+ * them with a custom implementation.
+ */
 
 int32_t stts22h_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
                          uint8_t *data,

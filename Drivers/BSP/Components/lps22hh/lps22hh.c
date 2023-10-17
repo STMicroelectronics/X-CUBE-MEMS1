@@ -217,10 +217,12 @@ int32_t LPS22HH_GetCapabilities(LPS22HH_Object_t *pObj, LPS22HH_Capabilities_t *
   Capabilities->Humidity    = 0;
   Capabilities->Pressure    = 1;
   Capabilities->Temperature = 1;
+  Capabilities->Gas         = 0;
   Capabilities->LowPower    = 0;
   Capabilities->HumMaxOdr   = 0.0f;
   Capabilities->TempMaxOdr  = 200.0f;
   Capabilities->PressMaxOdr = 200.0f;
+  Capabilities->GasMaxOdr   = 0.0f;
   return LPS22HH_OK;
 }
 
@@ -651,10 +653,13 @@ static int32_t LPS22HH_SetOutputDataRate_When_Disabled(LPS22HH_Object_t *pObj, f
   */
 static int32_t LPS22HH_Initialize(LPS22HH_Object_t *pObj)
 {
-  /* Disable MIPI I3C(SM) interface */
-  if (lps22hh_i3c_interface_set(&(pObj->Ctx), LPS22HH_I3C_DISABLE) != LPS22HH_OK)
+  if(pObj->IO.BusType != LPS22HH_I3C_BUS)
   {
-    return LPS22HH_ERROR;
+    /* Disable MIPI I3C(SM) interface */
+    if (lps22hh_i3c_interface_set(&(pObj->Ctx), LPS22HH_I3C_DISABLE) != LPS22HH_OK)
+    {
+      return LPS22HH_ERROR;
+    }
   }
 
   /* Power down the device, set Low Noise Enable (bit 5), clear One Shot (bit 4) */

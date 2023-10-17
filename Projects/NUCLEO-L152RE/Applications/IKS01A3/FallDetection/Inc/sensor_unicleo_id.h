@@ -92,6 +92,7 @@ extern "C" {
 #define LIS2DTW12_UNICLEO_ID_TEMP   4
 #define SHT40AD1B_UNICLEO_ID        5
 #define STHS34PF80_UNICLEO_ID       6
+#define SGP40_UNICLEO_ID            7
 
 #ifdef __cplusplus
 }

@@ -80,7 +80,7 @@ typedef struct
 {
   LSM6DSV32X_Init_Func       Init;
   LSM6DSV32X_DeInit_Func     DeInit;
-  uint32_t                   BusType; /*0 means I2C, 1 means SPI 4-Wires, 2 means SPI-3-Wires */
+  uint32_t                   BusType; /*0 means I2C, 1 means SPI 4-Wires, 2 means SPI-3-Wires, 3 means I3C */
   uint8_t                    Address;
   LSM6DSV32X_WriteReg_Func   WriteReg;
   LSM6DSV32X_ReadReg_Func    ReadReg;
@@ -135,9 +135,9 @@ typedef struct
   uint32_t  GyroMaxFS;
   uint32_t  AccMaxFS;
   uint32_t  MagMaxFS;
-  float_t     GyroMaxOdr;
-  float_t     AccMaxOdr;
-  float_t     MagMaxOdr;
+  float_t   GyroMaxOdr;
+  float_t   AccMaxOdr;
+  float_t   MagMaxOdr;
 } LSM6DSV32X_Capabilities_t;
 
 typedef struct
@@ -212,6 +212,7 @@ typedef union
 #define LSM6DSV32X_I2C_BUS                 0U
 #define LSM6DSV32X_SPI_4WIRES_BUS          1U
 #define LSM6DSV32X_SPI_3WIRES_BUS          2U
+#define LSM6DSV32X_I3C_BUS                 3U
 
 #define LSM6DSV32X_ACC_SENSITIVITY_FS_4G   0.122f
 #define LSM6DSV32X_ACC_SENSITIVITY_FS_8G   0.244f
@@ -283,15 +284,6 @@ int32_t LSM6DSV32X_ACC_Get_6D_Orientation_YL(LSM6DSV32X_Object_t *pObj, uint8_t 
 int32_t LSM6DSV32X_ACC_Get_6D_Orientation_YH(LSM6DSV32X_Object_t *pObj, uint8_t *YHigh);
 int32_t LSM6DSV32X_ACC_Get_6D_Orientation_ZL(LSM6DSV32X_Object_t *pObj, uint8_t *ZLow);
 int32_t LSM6DSV32X_ACC_Get_6D_Orientation_ZH(LSM6DSV32X_Object_t *pObj, uint8_t *ZHigh);
-
-int32_t LSM6DSV32X_ACC_Enable_Single_Tap_Detection(LSM6DSV32X_Object_t *pObj, LSM6DSV32X_SensorIntPin_t IntPin);
-int32_t LSM6DSV32X_ACC_Disable_Single_Tap_Detection(LSM6DSV32X_Object_t *pObj);
-int32_t LSM6DSV32X_ACC_Enable_Double_Tap_Detection(LSM6DSV32X_Object_t *pObj, LSM6DSV32X_SensorIntPin_t IntPin);
-int32_t LSM6DSV32X_ACC_Disable_Double_Tap_Detection(LSM6DSV32X_Object_t *pObj);
-int32_t LSM6DSV32X_ACC_Set_Tap_Threshold(LSM6DSV32X_Object_t *pObj, uint8_t Threshold);
-int32_t LSM6DSV32X_ACC_Set_Tap_Shock_Time(LSM6DSV32X_Object_t *pObj, uint8_t Time);
-int32_t LSM6DSV32X_ACC_Set_Tap_Quiet_Time(LSM6DSV32X_Object_t *pObj, uint8_t Time);
-int32_t LSM6DSV32X_ACC_Set_Tap_Duration_Time(LSM6DSV32X_Object_t *pObj, uint8_t Time);
 
 int32_t LSM6DSV32X_ACC_Enable_Tilt_Detection(LSM6DSV32X_Object_t *pObj, LSM6DSV32X_SensorIntPin_t IntPin);
 int32_t LSM6DSV32X_ACC_Disable_Tilt_Detection(LSM6DSV32X_Object_t *pObj);

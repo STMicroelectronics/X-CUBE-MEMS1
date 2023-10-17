@@ -82,10 +82,12 @@ typedef struct
   uint8_t Temperature;
   uint8_t Pressure;
   uint8_t Humidity;
+  uint8_t Gas;
   uint8_t LowPower;
   float   HumMaxOdr;
   float   TempMaxOdr;
   float   PressMaxOdr;
+  float   GasMaxOdr;
 } SHT40AD1B_Capabilities_t;
 
 typedef struct
@@ -179,9 +181,6 @@ int32_t SHT40AD1B_TEMP_GetOutputDataRate(SHT40AD1B_Object_t *pObj, float *Odr);
 int32_t SHT40AD1B_TEMP_SetOutputDataRate(SHT40AD1B_Object_t *pObj, float Odr);
 int32_t SHT40AD1B_TEMP_GetTemperature(SHT40AD1B_Object_t *pObj, float *Value);
 int32_t SHT40AD1B_TEMP_Get_DRDY_Status(SHT40AD1B_Object_t *pObj, uint8_t *Status);
-
-int32_t SHT40AD1B_Read_Reg(SHT40AD1B_Object_t *pObj, uint8_t Reg, uint8_t *Data);
-int32_t SHT40AD1B_Write_Reg(SHT40AD1B_Object_t *pObj, uint8_t Reg, uint8_t Data);
 
 /**
   * @}

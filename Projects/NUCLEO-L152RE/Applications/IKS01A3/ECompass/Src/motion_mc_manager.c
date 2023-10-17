@@ -174,4 +174,3 @@ char MotionMC_SaveCalInNVM(unsigned short int datasize, unsigned int *data)
 /**
  * @}
  */
-

@@ -75,7 +75,7 @@ typedef struct
 {
   LSM6DSO32_Init_Func        Init;
   LSM6DSO32_DeInit_Func      DeInit;
-  uint32_t                   BusType; /*0 means I2C, 1 means SPI 4-Wires, 2 means SPI-3-Wires */
+  uint32_t                   BusType; /*0 means I2C, 1 means SPI 4-Wires, 2 means SPI-3-Wires, 3 means I3C */
   uint8_t                    Address;
   LSM6DSO32_WriteReg_Func    WriteReg;
   LSM6DSO32_ReadReg_Func     ReadReg;
@@ -207,6 +207,7 @@ typedef union
 #define LSM6DSO32_I2C_BUS                 0U
 #define LSM6DSO32_SPI_4WIRES_BUS          1U
 #define LSM6DSO32_SPI_3WIRES_BUS          2U
+#define LSM6DSO32_I3C_BUS                 3U
 
 #define LSM6DSO32_ACC_SENSITIVITY_FS_4G   0.122f
 #define LSM6DSO32_ACC_SENSITIVITY_FS_8G   0.244f

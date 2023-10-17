@@ -11,8 +11,11 @@
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
     ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
       width: 0.8em;
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
@@ -42,17 +45,31 @@ src="_htmresc/st_logo_2020.png" alt="ST logo" /></a>
 <section id="update-history" class="col-sm-12 col-lg-8">
 <h1>Update history</h1>
 <div class="collapse">
-<input type="checkbox" id="collapse-section3" checked aria-hidden="true">
-<label for="collapse-section3" aria-hidden="true">V1.2.0 /
-31-October-2022</label>
+<input type="checkbox" id="collapse-section4" checked aria-hidden="true">
+<label for="collapse-section4" aria-hidden="true">V1.3.0 /
+18-August-2023</label>
 <div>
 <h2 id="main-changes">Main changes</h2>
 <h3 id="maintenance-release">Maintenance release</h3>
 <ul>
+<li>Add I3C define</li>
+<li>Add Gas to Capability struct</li>
+</ul>
+<h2 id="section"></h2>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section3" aria-hidden="true">
+<label for="collapse-section3" aria-hidden="true">V1.2.0 /
+31-October-2022</label>
+<div>
+<h2 id="main-changes-1">Main changes</h2>
+<h3 id="maintenance-release-1">Maintenance release</h3>
+<ul>
 <li>Synchronized PID with currently latest version on ST GitHub</li>
 <li>Added Delay function</li>
 </ul>
-<h2 id="section"></h2>
+<h2 id="section-1"></h2>
 </div>
 </div>
 <div class="collapse">
@@ -60,12 +77,12 @@ src="_htmresc/st_logo_2020.png" alt="ST logo" /></a>
 <label for="collapse-section2" aria-hidden="true">V1.1.0 /
 23-March-2022</label>
 <div>
-<h2 id="main-changes-1">Main changes</h2>
-<h3 id="maintenance-release-1">Maintenance release</h3>
+<h2 id="main-changes-2">Main changes</h2>
+<h3 id="maintenance-release-2">Maintenance release</h3>
 <ul>
 <li>Synchronized PID with currently latest version on ST GitHub</li>
 </ul>
-<h2 id="section-1"></h2>
+<h2 id="section-2"></h2>
 </div>
 </div>
 <div class="collapse">
@@ -73,12 +90,12 @@ src="_htmresc/st_logo_2020.png" alt="ST logo" /></a>
 <label for="collapse-section1" aria-hidden="true">V1.0.0 /
 29-July-2021</label>
 <div>
-<h2 id="main-changes-2">Main changes</h2>
+<h2 id="main-changes-3">Main changes</h2>
 <h3 id="first-release">First release</h3>
 <ul>
 <li>First official release [ref. DS v0.7]</li>
 </ul>
-<h2 id="section-2"></h2>
+<h2 id="section-3"></h2>
 </div>
 </div>
 </section>

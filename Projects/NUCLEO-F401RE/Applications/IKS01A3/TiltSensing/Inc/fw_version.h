@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    fw_version.h
-  * @author  MEMS Application Team
+  * @author  MEMS Software Solutions Team
   * @brief   FW version configuration file
   ******************************************************************************
   * @attention
@@ -17,18 +17,18 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __FW_VERSION_H__
-#define __FW_VERSION_H__
+#ifndef FW_VERSION_H
+#define FW_VERSION_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* Exported defines ----------------------------------------------------------*/
-#define FW_VERSION  "9.6.0"
+#define FW_VERSION  "10.0.0"
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __FW_VERSION_H__ */
+#endif /* FW_VERSION_H */

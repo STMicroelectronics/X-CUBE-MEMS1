@@ -116,8 +116,7 @@ int32_t LPS28DFW_RegisterBusIO(LPS28DFW_Object_t *pObj, LPS28DFW_IO_t *pIO)
     {
       ret = LPS28DFW_ERROR;
     }
-
-    if (pObj->IO.Init() != LPS28DFW_OK)
+    else if (pObj->IO.Init() != LPS28DFW_OK)
     {
       ret = LPS28DFW_ERROR;
     }
@@ -204,10 +203,12 @@ int32_t LPS28DFW_GetCapabilities(LPS28DFW_Object_t *pObj, LPS28DFW_Capabilities_
   Capabilities->Humidity    = 0;
   Capabilities->Pressure    = 1;
   Capabilities->Temperature = 1;
+  Capabilities->Gas         = 0;
   Capabilities->LowPower    = 0;
   Capabilities->HumMaxOdr   = 0.0f;
   Capabilities->TempMaxOdr  = 200.0f;
   Capabilities->PressMaxOdr = 200.0f;
+  Capabilities->GasMaxOdr   = 0.0f;
   return LPS28DFW_OK;
 }
 

@@ -2,7 +2,7 @@
 /**
   ******************************************************************************
   * @file    custom_mems_control_ex.c
-  * @author  MEMS Application Team
+  * @author  MEMS Software Solutions Team
   * @brief   This file contains the MEMS sensors interface for custom board
   ******************************************************************************
   * @attention
@@ -548,3 +548,33 @@ void BSP_SENSOR_TEMP_GetSensitivity(uint16_t *Value)
 #endif
 }
 #endif /* PRESENCEDETECTION_STHS34PF80_DEMO */
+
+#if (defined AIRQUALITY_SGP40_DEMO)
+/**
+  * @brief  Set the humidity value in gas sensor
+  * @param  Value value to be set
+  * @retval None
+  */
+void BSP_SENSOR_Gas_Set_Humidity(float Value)
+{
+#if (defined BSP_ENV_SENSORS)
+#ifdef CUSTOM_GAS_INSTANCE_0
+  (void)CUSTOM_ENV_SENSOR_Set_Humidity(CUSTOM_GAS_INSTANCE_0, Value);
+#endif
+#endif
+}
+
+/**
+  * @brief  Set the temperature value in gas sensor
+  * @param  Value value to be set
+  * @retval None
+  */
+void BSP_SENSOR_Gas_Set_Temperature(float Value)
+{
+#if (defined BSP_ENV_SENSORS)
+#ifdef CUSTOM_GAS_INSTANCE_0
+  (void)CUSTOM_ENV_SENSOR_Set_Temperature(CUSTOM_GAS_INSTANCE_0, Value);
+#endif
+#endif
+}
+#endif /* AIRQUALITY_SGP40_DEMO */

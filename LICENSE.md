@@ -17,5 +17,6 @@
 | STM32 Middlewares Audio         | STMicroelectronics   | SLA0047 |
 | STM32 Middlewares Motion        | STMicroelectronics   | SLA0077 |
 | STM32 Middlewares InfraredPD    | STMicroelectronics   | SLA0077 |
+| Sensirion Middlewares           | Sensirion   | BSD-3-Clause |
 | STM32 Projects                  | STMicroelectronics   | SLA0077 |
 | STM32 Utilities Unicleo-GUI     | STMicroelectronics   | SLA0068 |

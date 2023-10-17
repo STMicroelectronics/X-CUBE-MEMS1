@@ -197,10 +197,12 @@ int32_t STHS34PF80_GetCapabilities(STHS34PF80_Object_t *pObj, STHS34PF80_Capabil
   Capabilities->Humidity    = 0;
   Capabilities->Pressure    = 0;
   Capabilities->Temperature = 1;
+  Capabilities->Gas         = 0;
   Capabilities->LowPower    = 0;
   Capabilities->HumMaxOdr   = 0.0f;
   Capabilities->TempMaxOdr  = 30.0f;
   Capabilities->PressMaxOdr = 0.0f;
+  Capabilities->GasMaxOdr   = 0.0f;
   return STHS34PF80_OK;
 }
 

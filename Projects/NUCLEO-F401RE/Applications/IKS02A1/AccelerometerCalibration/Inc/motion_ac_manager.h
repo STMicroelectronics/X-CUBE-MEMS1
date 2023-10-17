@@ -60,4 +60,3 @@ int16_t acc_bias_to_mg(float acc_bias);
 #endif
 
 #endif /* MOTION_AC_MANAGER_H */
-

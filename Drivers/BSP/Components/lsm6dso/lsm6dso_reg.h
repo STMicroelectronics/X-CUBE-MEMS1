@@ -46,10 +46,10 @@ extern "C" {
 #define DRV_LITTLE_ENDIAN 1234
 #define DRV_BIG_ENDIAN    4321
 
-/** if _BYTE_ORDER is not defined, choose the endianness of your architecture
+/** if DRV_BYTE_ORDER is not defined, choose the endianness of your architecture
   * by uncommenting the define which fits your platform endianness
   */
-//#define DRV_BYTE_ORDER    DRV_BIG_ENDIAN
+/* #define DRV_BYTE_ORDER    DRV_BIG_ENDIAN */
 #define DRV_BYTE_ORDER    DRV_LITTLE_ENDIAN
 
 #else /* defined __BYTE_ORDER__ */
@@ -2930,8 +2930,8 @@ int32_t lsm6dso_ln_pg_read_byte(stmdev_ctx_t *ctx, uint16_t address,
                                 uint8_t *val);
 int32_t lsm6dso_ln_pg_write(stmdev_ctx_t *ctx, uint16_t address,
                             uint8_t *buf, uint8_t len);
-int32_t lsm6dso_ln_pg_read(stmdev_ctx_t *ctx, uint16_t address,
-                           uint8_t *val);
+int32_t lsm6dso_ln_pg_read(stmdev_ctx_t *ctx, uint16_t address, uint8_t *buf,
+                           uint8_t len);
 
 typedef enum
 {
@@ -3609,7 +3609,7 @@ typedef enum
   LSM6DSO_SENSORHUB_SLAVE1_TAG,
   LSM6DSO_SENSORHUB_SLAVE2_TAG,
   LSM6DSO_SENSORHUB_SLAVE3_TAG,
-  LSM6DSO_STEP_CPUNTER_TAG,
+  LSM6DSO_STEP_COUNTER_TAG,
   LSM6DSO_GAME_ROTATION_TAG,
   LSM6DSO_GEOMAG_ROTATION_TAG,
   LSM6DSO_ROTATION_TAG,
@@ -3646,17 +3646,8 @@ int32_t lsm6dso_fifo_sensor_tag_get(stmdev_ctx_t *ctx,
 int32_t lsm6dso_fifo_pedo_batch_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dso_fifo_pedo_batch_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lsm6dso_sh_batch_slave_0_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dso_sh_batch_slave_0_get(stmdev_ctx_t *ctx, uint8_t *val);
-
-int32_t lsm6dso_sh_batch_slave_1_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dso_sh_batch_slave_1_get(stmdev_ctx_t *ctx, uint8_t *val);
-
-int32_t lsm6dso_sh_batch_slave_2_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dso_sh_batch_slave_2_get(stmdev_ctx_t *ctx, uint8_t *val);
-
-int32_t lsm6dso_sh_batch_slave_3_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dso_sh_batch_slave_3_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dso_sh_batch_slave_set(stmdev_ctx_t *ctx, uint8_t idx, uint8_t val);
+int32_t lsm6dso_sh_batch_slave_get(stmdev_ctx_t *ctx, uint8_t idx, uint8_t *val);
 
 typedef enum
 {
@@ -3951,13 +3942,7 @@ typedef struct
   uint8_t   slv_subadd;
   uint8_t   slv_len;
 } lsm6dso_sh_cfg_read_t;
-int32_t lsm6dso_sh_slv0_cfg_read(stmdev_ctx_t *ctx,
-                                 lsm6dso_sh_cfg_read_t *val);
-int32_t lsm6dso_sh_slv1_cfg_read(stmdev_ctx_t *ctx,
-                                 lsm6dso_sh_cfg_read_t *val);
-int32_t lsm6dso_sh_slv2_cfg_read(stmdev_ctx_t *ctx,
-                                 lsm6dso_sh_cfg_read_t *val);
-int32_t lsm6dso_sh_slv3_cfg_read(stmdev_ctx_t *ctx,
+int32_t lsm6dso_sh_slv_cfg_read(stmdev_ctx_t *ctx, uint8_t idx,
                                  lsm6dso_sh_cfg_read_t *val);
 
 int32_t lsm6dso_sh_status_get(stmdev_ctx_t *ctx,

@@ -45,9 +45,9 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ism330dlc_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                           uint8_t *data,
-                           uint16_t len)
+int32_t __weak ism330dlc_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                  uint8_t *data,
+                                  uint16_t len)
 {
   int32_t ret;
   ret = ctx->read_reg(ctx->handle, reg, data, len);
@@ -65,9 +65,9 @@ int32_t ism330dlc_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ism330dlc_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                            uint8_t *data,
-                            uint16_t len)
+int32_t __weak ism330dlc_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+                                   uint8_t *data,
+                                   uint16_t len)
 {
   int32_t ret;
   ret = ctx->write_reg(ctx->handle, reg, data, len);

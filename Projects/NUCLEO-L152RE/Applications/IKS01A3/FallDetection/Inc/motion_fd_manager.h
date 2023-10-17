@@ -45,4 +45,3 @@ void MotionFD_manager_get_version(char *version, int *length);
 #endif
 
 #endif /* MOTION_FD_MANAGER_H */
-

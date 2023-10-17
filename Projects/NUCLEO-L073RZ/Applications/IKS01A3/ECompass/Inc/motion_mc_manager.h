@@ -48,4 +48,3 @@ int32_t mag_val_to_mGauss(float mag_val_uT);
 #endif
 
 #endif /* MOTION_MC_MANAGER_H */
-

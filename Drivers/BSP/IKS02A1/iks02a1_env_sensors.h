@@ -58,10 +58,12 @@ typedef struct
   uint8_t Temperature;
   uint8_t Pressure;
   uint8_t Humidity;
+  uint8_t Gas;
   uint8_t LowPower;
   float   HumMaxOdr;
   float   TempMaxOdr;
   float   PressMaxOdr;
+  float   GasMaxOdr;
 } IKS02A1_ENV_SENSOR_Capabilities_t;
 
 typedef struct
@@ -90,8 +92,11 @@ typedef struct
 #ifndef ENV_HUMIDITY
 #define ENV_HUMIDITY         4U
 #endif
+#ifndef ENV_GAS
+#define ENV_GAS              8U
+#endif
 
-#define IKS02A1_ENV_FUNCTIONS_NBR    3U
+#define IKS02A1_ENV_FUNCTIONS_NBR    4U
 #define IKS02A1_ENV_INSTANCES_NBR    (USE_IKS02A1_ENV_SENSOR_SHT40AD1B_0)
 
 #if (IKS02A1_ENV_INSTANCES_NBR == 0)

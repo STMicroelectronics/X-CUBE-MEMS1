@@ -56,7 +56,7 @@ typedef struct
 {
   LPS28DFW_Init_Func          Init;
   LPS28DFW_DeInit_Func        DeInit;
-  uint32_t                   BusType; /*0 means I2C, 1 means SPI 4-Wires, 2 means SPI-3-Wires */
+  uint32_t                   BusType; /*0 means I2C, 1 means I3C */
   uint8_t                    Address;
   LPS28DFW_WriteReg_Func      WriteReg;
   LPS28DFW_ReadReg_Func       ReadReg;
@@ -79,10 +79,12 @@ typedef struct
   uint8_t Temperature;
   uint8_t Pressure;
   uint8_t Humidity;
+  uint8_t Gas;
   uint8_t LowPower;
   float   HumMaxOdr;
   float   TempMaxOdr;
   float   PressMaxOdr;
+  float   GasMaxOdr;
 } LPS28DFW_Capabilities_t;
 
 typedef struct
@@ -147,6 +149,7 @@ typedef union
 #define LPS28DFW_ERROR            -1
 
 #define LPS28DFW_I2C_BUS          0U
+#define LPS28DFW_I3C_BUS          1U
 
 /**
   * @}

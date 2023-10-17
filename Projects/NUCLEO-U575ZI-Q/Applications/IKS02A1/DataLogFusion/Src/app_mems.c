@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.6.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.10.0.0 instances.
   ******************************************************************************
   * @attention
   *
@@ -233,6 +233,7 @@ static void MX_DataLogFusion_Process(void)
 {
   static TMsg msg_dat;
   static TMsg msg_cmd;
+  static int discarded_count = 0;
 
   if (UART_ReceivedMSG((TMsg *)&msg_cmd) == 1)
   {
@@ -305,7 +306,14 @@ static void MX_DataLogFusion_Process(void)
       }
     }
 
-    UART_SendMsg(&msg_dat);
+    if (discarded_count >= SAMPLETODISCARD)
+    {
+      UART_SendMsg(&msg_dat);
+    }
+    else
+    {
+      discarded_count++;
+    }
   }
 }
 

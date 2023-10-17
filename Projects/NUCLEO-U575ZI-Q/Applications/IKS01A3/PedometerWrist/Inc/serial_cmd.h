@@ -53,6 +53,7 @@ extern "C" {
 /* ENVIRONMENTAL  CMD  (0x60 - 0x6F) -------------*/
 #define CMD_PRESSURE_Init              0x60
 #define CMD_HUMIDITY_TEMPERATURE_Init  0x62
+#define CMD_GAS_Init                   0x63
 
 /* INERTIAL  CMD  (0x70 - 0x7F) ------------------*/
 #define CMD_ACCELERO_GYRO_Init         0x76
@@ -63,4 +64,3 @@ extern "C" {
 #endif
 
 #endif /* SERIAL_CMD_H */
-

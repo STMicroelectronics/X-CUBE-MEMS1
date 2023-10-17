@@ -133,6 +133,7 @@ typedef struct
   uint8_t   Temperature;
   uint8_t   Pressure;
   uint8_t   Humidity;
+  uint8_t   Gas;
   uint8_t   LowPower;
   uint32_t  GyroMaxFS;
   uint32_t  AccMaxFS;
@@ -143,6 +144,7 @@ typedef struct
   float     HumMaxOdr;
   float     TempMaxOdr;
   float     PressMaxOdr;
+  float     GasMaxOdr;
 } LIS2DTW12_Capabilities_t;
 
 typedef struct

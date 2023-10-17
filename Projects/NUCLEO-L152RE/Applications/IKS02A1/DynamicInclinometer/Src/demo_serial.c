@@ -523,7 +523,7 @@ void Get_PresentationString(char *PresentationString, uint32_t *Length)
 
   MotionDI_manager_get_version(lib_version_string, &lib_version_len);
 
-  /* Shorten library version string (e.g.: ST MotionXX v1.0.0 resp. ST MotionXXX v1.0.0 resp. ST InfraredXX v1.0.0) to contain version number only (e.g.: 1.0.0) */
+  /* Shorten library version string (e.g.: ST MotionXX v1.0.0 resp. ST MotionXXX v1.0.0 resp. ST InfraredXX v1.0.0 resp. ST EnvXX v1.0.0) to contain version number only (e.g.: 1.0.0) */
   if (lib_version_len > string_pointer_shift)
   {
     lib_version_num = lib_version_string + string_pointer_shift;

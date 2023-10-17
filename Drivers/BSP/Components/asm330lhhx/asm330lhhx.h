@@ -62,7 +62,7 @@ typedef struct
 {
   ASM330LHHX_Init_Func       Init;
   ASM330LHHX_DeInit_Func     DeInit;
-  uint32_t                   BusType; /*0 means I2C, 1 means SPI 4-Wires, 2 means SPI-3-Wires */
+  uint32_t                   BusType; /*0 means I2C, 1 means SPI 4-Wires, 2 means SPI-3-Wires, 3 means I3C */
   uint8_t                    Address;
   ASM330LHHX_WriteReg_Func   WriteReg;
   ASM330LHHX_ReadReg_Func    ReadReg;
@@ -194,6 +194,7 @@ typedef union
 #define ASM330LHHX_I2C_BUS                 0U
 #define ASM330LHHX_SPI_4WIRES_BUS          1U
 #define ASM330LHHX_SPI_3WIRES_BUS          2U
+#define ASM330LHHX_I3C_BUS                 3U
 
 #define ASM330LHHX_ACC_SENSITIVITY_FS_2G   0.061f
 #define ASM330LHHX_ACC_SENSITIVITY_FS_4G   0.122f

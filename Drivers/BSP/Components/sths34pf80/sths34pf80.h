@@ -78,10 +78,12 @@ typedef struct
   uint8_t Temperature;
   uint8_t Pressure;
   uint8_t Humidity;
+  uint8_t Gas;
   uint8_t LowPower;
   float_t   HumMaxOdr;
   float_t   TempMaxOdr;
   float_t   PressMaxOdr;
+  float_t   GasMaxOdr;
 } STHS34PF80_Capabilities_t;
 
 typedef struct

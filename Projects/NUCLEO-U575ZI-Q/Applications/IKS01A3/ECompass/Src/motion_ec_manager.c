@@ -313,4 +313,3 @@ static void v_rotate(float v_new[], float q_rot[], float v_old[])
 /**
  * @}
  */
-

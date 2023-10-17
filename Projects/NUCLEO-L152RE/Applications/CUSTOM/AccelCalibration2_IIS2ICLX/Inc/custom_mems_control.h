@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    custom_mems_control.h
-  * @author  MEMS Application Team
+  * @author  MEMS Software Solutions Team
   * @brief   This file contains the MEMS sensors interface for custom board
   ******************************************************************************
   * @attention
@@ -51,6 +51,7 @@ void BSP_SENSOR_MAG_Init(void);
 void BSP_SENSOR_PRESS_Init(void);
 void BSP_SENSOR_TEMP_Init(void);
 void BSP_SENSOR_HUM_Init(void);
+void BSP_SENSOR_GAS_Init(void);
 
 void BSP_SENSOR_ACC_Enable(void);
 void BSP_SENSOR_GYR_Enable(void);
@@ -58,6 +59,7 @@ void BSP_SENSOR_MAG_Enable(void);
 void BSP_SENSOR_PRESS_Enable(void);
 void BSP_SENSOR_TEMP_Enable(void);
 void BSP_SENSOR_HUM_Enable(void);
+void BSP_SENSOR_GAS_Enable(void);
 
 void BSP_SENSOR_ACC_Disable(void);
 void BSP_SENSOR_GYR_Disable(void);
@@ -65,6 +67,7 @@ void BSP_SENSOR_MAG_Disable(void);
 void BSP_SENSOR_PRESS_Disable(void);
 void BSP_SENSOR_TEMP_Disable(void);
 void BSP_SENSOR_HUM_Disable(void);
+void BSP_SENSOR_GAS_Disable(void);
 
 void BSP_SENSOR_ACC_GetAxes(MOTION_SENSOR_Axes_t *Axes);
 void BSP_SENSOR_GYR_GetAxes(MOTION_SENSOR_Axes_t *Axes);
@@ -72,6 +75,7 @@ void BSP_SENSOR_MAG_GetAxes(MOTION_SENSOR_Axes_t *Axes);
 void BSP_SENSOR_PRESS_GetValue(float *Value);
 void BSP_SENSOR_TEMP_GetValue(float *Value);
 void BSP_SENSOR_HUM_GetValue(float *Value);
+void BSP_SENSOR_GAS_GetValue(float *Value);
 
 void BSP_SENSOR_ACC_SetOutputDataRate(float Odr);
 void BSP_SENSOR_GYR_SetOutputDataRate(float Odr);

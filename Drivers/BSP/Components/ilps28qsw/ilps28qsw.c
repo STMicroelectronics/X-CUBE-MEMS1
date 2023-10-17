@@ -120,23 +120,6 @@ int32_t ILPS28QSW_RegisterBusIO(ILPS28QSW_Object_t *pObj, ILPS28QSW_IO_t *pIO)
     {
       ret = ILPS28QSW_ERROR;
     }
-    else
-    {
-      if (pObj->IO.BusType == ILPS28QSW_SPI_3WIRES_BUS) /* SPI 3-Wires */
-      {
-        /* Enable the SPI 3-Wires support only the first time */
-        if (pObj->is_initialized == 0U)
-        {
-          /* Enable SPI 3-Wires on the component */
-          uint8_t data = 0x20;
-
-          if (ILPS28QSW_Write_Reg(pObj, ILPS28QSW_IF_CTRL, data) != ILPS28QSW_OK)
-          {
-            ret = ILPS28QSW_ERROR;
-          }
-        }
-      }
-    }
   }
 
   return ret;
@@ -220,10 +203,12 @@ int32_t ILPS28QSW_GetCapabilities(ILPS28QSW_Object_t *pObj, ILPS28QSW_Capabiliti
   Capabilities->Humidity    = 0;
   Capabilities->Pressure    = 1;
   Capabilities->Temperature = 1;
+  Capabilities->Gas         = 0;
   Capabilities->LowPower    = 0;
   Capabilities->HumMaxOdr   = 0.0f;
   Capabilities->TempMaxOdr  = 200.0f;
   Capabilities->PressMaxOdr = 200.0f;
+  Capabilities->GasMaxOdr   = 0.0f;
   return ILPS28QSW_OK;
 }
 

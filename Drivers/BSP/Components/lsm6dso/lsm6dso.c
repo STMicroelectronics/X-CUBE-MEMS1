@@ -158,10 +158,13 @@ int32_t LSM6DSO_RegisterBusIO(LSM6DSO_Object_t *pObj, LSM6DSO_IO_t *pIO)
   */
 int32_t LSM6DSO_Init(LSM6DSO_Object_t *pObj)
 {
-  /* Disable I3C */
-  if (lsm6dso_i3c_disable_set(&(pObj->Ctx), LSM6DSO_I3C_DISABLE) != LSM6DSO_OK)
+  if(pObj->IO.BusType != LSM6DSO_I3C_BUS)
   {
-    return LSM6DSO_ERROR;
+    /* Disable I3C */
+    if (lsm6dso_i3c_disable_set(&(pObj->Ctx), LSM6DSO_I3C_DISABLE) != LSM6DSO_OK)
+    {
+      return LSM6DSO_ERROR;
+    }
   }
 
   /* Enable register address automatically incremented during a multiple byte

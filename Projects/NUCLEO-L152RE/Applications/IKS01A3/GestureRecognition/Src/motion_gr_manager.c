@@ -76,4 +76,3 @@ void MotionGR_manager_get_version(char *version, int *length)
 /**
  * @}
  */
-

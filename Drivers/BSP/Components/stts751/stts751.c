@@ -203,10 +203,12 @@ int32_t STTS751_GetCapabilities(STTS751_Object_t *pObj, STTS751_Capabilities_t *
   Capabilities->Humidity    = 0;
   Capabilities->Pressure    = 0;
   Capabilities->Temperature = 1;
+  Capabilities->Gas         = 0;
   Capabilities->LowPower    = 0;
   Capabilities->HumMaxOdr   = 0.0f;
   Capabilities->TempMaxOdr  = 32.0f;
   Capabilities->PressMaxOdr = 0.0f;
+  Capabilities->GasMaxOdr   = 0.0f;
   return STTS751_OK;
 }
 

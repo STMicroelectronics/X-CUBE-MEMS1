@@ -246,6 +246,16 @@ typedef struct
 #endif /* DRV_BYTE_ORDER */
 } lsm6dsv16x_if_cfg_t;
 
+#define LSM6DSV16X_ODR_TRIG_CFG                 0x6U
+typedef struct
+{
+#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
+  uint8_t odr_trig_nodr        : 8;
+#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
+  uint8_t odr_trig_nodr        : 8;
+#endif /* DRV_BYTE_ORDER */
+} lsm6dsv16x_odr_trig_cfg_t;
+
 #define LSM6DSV16X_FIFO_CTRL1                   0x7U
 typedef struct
 {
@@ -1397,6 +1407,18 @@ typedef struct
   uint8_t int2_timestamp       : 1;
 #endif /* DRV_BYTE_ORDER */
 } lsm6dsv16x_md2_cfg_t;
+
+#define LSM6DSV16X_HAODR_CFG                  0x62U
+typedef struct
+{
+#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
+  uint8_t haodr_sel            : 2;
+  uint8_t not_used0            : 6;
+#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
+  uint8_t not_used0            : 6;
+  uint8_t haodr_sel            : 2;
+#endif /* DRV_BYTE_ORDER */
+} lsm6dsv16x_haodr_cfg_t;
 
 #define LSM6DSV16X_EMB_FUNC_CFG               0x63U
 typedef struct
@@ -2697,7 +2719,7 @@ typedef struct
   * @{
   *
   */
-#define LSM6DSV16X_EMB_ADV_PG_0              0x000
+#define LSM6DSV16X_EMB_ADV_PG_0              0x000U
 
 #define LSM6DSV16X_SFLP_GAME_GBIASX_L        0x6EU
 typedef struct
@@ -2996,7 +3018,7 @@ typedef struct
   * @{
   *
   */
-#define LSM6DSV16X_EMB_ADV_PG_1             0x100
+#define LSM6DSV16X_EMB_ADV_PG_1             0x100U
 
 #define LSM6DSV16X_FSM_LC_TIMEOUT_L         0x7AU
 typedef struct
@@ -3118,7 +3140,7 @@ typedef struct
   * @{
   *
   */
-#define LSM6DSV16X_EMB_ADV_PG_2             0x200
+#define LSM6DSV16X_EMB_ADV_PG_2             0x200U
 
 #define LSM6DSV16X_EXT_FORMAT               0x00
 typedef struct
@@ -3596,6 +3618,7 @@ typedef union
   lsm6dsv16x_func_cfg_access_t          func_cfg_access;
   lsm6dsv16x_pin_ctrl_t                 pin_ctrl;
   lsm6dsv16x_if_cfg_t                   if_cfg;
+  lsm6dsv16x_odr_trig_cfg_t             odr_trig_cfg;
   lsm6dsv16x_fifo_ctrl1_t               fifo_ctrl1;
   lsm6dsv16x_fifo_ctrl2_t               fifo_ctrl2;
   lsm6dsv16x_fifo_ctrl3_t               fifo_ctrl3;
@@ -3835,6 +3858,19 @@ typedef union
   *
   */
 
+#ifndef __weak
+#define __weak __attribute__((weak))
+#endif /* __weak */
+
+/*
+ * These are the basic platform dependent I/O routines to read
+ * and write device registers connected on a standard bus.
+ * The driver keeps offering a default implementation based on function
+ * pointers to read/write routines for backward compatibility.
+ * The __weak directive allows the final application to overwrite
+ * them with a custom implementation.
+ */
+
 int32_t lsm6dsv16x_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
                             uint8_t *data,
                             uint16_t len);
@@ -3858,6 +3894,8 @@ float_t lsm6dsv16x_from_fs4000_to_mdps(int16_t lsb);
 float_t lsm6dsv16x_from_lsb_to_celsius(int16_t lsb);
 
 float_t lsm6dsv16x_from_lsb_to_nsec(uint32_t lsb);
+
+float_t lsm6dsv16x_from_lsb_to_mv(int16_t lsb);
 
 int32_t lsm6dsv16x_xl_offset_on_out_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsv16x_xl_offset_on_out_get(stmdev_ctx_t *ctx, uint8_t *val);
@@ -3896,29 +3934,55 @@ int32_t lsm6dsv16x_device_id_get(stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
-  LSM6DSV16X_XL_ODR_OFF       = 0x0,
-  LSM6DSV16X_XL_ODR_AT_1Hz875 = 0x1,
-  LSM6DSV16X_XL_ODR_AT_7Hz5   = 0x2,
-  LSM6DSV16X_XL_ODR_AT_15Hz   = 0x3,
-  LSM6DSV16X_XL_ODR_AT_30Hz   = 0x4,
-  LSM6DSV16X_XL_ODR_AT_60Hz   = 0x5,
-  LSM6DSV16X_XL_ODR_AT_120Hz  = 0x6,
-  LSM6DSV16X_XL_ODR_AT_240Hz  = 0x7,
-  LSM6DSV16X_XL_ODR_AT_480Hz  = 0x8,
-  LSM6DSV16X_XL_ODR_AT_960Hz  = 0x9,
-  LSM6DSV16X_XL_ODR_AT_1920Hz = 0xA,
-  LSM6DSV16X_XL_ODR_AT_3840Hz = 0xB,
-  LSM6DSV16X_XL_ODR_AT_7680Hz = 0xC,
-} lsm6dsv16x_xl_data_rate_t;
+  LSM6DSV16X_ODR_OFF              = 0x0,
+  LSM6DSV16X_ODR_AT_1Hz875        = 0x1,
+  LSM6DSV16X_ODR_AT_7Hz5          = 0x2,
+  LSM6DSV16X_ODR_AT_15Hz          = 0x3,
+  LSM6DSV16X_ODR_AT_30Hz          = 0x4,
+  LSM6DSV16X_ODR_AT_60Hz          = 0x5,
+  LSM6DSV16X_ODR_AT_120Hz         = 0x6,
+  LSM6DSV16X_ODR_AT_240Hz         = 0x7,
+  LSM6DSV16X_ODR_AT_480Hz         = 0x8,
+  LSM6DSV16X_ODR_AT_960Hz         = 0x9,
+  LSM6DSV16X_ODR_AT_1920Hz        = 0xA,
+  LSM6DSV16X_ODR_AT_3840Hz        = 0xB,
+  LSM6DSV16X_ODR_AT_7680Hz        = 0xC,
+  LSM6DSV16X_ODR_HA01_AT_15Hz625  = 0x13,
+  LSM6DSV16X_ODR_HA01_AT_31Hz25   = 0x14,
+  LSM6DSV16X_ODR_HA01_AT_62Hz5    = 0x15,
+  LSM6DSV16X_ODR_HA01_AT_125Hz    = 0x16,
+  LSM6DSV16X_ODR_HA01_AT_250Hz    = 0x17,
+  LSM6DSV16X_ODR_HA01_AT_500Hz    = 0x18,
+  LSM6DSV16X_ODR_HA01_AT_1000Hz   = 0x19,
+  LSM6DSV16X_ODR_HA01_AT_2000Hz   = 0x1A,
+  LSM6DSV16X_ODR_HA01_AT_4000Hz   = 0x1B,
+  LSM6DSV16X_ODR_HA01_AT_8000Hz   = 0x1C,
+  LSM6DSV16X_ODR_HA02_AT_12Hz5    = 0x23,
+  LSM6DSV16X_ODR_HA02_AT_25Hz     = 0x24,
+  LSM6DSV16X_ODR_HA02_AT_50Hz     = 0x25,
+  LSM6DSV16X_ODR_HA02_AT_100Hz    = 0x26,
+  LSM6DSV16X_ODR_HA02_AT_200Hz    = 0x27,
+  LSM6DSV16X_ODR_HA02_AT_400Hz    = 0x28,
+  LSM6DSV16X_ODR_HA02_AT_800Hz    = 0x29,
+  LSM6DSV16X_ODR_HA02_AT_1600Hz   = 0x2A,
+  LSM6DSV16X_ODR_HA02_AT_3200Hz   = 0x2B,
+  LSM6DSV16X_ODR_HA02_AT_6400Hz   = 0x2C,
+} lsm6dsv16x_data_rate_t;
 int32_t lsm6dsv16x_xl_data_rate_set(stmdev_ctx_t *ctx,
-                                    lsm6dsv16x_xl_data_rate_t val);
+                                    lsm6dsv16x_data_rate_t val);
 int32_t lsm6dsv16x_xl_data_rate_get(stmdev_ctx_t *ctx,
-                                    lsm6dsv16x_xl_data_rate_t *val);
+                                    lsm6dsv16x_data_rate_t *val);
+int32_t lsm6dsv16x_gy_data_rate_set(stmdev_ctx_t *ctx,
+                                    lsm6dsv16x_data_rate_t val);
+int32_t lsm6dsv16x_gy_data_rate_get(stmdev_ctx_t *ctx,
+                                    lsm6dsv16x_data_rate_t *val);
+
 
 typedef enum
 {
   LSM6DSV16X_XL_HIGH_PERFORMANCE_MD   = 0x0,
-  LSM6DSV16X_XL_HIGH_ACCURANCY_ODR_MD = 0x1,
+  LSM6DSV16X_XL_HIGH_ACCURACY_ODR_MD = 0x1,
+  LSM6DSV16X_XL_ODR_TRIGGERED_MD      = 0x3,
   LSM6DSV16X_XL_LOW_POWER_2_AVG_MD    = 0x4,
   LSM6DSV16X_XL_LOW_POWER_4_AVG_MD    = 0x5,
   LSM6DSV16X_XL_LOW_POWER_8_AVG_MD    = 0x6,
@@ -3929,28 +3993,8 @@ int32_t lsm6dsv16x_xl_mode_get(stmdev_ctx_t *ctx, lsm6dsv16x_xl_mode_t *val);
 
 typedef enum
 {
-  LSM6DSV16X_GY_ODR_OFF       = 0x0,
-  LSM6DSV16X_GY_ODR_AT_7Hz5   = 0x2,
-  LSM6DSV16X_GY_ODR_AT_15Hz   = 0x3,
-  LSM6DSV16X_GY_ODR_AT_30Hz   = 0x4,
-  LSM6DSV16X_GY_ODR_AT_60Hz   = 0x5,
-  LSM6DSV16X_GY_ODR_AT_120Hz  = 0x6,
-  LSM6DSV16X_GY_ODR_AT_240Hz  = 0x7,
-  LSM6DSV16X_GY_ODR_AT_480Hz  = 0x8,
-  LSM6DSV16X_GY_ODR_AT_960Hz  = 0x9,
-  LSM6DSV16X_GY_ODR_AT_1920Hz = 0xa,
-  LSM6DSV16X_GY_ODR_AT_3840Hz = 0xb,
-  LSM6DSV16X_GY_ODR_AT_7680Hz = 0xc,
-} lsm6dsv16x_gy_data_rate_t;
-int32_t lsm6dsv16x_gy_data_rate_set(stmdev_ctx_t *ctx,
-                                    lsm6dsv16x_gy_data_rate_t val);
-int32_t lsm6dsv16x_gy_data_rate_get(stmdev_ctx_t *ctx,
-                                    lsm6dsv16x_gy_data_rate_t *val);
-
-typedef enum
-{
   LSM6DSV16X_GY_HIGH_PERFORMANCE_MD   = 0x0,
-  LSM6DSV16X_GY_HIGH_ACCURANCY_ODR_MD = 0x1,
+  LSM6DSV16X_GY_HIGH_ACCURACY_ODR_MD = 0x1,
   LSM6DSV16X_GY_SLEEP_MD              = 0x4,
   LSM6DSV16X_GY_LOW_POWER_MD          = 0x5,
 } lsm6dsv16x_gy_mode_t;
@@ -3963,6 +4007,9 @@ int32_t lsm6dsv16x_auto_increment_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t lsm6dsv16x_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsv16x_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val);
 
+int32_t lsm6dsv16x_odr_trig_cfg_set(stmdev_ctx_t *ctx, uint8_t val);
+int32_t lsm6dsv16x_odr_trig_cfg_get(stmdev_ctx_t *ctx, uint8_t *val);
+
 typedef enum
 {
   LSM6DSV16X_DRDY_LATCHED = 0x0,
@@ -3973,6 +4020,16 @@ int32_t lsm6dsv16x_data_ready_mode_set(stmdev_ctx_t *ctx,
 int32_t lsm6dsv16x_data_ready_mode_get(stmdev_ctx_t *ctx,
                                        lsm6dsv16x_data_ready_mode_t *val);
 
+typedef struct
+{
+  uint8_t enable               : 1; /* interrupt enable */
+  uint8_t lir                  : 1; /* interrupt pulsed or latched */
+} lsm6dsv16x_interrupt_mode_t;
+int32_t lsm6dsv16x_interrupt_enable_set(stmdev_ctx_t *ctx,
+                                        lsm6dsv16x_interrupt_mode_t val);
+int32_t lsm6dsv16x_interrupt_enable_get(stmdev_ctx_t *ctx,
+                                        lsm6dsv16x_interrupt_mode_t *val);
+
 typedef enum
 {
   LSM6DSV16X_125dps  = 0x0,
@@ -3980,7 +4037,7 @@ typedef enum
   LSM6DSV16X_500dps  = 0x2,
   LSM6DSV16X_1000dps = 0x3,
   LSM6DSV16X_2000dps = 0x4,
-  LSM6DSV16X_4000dps = 0x5,
+  LSM6DSV16X_4000dps = 0xc,
 } lsm6dsv16x_gy_full_scale_t;
 int32_t lsm6dsv16x_gy_full_scale_set(stmdev_ctx_t *ctx,
                                      lsm6dsv16x_gy_full_scale_t val);
@@ -4125,6 +4182,15 @@ typedef struct
   uint8_t fifo_full            : 1;
   uint8_t cnt_bdr              : 1;
   uint8_t emb_func_endop       : 1;
+  uint8_t timestamp            : 1;
+  uint8_t shub                 : 1;
+  uint8_t emb_func             : 1;
+  uint8_t sixd                 : 1;
+  uint8_t single_tap           : 1;
+  uint8_t double_tap           : 1;
+  uint8_t wakeup               : 1;
+  uint8_t freefall             : 1;
+  uint8_t sleep_change         : 1;
 } lsm6dsv16x_pin_int_route_t;
 int32_t lsm6dsv16x_pin_int1_route_set(stmdev_ctx_t *ctx,
                                       lsm6dsv16x_pin_int_route_t *val);
@@ -4194,9 +4260,9 @@ typedef struct
   uint8_t den_z                : 1;
   enum
   {
-    LSM6DSV16X_DEN_NOT_DEFINED = 0x00,
-    LSM6DSV16X_LEVEL_TRIGGER   = 0x02,
-    LSM6DSV16X_LEVEL_LATCHED   = 0x03,
+    DEN_NOT_DEFINED = 0x00,
+    LEVEL_TRIGGER   = 0x02,
+    LEVEL_LATCHED   = 0x03,
   } mode;
 } lsm6dsv16x_den_conf_t;
 int32_t lsm6dsv16x_den_conf_set(stmdev_ctx_t *ctx, lsm6dsv16x_den_conf_t val);
@@ -4419,17 +4485,8 @@ int32_t lsm6dsv16x_fifo_mlc_batch_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t lsm6dsv16x_fifo_mlc_filt_batch_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsv16x_fifo_mlc_filt_batch_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lsm6dsv16x_fifo_batch_sh_slave_0_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsv16x_fifo_batch_sh_slave_0_get(stmdev_ctx_t *ctx, uint8_t *val);
-
-int32_t lsm6dsv16x_fifo_batch_sh_slave_1_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsv16x_fifo_batch_sh_slave_1_get(stmdev_ctx_t *ctx, uint8_t *val);
-
-int32_t lsm6dsv16x_fifo_batch_sh_slave_2_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsv16x_fifo_batch_sh_slave_2_get(stmdev_ctx_t *ctx, uint8_t *val);
-
-int32_t lsm6dsv16x_fifo_batch_sh_slave_3_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsv16x_fifo_batch_sh_slave_3_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dsv16x_fifo_sh_batch_slave_set(stmdev_ctx_t *ctx, uint8_t idx, uint8_t val);
+int32_t lsm6dsv16x_fifo_sh_batch_slave_get(stmdev_ctx_t *ctx, uint8_t idx, uint8_t *val);
 
 typedef struct
 {
@@ -4620,14 +4677,14 @@ int32_t lsm6dsv16x_fsm_long_cnt_get(stmdev_ctx_t *ctx, uint16_t *val);
 
 typedef struct
 {
-  lsm6dsv16x_fsm_outs1_t fsm_outs1;
-  lsm6dsv16x_fsm_outs2_t fsm_outs2;
-  lsm6dsv16x_fsm_outs3_t fsm_outs3;
-  lsm6dsv16x_fsm_outs4_t fsm_outs4;
-  lsm6dsv16x_fsm_outs5_t fsm_outs5;
-  lsm6dsv16x_fsm_outs6_t fsm_outs6;
-  lsm6dsv16x_fsm_outs7_t fsm_outs7;
-  lsm6dsv16x_fsm_outs8_t fsm_outs8;
+  uint8_t fsm_outs1;
+  uint8_t fsm_outs2;
+  uint8_t fsm_outs3;
+  uint8_t fsm_outs4;
+  uint8_t fsm_outs5;
+  uint8_t fsm_outs6;
+  uint8_t fsm_outs7;
+  uint8_t fsm_outs8;
 } lsm6dsv16x_fsm_out_t;
 int32_t lsm6dsv16x_fsm_out_get(stmdev_ctx_t *ctx, lsm6dsv16x_fsm_out_t *val);
 
@@ -4748,12 +4805,12 @@ int32_t lsm6dsv16x_ff_thresholds_get(stmdev_ctx_t *ctx,
 
 typedef enum
 {
-  LSM6DSV16X_DISABLE        = 0x0,
-  LSM6DSV16X_MLC_BEFORE_FSM = 0x1,
-  LSM6DSV16X_MLC_AFTER_FSM  = 0x2,
+  LSM6DSV16X_MLC_OFF                             = 0x0,
+  LSM6DSV16X_MLC_ON                              = 0x1,
+  LSM6DSV16X_MLC_ON_BEFORE_FSM                   = 0x2,
 } lsm6dsv16x_mlc_mode_t;
-int32_t lsm6dsv16x_mlc_mode_set(stmdev_ctx_t *ctx, lsm6dsv16x_mlc_mode_t val);
-int32_t lsm6dsv16x_mlc_mode_get(stmdev_ctx_t *ctx, lsm6dsv16x_mlc_mode_t *val);
+int32_t lsm6dsv16x_mlc_set(stmdev_ctx_t *ctx, lsm6dsv16x_mlc_mode_t val);
+int32_t lsm6dsv16x_mlc_get(stmdev_ctx_t *ctx, lsm6dsv16x_mlc_mode_t *val);
 
 typedef enum
 {
@@ -4917,29 +4974,7 @@ int32_t lsm6dsv16x_sh_master_interface_pull_up_set(stmdev_ctx_t *ctx,
 int32_t lsm6dsv16x_sh_master_interface_pull_up_get(stmdev_ctx_t *ctx,
                                                    uint8_t *val);
 
-typedef struct
-{
-  lsm6dsv16x_sensor_hub_1_t   sh_byte_1;
-  lsm6dsv16x_sensor_hub_2_t   sh_byte_2;
-  lsm6dsv16x_sensor_hub_3_t   sh_byte_3;
-  lsm6dsv16x_sensor_hub_4_t   sh_byte_4;
-  lsm6dsv16x_sensor_hub_5_t   sh_byte_5;
-  lsm6dsv16x_sensor_hub_6_t   sh_byte_6;
-  lsm6dsv16x_sensor_hub_7_t   sh_byte_7;
-  lsm6dsv16x_sensor_hub_8_t   sh_byte_8;
-  lsm6dsv16x_sensor_hub_9_t   sh_byte_9;
-  lsm6dsv16x_sensor_hub_10_t  sh_byte_10;
-  lsm6dsv16x_sensor_hub_11_t  sh_byte_11;
-  lsm6dsv16x_sensor_hub_12_t  sh_byte_12;
-  lsm6dsv16x_sensor_hub_13_t  sh_byte_13;
-  lsm6dsv16x_sensor_hub_14_t  sh_byte_14;
-  lsm6dsv16x_sensor_hub_15_t  sh_byte_15;
-  lsm6dsv16x_sensor_hub_16_t  sh_byte_16;
-  lsm6dsv16x_sensor_hub_17_t  sh_byte_17;
-  lsm6dsv16x_sensor_hub_18_t  sh_byte_18;
-} lsm6dsv16x_emb_sh_read_t;
-int32_t lsm6dsv16x_sh_read_data_raw_get(stmdev_ctx_t *ctx,
-                                        lsm6dsv16x_emb_sh_read_t *val,
+int32_t lsm6dsv16x_sh_read_data_raw_get(stmdev_ctx_t *ctx, uint8_t *val,
                                         uint8_t len);
 
 typedef enum
@@ -5011,15 +5046,11 @@ typedef struct
   uint8_t   slv_subadd;
   uint8_t   slv_len;
 } lsm6dsv16x_sh_cfg_read_t;
-int32_t lsm6dsv16x_sh_slv0_cfg_read(stmdev_ctx_t *ctx,
-                                    lsm6dsv16x_sh_cfg_read_t *val);
-int32_t lsm6dsv16x_sh_slv1_cfg_read(stmdev_ctx_t *ctx,
-                                    lsm6dsv16x_sh_cfg_read_t *val);
-int32_t lsm6dsv16x_sh_slv2_cfg_read(stmdev_ctx_t *ctx,
-                                    lsm6dsv16x_sh_cfg_read_t *val);
-int32_t lsm6dsv16x_sh_slv3_cfg_read(stmdev_ctx_t *ctx,
-                                    lsm6dsv16x_sh_cfg_read_t *val);
+int32_t lsm6dsv16x_sh_slv_cfg_read(stmdev_ctx_t *ctx, uint8_t idx,
+                                   lsm6dsv16x_sh_cfg_read_t *val);
 
+int32_t lsm6dsv16x_sh_status_get(stmdev_ctx_t *ctx,
+                                 lsm6dsv16x_status_master_t *val);
 
 int32_t lsm6dsv16x_ui_sdo_pull_up_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsv16x_ui_sdo_pull_up_get(stmdev_ctx_t *ctx, uint8_t *val);
@@ -5078,8 +5109,8 @@ int32_t lsm6dsv16x_stpcnt_debounce_get(stmdev_ctx_t *ctx, uint8_t *val);
 int32_t lsm6dsv16x_stpcnt_period_set(stmdev_ctx_t *ctx, uint16_t val);
 int32_t lsm6dsv16x_stpcnt_period_get(stmdev_ctx_t *ctx, uint16_t *val);
 
-int32_t lsm6dsv16x_sflp_game_rotation_set(stmdev_ctx_t *ctx, uint16_t val);
-int32_t lsm6dsv16x_sflp_game_rotation_get(stmdev_ctx_t *ctx, uint16_t *val);
+int32_t lsm6dsv16x_sflp_game_rotation_set(stmdev_ctx_t *ctx, uint8_t val);
+int32_t lsm6dsv16x_sflp_game_rotation_get(stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef struct
 {
@@ -5117,9 +5148,9 @@ int32_t lsm6dsv16x_tap_detection_get(stmdev_ctx_t *ctx,
 
 typedef struct
 {
-  uint8_t x                    : 1;
-  uint8_t y                    : 1;
-  uint8_t z                    : 1;
+  uint8_t x                    : 5;
+  uint8_t y                    : 5;
+  uint8_t z                    : 5;
 } lsm6dsv16x_tap_thresholds_t;
 int32_t lsm6dsv16x_tap_thresholds_set(stmdev_ctx_t *ctx,
                                       lsm6dsv16x_tap_thresholds_t val);
@@ -5142,9 +5173,9 @@ int32_t lsm6dsv16x_tap_axis_priority_get(stmdev_ctx_t *ctx,
 
 typedef struct
 {
-  uint8_t shock                : 1;
-  uint8_t quiet                : 1;
-  uint8_t tap_gap              : 1;
+  uint8_t shock                : 2;
+  uint8_t quiet                : 2;
+  uint8_t tap_gap              : 4;
 } lsm6dsv16x_tap_time_windows_t;
 int32_t lsm6dsv16x_tap_time_windows_set(stmdev_ctx_t *ctx,
                                         lsm6dsv16x_tap_time_windows_t val);
@@ -5203,11 +5234,13 @@ int32_t lsm6dsv16x_act_sleep_xl_odr_get(stmdev_ctx_t *ctx,
 
 typedef struct
 {
-  uint32_t wk_ths_mg;
-  uint32_t inact_ths_mg;
+  lsm6dsv16x_inactivity_dur_t inactivity_cfg;
+  uint8_t inactivity_ths;
+  uint8_t threshold;
+  uint8_t duration;
 } lsm6dsv16x_act_thresholds_t;
 int32_t lsm6dsv16x_act_thresholds_set(stmdev_ctx_t *ctx,
-                                      lsm6dsv16x_act_thresholds_t val);
+                                      lsm6dsv16x_act_thresholds_t *val);
 int32_t lsm6dsv16x_act_thresholds_get(stmdev_ctx_t *ctx,
                                       lsm6dsv16x_act_thresholds_t *val);
 

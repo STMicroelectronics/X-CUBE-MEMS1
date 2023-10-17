@@ -217,10 +217,12 @@ int32_t LPS27HHTW_GetCapabilities(LPS27HHTW_Object_t *pObj, LPS27HHTW_Capabiliti
   Capabilities->Humidity    = 0;
   Capabilities->Pressure    = 1;
   Capabilities->Temperature = 1;
+  Capabilities->Gas         = 0;
   Capabilities->LowPower    = 0;
   Capabilities->HumMaxOdr   = 0.0f;
   Capabilities->TempMaxOdr  = 200.0f;
   Capabilities->PressMaxOdr = 200.0f;
+  Capabilities->GasMaxOdr   = 0.0f;
   return LPS27HHTW_OK;
 }
 
@@ -651,10 +653,13 @@ static int32_t LPS27HHTW_SetOutputDataRate_When_Disabled(LPS27HHTW_Object_t *pOb
   */
 static int32_t LPS27HHTW_Initialize(LPS27HHTW_Object_t *pObj)
 {
-  /* Disable MIPI I3C(SM) interface */
-  if (lps27hhtw_i3c_interface_set(&(pObj->Ctx), LPS27HHTW_I3C_DISABLE) != LPS27HHTW_OK)
+  if(pObj->IO.BusType != LPS27HHTW_I3C_BUS)
   {
-    return LPS27HHTW_ERROR;
+    /* Disable MIPI I3C(SM) interface */
+    if (lps27hhtw_i3c_interface_set(&(pObj->Ctx), LPS27HHTW_I3C_DISABLE) != LPS27HHTW_OK)
+    {
+      return LPS27HHTW_ERROR;
+    }
   }
 
   /* Power down the device, set Low Noise Enable (bit 5), clear One Shot (bit 4) */

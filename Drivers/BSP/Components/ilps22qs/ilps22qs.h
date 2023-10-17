@@ -56,7 +56,7 @@ typedef struct
 {
   ILPS22QS_Init_Func          Init;
   ILPS22QS_DeInit_Func        DeInit;
-  uint32_t                   BusType; /*0 means I2C, 1 means SPI 4-Wires, 2 means SPI-3-Wires */
+  uint32_t                   BusType; /*0 means I2C, 1 means SPI 4-Wires, 2 means SPI-3-Wires, 3 means I3C */
   uint8_t                    Address;
   ILPS22QS_WriteReg_Func      WriteReg;
   ILPS22QS_ReadReg_Func       ReadReg;
@@ -79,10 +79,12 @@ typedef struct
   uint8_t Temperature;
   uint8_t Pressure;
   uint8_t Humidity;
+  uint8_t Gas;
   uint8_t LowPower;
   float   HumMaxOdr;
   float   TempMaxOdr;
   float   PressMaxOdr;
+  float   GasMaxOdr;
 } ILPS22QS_Capabilities_t;
 
 typedef struct
@@ -149,6 +151,7 @@ typedef union
 #define ILPS22QS_I2C_BUS          0U
 #define ILPS22QS_SPI_4WIRES_BUS   1U
 #define ILPS22QS_SPI_3WIRES_BUS   2U
+#define ILPS22QS_I3C_BUS          3U
 
 /**
   * @}

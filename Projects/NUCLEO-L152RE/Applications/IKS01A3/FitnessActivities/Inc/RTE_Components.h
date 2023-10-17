@@ -22,7 +22,7 @@
 #define  __RTE_COMPONENTS_H__
 
 /* Defines ------------------------------------------------------------------*/
-/* STMicroelectronics.X-CUBE-MEMS1.9.6.0 */
+/* STMicroelectronics.X-CUBE-MEMS1.10.0.0 */
 #define IKS01A3
 #define IKS01A3_FITNESSACTIVITIES_DEMO
 

@@ -175,10 +175,12 @@ int32_t SHT40AD1B_GetCapabilities(SHT40AD1B_Object_t *pObj, SHT40AD1B_Capabiliti
   Capabilities->Humidity    = 1;
   Capabilities->Pressure    = 0;
   Capabilities->Temperature = 1;
+  Capabilities->Gas         = 0;
   Capabilities->LowPower    = 0;
   Capabilities->HumMaxOdr   = 0.0f;
   Capabilities->TempMaxOdr  = 0.0f;
   Capabilities->PressMaxOdr = 0.0f;
+  Capabilities->GasMaxOdr   = 0.0f;
   return SHT40AD1B_OK;
 }
 

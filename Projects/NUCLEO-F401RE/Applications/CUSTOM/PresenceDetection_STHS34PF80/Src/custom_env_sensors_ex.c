@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    custom_env_sensors_ex.c
-  * @author  MEMS Application Team
+  * @author  MEMS Software Solutions Team
   * @brief   This file provides BSP Environmental Sensors Extended interface for custom boards
   ******************************************************************************
   * @attention
@@ -20,7 +20,31 @@
 #include "custom_env_sensors_ex.h"
 #include "RTE_Components.h"
 
+/** @addtogroup BSP BSP
+  * @{
+  */
+
+/** @addtogroup CUSTOM CUSTOM
+  * @{
+  */
+
+/** @defgroup CUSTOM_ENV_SENSOR_EX CUSTOM ENV SENSOR EX
+  * @{
+  */
+
+/** @defgroup CUSTOM_ENV_SENSOR_EX_Imported_Variables CUSTOM ENV SENSOR EX Imported Variables
+  * @{
+  */
+
 extern void *EnvCompObj[CUSTOM_ENV_INSTANCES_NBR];
+
+/**
+  * @}
+  */
+
+/** @defgroup CUSTOM_ENV_SENSOR_EX_Exported_Functions CUSTOM ENV SENSOR EX Exported Functions
+  * @{
+  */
 
 /**
   * @brief  Get the register value
@@ -95,7 +119,10 @@ int32_t CUSTOM_ENV_SENSOR_Write_Register(uint32_t Instance, uint8_t Reg, uint8_t
 /**
   * @brief  Get the status of data ready bit
   * @param  Instance the device instance
-  * @param  Function Environmental sensor function
+  * @param  Function Environmental sensor function. Could be:
+  *         - ENV_HUMIDITY
+  *         - ENV_PRESSURE
+  *         - ENV_TEMPERATURE
   * @param  Status the pointer to the status
   * @retval BSP status
   */
@@ -141,7 +168,7 @@ int32_t CUSTOM_ENV_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Function, 
   * @param  Temp the temperature data
   * @retval BSP status
   */
-int32_t CUSTOM_ENV_SENSOR_FIFO_Get_Data(uint32_t Instance, float *Press, float *Temp)
+int32_t CUSTOM_ENV_SENSOR_FIFO_Get_Data(uint32_t Instance, float_t *Press, float_t *Temp)
 {
   int32_t ret;
 
@@ -372,7 +399,7 @@ int32_t CUSTOM_ENV_SENSOR_FIFO_Usage(uint32_t Instance, uint8_t Status)
   * @param  Value the high temperature threshold to be set
   * @retval BSP status
   */
-int32_t CUSTOM_ENV_SENSOR_Set_High_Temperature_Threshold(uint32_t Instance, float Value)
+int32_t CUSTOM_ENV_SENSOR_Set_High_Temperature_Threshold(uint32_t Instance, float_t Value)
 {
   int32_t ret;
 
@@ -393,7 +420,7 @@ int32_t CUSTOM_ENV_SENSOR_Set_High_Temperature_Threshold(uint32_t Instance, floa
   * @param  Value the low temperature threshold to be set
   * @retval BSP status
   */
-int32_t CUSTOM_ENV_SENSOR_Set_Low_Temperature_Threshold(uint32_t Instance, float Value)
+int32_t CUSTOM_ENV_SENSOR_Set_Low_Temperature_Threshold(uint32_t Instance, float_t Value)
 {
   int32_t ret;
 
@@ -726,3 +753,63 @@ int32_t CUSTOM_ENV_SENSOR_Get_Sensitivity(uint32_t Instance, uint16_t *Value)
   return ret;
 }
 #endif /* PRESENCEDETECTION_STHS34PF80_DEMO */
+
+#if (defined AIRQUALITY_SGP40_DEMO)
+/**
+  * @brief  Set the humidity value
+  * @param  Instance the device instance
+  * @param  Value value to be set
+  * @retval BSP status
+  */
+int32_t CUSTOM_ENV_SENSOR_Set_Humidity(uint32_t Instance, float Value)
+{
+  int32_t ret;
+
+  switch (Instance)
+  {
+
+    default:
+      ret = BSP_ERROR_WRONG_PARAM;
+      break;
+  }
+
+  return ret;
+}
+
+/**
+  * @brief  Set the temperature value
+  * @param  Instance the device instance
+  * @param  Value value to be set
+  * @retval BSP status
+  */
+int32_t CUSTOM_ENV_SENSOR_Set_Temperature(uint32_t Instance, float Value)
+{
+  int32_t ret;
+
+  switch (Instance)
+  {
+
+    default:
+      ret = BSP_ERROR_WRONG_PARAM;
+      break;
+  }
+
+  return ret;
+}
+#endif /* AIRQUALITY_SGP40_DEMO */
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */

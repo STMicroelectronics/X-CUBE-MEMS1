@@ -65,7 +65,7 @@ typedef struct
 {
   LIS2DU12_Init_Func         Init;
   LIS2DU12_DeInit_Func       DeInit;
-  uint32_t                   BusType; /*0 means I2C, 1 means SPI 4-Wires, 2 means SPI-3-Wires */
+  uint32_t                   BusType; /*0 means I2C, 1 means SPI 4-Wires, 2 means SPI-3-Wires, 3 means I3C */
   uint8_t                    Address;
   LIS2DU12_WriteReg_Func     WriteReg;
   LIS2DU12_ReadReg_Func      ReadReg;
@@ -189,6 +189,7 @@ typedef union
 #define LIS2DU12_I2C_BUS                 0U
 #define LIS2DU12_SPI_4WIRES_BUS          1U
 #define LIS2DU12_SPI_3WIRES_BUS          2U
+#define LIS2DU12_I3C_BUS                 3U
 
 #define LIS2DU12_ACC_SENSITIVITY_FOR_FS_2G   0.976f  /**< Sensitivity value for 2g full scale, Low-power1 mode [mg/LSB] */
 #define LIS2DU12_ACC_SENSITIVITY_FOR_FS_4G   1.952f  /**< Sensitivity value for 4g full scale, Low-power1 mode [mg/LSB] */

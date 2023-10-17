@@ -7,6 +7,7 @@
   * @attention
   *
   * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2023 NumPy Developers.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file

@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    custom_env_sensors.c
-  * @author  MEMS Application Team
+  * @author  MEMS Software Solutions Team
   * @brief   This file provides BSP Environmental Sensors interface for custom boards
   ******************************************************************************
   * @attention
@@ -19,27 +19,69 @@
 /* Includes ------------------------------------------------------------------*/
 #include "custom_env_sensors.h"
 
-extern void *EnvCompObj[CUSTOM_ENV_INSTANCES_NBR]; /* This "redundant" line is here to fulfil MISRA C-2012 rule 8.4 */
+/** @addtogroup BSP BSP
+  * @{
+  */
+
+/** @addtogroup CUSTOM CUSTOM
+  * @{
+  */
+
+/** @defgroup CUSTOM_ENV_SENSORS CUSTOM ENV SENSORS
+  * @{
+  */
+
+/** @defgroup CUSTOM_ENV_SENSORS_Exported_Variables CUSTOM ENV SENSORS Exported Variables
+  * @{
+  */
+
+extern void *EnvCompObj[CUSTOM_ENV_INSTANCES_NBR]; /* This "redundant" line is here to fulfill MISRA C-2012 rule 8.4 */
 void *EnvCompObj[CUSTOM_ENV_INSTANCES_NBR];
+
+/**
+  * @}
+  */
+
+/** @defgroup CUSTOM_ENV_SENSORS_Private_Variables CUSTOM ENV SENSORS Private Variables
+  * @{
+  */
 
 /* We define a jump table in order to get the correct index from the desired function. */
 /* This table should have a size equal to the maximum value of a function plus 1.      */
-static uint32_t FunctionIndex[5] = {0, 0, 1, 1, 2};
+/* But due to MISRA it has to be increased to 15 + 1.                                  */
+static uint32_t FunctionIndex[] = {0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3};
 static ENV_SENSOR_FuncDrv_t *EnvFuncDrv[CUSTOM_ENV_INSTANCES_NBR][CUSTOM_ENV_FUNCTIONS_NBR];
 static ENV_SENSOR_CommonDrv_t *EnvDrv[CUSTOM_ENV_INSTANCES_NBR];
 static CUSTOM_ENV_SENSOR_Ctx_t EnvCtx[CUSTOM_ENV_INSTANCES_NBR];
+
+/**
+  * @}
+  */
+
+/** @defgroup CUSTOM_ENV_SENSORS_Private_Function_Prototypes CUSTOM ENV SENSORS Private Function Prototypes
+  * @{
+  */
 
 #if (USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 == 1)
 static int32_t STHS34PF80_0_Probe(uint32_t Functions);
 #endif
 
 /**
+  * @}
+  */
+
+/** @defgroup CUSTOM_ENV_SENSORS_Exported_Functions CUSTOM ENV SENSOR Exported Functions
+  * @{
+  */
+
+/**
   * @brief  Initializes the environmental sensor
   * @param  Instance environmental sensor instance to be used
-  * @param  Functions Environmental sensor functions. Could be :
+  * @param  Functions Environmental sensor functions. Could be:
   *         - ENV_TEMPERATURE
   *         - ENV_PRESSURE
   *         - ENV_HUMIDITY
+  *         - ENV_GAS
   * @retval BSP status
   */
 int32_t CUSTOM_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
@@ -74,6 +116,10 @@ int32_t CUSTOM_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
       {
         component_functions |= ENV_PRESSURE;
       }
+      if (cap.Gas == 1U)
+      {
+        component_functions |= ENV_GAS;
+      }
       break;
 #endif
     default:
@@ -102,7 +148,7 @@ int32_t CUSTOM_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
 }
 
 /**
-  * @brief  Deinitialize environmental sensor sensor
+  * @brief  Deinitialize environmental sensor
   * @param  Instance environmental sensor instance to be used
   * @retval BSP status
   */
@@ -181,10 +227,11 @@ int32_t CUSTOM_ENV_SENSOR_ReadID(uint32_t Instance, uint8_t *Id)
 /**
   * @brief  Enable environmental sensor
   * @param  Instance environmental sensor instance to be used
-  * @param  Function Environmental sensor function. Could be :
+  * @param  Function Environmental sensor function. Could be:
   *         - ENV_TEMPERATURE
   *         - ENV_PRESSURE
   *         - ENV_HUMIDITY
+  *         - ENV_GAS
   * @retval BSP status
   */
 int32_t CUSTOM_ENV_SENSOR_Enable(uint32_t Instance, uint32_t Function)
@@ -220,10 +267,11 @@ int32_t CUSTOM_ENV_SENSOR_Enable(uint32_t Instance, uint32_t Function)
 /**
   * @brief  Disable environmental sensor
   * @param  Instance environmental sensor instance to be used
-  * @param  Function Environmental sensor function. Could be :
+  * @param  Function Environmental sensor function. Could be:
   *         - ENV_TEMPERATURE
   *         - ENV_PRESSURE
   *         - ENV_HUMIDITY
+  *         - ENV_GAS
   * @retval BSP status
   */
 int32_t CUSTOM_ENV_SENSOR_Disable(uint32_t Instance, uint32_t Function)
@@ -259,14 +307,15 @@ int32_t CUSTOM_ENV_SENSOR_Disable(uint32_t Instance, uint32_t Function)
 /**
   * @brief  Get environmental sensor Output Data Rate
   * @param  Instance environmental sensor instance to be used
-  * @param  Function Environmental sensor function. Could be :
+  * @param  Function Environmental sensor function. Could be:
   *         - ENV_TEMPERATURE
   *         - ENV_PRESSURE
   *         - ENV_HUMIDITY
+  *         - ENV_GAS
   * @param  Odr pointer to Output Data Rate read value
   * @retval BSP status
   */
-int32_t CUSTOM_ENV_SENSOR_GetOutputDataRate(uint32_t Instance, uint32_t Function, float *Odr)
+int32_t CUSTOM_ENV_SENSOR_GetOutputDataRate(uint32_t Instance, uint32_t Function, float_t *Odr)
 {
   int32_t ret;
 
@@ -299,14 +348,15 @@ int32_t CUSTOM_ENV_SENSOR_GetOutputDataRate(uint32_t Instance, uint32_t Function
 /**
   * @brief  Set environmental sensor Output Data Rate
   * @param  Instance environmental sensor instance to be used
-  * @param  Function Environmental sensor function. Could be :
+  * @param  Function Environmental sensor function. Could be:
   *         - ENV_TEMPERATURE
   *         - ENV_PRESSURE
   *         - ENV_HUMIDITY
+  *         - ENV_GAS
   * @param  Odr Output Data Rate value to be set
   * @retval BSP status
   */
-int32_t CUSTOM_ENV_SENSOR_SetOutputDataRate(uint32_t Instance, uint32_t Function, float Odr)
+int32_t CUSTOM_ENV_SENSOR_SetOutputDataRate(uint32_t Instance, uint32_t Function, float_t Odr)
 {
   int32_t ret;
 
@@ -339,14 +389,15 @@ int32_t CUSTOM_ENV_SENSOR_SetOutputDataRate(uint32_t Instance, uint32_t Function
 /**
   * @brief  Get environmental sensor value
   * @param  Instance environmental sensor instance to be used
-  * @param  Function Environmental sensor function. Could be :
+  * @param  Function Environmental sensor function. Could be:
   *         - ENV_TEMPERATURE
   *         - ENV_PRESSURE
   *         - ENV_HUMIDITY
+  *         - ENV_GAS
   * @param  Value pointer to environmental sensor value
   * @retval BSP status
   */
-int32_t CUSTOM_ENV_SENSOR_GetValue(uint32_t Instance, uint32_t Function, float *Value)
+int32_t CUSTOM_ENV_SENSOR_GetValue(uint32_t Instance, uint32_t Function, float_t *Value)
 {
   int32_t ret;
 
@@ -376,11 +427,19 @@ int32_t CUSTOM_ENV_SENSOR_GetValue(uint32_t Instance, uint32_t Function, float *
   return ret;
 }
 
+/**
+  * @}
+  */
+
+/** @defgroup CUSTOM_ENV_SENSORS_Private_Functions CUSTOM ENV SENSORS Private Functions
+  * @{
+  */
+
 #if (USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 == 1)
 /**
   * @brief  Register Bus IOs for STHS34PF80 instance
-  * @param  Functions Environmental sensor functions. Could be :
-  *         - ENV_TEMPERATURE and/or ENV_PRESSURE
+  * @param  Functions Environmental sensor functions. Could be:
+  *         - ENV_TEMPERATURE
   * @retval BSP status
   */
 static int32_t STHS34PF80_0_Probe(uint32_t Functions)
@@ -391,7 +450,7 @@ static int32_t STHS34PF80_0_Probe(uint32_t Functions)
   static STHS34PF80_Object_t sths34pf80_obj_0;
   STHS34PF80_Capabilities_t  cap;
 
-  /* Configure the pressure driver */
+  /* Configure the driver */
   io_ctx.BusType     = STHS34PF80_I2C_BUS; /* I2C */
   io_ctx.Address     = STHS34PF80_I2C_ADD;
   io_ctx.Init        = CUSTOM_STHS34PF80_0_I2C_Init;
@@ -399,6 +458,7 @@ static int32_t STHS34PF80_0_Probe(uint32_t Functions)
   io_ctx.ReadReg     = CUSTOM_STHS34PF80_0_I2C_ReadReg;
   io_ctx.WriteReg    = CUSTOM_STHS34PF80_0_I2C_WriteReg;
   io_ctx.GetTick     = BSP_GetTick;
+  io_ctx.Delay       = HAL_Delay;
 
   if (STHS34PF80_RegisterBusIO(&sths34pf80_obj_0, &io_ctx) != STHS34PF80_OK)
   {
@@ -416,8 +476,10 @@ static int32_t STHS34PF80_0_Probe(uint32_t Functions)
   {
     (void)STHS34PF80_GetCapabilities(&sths34pf80_obj_0, &cap);
 
-    EnvCtx[CUSTOM_STHS34PF80_0].Functions = ((uint32_t)cap.Temperature) | ((uint32_t)cap.Pressure << 1) | ((
-                                    uint32_t)cap.Humidity << 2);
+    EnvCtx[CUSTOM_STHS34PF80_0].Functions = ((uint32_t)cap.Temperature)
+                                          | ((uint32_t)cap.Pressure << 1)
+                                          | ((uint32_t)cap.Humidity << 2)
+                                          | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[CUSTOM_STHS34PF80_0] = &sths34pf80_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */
@@ -437,12 +499,17 @@ static int32_t STHS34PF80_0_Probe(uint32_t Functions)
         ret = BSP_ERROR_NONE;
       }
     }
-    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_PRESSURE) == ENV_PRESSURE) && (cap.Pressure == 1U))
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_PRESSURE) == ENV_PRESSURE))
     {
       /* Return an error if the application try to initialize a function not supported by the component */
       ret = BSP_ERROR_COMPONENT_FAILURE;
     }
     if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_HUMIDITY) == ENV_HUMIDITY))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_GAS) == ENV_GAS))
     {
       /* Return an error if the application try to initialize a function not supported by the component */
       ret = BSP_ERROR_COMPONENT_FAILURE;
@@ -453,3 +520,18 @@ static int32_t STHS34PF80_0_Probe(uint32_t Functions)
 }
 #endif
 
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */

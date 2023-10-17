@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    iks02a1_conf.h
-  * @author  MEMS Application Team
+  * @author  MEMS Software Solutions Team
   * @brief   This file contains definitions for the MEMS components bus interfaces
   ******************************************************************************
   * @attention

@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    custom_motion_sensors.h
-  * @author  MEMS Application Team
+  * @author  MEMS Software Solutions Team
   * @brief   This file contains definitions for the BSP Motion Sensors interface
   *          for custom boards
   ******************************************************************************
@@ -18,8 +18,8 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __CUSTOM_MOTION_SENSORS_H__
-#define __CUSTOM_MOTION_SENSORS_H__
+#ifndef CUSTOM_MOTION_SENSORS_H
+#define CUSTOM_MOTION_SENSORS_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,6 +33,22 @@ extern "C" {
 #if (USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0 == 1)
 #include "iis2iclx.h"
 #endif
+
+/** @addtogroup BSP BSP
+  * @{
+  */
+
+/** @addtogroup CUSTOM CUSTOM
+  * @{
+  */
+
+/** @addtogroup CUSTOM_MOTION_SENSOR CUSTOM MOTION SENSOR
+  * @{
+  */
+
+/** @defgroup CUSTOM_MOTION_SENSOR_Exported_Types CUSTOM MOTION SENSOR Exported Types
+  * @{
+  */
 
 #if (USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0 == 1)
 #define CUSTOM_IIS2ICLX_0 (0)
@@ -62,15 +78,23 @@ typedef struct
   uint32_t GyroMaxFS;
   uint32_t AccMaxFS;
   uint32_t MagMaxFS;
-  float    GyroMaxOdr;
-  float    AccMaxOdr;
-  float    MagMaxOdr;
+  float_t  GyroMaxOdr;
+  float_t  AccMaxOdr;
+  float_t  MagMaxOdr;
 } CUSTOM_MOTION_SENSOR_Capabilities_t;
 
 typedef struct
 {
   uint32_t Functions;
 } CUSTOM_MOTION_SENSOR_Ctx_t;
+
+/**
+  * @}
+  */
+
+/** @defgroup CUSTOM_MOTION_SENSOR_Exported_Constants CUSTOM MOTION SENSOR Exported Constants
+  * @{
+  */
 
 #ifndef MOTION_GYRO
 #define MOTION_GYRO             1U
@@ -89,6 +113,14 @@ typedef struct
 #error "No motion sensor instance has been selected"
 #endif
 
+/**
+  * @}
+  */
+
+/** @addtogroup CUSTOM_MOTION_SENSOR_Exported_Functions CUSTOM_MOTION_SENSOR Exported Functions
+  * @{
+  */
+
 int32_t CUSTOM_MOTION_SENSOR_Init(uint32_t Instance, uint32_t Functions);
 int32_t CUSTOM_MOTION_SENSOR_DeInit(uint32_t Instance);
 int32_t CUSTOM_MOTION_SENSOR_GetCapabilities(uint32_t Instance, CUSTOM_MOTION_SENSOR_Capabilities_t *Capabilities);
@@ -97,14 +129,30 @@ int32_t CUSTOM_MOTION_SENSOR_Enable(uint32_t Instance, uint32_t Function);
 int32_t CUSTOM_MOTION_SENSOR_Disable(uint32_t Instance, uint32_t Function);
 int32_t CUSTOM_MOTION_SENSOR_GetAxes(uint32_t Instance, uint32_t Function, CUSTOM_MOTION_SENSOR_Axes_t *Axes);
 int32_t CUSTOM_MOTION_SENSOR_GetAxesRaw(uint32_t Instance, uint32_t Function, CUSTOM_MOTION_SENSOR_AxesRaw_t *Axes);
-int32_t CUSTOM_MOTION_SENSOR_GetSensitivity(uint32_t Instance, uint32_t Function, float *Sensitivity);
-int32_t CUSTOM_MOTION_SENSOR_GetOutputDataRate(uint32_t Instance, uint32_t Function, float *Odr);
-int32_t CUSTOM_MOTION_SENSOR_SetOutputDataRate(uint32_t Instance, uint32_t Function, float Odr);
+int32_t CUSTOM_MOTION_SENSOR_GetSensitivity(uint32_t Instance, uint32_t Function, float_t *Sensitivity);
+int32_t CUSTOM_MOTION_SENSOR_GetOutputDataRate(uint32_t Instance, uint32_t Function, float_t *Odr);
+int32_t CUSTOM_MOTION_SENSOR_SetOutputDataRate(uint32_t Instance, uint32_t Function, float_t Odr);
 int32_t CUSTOM_MOTION_SENSOR_GetFullScale(uint32_t Instance, uint32_t Function, int32_t *Fullscale);
 int32_t CUSTOM_MOTION_SENSOR_SetFullScale(uint32_t Instance, uint32_t Function, int32_t Fullscale);
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __CUSTOM_MOTION_SENSORS_H__ */
+#endif /* CUSTOM_MOTION_SENSORS_H */

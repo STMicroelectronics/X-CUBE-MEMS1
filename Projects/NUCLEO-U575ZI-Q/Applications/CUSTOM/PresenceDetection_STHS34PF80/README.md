@@ -1,4 +1,12 @@
 
+---
+pagetitle: Readme
+lang: en
+---
+::: {.row}
+::: {.col-sm-12 .col-lg-8}
+
+
 ## <b>PresenceDetection_STHS34PF80 Application Description</b>
 
 This application shows how to use Infrared Presence Detection library to obtain object presence and motion data using STHS34PF80 infrared temperature TMOS sensor only.
@@ -36,6 +44,7 @@ MEMS, I2C, VCOM
     - NUCLEO-U575ZI-Q RevC board
 
 
+ADDITIONAL_BOARD : STEVAL-MKI231KA https://www.st.com/en/evaluation-tools/steval-mki231ka.html
 ADDITIONAL_COMP : STHS34PF80 https://www.st.com/en/mems-and-sensors/sths34pf80.html
 
 
@@ -62,3 +71,7 @@ All rights reserved.
 
 This software is licensed under terms that can be found in the LICENSE file in the root directory of this software component.
 If no LICENSE file comes with this software, it is provided AS-IS.
+
+:::
+:::
+

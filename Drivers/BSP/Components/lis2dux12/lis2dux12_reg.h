@@ -2078,43 +2078,49 @@ typedef enum
 int32_t lis2dux12_data_ready_mode_set(stmdev_ctx_t *ctx, lis2dux12_data_ready_mode_t val);
 int32_t lis2dux12_data_ready_mode_get(stmdev_ctx_t *ctx, lis2dux12_data_ready_mode_t *val);
 
+typedef enum {
+  LIS2DUX12_OFF               = 0x00, /* in power down */
+  LIS2DUX12_1Hz6_ULP          = 0x01, /* @1Hz6 (ultra low power) */
+  LIS2DUX12_3Hz_ULP           = 0x02, /* @3Hz (ultra low power) */
+  LIS2DUX12_25Hz_ULP          = 0x03, /* @25Hz (ultra low power) */
+  LIS2DUX12_6Hz_LP            = 0x04, /* @6Hz (low power) */
+  LIS2DUX12_12Hz5_LP          = 0x05, /* @12Hz5 (low power) */
+  LIS2DUX12_25Hz_LP           = 0x06, /* @25Hz  (low power ) */
+  LIS2DUX12_50Hz_LP           = 0x07, /* @50Hz  (low power) */
+  LIS2DUX12_100Hz_LP          = 0x08, /* @100Hz (low power) */
+  LIS2DUX12_200Hz_LP          = 0x09, /* @200Hz (low power) */
+  LIS2DUX12_400Hz_LP          = 0x0A, /* @400Hz (low power) */
+  LIS2DUX12_800Hz_LP          = 0x0B, /* @800Hz (low power) */
+  LIS2DUX12_6Hz_HP            = 0x14, /* @6Hz (high performance) */
+  LIS2DUX12_12Hz5_HP          = 0x15, /* @12Hz5 (high performance) */
+  LIS2DUX12_25Hz_HP           = 0x16, /* @25Hz  (high performance ) */
+  LIS2DUX12_50Hz_HP           = 0x17, /* @50Hz  (high performance) */
+  LIS2DUX12_100Hz_HP          = 0x18, /* @100Hz (high performance) */
+  LIS2DUX12_200Hz_HP          = 0x19, /* @200Hz (high performance) */
+  LIS2DUX12_400Hz_HP          = 0x1A, /* @400Hz (high performance) */
+  LIS2DUX12_800Hz_HP          = 0x1B, /* @800Hz (high performance) */
+  LIS2DUX12_TRIG_PIN          = 0x2E, /* Single-shot high latency by INT2 */
+  LIS2DUX12_TRIG_SW           = 0x2F, /* Single-shot high latency by IF */
+} lis2dux12_odr_t;
+
+typedef enum {
+  LIS2DUX12_2g   = 0,
+  LIS2DUX12_4g   = 1,
+  LIS2DUX12_8g   = 2,
+  LIS2DUX12_16g  = 3,
+} lis2dux12_fs_t;
+
+typedef enum {
+  LIS2DUX12_ODR_div_2   = 0,
+  LIS2DUX12_ODR_div_4   = 1,
+  LIS2DUX12_ODR_div_8   = 2,
+  LIS2DUX12_ODR_div_16  = 3,
+} lis2dux12_bw_t;
+
 typedef struct {
-  enum {
-    LIS2DUX12_OFF               = 0x00, /* in power down */
-    LIS2DUX12_1Hz5_ULP          = 0x01, /* @1Hz6 (low power) */
-    LIS2DUX12_3Hz_ULP           = 0x02, /* @3Hz (ultra low) */
-    LIS2DUX12_25Hz_ULP          = 0x03, /* @25Hz (ultra low) */
-    LIS2DUX12_6Hz               = 0x04, /* @6Hz (low power) */
-    LIS2DUX12_12Hz5             = 0x05, /* @12Hz5 (low power) */
-    LIS2DUX12_25Hz              = 0x06, /* @25Hz  (low power ) */
-    LIS2DUX12_50Hz              = 0x07, /* @50Hz  (low power) */
-    LIS2DUX12_100Hz             = 0x08, /* @100Hz (low power) */
-    LIS2DUX12_200Hz             = 0x09, /* @200Hz (low power) */
-    LIS2DUX12_400Hz             = 0x0A, /* @400Hz (low power) */
-    LIS2DUX12_800Hz             = 0x0B, /* @800Hz (low power) */
-    LIS2DUX12_TRIG_PIN          = 0x0E, /* Single-shot high latency by INT2 */
-    LIS2DUX12_TRIG_SW           = 0x0F, /* Single-shot high latency by IF */
-    LIS2DUX12_6Hz_HP            = 0x14, /* @6Hz (high performance) */
-    LIS2DUX12_12Hz5_HP          = 0x15, /* @12Hz5 (high performance) */
-    LIS2DUX12_25Hz_HP           = 0x16, /* @25Hz  (high performance ) */
-    LIS2DUX12_50Hz_HP           = 0x17, /* @50Hz  (high performance) */
-    LIS2DUX12_100Hz_HP          = 0x18, /* @100Hz (high performance) */
-    LIS2DUX12_200Hz_HP          = 0x19, /* @200Hz (high performance) */
-    LIS2DUX12_400Hz_HP          = 0x1A, /* @400Hz (high performance) */
-    LIS2DUX12_800Hz_HP          = 0x1B, /* @800Hz (high performance) */
-  } odr;
-  enum {
-    LIS2DUX12_2g   = 0,
-    LIS2DUX12_4g   = 1,
-    LIS2DUX12_8g   = 2,
-    LIS2DUX12_16g  = 3,
-  } fs;
-  enum {
-    LIS2DUX12_ODR_div_2   = 0,
-    LIS2DUX12_ODR_div_4   = 1,
-    LIS2DUX12_ODR_div_8   = 2,
-    LIS2DUX12_ODR_div_16  = 3,
-  } bw;
+  lis2dux12_odr_t odr;
+  lis2dux12_fs_t fs;
+  lis2dux12_bw_t bw;
 } lis2dux12_md_t;
 int32_t lis2dux12_mode_set(stmdev_ctx_t *ctx, lis2dux12_md_t *val);
 int32_t lis2dux12_mode_get(stmdev_ctx_t *ctx, lis2dux12_md_t *val);
@@ -2179,13 +2185,15 @@ int32_t lis2dux12_self_test_stop(stmdev_ctx_t *ctx);
 int32_t lis2dux12_enter_deep_power_down(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lis2dux12_exit_deep_power_down(stmdev_ctx_t *ctx);
 
+typedef enum {
+  LIS2DUX12_I3C_BUS_AVAIL_TIME_20US = 0x0,
+  LIS2DUX12_I3C_BUS_AVAIL_TIME_50US = 0x1,
+  LIS2DUX12_I3C_BUS_AVAIL_TIME_1MS  = 0x2,
+  LIS2DUX12_I3C_BUS_AVAIL_TIME_25MS = 0x3,
+} lis2dux12_bus_act_sel_t;
+
 typedef struct {
-  enum {
-    LIS2DUX12_I3C_BUS_AVAIL_TIME_20US = 0x0,
-    LIS2DUX12_I3C_BUS_AVAIL_TIME_50US = 0x1,
-    LIS2DUX12_I3C_BUS_AVAIL_TIME_1MS  = 0x2,
-    LIS2DUX12_I3C_BUS_AVAIL_TIME_25MS = 0x3,
-  } bus_act_sel;
+  lis2dux12_bus_act_sel_t bus_act_sel;
   uint8_t asf_on                       : 1;
   uint8_t drstdaa_en                   : 1;
 } lis2dux12_i3c_cfg_t;
@@ -2269,13 +2277,15 @@ int32_t lis2dux12_emb_pin_int2_route_set(stmdev_ctx_t *ctx,
 int32_t lis2dux12_emb_pin_int2_route_get(stmdev_ctx_t *ctx,
                                           lis2dux12_emb_pin_int_route_t *val);
 
+typedef enum
+{
+  LIS2DUX12_INT_DISABLED             = 0x0,
+  LIS2DUX12_INT_LEVEL                = 0x1,
+  LIS2DUX12_INT_LATCHED              = 0x2,
+} lis2dux12_int_cfg_t;
+
 typedef struct {
-  enum lis2dux12_int_cfg
-  {
-    LIS2DUX12_INT_DISABLED             = 0x0,
-    LIS2DUX12_INT_LEVEL                = 0x1,
-    LIS2DUX12_INT_LATCHED              = 0x2,
-  } int_cfg;
+  lis2dux12_int_cfg_t int_cfg;
   uint8_t sleep_status_on_int          : 1;  /* route sleep_status on interrupt */
   uint8_t dis_rst_lir_all_int          : 1;  /* disable LIR reset when reading ALL_INT_SRC */
 } lis2dux12_int_config_t;
@@ -2290,43 +2300,51 @@ typedef enum
 int32_t lis2dux12_embedded_int_config_set(stmdev_ctx_t *ctx, lis2dux12_embedded_int_config_t val);
 int32_t lis2dux12_embedded_int_config_get(stmdev_ctx_t *ctx, lis2dux12_embedded_int_config_t *val);
 
+typedef enum
+{
+  LIS2DUX12_BYPASS_MODE              = 0x0,
+  LIS2DUX12_FIFO_MODE                = 0x1,
+  LIS2DUX12_STREAM_TO_FIFO_MODE      = 0x3,
+  LIS2DUX12_BYPASS_TO_STREAM_MODE    = 0x4,
+  LIS2DUX12_STREAM_MODE              = 0x6,
+  LIS2DUX12_BYPASS_TO_FIFO_MODE      = 0x7,
+  LIS2DUX12_FIFO_OFF                 = 0x8,
+} lis2dux12_operation_t;
+
+typedef enum {
+  LIS2DUX12_FIFO_1X                  = 0,
+  LIS2DUX12_FIFO_2X                  = 1,
+} lis2dux12_store_t;
+
+typedef enum
+{
+  LIS2DUX12_DEC_TS_OFF             = 0x0,
+  LIS2DUX12_DEC_TS_1               = 0x1,
+  LIS2DUX12_DEC_TS_8               = 0x2,
+  LIS2DUX12_DEC_TS_32              = 0x3,
+} lis2dux12_dec_ts_t;
+
+typedef enum
+{
+  LIS2DUX12_BDR_XL_ODR             = 0x0,
+  LIS2DUX12_BDR_XL_ODR_DIV_2       = 0x1,
+  LIS2DUX12_BDR_XL_ODR_DIV_4       = 0x2,
+  LIS2DUX12_BDR_XL_ODR_DIV_8       = 0x3,
+  LIS2DUX12_BDR_XL_ODR_DIV_16      = 0x4,
+  LIS2DUX12_BDR_XL_ODR_DIV_32      = 0x5,
+  LIS2DUX12_BDR_XL_ODR_DIV_64      = 0x6,
+  LIS2DUX12_BDR_XL_ODR_OFF         = 0x7,
+} lis2dux12_bdr_xl_t;
+
 typedef struct {
-  enum lis2dux12_operation
-  {
-    LIS2DUX12_BYPASS_MODE              = 0x0,
-    LIS2DUX12_FIFO_MODE                = 0x1,
-    LIS2DUX12_STREAM_TO_FIFO_MODE      = 0x3,
-    LIS2DUX12_BYPASS_TO_STREAM_MODE    = 0x4,
-    LIS2DUX12_STREAM_MODE              = 0x6,
-    LIS2DUX12_BYPASS_TO_FIFO_MODE      = 0x7,
-    LIS2DUX12_FIFO_OFF                 = 0x8,
-  } operation;
-  enum lis2dux12_store {
-    LIS2DUX12_FIFO_1X                  = 0,
-    LIS2DUX12_FIFO_2X                  = 1,
-  } store;
+  lis2dux12_operation_t operation;
+  lis2dux12_store_t store;
   uint8_t xl_only                      : 1; /* when set to 1, only XL samples (16-bit) are stored in FIFO */
   uint8_t watermark                    : 7; /* (0 disable) max 127 @16bit, even and max 256 @8bit.*/
   uint8_t cfg_change_in_fifo           : 1;
   struct {
-    enum lis2dux12_dec_ts
-    {
-      LIS2DUX12_DEC_TS_OFF             = 0x0,
-      LIS2DUX12_DEC_TS_1               = 0x1,
-      LIS2DUX12_DEC_TS_8               = 0x2,
-      LIS2DUX12_DEC_TS_32              = 0x3,
-    } dec_ts; /* decimation for timestamp batching*/
-    enum lis2dux12_bdr_xl
-    {
-      LIS2DUX12_BDR_XL_ODR             = 0x0,
-      LIS2DUX12_BDR_XL_ODR_DIV_2       = 0x1,
-      LIS2DUX12_BDR_XL_ODR_DIV_4       = 0x2,
-      LIS2DUX12_BDR_XL_ODR_DIV_8       = 0x3,
-      LIS2DUX12_BDR_XL_ODR_DIV_16      = 0x4,
-      LIS2DUX12_BDR_XL_ODR_DIV_32      = 0x5,
-      LIS2DUX12_BDR_XL_ODR_DIV_64      = 0x6,
-      LIS2DUX12_BDR_XL_ODR_OFF         = 0x7,
-    } bdr_xl; /* accelerometer batch data rate*/
+    lis2dux12_dec_ts_t dec_ts; /* decimation for timestamp batching*/
+    lis2dux12_bdr_xl_t bdr_xl; /* accelerometer batch data rate*/
   } batch;
 } lis2dux12_fifo_mode_t;
 int32_t lis2dux12_fifo_mode_set(stmdev_ctx_t *ctx, lis2dux12_fifo_mode_t val);
@@ -2424,63 +2442,75 @@ typedef enum
 int32_t lis2dux12_ff_thresholds_set(stmdev_ctx_t *ctx, lis2dux12_ff_thresholds_t val);
 int32_t lis2dux12_ff_thresholds_get(stmdev_ctx_t *ctx, lis2dux12_ff_thresholds_t *val);
 
+typedef enum
+{
+  LIS2DUX12_DEG_80 = 0x0,
+  LIS2DUX12_DEG_70 = 0x1,
+  LIS2DUX12_DEG_60 = 0x2,
+  LIS2DUX12_DEG_50 = 0x3,
+} lis2dux12_threshold_t;
+
+typedef enum
+{
+  LIS2DUX12_6D = 0x0,
+  LIS2DUX12_4D = 0x1,
+} lis2dux12_mode_t;
+
 typedef struct {
-  enum lis2dux12_threshold
-  {
-    LIS2DUX12_DEG_80 = 0x0,
-    LIS2DUX12_DEG_70 = 0x1,
-    LIS2DUX12_DEG_60 = 0x2,
-    LIS2DUX12_DEG_50 = 0x3,
-  } threshold;
-  enum lis2dux12_mode
-  {
-    LIS2DUX12_6D = 0x0,
-    LIS2DUX12_4D = 0x1,
-  } mode;
+  lis2dux12_threshold_t threshold;
+  lis2dux12_mode_t mode;
 } lis2dux12_sixd_config_t;
 
 int32_t lis2dux12_sixd_config_set(stmdev_ctx_t *ctx, lis2dux12_sixd_config_t val);
 int32_t lis2dux12_sixd_config_get(stmdev_ctx_t *ctx, lis2dux12_sixd_config_t *val);
 
+typedef enum
+{
+  LIS2DUX12_0_ODR  = 0x000, /* 0 ODR time */
+  LIS2DUX12_1_ODR  = 0x001, /* 1 ODR time */
+  LIS2DUX12_2_ODR  = 0x002, /* 2 ODR time */
+  LIS2DUX12_3_ODR  = 0x100, /* 3 ODR time */
+  LIS2DUX12_7_ODR  = 0x101, /* 7 ODR time */
+  LIS2DUX12_11_ODR = 0x102, /* 11 ODR time */
+  LIS2DUX12_15_ODR = 0x103, /* 15 ODR time */
+} lis2dux12_wake_dur_t;
+
+typedef enum
+{
+  LIS2DUX12_SLEEP_OFF = 0,
+  LIS2DUX12_SLEEP_ON  = 1,
+} lis2dux12_wake_enable_t;
+
+typedef enum
+{
+  LIS2DUX12_ODR_NO_CHANGE       = 0,  /* no odr change during inactivity state */
+  LIS2DUX12_ODR_1_6_HZ          = 1,  /* set odr to 1.6Hz during inactivity state */
+  LIS2DUX12_ODR_3_HZ            = 1,  /* set odr to 3Hz during inactivity state */
+  LIS2DUX12_ODR_25_HZ           = 1,  /* set odr to 25Hz during inactivity state */
+} lis2dux12_inact_odr_t;
+
 typedef struct {
-  enum lis2dux12_wake_dur
-  {
-    LIS2DUX12_0_ODR  = 0x000, /* 0 ODR time */
-    LIS2DUX12_1_ODR  = 0x001, /* 1 ODR time */
-    LIS2DUX12_2_ODR  = 0x002, /* 2 ODR time */
-    LIS2DUX12_3_ODR  = 0x100, /* 3 ODR time */
-    LIS2DUX12_7_ODR  = 0x101, /* 7 ODR time */
-    LIS2DUX12_11_ODR = 0x102, /* 11 ODR time */
-    LIS2DUX12_15_ODR = 0x103, /* 15 ODR time */
-  } wake_dur;
+  lis2dux12_wake_dur_t wake_dur;
   uint8_t sleep_dur                    : 4;       /* 1 LSB == 512 ODR time */
   uint8_t wake_ths                     : 7;       /* wakeup threshold */
   uint8_t wake_ths_weight              : 1;       /* 0: 1LSB = FS_XL/2^6, 1: 1LSB = FS_XL/2^8 */
-  enum lis2dux12_wake_enable
-  {
-    LIS2DUX12_SLEEP_OFF = 0,
-    LIS2DUX12_SLEEP_ON  = 1,
-  } wake_enable;
-  enum lis2dux12_inact_odr
-  {
-    LIS2DUX12_ODR_NO_CHANGE       = 0,  /* no odr change during inactivity state */
-    LIS2DUX12_ODR_1_6_HZ          = 1,  /* set odr to 1.6Hz during inactivity state */
-    LIS2DUX12_ODR_3_HZ            = 1,  /* set odr to 3Hz during inactivity state */
-    LIS2DUX12_ODR_25_HZ           = 1,  /* set odr to 25Hz during inactivity state */
-  } inact_odr;
+  lis2dux12_wake_enable_t wake_enable;
+  lis2dux12_inact_odr_t inact_odr;
 } lis2dux12_wakeup_config_t;
 
 int32_t lis2dux12_wakeup_config_set(stmdev_ctx_t *ctx, lis2dux12_wakeup_config_t val);
 int32_t lis2dux12_wakeup_config_get(stmdev_ctx_t *ctx, lis2dux12_wakeup_config_t *val);
 
+typedef enum
+{
+  LIS2DUX12_TAP_NONE  = 0x0, /* No axis */
+  LIS2DUX12_TAP_ON_X  = 0x1, /* Detect tap on X axis */
+  LIS2DUX12_TAP_ON_Y  = 0x2, /* Detect tap on Y axis */
+  LIS2DUX12_TAP_ON_Z  = 0x3, /* Detect tap on Z axis */
+} lis2dux12_axis_t;
+
 typedef struct {
-  enum lis2dux12_axis
-  {
-    LIS2DUX12_TAP_NONE  = 0x0, /* No axis */
-    LIS2DUX12_TAP_ON_X  = 0x1, /* Detect tap on X axis */
-    LIS2DUX12_TAP_ON_Y  = 0x2, /* Detect tap on Y axis */
-    LIS2DUX12_TAP_ON_Z  = 0x3, /* Detect tap on Z axis */
-  } axis;
+  lis2dux12_axis_t axis;
   uint8_t inverted_peak_time           : 5; /* 1 LSB == 1 sample */
   uint8_t pre_still_ths                : 4; /* 1 LSB == 62.5 mg */
   uint8_t post_still_ths               : 4; /* 1 LSB == 62.5 mg */
@@ -2545,6 +2575,9 @@ int32_t lis2dux12_fsm_data_rate_get(stmdev_ctx_t *ctx,
 int32_t lis2dux12_fsm_init_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lis2dux12_fsm_init_get(stmdev_ctx_t *ctx, uint8_t *val);
 
+int32_t lis2dux12_fsm_fifo_en_set(stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2dux12_fsm_fifo_en_get(stmdev_ctx_t *ctx, uint8_t *val);
+
 int32_t lis2dux12_long_cnt_int_value_set(stmdev_ctx_t *ctx,
                                           uint16_t val);
 int32_t lis2dux12_long_cnt_int_value_get(stmdev_ctx_t *ctx,
@@ -2586,6 +2619,9 @@ int32_t lis2dux12_mlc_data_rate_set(stmdev_ctx_t *ctx,
                                      lis2dux12_mlc_odr_val_t val);
 int32_t lis2dux12_mlc_data_rate_get(stmdev_ctx_t *ctx,
                                      lis2dux12_mlc_odr_val_t *val);
+
+int32_t lis2dux12_mlc_fifo_en_set(stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2dux12_mlc_fifo_en_get(stmdev_ctx_t *ctx, uint8_t *val);
 
 #ifdef __cplusplus
 }

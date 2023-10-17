@@ -1,7 +1,7 @@
 
 ## <b>AccelerometerCalibration Application Description</b>
 
-This application shows how to use Acelerometer Calibration library to correct accelerometer sensor data using accelerometer only.
+This application shows how to use Accelerometer Calibration library to correct accelerometer sensor data using accelerometer only.
 Data are sent from a Nucleo board using UART to a connected PC or Desktop.
 To run the application, it is needed to install and launch the [Unicleo-GUI](https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/sensor-software-development-tools/unicleo-gui.html) on the PC.
 After connection has been established:

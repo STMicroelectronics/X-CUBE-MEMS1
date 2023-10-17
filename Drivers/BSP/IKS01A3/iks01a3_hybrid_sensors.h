@@ -75,6 +75,7 @@ typedef struct
   uint8_t  Temperature;
   uint8_t  Pressure;
   uint8_t  Humidity;
+  uint8_t  Gas;
   uint8_t  LowPower;
   uint32_t GyroMaxFS;
   uint32_t AccMaxFS;
@@ -85,6 +86,7 @@ typedef struct
   float    HumMaxOdr;
   float    TempMaxOdr;
   float    PressMaxOdr;
+  float    GasMaxOdr;
 } IKS01A3_HYBRID_SENSOR_Capabilities_t;
 
 typedef struct
@@ -129,9 +131,9 @@ typedef struct
 #endif
 
 #define HYBRID_MOTION_FUNC_ID(f) \
-  ((f) & HYBRID_GYRO)       ? 0 \
-  :    ((f) & HYBRID_ACCELERO)   ? 1 \
-  : /* ((f) & HYBRID_MAGNETO) */   2
+  (((f) & HYBRID_GYRO) == (f))            ? 0 \
+  :    (((f) & HYBRID_ACCELERO) == (f))   ? 1 \
+  : /* (((f) & HYBRID_MAGNETO) == (f)) */   2
 
 #define IKS01A3_HYBRID_MOTION_FUNCTIONS_NBR  3U
 
@@ -144,16 +146,20 @@ typedef struct
 #ifndef HYBRID_HUMIDITY
 #define HYBRID_HUMIDITY     (uint32_t)0x40U
 #endif
+#ifndef HYBRID_GAS
+#define HYBRID_GAS          (uint32_t)0x80U
+#endif
 #ifndef HYBRID_ENV_FUNC
-#define HYBRID_ENV_FUNC     (HYBRID_TEMPERATURE | HYBRID_PRESSURE | HYBRID_HUMIDITY)
+#define HYBRID_ENV_FUNC     (HYBRID_TEMPERATURE | HYBRID_PRESSURE | HYBRID_HUMIDITY | HYBRID_GAS)
 #endif
 
 #define HYBRID_ENV_FUNC_ID(f) \
-  ((f) & HYBRID_TEMPERATURE) ? 0 \
-  :    ((f) & HYBRID_PRESSURE)    ? 1 \
-  : /* ((f) & HYBRID_HUMIDITY) */   2
+  (((f) & HYBRID_TEMPERATURE) == (f))      ? 0 \
+  :    (((f) & HYBRID_PRESSURE) == (f))    ? 1 \
+  :    (((f) & HYBRID_HUMIDITY) == (f))    ? 2 \
+  : /* (((f) & HYBRID_GAS) == (f)) */        3
 
-#define IKS01A3_HYBRID_ENV_FUNCTIONS_NBR  3U
+#define IKS01A3_HYBRID_ENV_FUNCTIONS_NBR  4U
 
 /**
   * @}

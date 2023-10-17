@@ -220,10 +220,12 @@ int32_t ILPS22QS_GetCapabilities(ILPS22QS_Object_t *pObj, ILPS22QS_Capabilities_
   Capabilities->Humidity    = 0;
   Capabilities->Pressure    = 1;
   Capabilities->Temperature = 1;
+  Capabilities->Gas         = 0;
   Capabilities->LowPower    = 0;
   Capabilities->HumMaxOdr   = 0.0f;
   Capabilities->TempMaxOdr  = 200.0f;
   Capabilities->PressMaxOdr = 200.0f;
+  Capabilities->GasMaxOdr   = 0.0f;
   return ILPS22QS_OK;
 }
 

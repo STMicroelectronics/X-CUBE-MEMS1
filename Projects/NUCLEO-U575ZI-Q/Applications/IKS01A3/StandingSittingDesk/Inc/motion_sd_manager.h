@@ -46,4 +46,3 @@ void MotionSD_manager_get_version(char *version, int *length);
 #endif
 
 #endif /* MOTION_SD_MANAGER_H */
-

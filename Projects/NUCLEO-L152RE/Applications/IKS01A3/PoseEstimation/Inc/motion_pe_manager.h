@@ -45,4 +45,3 @@ void MotionPE_manager_get_version(char *version, int *length);
 #endif
 
 #endif /* MOTION_PE_MANAGER_H */
-

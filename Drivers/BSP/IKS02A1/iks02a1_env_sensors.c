@@ -48,7 +48,7 @@ void *EnvCompObj[IKS02A1_ENV_INSTANCES_NBR];
 
 /* We define a jump table in order to get the correct index from the desired function. */
 /* This table should have a size equal to the maximum value of a function plus 1.      */
-static uint32_t FunctionIndex[5] = {0, 0, 1, 1, 2};
+static uint32_t FunctionIndex[] = {0, 0, 1, 1, 2, 2, 2, 2, 3};
 static ENV_SENSOR_FuncDrv_t *EnvFuncDrv[IKS02A1_ENV_INSTANCES_NBR][IKS02A1_ENV_FUNCTIONS_NBR];
 static ENV_SENSOR_CommonDrv_t *EnvDrv[IKS02A1_ENV_INSTANCES_NBR];
 static IKS02A1_ENV_SENSOR_Ctx_t EnvCtx[IKS02A1_ENV_INSTANCES_NBR];
@@ -113,6 +113,10 @@ int32_t IKS02A1_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
       if (cap.Pressure == 1U)
       {
         component_functions |= ENV_PRESSURE;
+      }
+      if (cap.Gas == 1U)
+      {
+        component_functions |= ENV_GAS;
       }
       break;
 #endif
@@ -460,8 +464,10 @@ static int32_t SHT40AD1B_0_Probe(uint32_t Functions)
   else
   {
     (void)SHT40AD1B_GetCapabilities(&sht40ad1b_obj_0, &cap);
-    EnvCtx[IKS02A1_SHT40AD1B_0].Functions = ((uint32_t)cap.Temperature) | ((uint32_t)cap.Pressure << 1) | ((
-                                              uint32_t)cap.Humidity << 2);
+    EnvCtx[IKS02A1_SHT40AD1B_0].Functions = ((uint32_t)cap.Temperature)
+                                          | ((uint32_t)cap.Pressure << 1)
+                                          | ((uint32_t)cap.Humidity << 2)
+                                          | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[IKS02A1_SHT40AD1B_0] = &sht40ad1b_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */
@@ -496,6 +502,11 @@ static int32_t SHT40AD1B_0_Probe(uint32_t Functions)
       }
     }
     if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_PRESSURE) == ENV_PRESSURE))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_GAS) == ENV_GAS))
     {
       /* Return an error if the application try to initialize a function not supported by the component */
       ret = BSP_ERROR_COMPONENT_FAILURE;

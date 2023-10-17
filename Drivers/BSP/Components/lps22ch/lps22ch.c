@@ -217,10 +217,12 @@ int32_t LPS22CH_GetCapabilities(LPS22CH_Object_t *pObj, LPS22CH_Capabilities_t *
   Capabilities->Humidity    = 0;
   Capabilities->Pressure    = 1;
   Capabilities->Temperature = 1;
+  Capabilities->Gas         = 0;
   Capabilities->LowPower    = 0;
   Capabilities->HumMaxOdr   = 0.0f;
   Capabilities->TempMaxOdr  = 200.0f;
   Capabilities->PressMaxOdr = 200.0f;
+  Capabilities->GasMaxOdr   = 0.0f;
   return LPS22CH_OK;
 }
 

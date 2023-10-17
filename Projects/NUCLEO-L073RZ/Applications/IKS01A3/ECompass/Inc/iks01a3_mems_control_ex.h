@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    iks01a3_mems_control_ex.h
-  * @author  MEMS Application Team
+  * @author  MEMS Software Solutions Team
   * @brief   This file contains the MEMS sensors interface for X-NUCLEO-IKS01A3
   ******************************************************************************
   * @attention

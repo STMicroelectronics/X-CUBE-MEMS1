@@ -157,10 +157,13 @@ int32_t ASM330LHHX_RegisterBusIO(ASM330LHHX_Object_t *pObj, ASM330LHHX_IO_t *pIO
   */
 int32_t ASM330LHHX_Init(ASM330LHHX_Object_t *pObj)
 {
-  /* Disable I3C */
-  if (asm330lhhx_i3c_disable_set(&(pObj->Ctx), ASM330LHHX_I3C_DISABLE) != ASM330LHHX_OK)
+  if(pObj->IO.BusType != ASM330LHHX_I3C_BUS)
   {
-    return ASM330LHHX_ERROR;
+    /* Disable I3C */
+    if (asm330lhhx_i3c_disable_set(&(pObj->Ctx), ASM330LHHX_I3C_DISABLE) != ASM330LHHX_OK)
+    {
+      return ASM330LHHX_ERROR;
+    }
   }
 
   /* Enable register address automatically incremented during a multiple byte

@@ -301,7 +301,6 @@ int32_t ISM330DLC_FIFO_Get_Data(ISM330DLC_Object_t *pObj, uint8_t *Data);
 int32_t ISM330DLC_FIFO_Full_Set_INT1(ISM330DLC_Object_t *pObj, uint8_t Status);
 int32_t ISM330DLC_FIFO_Set_INT2_Drdy(ISM330DLC_Object_t *pObj, uint8_t Status);
 int32_t ISM330DLC_FIFO_ACC_Set_Decimation(ISM330DLC_Object_t *pObj, uint8_t Decimation);
-int32_t ISM330DLC_FIFO_ACC_Set_Decimation(ISM330DLC_Object_t *pObj, uint8_t Decimation);
 int32_t ISM330DLC_FIFO_Get_Data_Word(ISM330DLC_Object_t *pObj, int16_t *data_raw);
 int32_t ISM330DLC_FIFO_ACC_Get_Axis(ISM330DLC_Object_t *pObj, int32_t *Acceleration);
 int32_t ISM330DLC_FIFO_GYRO_Set_Decimation(ISM330DLC_Object_t *pObj, uint8_t Decimation);

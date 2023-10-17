@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.h
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.6.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.10.0.0 instances.
   ******************************************************************************
   * @attention
   *

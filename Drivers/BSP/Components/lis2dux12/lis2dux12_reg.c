@@ -315,11 +315,81 @@ int32_t lis2dux12_mode_set(stmdev_ctx_t *ctx, lis2dux12_md_t *val)
 
   ctrl5.odr = (uint8_t)val->odr & 0xFU;
   ctrl5.fs = (uint8_t)val->fs;
-  ctrl5.bw = (uint8_t)val->bw;
+
+  /* set the bandwidth */
+  switch (val->odr) {
+    /* no anti-aliasing filter present */
+    case LIS2DUX12_OFF:
+    case LIS2DUX12_1Hz6_ULP:
+    case LIS2DUX12_3Hz_ULP:
+    case LIS2DUX12_25Hz_ULP:
+      ctrl5.bw = 0x0;
+      break;
+
+    /* low-power mode with ODR < 50 Hz */
+    case LIS2DUX12_6Hz_LP:
+      switch(val->bw) {
+        case LIS2DUX12_ODR_div_4:
+        case LIS2DUX12_ODR_div_8:
+        case LIS2DUX12_ODR_div_16:
+          return -1;
+        case LIS2DUX12_ODR_div_2:
+          ctrl5.bw = 0x3;
+          break;
+      }
+      break;
+    case LIS2DUX12_12Hz5_LP:
+      switch(val->bw) {
+        case LIS2DUX12_ODR_div_8:
+        case LIS2DUX12_ODR_div_16:
+          return -1;
+        case LIS2DUX12_ODR_div_2:
+          ctrl5.bw = 0x2;
+          break;
+        case LIS2DUX12_ODR_div_4:
+          ctrl5.bw = 0x3;
+          break;
+      }
+      break;
+    case LIS2DUX12_25Hz_LP:
+      switch(val->bw) {
+        case LIS2DUX12_ODR_div_16:
+          return -1;
+        case LIS2DUX12_ODR_div_2:
+          ctrl5.bw = 0x1;
+          break;
+        case LIS2DUX12_ODR_div_4:
+          ctrl5.bw = 0x2;
+          break;
+        case LIS2DUX12_ODR_div_8:
+          ctrl5.bw = 0x3;
+          break;
+      }
+      break;
+
+    /* standard cases */
+    case LIS2DUX12_50Hz_LP:
+    case LIS2DUX12_100Hz_LP:
+    case LIS2DUX12_200Hz_LP:
+    case LIS2DUX12_400Hz_LP:
+    case LIS2DUX12_800Hz_LP:
+    case LIS2DUX12_TRIG_PIN:
+    case LIS2DUX12_TRIG_SW:
+    case LIS2DUX12_6Hz_HP:
+    case LIS2DUX12_12Hz5_HP:
+    case LIS2DUX12_25Hz_HP:
+    case LIS2DUX12_50Hz_HP:
+    case LIS2DUX12_100Hz_HP:
+    case LIS2DUX12_200Hz_HP:
+    case LIS2DUX12_400Hz_HP:
+    case LIS2DUX12_800Hz_HP:
+      ctrl5.bw = (uint8_t)val->bw;
+      break;
+  }
 
   ret += lis2dux12_read_reg(ctx, LIS2DUX12_CTRL3, (uint8_t*)&ctrl3, 1);
 
-  ctrl3.hp_en = (((uint8_t)val->odr & 0x10U) != 0U) ? 1U : 0U;
+  ctrl3.hp_en = (((uint8_t)val->odr & 0x30U) == 0x10U) ? 1U : 0U;
 
   if (ret == 0) {
     ret = lis2dux12_write_reg(ctx, LIS2DUX12_CTRL5, (uint8_t*)&ctrl5, 1);
@@ -350,8 +420,8 @@ int32_t lis2dux12_mode_get(stmdev_ctx_t *ctx, lis2dux12_md_t *val)
     case LIS2DUX12_OFF:
       val->odr = LIS2DUX12_OFF;
       break;
-    case LIS2DUX12_1Hz5_ULP:
-      val->odr = LIS2DUX12_1Hz5_ULP;
+    case LIS2DUX12_1Hz6_ULP:
+      val->odr = LIS2DUX12_1Hz6_ULP;
       break;
     case LIS2DUX12_3Hz_ULP:
       val->odr = LIS2DUX12_3Hz_ULP;
@@ -359,29 +429,29 @@ int32_t lis2dux12_mode_get(stmdev_ctx_t *ctx, lis2dux12_md_t *val)
     case LIS2DUX12_25Hz_ULP:
       val->odr = LIS2DUX12_25Hz_ULP;
       break;
-    case LIS2DUX12_6Hz:
-      val->odr = LIS2DUX12_6Hz;
+    case LIS2DUX12_6Hz_LP:
+      val->odr = LIS2DUX12_6Hz_LP;
       break;
-    case LIS2DUX12_12Hz5:
-      val->odr = (ctrl3.hp_en == 0x1U) ? LIS2DUX12_12Hz5_HP : LIS2DUX12_12Hz5;
+    case LIS2DUX12_12Hz5_LP:
+      val->odr = (ctrl3.hp_en == 0x1U) ? LIS2DUX12_12Hz5_HP : LIS2DUX12_12Hz5_LP;
       break;
-    case LIS2DUX12_25Hz:
-      val->odr = (ctrl3.hp_en == 0x1U) ? LIS2DUX12_25Hz_HP : LIS2DUX12_25Hz;
+    case LIS2DUX12_25Hz_LP:
+      val->odr = (ctrl3.hp_en == 0x1U) ? LIS2DUX12_25Hz_HP : LIS2DUX12_25Hz_LP;
       break;
-    case LIS2DUX12_50Hz:
-      val->odr = (ctrl3.hp_en == 0x1U) ? LIS2DUX12_50Hz_HP : LIS2DUX12_50Hz;
+    case LIS2DUX12_50Hz_LP:
+      val->odr = (ctrl3.hp_en == 0x1U) ? LIS2DUX12_50Hz_HP : LIS2DUX12_50Hz_LP;
       break;
-    case LIS2DUX12_100Hz:
-      val->odr = (ctrl3.hp_en == 0x1U) ? LIS2DUX12_100Hz_HP : LIS2DUX12_100Hz;
+    case LIS2DUX12_100Hz_LP:
+      val->odr = (ctrl3.hp_en == 0x1U) ? LIS2DUX12_100Hz_HP : LIS2DUX12_100Hz_LP;
       break;
-    case LIS2DUX12_200Hz:
-      val->odr = (ctrl3.hp_en == 0x1U) ? LIS2DUX12_200Hz_HP : LIS2DUX12_200Hz;
+    case LIS2DUX12_200Hz_LP:
+      val->odr = (ctrl3.hp_en == 0x1U) ? LIS2DUX12_200Hz_HP : LIS2DUX12_200Hz_LP;
       break;
-    case LIS2DUX12_400Hz:
-      val->odr = (ctrl3.hp_en == 0x1U) ? LIS2DUX12_400Hz_HP : LIS2DUX12_400Hz;
+    case LIS2DUX12_400Hz_LP:
+      val->odr = (ctrl3.hp_en == 0x1U) ? LIS2DUX12_400Hz_HP : LIS2DUX12_400Hz_LP;
       break;
-    case LIS2DUX12_800Hz:
-      val->odr = (ctrl3.hp_en == 0x1U) ? LIS2DUX12_800Hz_HP : LIS2DUX12_800Hz;
+    case LIS2DUX12_800Hz_LP:
+      val->odr = (ctrl3.hp_en == 0x1U) ? LIS2DUX12_800Hz_HP : LIS2DUX12_800Hz_LP;
       break;
     case LIS2DUX12_TRIG_PIN:
       val->odr = LIS2DUX12_TRIG_PIN;
@@ -1333,7 +1403,7 @@ int32_t lis2dux12_pin_int2_route_set(stmdev_ctx_t *ctx, lis2dux12_pin_int_route_
   lis2dux12_md2_cfg_t md2_cfg;
   int32_t ret;
 
-  ret = lis2dux12_read_reg(ctx, LIS2DUX12_CTRL2, (uint8_t *)&ctrl3, 1);
+  ret = lis2dux12_read_reg(ctx, LIS2DUX12_CTRL3, (uint8_t *)&ctrl3, 1);
 
   if (ret == 0)
   {
@@ -1729,19 +1799,19 @@ int32_t lis2dux12_fifo_mode_get(stmdev_ctx_t *ctx, lis2dux12_fifo_mode_t *val)
       val->operation = LIS2DUX12_FIFO_OFF;
     }
     else {
-      val->operation = (enum lis2dux12_operation)fifo_ctrl.fifo_mode;
+      val->operation = (lis2dux12_operation_t)fifo_ctrl.fifo_mode;
     }
     val->cfg_change_in_fifo = fifo_ctrl.cfg_chg_en;
 
     /* get fifo depth (1X/2X) */
-    val->store = (enum lis2dux12_store)fifo_ctrl.fifo_depth;
+    val->store = (lis2dux12_store_t)fifo_ctrl.fifo_depth;
 
     /* Get xl_only_fifo */
     val->xl_only = fifo_wtm.xl_only_fifo;
 
     /* get batching info */
-    val->batch.dec_ts = (enum lis2dux12_dec_ts)fifo_batch.dec_ts_batch;
-    val->batch.bdr_xl = (enum lis2dux12_bdr_xl)fifo_batch.bdr_xl;
+    val->batch.dec_ts = (lis2dux12_dec_ts_t)fifo_batch.dec_ts_batch;
+    val->batch.bdr_xl = (lis2dux12_bdr_xl_t)fifo_batch.bdr_xl;
 
     /* get watermark */
     val->watermark = fifo_wtm.fth;
@@ -2431,7 +2501,7 @@ int32_t lis2dux12_sixd_config_get(stmdev_ctx_t *ctx, lis2dux12_sixd_config_t *va
 
   ret = lis2dux12_read_reg(ctx, LIS2DUX12_SIXD, (uint8_t *)&sixd, 1);
 
-  val->mode = (enum lis2dux12_mode)sixd.d4d_en;
+  val->mode = (lis2dux12_mode_t)sixd.d4d_en;
 
   switch ((sixd.d6d_ths))
   {
@@ -2579,8 +2649,8 @@ int32_t lis2dux12_wakeup_config_get(stmdev_ctx_t *ctx, lis2dux12_wakeup_config_t
 
     val->wake_ths_weight = int_cfg.wake_ths_w;
     val->wake_ths = wup_ths.wk_ths;
-    val->wake_enable = (enum lis2dux12_wake_enable)wup_ths.sleep_on;
-    val->inact_odr = (enum lis2dux12_inact_odr)ctrl4.inact_odr;
+    val->wake_enable = (lis2dux12_wake_enable_t)wup_ths.sleep_on;
+    val->inact_odr = (lis2dux12_inact_odr_t)ctrl4.inact_odr;
   }
 
   return ret;
@@ -2662,7 +2732,7 @@ int32_t lis2dux12_tap_config_get(stmdev_ctx_t *ctx, lis2dux12_tap_config_t *val)
 
   if (ret == 0)
   {
-    val->axis = (enum lis2dux12_axis)tap_cfg0.axis;
+    val->axis = (lis2dux12_axis_t)tap_cfg0.axis;
     val->inverted_peak_time = tap_cfg0.invert_t;
     val->pre_still_ths = tap_cfg1.pre_still_ths;
     val->post_still_ths = tap_cfg3.post_still_ths;
@@ -3192,6 +3262,59 @@ int32_t lis2dux12_fsm_init_get(stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
+  * @brief  FSM FIFO en bit.[set]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Change the value of fsm_fifo_en in reg LIS2DUX12_EMB_FUNC_FIFO_EN
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
+int32_t lis2dux12_fsm_fifo_en_set(stmdev_ctx_t *ctx, uint8_t val)
+{
+  lis2dux12_emb_func_fifo_en_t fifo_reg;
+  int32_t ret;
+
+  ret = lis2dux12_mem_bank_set(ctx, LIS2DUX12_EMBED_FUNC_MEM_BANK);
+
+  if (ret == 0)
+  {
+    ret = lis2dux12_read_reg(ctx, LIS2DUX12_EMB_FUNC_FIFO_EN, (uint8_t *)&fifo_reg, 1);
+    fifo_reg.fsm_fifo_en = val;
+    ret += lis2dux12_write_reg(ctx, LIS2DUX12_EMB_FUNC_FIFO_EN, (uint8_t *)&fifo_reg, 1);
+  }
+
+  ret += lis2dux12_mem_bank_set(ctx, LIS2DUX12_MAIN_MEM_BANK);
+
+  return ret;
+}
+
+/**
+  * @brief  FSM FIFO en bit.[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Get the value of fsm_fifo_en in reg LIS2DUX12_EMB_FUNC_FIFO_EN
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
+int32_t lis2dux12_fsm_fifo_en_get(stmdev_ctx_t *ctx, uint8_t *val)
+{
+  lis2dux12_emb_func_fifo_en_t fifo_reg;
+  int32_t ret;
+
+  ret = lis2dux12_mem_bank_set(ctx, LIS2DUX12_EMBED_FUNC_MEM_BANK);
+
+  if (ret == 0)
+  {
+    ret = lis2dux12_read_reg(ctx, LIS2DUX12_EMB_FUNC_FIFO_EN, (uint8_t *)&fifo_reg, 1);
+    *val = fifo_reg.fsm_fifo_en;
+  }
+
+  ret += lis2dux12_mem_bank_set(ctx, LIS2DUX12_MAIN_MEM_BANK);
+
+  return ret;
+}
+
+/**
   * @brief  FSM long counter timeout register (r/w). The long counter
   *         timeout value is an unsigned integer value (16-bit format).
   *         When the long counter value reached this value, the FSM
@@ -3540,6 +3663,59 @@ int32_t lis2dux12_mlc_data_rate_get(stmdev_ctx_t *ctx,
         *val = LIS2DUX12_ODR_PRGS_12Hz5;
         break;
     }
+  }
+
+  ret += lis2dux12_mem_bank_set(ctx, LIS2DUX12_MAIN_MEM_BANK);
+
+  return ret;
+}
+
+/**
+  * @brief  MLC FIFO en bit.[set]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Change the value of mlc_fifo_en in reg LIS2DUX12_EMB_FUNC_FIFO_EN
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
+int32_t lis2dux12_mlc_fifo_en_set(stmdev_ctx_t *ctx, uint8_t val)
+{
+  lis2dux12_emb_func_fifo_en_t fifo_reg;
+  int32_t ret;
+
+  ret = lis2dux12_mem_bank_set(ctx, LIS2DUX12_EMBED_FUNC_MEM_BANK);
+
+  if (ret == 0)
+  {
+    ret = lis2dux12_read_reg(ctx, LIS2DUX12_EMB_FUNC_FIFO_EN, (uint8_t *)&fifo_reg, 1);
+    fifo_reg.mlc_fifo_en = val;
+    ret += lis2dux12_write_reg(ctx, LIS2DUX12_EMB_FUNC_FIFO_EN, (uint8_t *)&fifo_reg, 1);
+  }
+
+  ret += lis2dux12_mem_bank_set(ctx, LIS2DUX12_MAIN_MEM_BANK);
+
+  return ret;
+}
+
+/**
+  * @brief  MLC FIFO en bit.[get]
+  *
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Get the value of mlc_fifo_en in reg LIS2DUX12_EMB_FUNC_FIFO_EN
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
+  *
+  */
+int32_t lis2dux12_mlc_fifo_en_get(stmdev_ctx_t *ctx, uint8_t *val)
+{
+  lis2dux12_emb_func_fifo_en_t fifo_reg;
+  int32_t ret;
+
+  ret = lis2dux12_mem_bank_set(ctx, LIS2DUX12_EMBED_FUNC_MEM_BANK);
+
+  if (ret == 0)
+  {
+    ret = lis2dux12_read_reg(ctx, LIS2DUX12_EMB_FUNC_FIFO_EN, (uint8_t *)&fifo_reg, 1);
+    *val = fifo_reg.mlc_fifo_en;
   }
 
   ret += lis2dux12_mem_bank_set(ctx, LIS2DUX12_MAIN_MEM_BANK);

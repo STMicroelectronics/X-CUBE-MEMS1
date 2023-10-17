@@ -45,4 +45,3 @@ void MotionAR_manager_get_version(char *version, int *length);
 #endif
 
 #endif /* MOTION_AR_MANAGER_H */
-

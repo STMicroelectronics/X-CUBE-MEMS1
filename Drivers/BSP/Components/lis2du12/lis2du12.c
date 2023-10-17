@@ -144,10 +144,13 @@ int32_t LIS2DU12_RegisterBusIO(LIS2DU12_Object_t *pObj, LIS2DU12_IO_t *pIO)
   */
 int32_t LIS2DU12_Init(LIS2DU12_Object_t *pObj)
 {
-  /* Disable I3C */
-  if (lis2du12_bus_mode_set(&(pObj->Ctx), LIS2DU12_I3C_DISABLE) != LIS2DU12_OK)
+  if(pObj->IO.BusType != LIS2DU12_I3C_BUS)
   {
-    return LIS2DU12_ERROR;
+    /* Disable I3C */
+    if (lis2du12_bus_mode_set(&(pObj->Ctx), LIS2DU12_I3C_DISABLE) != LIS2DU12_OK)
+    {
+      return LIS2DU12_ERROR;
+    }
   }
 
   /* Enable register address automatically incremented during a multiple byte

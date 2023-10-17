@@ -157,10 +157,13 @@ int32_t LSM6DSRX_RegisterBusIO(LSM6DSRX_Object_t *pObj, LSM6DSRX_IO_t *pIO)
   */
 int32_t LSM6DSRX_Init(LSM6DSRX_Object_t *pObj)
 {
-  /* Disable I3C */
-  if (lsm6dsrx_i3c_disable_set(&(pObj->Ctx), LSM6DSRX_I3C_DISABLE) != LSM6DSRX_OK)
+  if(pObj->IO.BusType != LSM6DSRX_I3C_BUS)
   {
-    return LSM6DSRX_ERROR;
+    /* Disable I3C */
+    if (lsm6dsrx_i3c_disable_set(&(pObj->Ctx), LSM6DSRX_I3C_DISABLE) != LSM6DSRX_OK)
+    {
+      return LSM6DSRX_ERROR;
+    }
   }
 
   /* Enable register address automatically incremented during a multiple byte

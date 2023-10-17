@@ -36,9 +36,11 @@ extern "C" {
   */
 
 /** @defgroup  Endianness definitions
+  * @{
   *
   */
 
+#ifndef DRV_BYTE_ORDER
 #ifndef __BYTE_ORDER__
 
 #define DRV_LITTLE_ENDIAN 1234
@@ -56,6 +58,7 @@ extern "C" {
 #define DRV_BIG_ENDIAN    __ORDER_BIG_ENDIAN__
 #define DRV_BYTE_ORDER          __BYTE_ORDER__
 
+#endif /* __BYTE_ORDER__*/
 #endif /* DRV_BYTE_ORDER */
 
 /**
@@ -488,6 +491,19 @@ typedef union
   * @}
   *
   */
+
+#ifndef __weak
+#define __weak __attribute__((weak))
+#endif /* __weak */
+
+/*
+ * These are the basic platform dependent I/O routines to read
+ * and write device registers connected on a standard bus.
+ * The driver keeps offering a default implementation based on function
+ * pointers to read/write routines for backward compatibility.
+ * The __weak directive allows the final application to overwrite
+ * them with a custom implementation.
+ */
 
 int32_t a3g4250d_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
                           uint8_t *data,

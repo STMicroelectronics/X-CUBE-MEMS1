@@ -52,4 +52,3 @@ int16_t gyro_bias_to_mdps(float gyro_bias);
 #endif
 
 #endif /* MOTION_GC_MANAGER_H */
-

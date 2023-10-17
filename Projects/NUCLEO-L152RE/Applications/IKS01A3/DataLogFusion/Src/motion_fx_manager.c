@@ -32,8 +32,6 @@
 /* Private defines -----------------------------------------------------------*/
 #define STATE_SIZE                      (size_t)(2432)
 
-#define SAMPLETODISCARD                 15
-
 #define GBIAS_ACC_TH_SC                 (2.0f*0.000765f)
 #define GBIAS_GYRO_TH_SC                (2.0f*0.002f)
 #define GBIAS_MAG_TH_SC                 (2.0f*0.001500f)
@@ -43,9 +41,6 @@
 /* Private variables ---------------------------------------------------------*/
 static MFX_knobs_t iKnobs;
 static MFX_knobs_t *ipKnobs = &iKnobs;
-
-static volatile int sampleToDiscard = SAMPLETODISCARD;
-static int discardedCount = 0;
 
 static uint8_t mfxstate[STATE_SIZE];
 
@@ -93,15 +88,8 @@ void MotionFX_manager_init(void)
  */
 void MotionFX_manager_run(MFX_input_t *data_in, MFX_output_t *data_out, float delta_time)
 {
-  if (discardedCount == sampleToDiscard)
-  {
-    MotionFX_propagate(mfxstate, data_out, data_in, &delta_time);
-    MotionFX_update(mfxstate, data_out, data_in, &delta_time, NULL);
-  }
-  else
-  {
-    discardedCount++;
-  }
+  MotionFX_propagate(mfxstate, data_out, data_in, &delta_time);
+  MotionFX_update(mfxstate, data_out, data_in, &delta_time, NULL);
 }
 
 /**
@@ -215,4 +203,3 @@ char MotionFX_SaveMagCalInNVM(unsigned short int dataSize, unsigned int *data)
 /**
  * @}
  */
-

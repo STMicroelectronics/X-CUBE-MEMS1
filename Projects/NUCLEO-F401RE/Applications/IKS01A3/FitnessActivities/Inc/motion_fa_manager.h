@@ -48,4 +48,3 @@ void MotionFA_manager_get_activity(MFA_activity_t *activity);
 #endif
 
 #endif /* MOTION_FA_MANAGER_H */
-

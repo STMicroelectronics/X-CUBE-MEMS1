@@ -99,7 +99,7 @@ int32_t __weak sht40ad1b_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
   */
 int32_t sht40ad1b_data_get(stmdev_ctx_t *ctx, float_t *buffer)
 {
-  uint8_t command = 0xFD;  // TODO: Replace value 0xFD with enum value
+  uint8_t command = 0xFD;
   uint8_t data[6] = {0};
 
   if (sht40ad1b_write_reg(ctx, 0, &command, 1) != 0)

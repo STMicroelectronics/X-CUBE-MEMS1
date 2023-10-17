@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.9.6.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.10.0.0 instances.
   ******************************************************************************
   * @attention
   *
@@ -141,7 +141,7 @@ static void MX_AccelerometerCalibration2_Init(void)
 #ifdef BSP_IP_MEMS_INT1_PIN_NUM
   /* Force MEMS INT1 pin of the sensor low during startup in order to disable I3C and enable I2C. This function needs
    * to be called only if user wants to disable I3C / enable I2C and didn't put the pull-down resistor to MEMS INT1 pin
-   * on his HW setup. This is also the case of usage X-NUCLEO-IKS01A2 or X-NUCLEO-IKS01A3 expansion board together with
+   * on his HW setup. This is also the case of usage X-NUCLEO-IKS4A1 or X-NUCLEO-IKS01A3 expansion board together with
    * sensor in DIL24 adapter board where the LDO with internal pull-up is used.
    */
   MEMS_INT1_Force_Low();

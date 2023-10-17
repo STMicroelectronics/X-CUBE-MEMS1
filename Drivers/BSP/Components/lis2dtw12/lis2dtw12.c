@@ -270,6 +270,7 @@ int32_t LIS2DTW12_GetCapabilities(LIS2DTW12_Object_t *pObj, LIS2DTW12_Capabiliti
   Capabilities->Temperature  = 1;
   Capabilities->Pressure     = 0;
   Capabilities->Humidity     = 0;
+  Capabilities->Gas          = 0;
   Capabilities->LowPower     = 1;
   Capabilities->GyroMaxFS    = 0;
   Capabilities->AccMaxFS     = 16;
@@ -280,6 +281,7 @@ int32_t LIS2DTW12_GetCapabilities(LIS2DTW12_Object_t *pObj, LIS2DTW12_Capabiliti
   Capabilities->HumMaxOdr    = 0.0f;
   Capabilities->TempMaxOdr   = 50.0f;
   Capabilities->PressMaxOdr  = 0.0f;
+  Capabilities->GasMaxOdr    = 0.0f;
   return LIS2DTW12_OK;
 }
 

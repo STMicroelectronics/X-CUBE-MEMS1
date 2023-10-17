@@ -45,4 +45,3 @@ void MotionAW_manager_get_version(char *version, int *length);
 #endif
 
 #endif /* MOTION_AW_MANAGER_H */
-

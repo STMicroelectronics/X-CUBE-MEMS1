@@ -58,4 +58,3 @@ char MotionTL_SaveMagCalInNVM(unsigned short int dataSize, unsigned int *data);
 #endif
 
 #endif /* MOTION_TL_MANAGER_H */
-

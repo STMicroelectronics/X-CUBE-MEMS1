@@ -109,12 +109,13 @@ int32_t IKS01A3_HYBRID_SENSOR_Init(uint32_t Instance, uint32_t Functions)
       {
         return BSP_ERROR_UNKNOWN_COMPONENT;
       }
-      component_functions = ((cap.Acc         == 1U) ? HYBRID_ACCELERO    : 0)
-                            | ((cap.Gyro        == 1U) ? HYBRID_GYRO        : 0)
-                            | ((cap.Magneto     == 1U) ? HYBRID_MAGNETO     : 0)
-                            | ((cap.Temperature == 1U) ? HYBRID_TEMPERATURE : 0)
-                            | ((cap.Humidity    == 1U) ? HYBRID_HUMIDITY    : 0)
-                            | ((cap.Pressure    == 1U) ? HYBRID_PRESSURE    : 0);
+      component_functions = ((cap.Acc         == 1U) ? HYBRID_ACCELERO    : 0U)
+                            | ((cap.Gyro        == 1U) ? HYBRID_GYRO        : 0U)
+                            | ((cap.Magneto     == 1U) ? HYBRID_MAGNETO     : 0U)
+                            | ((cap.Temperature == 1U) ? HYBRID_TEMPERATURE : 0U)
+                            | ((cap.Humidity    == 1U) ? HYBRID_HUMIDITY    : 0U)
+                            | ((cap.Pressure    == 1U) ? HYBRID_PRESSURE    : 0U)
+                            | ((cap.Gas         == 1U) ? HYBRID_GAS         : 0U);
       break;
 #endif
 
@@ -727,13 +728,14 @@ static int32_t LIS2DTW12_0_Probe(uint32_t Functions)
     return BSP_ERROR_COMPONENT_FAILURE;
   }
 
-  HybridMotionCtx[IKS01A3_LIS2DTW12_0].Functions = ((cap.Acc     == 1U) ? HYBRID_ACCELERO : 0)
-                                                   | ((cap.Gyro    == 1U) ? HYBRID_GYRO     : 0)
-                                                   | ((cap.Magneto == 1U) ? HYBRID_MAGNETO  : 0);
+  HybridMotionCtx[IKS01A3_LIS2DTW12_0].Functions = ((cap.Acc     == 1U) ? HYBRID_ACCELERO : 0U)
+                                                   | ((cap.Gyro    == 1U) ? HYBRID_GYRO     : 0U)
+                                                   | ((cap.Magneto == 1U) ? HYBRID_MAGNETO  : 0U);
 
-  HybridEnvCtx[IKS01A3_LIS2DTW12_0].Functions = ((cap.Temperature == 1U) ? HYBRID_TEMPERATURE : 0)
-                                                | ((cap.Humidity    == 1U) ? HYBRID_HUMIDITY    : 0)
-                                                | ((cap.Pressure    == 1U) ? HYBRID_PRESSURE    : 0);
+  HybridEnvCtx[IKS01A3_LIS2DTW12_0].Functions = ((cap.Temperature == 1U) ? HYBRID_TEMPERATURE : 0U)
+                                                | ((cap.Humidity    == 1U) ? HYBRID_HUMIDITY    : 0U)
+                                                | ((cap.Pressure    == 1U) ? HYBRID_PRESSURE    : 0U)
+                                                | ((cap.Gas         == 1U) ? HYBRID_GAS         : 0U);
 
   HybridCompObj[IKS01A3_LIS2DTW12_0] = &lis2dtw12_obj_0;
 
@@ -781,6 +783,12 @@ static int32_t LIS2DTW12_0_Probe(uint32_t Functions)
   }
 
   if ((Functions & HybridEnvCtx[IKS01A3_LIS2DTW12_0].Functions & HYBRID_PRESSURE) == HYBRID_PRESSURE)
+  {
+    /* Function not supported by the component */
+    return BSP_ERROR_WRONG_PARAM;
+  }
+
+  if ((Functions & HybridEnvCtx[IKS01A3_LIS2DTW12_0].Functions & HYBRID_GAS) == HYBRID_GAS)
   {
     /* Function not supported by the component */
     return BSP_ERROR_WRONG_PARAM;

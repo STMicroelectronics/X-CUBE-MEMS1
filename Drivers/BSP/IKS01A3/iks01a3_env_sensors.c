@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2019 STMicroelectronics.
+  * Copyright (c) 2019 - 2023 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -35,7 +35,7 @@
   * @{
   */
 
-extern void *EnvCompObj[IKS01A3_ENV_INSTANCES_NBR]; /* This "redundant" line is here to fulfil MISRA C-2012 rule 8.4 */
+extern void *EnvCompObj[IKS01A3_ENV_INSTANCES_NBR]; /* This "redundant" line is here to fulfill MISRA C-2012 rule 8.4 */
 void *EnvCompObj[IKS01A3_ENV_INSTANCES_NBR];
 
 /**
@@ -48,10 +48,10 @@ void *EnvCompObj[IKS01A3_ENV_INSTANCES_NBR];
 
 /* We define a jump table in order to get the correct index from the desired function. */
 /* This table should have a size equal to the maximum value of a function plus 1.      */
-static uint32_t FunctionIndex[5] = {0, 0, 1, 1, 2};
-static ENV_SENSOR_FuncDrv_t *EnvFuncDrv[IKS01A3_ENV_INSTANCES_NBR][IKS01A3_ENV_FUNCTIONS_NBR];
-static ENV_SENSOR_CommonDrv_t *EnvDrv[IKS01A3_ENV_INSTANCES_NBR];
-static IKS01A3_ENV_SENSOR_Ctx_t EnvCtx[IKS01A3_ENV_INSTANCES_NBR];
+static uint32_t FunctionIndex[] = {0, 0, 1, 1, 2, 2, 2, 2, 3};
+static ENV_SENSOR_FuncDrv_t     *EnvFuncDrv[IKS01A3_ENV_INSTANCES_NBR][IKS01A3_ENV_FUNCTIONS_NBR];
+static ENV_SENSOR_CommonDrv_t   *EnvDrv[IKS01A3_ENV_INSTANCES_NBR];
+static IKS01A3_ENV_SENSOR_Ctx_t  EnvCtx[IKS01A3_ENV_INSTANCES_NBR];
 
 /**
   * @}
@@ -67,6 +67,10 @@ static int32_t HTS221_0_Probe(uint32_t Functions);
 
 #if (USE_IKS01A3_ENV_SENSOR_SHT40AD1B_0 == 1)
 static int32_t SHT40AD1B_0_Probe(uint32_t Functions);
+#endif
+
+#if (USE_IKS01A3_ENV_SENSOR_SGP40_0 == 1)
+static int32_t SGP40_0_Probe(uint32_t Functions);
 #endif
 
 #if (USE_IKS01A3_ENV_SENSOR_LPS22HH_0 == 1)
@@ -162,6 +166,10 @@ int32_t IKS01A3_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
       {
         component_functions |= ENV_PRESSURE;
       }
+      if (cap.Gas == 1U)
+      {
+        component_functions |= ENV_GAS;
+      }
       break;
 #endif
 
@@ -186,6 +194,39 @@ int32_t IKS01A3_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
       if (cap.Pressure == 1U)
       {
         component_functions |= ENV_PRESSURE;
+      }
+      if (cap.Gas == 1U)
+      {
+        component_functions |= ENV_GAS;
+      }
+      break;
+#endif
+
+#if (USE_IKS01A3_ENV_SENSOR_SGP40_0 == 1)
+    case IKS01A3_SGP40_0:
+      if (SGP40_0_Probe(Functions) != BSP_ERROR_NONE)
+      {
+        return BSP_ERROR_NO_INIT;
+      }
+      if (EnvDrv[Instance]->GetCapabilities(EnvCompObj[Instance], (void *)&cap) != BSP_ERROR_NONE)
+      {
+        return BSP_ERROR_UNKNOWN_COMPONENT;
+      }
+      if (cap.Temperature == 1U)
+      {
+        component_functions |= ENV_TEMPERATURE;
+      }
+      if (cap.Humidity == 1U)
+      {
+        component_functions |= ENV_HUMIDITY;
+      }
+      if (cap.Pressure == 1U)
+      {
+        component_functions |= ENV_PRESSURE;
+      }
+      if (cap.Gas == 1U)
+      {
+        component_functions |= ENV_GAS;
       }
       break;
 #endif
@@ -212,6 +253,10 @@ int32_t IKS01A3_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
       {
         component_functions |= ENV_PRESSURE;
       }
+      if (cap.Gas == 1U)
+      {
+        component_functions |= ENV_GAS;
+      }
       break;
 #endif
 
@@ -236,6 +281,10 @@ int32_t IKS01A3_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
       if (cap.Pressure == 1U)
       {
         component_functions |= ENV_PRESSURE;
+      }
+      if (cap.Gas == 1U)
+      {
+        component_functions |= ENV_GAS;
       }
       break;
 #endif
@@ -262,6 +311,10 @@ int32_t IKS01A3_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
       {
         component_functions |= ENV_PRESSURE;
       }
+      if (cap.Gas == 1U)
+      {
+        component_functions |= ENV_GAS;
+      }
       break;
 #endif
 
@@ -286,6 +339,10 @@ int32_t IKS01A3_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
       if (cap.Pressure == 1U)
       {
         component_functions |= ENV_PRESSURE;
+      }
+      if (cap.Gas == 1U)
+      {
+        component_functions |= ENV_GAS;
       }
       break;
 #endif
@@ -312,6 +369,10 @@ int32_t IKS01A3_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
       {
         component_functions |= ENV_PRESSURE;
       }
+      if (cap.Gas == 1U)
+      {
+        component_functions |= ENV_GAS;
+      }
       break;
 #endif
 
@@ -336,6 +397,10 @@ int32_t IKS01A3_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
       if (cap.Pressure == 1U)
       {
         component_functions |= ENV_PRESSURE;
+      }
+      if (cap.Gas == 1U)
+      {
+        component_functions |= ENV_GAS;
       }
       break;
 #endif
@@ -362,6 +427,10 @@ int32_t IKS01A3_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
       {
         component_functions |= ENV_PRESSURE;
       }
+      if (cap.Gas == 1U)
+      {
+        component_functions |= ENV_GAS;
+      }
       break;
 #endif
 
@@ -386,6 +455,10 @@ int32_t IKS01A3_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
       if (cap.Pressure == 1U)
       {
         component_functions |= ENV_PRESSURE;
+      }
+      if (cap.Gas == 1U)
+      {
+        component_functions |= ENV_GAS;
       }
       break;
 #endif
@@ -412,6 +485,10 @@ int32_t IKS01A3_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
       {
         component_functions |= ENV_PRESSURE;
       }
+      if (cap.Gas == 1U)
+      {
+        component_functions |= ENV_GAS;
+      }
       break;
 #endif
 
@@ -436,6 +513,10 @@ int32_t IKS01A3_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
       if (cap.Pressure == 1U)
       {
         component_functions |= ENV_PRESSURE;
+      }
+      if (cap.Gas == 1U)
+      {
+        component_functions |= ENV_GAS;
       }
       break;
 #endif
@@ -462,6 +543,10 @@ int32_t IKS01A3_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
       {
         component_functions |= ENV_PRESSURE;
       }
+      if (cap.Gas == 1U)
+      {
+        component_functions |= ENV_GAS;
+      }
       break;
 #endif
 
@@ -484,6 +569,7 @@ int32_t IKS01A3_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
         return BSP_ERROR_COMPONENT_FAILURE;
       }
     }
+
     function = function << 1;
   }
 
@@ -570,9 +656,7 @@ int32_t IKS01A3_ENV_SENSOR_ReadID(uint32_t Instance, uint8_t *Id)
 /**
   * @brief  Enable environmental sensor
   * @param  Instance environmental sensor instance to be used
-  * @param  Function Environmental sensor function. Could be :
-  *         - ENV_TEMPERATURE or ENV_HUMIDITY for instance 0
-  *         - ENV_TEMPERATURE or ENV_PRESSURE for instance 1
+  * @param  Function Environmental sensor function
   * @retval BSP status
   */
 int32_t IKS01A3_ENV_SENSOR_Enable(uint32_t Instance, uint32_t Function)
@@ -608,9 +692,7 @@ int32_t IKS01A3_ENV_SENSOR_Enable(uint32_t Instance, uint32_t Function)
 /**
   * @brief  Disable environmental sensor
   * @param  Instance environmental sensor instance to be used
-  * @param  Function Environmental sensor function. Could be :
-  *         - ENV_TEMPERATURE or ENV_HUMIDITY for instance 0
-  *         - ENV_TEMPERATURE or ENV_PRESSURE for instance 1
+  * @param  Function Environmental sensor function
   * @retval BSP status
   */
 int32_t IKS01A3_ENV_SENSOR_Disable(uint32_t Instance, uint32_t Function)
@@ -646,9 +728,7 @@ int32_t IKS01A3_ENV_SENSOR_Disable(uint32_t Instance, uint32_t Function)
 /**
   * @brief  Get environmental sensor Output Data Rate
   * @param  Instance environmental sensor instance to be used
-  * @param  Function Environmental sensor function. Could be :
-  *         - ENV_TEMPERATURE or ENV_HUMIDITY for instance 0
-  *         - ENV_TEMPERATURE or ENV_PRESSURE for instance 1
+  * @param  Function Environmental sensor function
   * @param  Odr pointer to Output Data Rate read value
   * @retval BSP status
   */
@@ -685,9 +765,7 @@ int32_t IKS01A3_ENV_SENSOR_GetOutputDataRate(uint32_t Instance, uint32_t Functio
 /**
   * @brief  Set environmental sensor Output Data Rate
   * @param  Instance environmental sensor instance to be used
-  * @param  Function Environmental sensor function. Could be :
-  *         - ENV_TEMPERATURE or ENV_HUMIDITY for instance 0
-  *         - ENV_TEMPERATURE or ENV_PRESSURE for instance 1
+  * @param  Function Environmental sensor function
   * @param  Odr Output Data Rate value to be set
   * @retval BSP status
   */
@@ -724,9 +802,7 @@ int32_t IKS01A3_ENV_SENSOR_SetOutputDataRate(uint32_t Instance, uint32_t Functio
 /**
   * @brief  Get environmental sensor value
   * @param  Instance environmental sensor instance to be used
-  * @param  Function Environmental sensor function. Could be :
-  *         - ENV_TEMPERATURE or ENV_HUMIDITY for instance 0
-  *         - ENV_TEMPERATURE or ENV_PRESSURE for instance 1
+  * @param  Function Environmental sensor function
   * @param  Value pointer to environmental sensor value
   * @retval BSP status
   */
@@ -807,8 +883,10 @@ static int32_t HTS221_0_Probe(uint32_t Functions)
   else
   {
     (void)HTS221_GetCapabilities(&hts221_obj_0, &cap);
-    EnvCtx[IKS01A3_HTS221_0].Functions = ((uint32_t)cap.Temperature) | ((uint32_t)cap.Pressure << 1) | ((
-                                           uint32_t)cap.Humidity << 2);
+    EnvCtx[IKS01A3_HTS221_0].Functions = ((uint32_t)cap.Temperature)
+                                       | ((uint32_t)cap.Pressure << 1)
+                                       | ((uint32_t)cap.Humidity << 2)
+                                       | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[IKS01A3_HTS221_0] = &hts221_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */
@@ -843,6 +921,11 @@ static int32_t HTS221_0_Probe(uint32_t Functions)
       }
     }
     if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_PRESSURE) == ENV_PRESSURE))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_GAS) == ENV_GAS))
     {
       /* Return an error if the application try to initialize a function not supported by the component */
       ret = BSP_ERROR_COMPONENT_FAILURE;
@@ -893,8 +976,10 @@ static int32_t SHT40AD1B_0_Probe(uint32_t Functions)
   else
   {
     (void)SHT40AD1B_GetCapabilities(&sht40ad1b_obj_0, &cap);
-    EnvCtx[IKS01A3_SHT40AD1B_0].Functions = ((uint32_t)cap.Temperature) | ((uint32_t)cap.Pressure << 1) | ((
-                                              uint32_t)cap.Humidity << 2);
+    EnvCtx[IKS01A3_SHT40AD1B_0].Functions = ((uint32_t)cap.Temperature)
+                                          | ((uint32_t)cap.Pressure << 1)
+                                          | ((uint32_t)cap.Humidity << 2)
+                                          | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[IKS01A3_SHT40AD1B_0] = &sht40ad1b_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */
@@ -932,6 +1017,95 @@ static int32_t SHT40AD1B_0_Probe(uint32_t Functions)
     {
       /* Return an error if the application try to initialize a function not supported by the component */
       ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_GAS) == ENV_GAS))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+  }
+
+  return ret;
+}
+#endif
+
+#if (USE_IKS01A3_ENV_SENSOR_SGP40_0 == 1)
+/**
+  * @brief  Register Bus IOs for instance 0 if component ID is OK
+  * @param  Functions Environmental sensor functions. Could be :
+  *         - ENV_GAS
+  * @retval BSP status
+  */
+static int32_t SGP40_0_Probe(uint32_t Functions)
+{
+  SGP40_IO_t            io_ctx;
+  uint8_t               id;
+  int32_t               ret = BSP_ERROR_NONE;
+  static SGP40_Object_t sgp40_obj_0;
+  SGP40_Capabilities_t  cap;
+
+  /* Configure the environmental sensor driver */
+  io_ctx.BusType  = SGP40_I2C_BUS; /* I2C */
+  io_ctx.Address  = SGP40_I2C_ADDRESS;
+  io_ctx.Init     = IKS01A3_I2C_Init;
+  io_ctx.DeInit   = IKS01A3_I2C_DeInit;
+  io_ctx.Read     = IKS01A3_I2C_Read;
+  io_ctx.Write    = IKS01A3_I2C_Write;
+  io_ctx.GetTick  = IKS01A3_GetTick;
+  io_ctx.Delay    = IKS01A3_Delay;
+
+  if (SGP40_RegisterBusIO(&sgp40_obj_0, &io_ctx) != SGP40_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (SGP40_ReadID(&sgp40_obj_0, &id) != SGP40_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (id != SGP40_ID)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else
+  {
+    (void)SGP40_GetCapabilities(&sgp40_obj_0, &cap);
+    EnvCtx[IKS01A3_SGP40_0].Functions = ((uint32_t)cap.Temperature)
+                                      | ((uint32_t)cap.Pressure << 1)
+                                      | ((uint32_t)cap.Humidity << 2)
+                                      | ((uint32_t)cap.Gas      << 3);
+
+    EnvCompObj[IKS01A3_SGP40_0] = &sgp40_obj_0;
+    /* The second cast (void *) is added to bypass Misra R11.3 rule */
+    EnvDrv[IKS01A3_SGP40_0] = (ENV_SENSOR_CommonDrv_t *)(void *)&SGP40_COMMON_Driver;
+
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_TEMPERATURE) == ENV_TEMPERATURE))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_HUMIDITY) == ENV_HUMIDITY))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_PRESSURE) == ENV_PRESSURE))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_GAS) == ENV_GAS) && (cap.Gas == 1U))
+    {
+      /* The second cast (void *) is added to bypass Misra R11.3 rule */
+      EnvFuncDrv[IKS01A3_SGP40_0][FunctionIndex[ENV_GAS]] = (ENV_SENSOR_FuncDrv_t *)(void *)&SGP40_GAS_Driver;
+
+      if (EnvDrv[IKS01A3_SGP40_0]->Init(EnvCompObj[IKS01A3_SGP40_0]) != SGP40_OK)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
     }
   }
 
@@ -979,8 +1153,10 @@ static int32_t LPS22HH_0_Probe(uint32_t Functions)
   {
     (void)LPS22HH_GetCapabilities(&lps22hh_obj_0, &cap);
 
-    EnvCtx[IKS01A3_LPS22HH_0].Functions = ((uint32_t)cap.Temperature) | ((uint32_t)cap.Pressure << 1) | ((
-                                            uint32_t)cap.Humidity << 2);
+    EnvCtx[IKS01A3_LPS22HH_0].Functions = ((uint32_t)cap.Temperature)
+                                        | ((uint32_t)cap.Pressure << 1)
+                                        | ((uint32_t)cap.Humidity << 2)
+                                        | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[IKS01A3_LPS22HH_0] = &lps22hh_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */
@@ -1015,6 +1191,11 @@ static int32_t LPS22HH_0_Probe(uint32_t Functions)
       }
     }
     if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_HUMIDITY) == ENV_HUMIDITY))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_GAS) == ENV_GAS))
     {
       /* Return an error if the application try to initialize a function not supported by the component */
       ret = BSP_ERROR_COMPONENT_FAILURE;
@@ -1064,8 +1245,10 @@ static int32_t STTS751_0_Probe(uint32_t Functions)
   {
     (void)STTS751_GetCapabilities(&stts751_obj_0, &cap);
 
-    EnvCtx[IKS01A3_STTS751_0].Functions = ((uint32_t)cap.Temperature) | ((uint32_t)cap.Pressure << 1) | ((
-                                            uint32_t)cap.Humidity << 2);
+    EnvCtx[IKS01A3_STTS751_0].Functions = ((uint32_t)cap.Temperature)
+                                        | ((uint32_t)cap.Pressure << 1)
+                                        | ((uint32_t)cap.Humidity << 2)
+                                        | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[IKS01A3_STTS751_0] = &stts751_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */
@@ -1091,6 +1274,11 @@ static int32_t STTS751_0_Probe(uint32_t Functions)
       ret = BSP_ERROR_COMPONENT_FAILURE;
     }
     if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_PRESSURE) == ENV_PRESSURE))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_GAS) == ENV_GAS))
     {
       /* Return an error if the application try to initialize a function not supported by the component */
       ret = BSP_ERROR_COMPONENT_FAILURE;
@@ -1140,8 +1328,10 @@ static int32_t LPS33HW_0_Probe(uint32_t Functions)
   {
     (void)LPS33HW_GetCapabilities(&lps33hw_obj_0, &cap);
 
-    EnvCtx[IKS01A3_LPS33HW_0].Functions = ((uint32_t)cap.Temperature) | ((uint32_t)cap.Pressure << 1) | ((
-                                            uint32_t)cap.Humidity << 2);
+    EnvCtx[IKS01A3_LPS33HW_0].Functions = ((uint32_t)cap.Temperature)
+                                        | ((uint32_t)cap.Pressure << 1)
+                                        | ((uint32_t)cap.Humidity << 2)
+                                        | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[IKS01A3_LPS33HW_0] = &lps33hw_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */
@@ -1176,6 +1366,11 @@ static int32_t LPS33HW_0_Probe(uint32_t Functions)
       }
     }
     if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_HUMIDITY) == ENV_HUMIDITY))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_GAS) == ENV_GAS))
     {
       /* Return an error if the application try to initialize a function not supported by the component */
       ret = BSP_ERROR_COMPONENT_FAILURE;
@@ -1225,8 +1420,10 @@ static int32_t STTS22H_0_Probe(uint32_t Functions)
   {
     (void)STTS22H_GetCapabilities(&stts22h_obj_0, &cap);
 
-    EnvCtx[IKS01A3_STTS22H_0].Functions = ((uint32_t)cap.Temperature) | ((uint32_t)cap.Pressure << 1) | ((
-                                            uint32_t)cap.Humidity << 2);
+    EnvCtx[IKS01A3_STTS22H_0].Functions = ((uint32_t)cap.Temperature)
+                                        | ((uint32_t)cap.Pressure << 1)
+                                        | ((uint32_t)cap.Humidity << 2)
+                                        | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[IKS01A3_STTS22H_0] = &stts22h_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */
@@ -1252,6 +1449,11 @@ static int32_t STTS22H_0_Probe(uint32_t Functions)
       ret = BSP_ERROR_COMPONENT_FAILURE;
     }
     if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_PRESSURE) == ENV_PRESSURE))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_GAS) == ENV_GAS))
     {
       /* Return an error if the application try to initialize a function not supported by the component */
       ret = BSP_ERROR_COMPONENT_FAILURE;
@@ -1301,8 +1503,10 @@ static int32_t LPS33K_0_Probe(uint32_t Functions)
   {
     (void)LPS33K_GetCapabilities(&lps33k_obj_0, &cap);
 
-    EnvCtx[IKS01A3_LPS33K_0].Functions = ((uint32_t)cap.Temperature) | ((uint32_t)cap.Pressure << 1) | ((
-                                           uint32_t)cap.Humidity << 2);
+    EnvCtx[IKS01A3_LPS33K_0].Functions = ((uint32_t)cap.Temperature)
+                                       | ((uint32_t)cap.Pressure << 1)
+                                       | ((uint32_t)cap.Humidity << 2)
+                                       | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[IKS01A3_LPS33K_0] = &lps33k_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */
@@ -1337,6 +1541,11 @@ static int32_t LPS33K_0_Probe(uint32_t Functions)
       }
     }
     if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_HUMIDITY) == ENV_HUMIDITY))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_GAS) == ENV_GAS))
     {
       /* Return an error if the application try to initialize a function not supported by the component */
       ret = BSP_ERROR_COMPONENT_FAILURE;
@@ -1385,9 +1594,10 @@ static int32_t LPS22CH_0_Probe(uint32_t Functions)
   else
   {
     (void)LPS22CH_GetCapabilities(&lps22ch_obj_0, &cap);
-
-    EnvCtx[IKS01A3_LPS22CH_0].Functions = ((uint32_t)cap.Temperature) | ((uint32_t)cap.Pressure << 1) | ((
-                                            uint32_t)cap.Humidity << 2);
+    EnvCtx[IKS01A3_LPS22CH_0].Functions = ((uint32_t)cap.Temperature)
+                                        | ((uint32_t)cap.Pressure << 1)
+                                        | ((uint32_t)cap.Humidity << 2)
+                                        | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[IKS01A3_LPS22CH_0] = &lps22ch_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */
@@ -1422,6 +1632,11 @@ static int32_t LPS22CH_0_Probe(uint32_t Functions)
       }
     }
     if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_HUMIDITY) == ENV_HUMIDITY))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_GAS) == ENV_GAS))
     {
       /* Return an error if the application try to initialize a function not supported by the component */
       ret = BSP_ERROR_COMPONENT_FAILURE;
@@ -1470,9 +1685,10 @@ static int32_t LPS27HHTW_0_Probe(uint32_t Functions)
   else
   {
     (void)LPS27HHTW_GetCapabilities(&lps27hhtw_obj_0, &cap);
-
-    EnvCtx[IKS01A3_LPS27HHTW_0].Functions = ((uint32_t)cap.Temperature) | ((uint32_t)cap.Pressure << 1) | ((
-                                              uint32_t)cap.Humidity << 2);
+    EnvCtx[IKS01A3_LPS27HHTW_0].Functions = ((uint32_t)cap.Temperature)
+                                          | ((uint32_t)cap.Pressure << 1)
+                                          | ((uint32_t)cap.Humidity << 2)
+                                          | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[IKS01A3_LPS27HHTW_0] = &lps27hhtw_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */
@@ -1507,6 +1723,11 @@ static int32_t LPS27HHTW_0_Probe(uint32_t Functions)
       }
     }
     if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_HUMIDITY) == ENV_HUMIDITY))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_GAS) == ENV_GAS))
     {
       /* Return an error if the application try to initialize a function not supported by the component */
       ret = BSP_ERROR_COMPONENT_FAILURE;
@@ -1555,9 +1776,10 @@ static int32_t LPS22DF_0_Probe(uint32_t Functions)
   else
   {
     (void)LPS22DF_GetCapabilities(&lps22df_obj_0, &cap);
-
-    EnvCtx[IKS01A3_LPS22DF_0].Functions = ((uint32_t)cap.Temperature) | ((uint32_t)cap.Pressure << 1) | ((
-                                            uint32_t)cap.Humidity << 2);
+    EnvCtx[IKS01A3_LPS22DF_0].Functions = ((uint32_t)cap.Temperature)
+                                        | ((uint32_t)cap.Pressure << 1)
+                                        | ((uint32_t)cap.Humidity << 2)
+                                        | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[IKS01A3_LPS22DF_0] = &lps22df_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */
@@ -1592,6 +1814,11 @@ static int32_t LPS22DF_0_Probe(uint32_t Functions)
       }
     }
     if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_HUMIDITY) == ENV_HUMIDITY))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_GAS) == ENV_GAS))
     {
       /* Return an error if the application try to initialize a function not supported by the component */
       ret = BSP_ERROR_COMPONENT_FAILURE;
@@ -1640,9 +1867,10 @@ static int32_t ILPS22QS_0_Probe(uint32_t Functions)
   else
   {
     (void)ILPS22QS_GetCapabilities(&ilps22qs_obj_0, &cap);
-
-    EnvCtx[IKS01A3_ILPS22QS_0].Functions = ((uint32_t)cap.Temperature) | ((uint32_t)cap.Pressure << 1) | ((
-                                             uint32_t)cap.Humidity << 2);
+    EnvCtx[IKS01A3_ILPS22QS_0].Functions = ((uint32_t)cap.Temperature)
+                                         | ((uint32_t)cap.Pressure << 1)
+                                         | ((uint32_t)cap.Humidity << 2)
+                                         | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[IKS01A3_ILPS22QS_0] = &ilps22qs_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */
@@ -1677,6 +1905,11 @@ static int32_t ILPS22QS_0_Probe(uint32_t Functions)
       }
     }
     if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_HUMIDITY) == ENV_HUMIDITY))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_GAS) == ENV_GAS))
     {
       /* Return an error if the application try to initialize a function not supported by the component */
       ret = BSP_ERROR_COMPONENT_FAILURE;
@@ -1725,9 +1958,10 @@ static int32_t ILPS28QSW_0_Probe(uint32_t Functions)
   else
   {
     (void)ILPS28QSW_GetCapabilities(&ilps28qsv_obj_0, &cap);
-
-    EnvCtx[IKS01A3_ILPS28QSW_0].Functions = ((uint32_t)cap.Temperature) | ((uint32_t)cap.Pressure << 1) | ((
-                                              uint32_t)cap.Humidity << 2);
+    EnvCtx[IKS01A3_ILPS28QSW_0].Functions = ((uint32_t)cap.Temperature)
+                                          | ((uint32_t)cap.Pressure << 1)
+                                          | ((uint32_t)cap.Humidity << 2)
+                                          | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[IKS01A3_ILPS28QSW_0] = &ilps28qsv_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */
@@ -1762,6 +1996,11 @@ static int32_t ILPS28QSW_0_Probe(uint32_t Functions)
       }
     }
     if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_HUMIDITY) == ENV_HUMIDITY))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_GAS) == ENV_GAS))
     {
       /* Return an error if the application try to initialize a function not supported by the component */
       ret = BSP_ERROR_COMPONENT_FAILURE;
@@ -1810,9 +2049,10 @@ static int32_t LPS28DFW_0_Probe(uint32_t Functions)
   else
   {
     (void)LPS28DFW_GetCapabilities(&lps28dfw_obj_0, &cap);
-
-    EnvCtx[IKS01A3_LPS28DFW_0].Functions = ((uint32_t)cap.Temperature) | ((uint32_t)cap.Pressure << 1) | ((
-                                             uint32_t)cap.Humidity << 2);
+    EnvCtx[IKS01A3_LPS28DFW_0].Functions = ((uint32_t)cap.Temperature)
+                                         | ((uint32_t)cap.Pressure << 1)
+                                         | ((uint32_t)cap.Humidity << 2)
+                                         | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[IKS01A3_LPS28DFW_0] = &lps28dfw_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */
@@ -1847,6 +2087,11 @@ static int32_t LPS28DFW_0_Probe(uint32_t Functions)
       }
     }
     if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_HUMIDITY) == ENV_HUMIDITY))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & ENV_GAS) == ENV_GAS))
     {
       /* Return an error if the application try to initialize a function not supported by the component */
       ret = BSP_ERROR_COMPONENT_FAILURE;

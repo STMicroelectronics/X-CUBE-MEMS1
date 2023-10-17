@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    custom_mems_conf_app.h
-  * @author  MEMS Application Team
+  * @author  MEMS Software Solutions Team
   * @brief   Custom sensor configuration file
   ******************************************************************************
   * @attention
@@ -17,8 +17,8 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __CUSTOM_MEMS_CONF_APP_H__
-#define __CUSTOM_MEMS_CONF_APP_H__
+#ifndef CUSTOM_MEMS_CONF_APP_H
+#define CUSTOM_MEMS_CONF_APP_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -946,8 +946,45 @@ extern "C" {
   #endif
 #endif
 
+#ifdef USE_CUSTOM_MOTION_SENSOR_LSM6DSO16IS_0
+  #if (USE_CUSTOM_MOTION_SENSOR_LSM6DSO16IS_0 == 1)
+    #ifndef CUSTOM_ACC_INSTANCE_0
+      #define CUSTOM_ACC_INSTANCE_0 CUSTOM_LSM6DSO16IS_0
+      #define CUSTOM_ACC_INSTANCE_NAME_0 "LSM6DSO16IS"
+      #define CUSTOM_ACC_INSTANCE_ODR_0 {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667} /* Hz */
+      #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
+      #ifndef ACC_GYR_UNICLEO_ID
+        #define ACC_GYR_UNICLEO_ID LSM6DSO16IS_UNICLEO_ID
+      #endif
+    #endif
+    #ifndef CUSTOM_GYR_INSTANCE_0
+      #define CUSTOM_GYR_INSTANCE_0 CUSTOM_LSM6DSO16IS_0
+      #define CUSTOM_GYR_INSTANCE_NAME_0 "LSM6DSO16IS"
+      #define CUSTOM_GYR_INSTANCE_ODR_0 {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667} /* Hz */
+      #define CUSTOM_GYR_INSTANCE_FS_0 {5, 125, 250, 500, 1000, 2000} /* dps */
+      #ifndef ACC_GYR_UNICLEO_ID
+        #define ACC_GYR_UNICLEO_ID LSM6DSO16IS_UNICLEO_ID
+      #endif
+    #endif
+  #endif
+#endif
+
+#ifdef USE_CUSTOM_ENV_SENSOR_SGP40_0
+  #if (USE_CUSTOM_ENV_SENSOR_SGP40_0 == 1)
+    #ifndef CUSTOM_GAS_INSTANCE_0
+      #define CUSTOM_GAS_INSTANCE_0 CUSTOM_SGP40_0
+      #define CUSTOM_GAS_INSTANCE_NAME_0 "SGP40"
+      #define CUSTOM_GAS_INSTANCE_ODR_0 {0} /* Hz */
+      #define CUSTOM_GAS_INSTANCE_FS_0 {0} /* % */
+      #ifndef GAS_UNICLEO_ID
+        #define GAS_UNICLEO_ID SGP40_UNICLEO_ID
+      #endif
+    #endif
+  #endif
+#endif
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __CUSTOM_MEMS_CONF_APP_H__ */
+#endif /* CUSTOM_MEMS_CONF_APP_H */

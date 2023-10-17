@@ -215,4 +215,3 @@ static void float_array_set(float array[], float value, uint32_t count)
 /**
  * @}
  */
-

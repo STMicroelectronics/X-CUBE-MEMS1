@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2019 STMicroelectronics.
+  * Copyright (c) 2019 - 2023 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -80,6 +80,10 @@ extern "C" {
 #define USE_IKS01A3_ENV_SENSOR_SHT40AD1B_0       0
 #endif
 
+#ifndef USE_IKS01A3_ENV_SENSOR_SGP40_0
+#define USE_IKS01A3_ENV_SENSOR_SGP40_0           0
+#endif
+
 #if (USE_IKS01A3_ENV_SENSOR_HTS221_0 == 1)
 #include "hts221.h"
 #endif
@@ -132,6 +136,10 @@ extern "C" {
 #include "sht40ad1b.h"
 #endif
 
+#if (USE_IKS01A3_ENV_SENSOR_SGP40_0 == 1)
+#include "sgp40.h"
+#endif
+
 /** @addtogroup BSP BSP
   * @{
   */
@@ -154,10 +162,12 @@ typedef struct
   uint8_t Temperature;
   uint8_t Pressure;
   uint8_t Humidity;
+  uint8_t Gas;
   uint8_t LowPower;
   float   HumMaxOdr;
   float   TempMaxOdr;
   float   PressMaxOdr;
+  float   GasMaxOdr;
 } IKS01A3_ENV_SENSOR_Capabilities_t;
 
 typedef struct
@@ -291,6 +301,23 @@ typedef struct
                             USE_IKS01A3_ENV_SENSOR_LPS28DFW_0)
 #endif
 
+#if (USE_IKS01A3_ENV_SENSOR_SGP40_0 == 1)
+#define IKS01A3_SGP40_0 (USE_IKS01A3_ENV_SENSOR_HTS221_0 + \
+                         USE_IKS01A3_ENV_SENSOR_LPS22HH_0 + \
+                         USE_IKS01A3_ENV_SENSOR_STTS751_0 + \
+                         USE_IKS01A3_ENV_SENSOR_LPS33HW_0 + \
+                         USE_IKS01A3_ENV_SENSOR_STTS22H_0 + \
+                         USE_IKS01A3_ENV_SENSOR_LPS33K_0 + \
+                         USE_IKS01A3_ENV_SENSOR_LPS22CH_0 + \
+                         USE_IKS01A3_ENV_SENSOR_LPS27HHTW_0 + \
+                         USE_IKS01A3_ENV_SENSOR_LPS22DF_0 + \
+                         USE_IKS01A3_ENV_SENSOR_ILPS22QS_0 + \
+                         USE_IKS01A3_ENV_SENSOR_ILPS28QSW_0 + \
+                         USE_IKS01A3_ENV_SENSOR_LPS28DFW_0 + \
+                         USE_IKS01A3_ENV_SENSOR_SHT40AD1B_0)
+
+#endif
+
 #ifndef ENV_TEMPERATURE
 #define ENV_TEMPERATURE      1U
 #endif
@@ -300,8 +327,11 @@ typedef struct
 #ifndef ENV_HUMIDITY
 #define ENV_HUMIDITY         4U
 #endif
+#ifndef ENV_GAS
+#define ENV_GAS              8U
+#endif
 
-#define IKS01A3_ENV_FUNCTIONS_NBR    3U
+#define IKS01A3_ENV_FUNCTIONS_NBR    4U
 #define IKS01A3_ENV_INSTANCES_NBR    (USE_IKS01A3_ENV_SENSOR_HTS221_0 + \
                                       USE_IKS01A3_ENV_SENSOR_LPS22HH_0 + \
                                       USE_IKS01A3_ENV_SENSOR_STTS751_0 + \
@@ -314,7 +344,8 @@ typedef struct
                                       USE_IKS01A3_ENV_SENSOR_ILPS22QS_0 + \
                                       USE_IKS01A3_ENV_SENSOR_ILPS28QSW_0 + \
                                       USE_IKS01A3_ENV_SENSOR_LPS28DFW_0 + \
-                                      USE_IKS01A3_ENV_SENSOR_SHT40AD1B_0)
+                                      USE_IKS01A3_ENV_SENSOR_SHT40AD1B_0 + \
+                                      USE_IKS01A3_ENV_SENSOR_SGP40_0)
 
 #if (IKS01A3_ENV_INSTANCES_NBR == 0)
 #error "No environmental sensor instance has been selected"

@@ -217,10 +217,12 @@ int32_t LPS33HW_GetCapabilities(LPS33HW_Object_t *pObj, LPS33HW_Capabilities_t *
   Capabilities->Humidity    = 0;
   Capabilities->Pressure    = 1;
   Capabilities->Temperature = 1;
+  Capabilities->Gas         = 0;
   Capabilities->LowPower    = 1;
   Capabilities->HumMaxOdr   = 0.0f;
   Capabilities->TempMaxOdr  = 75.0f;
   Capabilities->PressMaxOdr = 75.0f;
+  Capabilities->GasMaxOdr   = 0.0f;
   return LPS33HW_OK;
 }
 

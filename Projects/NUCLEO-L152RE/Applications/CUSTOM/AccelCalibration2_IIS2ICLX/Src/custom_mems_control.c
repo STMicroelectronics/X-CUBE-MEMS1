@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    custom_mems_control.c
-  * @author  MEMS Application Team
+  * @author  MEMS Software Solutions Team
   * @brief   This file contains the MEMS sensors interface for custom board
   ******************************************************************************
   * @attention
@@ -117,6 +117,20 @@ void BSP_SENSOR_HUM_Init(void)
 }
 
 /**
+  * @brief  Initializes gas sensor
+  * @param  None
+  * @retval None
+  */
+void BSP_SENSOR_GAS_Init(void)
+{
+#if (defined BSP_ENV_SENSORS)
+#ifdef CUSTOM_GAS_INSTANCE_0
+  (void)CUSTOM_ENV_SENSOR_Init(CUSTOM_GAS_INSTANCE_0, ENV_GAS);
+#endif
+#endif
+}
+
+/**
   * @brief  Enables accelerometer
   * @param  None
   * @retval None
@@ -213,6 +227,20 @@ void BSP_SENSOR_HUM_Enable(void)
 }
 
 /**
+  * @brief  Enables gas sensors
+  * @param  None
+  * @retval None
+  */
+void BSP_SENSOR_GAS_Enable(void)
+{
+#if (defined BSP_ENV_SENSORS)
+#ifdef CUSTOM_GAS_INSTANCE_0
+  (void)CUSTOM_ENV_SENSOR_Enable(CUSTOM_GAS_INSTANCE_0, ENV_GAS);
+#endif
+#endif
+}
+
+/**
   * @brief  Disables accelerometer
   * @param  None
   * @retval None
@@ -304,6 +332,20 @@ void BSP_SENSOR_HUM_Disable(void)
 #if (defined BSP_ENV_SENSORS)
 #ifdef CUSTOM_HUM_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Disable(CUSTOM_HUM_INSTANCE_0, ENV_HUMIDITY);
+#endif
+#endif
+}
+
+/**
+  * @brief  Disables gas sensor
+  * @param  None
+  * @retval None
+  */
+void BSP_SENSOR_GAS_Disable(void)
+{
+#if (defined BSP_ENV_SENSORS)
+#ifdef CUSTOM_GAS_INSTANCE_0
+  (void)CUSTOM_ENV_SENSOR_Disable(CUSTOM_GAS_INSTANCE_0, ENV_GAS);
 #endif
 #endif
 }
@@ -422,6 +464,22 @@ void BSP_SENSOR_HUM_GetValue(float *Value)
 #if (defined BSP_ENV_SENSORS)
 #ifdef CUSTOM_HUM_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_GetValue(CUSTOM_HUM_INSTANCE_0, ENV_HUMIDITY, Value);
+#else
+  *Value = 0.0f;
+#endif
+#endif
+}
+
+/**
+  * @brief  Get gas sensor data
+  * @param  Value pointer to gas value
+  * @retval None
+  */
+void BSP_SENSOR_GAS_GetValue(float *Value)
+{
+#if (defined BSP_ENV_SENSORS)
+#ifdef CUSTOM_GAS_INSTANCE_0
+  (void)CUSTOM_ENV_SENSOR_GetValue(CUSTOM_GAS_INSTANCE_0, ENV_GAS, Value);
 #else
   *Value = 0.0f;
 #endif

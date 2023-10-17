@@ -3988,10 +3988,6 @@ static int32_t LIS2DUX12_0_Probe(uint32_t Functions)
   {
     ret = BSP_ERROR_UNKNOWN_COMPONENT;
   }
-  else if (LIS2DUX12_DisableI3C(&lis2dux12_obj_0) != LIS2DUX12_OK)
-  {
-    ret = BSP_ERROR_UNKNOWN_COMPONENT;
-  }
   else if (LIS2DUX12_ReadID(&lis2dux12_obj_0, &id) != LIS2DUX12_OK)
   {
     ret = BSP_ERROR_UNKNOWN_COMPONENT;
@@ -4063,10 +4059,6 @@ static int32_t LIS2DUXS12_0_Probe(uint32_t Functions)
   io_ctx.Delay       = IKS01A3_Delay;
 
   if (LIS2DUXS12_RegisterBusIO(&lis2duxs12_obj_0, &io_ctx) != LIS2DUXS12_OK)
-  {
-    ret = BSP_ERROR_UNKNOWN_COMPONENT;
-  }
-  else if (LIS2DUXS12_DisableI3C(&lis2duxs12_obj_0) != LIS2DUXS12_OK)
   {
     ret = BSP_ERROR_UNKNOWN_COMPONENT;
   }

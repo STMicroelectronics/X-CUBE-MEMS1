@@ -56,7 +56,7 @@ typedef struct
 {
   ILPS28QSW_Init_Func          Init;
   ILPS28QSW_DeInit_Func        DeInit;
-  uint32_t                   BusType; /*0 means I2C, 1 means SPI 4-Wires, 2 means SPI-3-Wires */
+  uint32_t                   BusType; /*0 means I2C, 1 means I3C */
   uint8_t                    Address;
   ILPS28QSW_WriteReg_Func      WriteReg;
   ILPS28QSW_ReadReg_Func       ReadReg;
@@ -79,10 +79,12 @@ typedef struct
   uint8_t Temperature;
   uint8_t Pressure;
   uint8_t Humidity;
+  uint8_t Gas;
   uint8_t LowPower;
   float   HumMaxOdr;
   float   TempMaxOdr;
   float   PressMaxOdr;
+  float   GasMaxOdr;
 } ILPS28QSW_Capabilities_t;
 
 typedef struct
@@ -147,8 +149,7 @@ typedef union
 #define ILPS28QSW_ERROR            -1
 
 #define ILPS28QSW_I2C_BUS          0U
-#define ILPS28QSW_SPI_4WIRES_BUS   1U
-#define ILPS28QSW_SPI_3WIRES_BUS   2U
+#define ILPS28QSW_I3C_BUS          1U
 
 /**
   * @}

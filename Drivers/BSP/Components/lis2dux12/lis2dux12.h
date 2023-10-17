@@ -62,7 +62,7 @@ typedef struct
 {
   LIS2DUX12_Init_Func        Init;
   LIS2DUX12_DeInit_Func      DeInit;
-  uint32_t                   BusType; /*0 means I2C, 1 means SPI 4-Wires, 2 means SPI-3-Wires */
+  uint32_t                   BusType; /*0 means I2C, 1 means SPI 4-Wires, 2 means SPI-3-Wires, 3 means I3C */
   uint8_t                    Address;
   LIS2DUX12_WriteReg_Func    WriteReg;
   LIS2DUX12_ReadReg_Func     ReadReg;
@@ -187,6 +187,7 @@ typedef union
 #define LIS2DUX12_I2C_BUS                 0U
 #define LIS2DUX12_SPI_4WIRES_BUS          1U
 #define LIS2DUX12_SPI_3WIRES_BUS          2U
+#define LIS2DUX12_I3C_BUS                 3U
 
 #define LIS2DUX12_ACC_SENSITIVITY_FOR_FS_2G   0.061f  /**< Sensitivity value for 2g full scale, Low-power1 mode [mg/LSB] */
 #define LIS2DUX12_ACC_SENSITIVITY_FOR_FS_4G   0.122f  /**< Sensitivity value for 4g full scale, Low-power1 mode [mg/LSB] */
@@ -204,7 +205,8 @@ typedef union
 int32_t LIS2DUX12_RegisterBusIO(LIS2DUX12_Object_t *pObj, LIS2DUX12_IO_t *pIO);
 int32_t LIS2DUX12_Init(LIS2DUX12_Object_t *pObj);
 int32_t LIS2DUX12_DeInit(LIS2DUX12_Object_t *pObj);
-int32_t LIS2DUX12_DisableI3C(LIS2DUX12_Object_t *pObj);
+int32_t LIS2DUX12_ExitDeepPowerDownI2C(LIS2DUX12_Object_t *pObj);
+int32_t LIS2DUX12_ExitDeepPowerDownSPI(LIS2DUX12_Object_t *pObj);
 int32_t LIS2DUX12_ReadID(LIS2DUX12_Object_t *pObj, uint8_t *Id);
 int32_t LIS2DUX12_GetCapabilities(LIS2DUX12_Object_t *pObj, LIS2DUX12_Capabilities_t *Capabilities);
 

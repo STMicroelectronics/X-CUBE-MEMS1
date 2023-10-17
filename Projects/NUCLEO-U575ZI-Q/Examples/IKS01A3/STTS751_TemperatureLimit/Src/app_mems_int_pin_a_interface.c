@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    app_mems_int_pin_a_interface.c
-  * @author  MEMS Application Team
+  * @author  MEMS Software Solutions Team
   * @brief   This file contains the MEMS INT pin A interface
   ******************************************************************************
   * @attention
