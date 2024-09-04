@@ -436,7 +436,7 @@ int32_t A3G4250D_GYRO_GetAxesRaw(A3G4250D_Object_t *pObj, A3G4250D_AxesRaw_t *Va
 int32_t A3G4250D_GYRO_GetAxes(A3G4250D_Object_t *pObj, A3G4250D_Axes_t *AngularRate)
 {
   A3G4250D_AxesRaw_t data_raw;
-  float_t sensitivity;
+  float_t sensitivity = 0.0f;
 
   /* Read raw data values. */
   if (A3G4250D_GYRO_GetAxesRaw(pObj, &data_raw) != A3G4250D_OK)

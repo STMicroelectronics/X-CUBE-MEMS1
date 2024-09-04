@@ -51,7 +51,7 @@ extern "C" {
 #define TAU_DEFAULT           50            //!< Default value for Moving RMS Filtering in ms
 #define WINDOW_DEFAULT        HANNING       //!< Default value for Windowing Method
 #define TD_DEFAULT            TD_SPEED      //!< Default value for Time Domain Analysis
-#define TACQ_DEFAULT          5000          //!< Defualt value for Total acquisition time in ms
+#define TACQ_DEFAULT          5000          //!< Default value for Total acquisition time in ms
 
 #define CIRC_BUFFER_RATIO_NUM 12u           //!< Buffer Ratio numerator
 #define CIRC_BUFFER_RATIO_DEN 10u           //!< Buffer Ratio denominator

@@ -2,11 +2,11 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.10.0.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.0.0 instances.
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -132,7 +132,7 @@ void MX_IKS01A3_LSM6DSO_FreeFall_Process(void)
     HAL_Delay(50);
 
     /* Wait until the button is released */
-    while ((BSP_PB_GetState( BUTTON_KEY ) == PushButtonState));
+    while ((BSP_PB_GetState(BUTTON_KEY) == PushButtonState));
 
     /* Debouncing */
     HAL_Delay(50);

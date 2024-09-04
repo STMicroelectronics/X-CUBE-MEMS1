@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -45,7 +45,7 @@ static float AccMatrix[3][3];
 static float MagMatrix[3][3];
 
 /* Private function prototypes -----------------------------------------------*/
-static int calc_heading(float *heading, float v_head[]);
+static int32_t calc_heading(float *heading, float v_head[]);
 static void calc_matrix(char orientation[], float matrix[][3]);
 static void q_conjug(float q_conj[], float q_src[]);
 static void q_multiply(float q_res[], float q_a[], float q_b[]);
@@ -108,7 +108,7 @@ void MotionEC_manager_run(MEC_input_t *data_in, MEC_output_t *data_out)
  * @param  heading_valid  E-Compass device heading is valid
  * @retval None
  */
-void MotionEC_manager_calc_heading(float quaternion[], float *heading, int *heading_valid)
+void MotionEC_manager_calc_heading(float quaternion[], float *heading, int32_t *heading_valid)
 {
   float v_base[3] = {0.0, 1.0, 0.0};
   float v_head[3];
@@ -123,7 +123,7 @@ void MotionEC_manager_calc_heading(float quaternion[], float *heading, int *head
  * @param  length  Library version string length
  * @retval None
  */
-void MotionEC_manager_get_version(char *version, int *length)
+void MotionEC_manager_get_version(char *version, int32_t *length)
 {
   *length = (int)MotionEC_GetLibVersion(version);
 }
@@ -135,7 +135,7 @@ void MotionEC_manager_get_version(char *version, int *length)
  * @param  v_head  Device orientation vector for heading
  * @retval 1 in case of success, 0 otherwise
  */
-static int calc_heading(float *heading, float v_head[])
+static int32_t calc_heading(float *heading, float v_head[])
 {
   const float tol_deg = 5.0f; /* Tolerance [deg] */
   float tolerance = sinf(tol_deg * M_PI / 180.0f);

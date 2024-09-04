@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -37,22 +37,22 @@ typedef struct
 {
   uint8_t *pDMA_Buffer;
   uint16_t StartOfMsg;
-} TUart_Engine;
+} Uart_Engine_t;
 
 /* Exported defines ----------------------------------------------------------*/
-#define UART_RxBufferSize (2 * TMsg_MaxLen)
-#define UART_TxBufferSize (2 * TMsg_MaxLen)
+#define UART_RX_BUFFER_SIZE (2 * Msg_MaxLen)
+#define UART_TX_BUFFER_SIZE (2 * Msg_MaxLen)
 
 /* Exported variables --------------------------------------------------------*/
 extern volatile uint8_t UartRxBuffer[];
-extern TUart_Engine UartEngine;
+extern Uart_Engine_t UartEngine;
 
 /* Exported macro ------------------------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /* Exported functions --------------------------------------------------------*/
 void UART_StartReceiveMsg(void);
-int UART_ReceivedMSG(TMsg *Msg);
-void UART_SendMsg(TMsg *Msg);
+int32_t UART_ReceivedMSG(Msg_t *Msg);
+void UART_SendMsg(Msg_t *Msg);
 
 #ifdef __cplusplus
 }

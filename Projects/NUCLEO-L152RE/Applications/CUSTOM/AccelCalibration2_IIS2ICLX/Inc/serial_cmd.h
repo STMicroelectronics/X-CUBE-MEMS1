@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -37,7 +37,7 @@ extern "C" {
 #define CMD_Stop_Data_Streaming        0x09
 #define CMD_Offline_Data               0x10 /* Offline data stream */
 #define CMD_Use_Offline_Data           0x11 /* From Msg->Data[3]: uint8_t UseOfflineData (1 ON, 0 OFF) */
-#define CMD_Get_App_Info               0x12 /* From Msg->Data[3]: int AlgoFreq; uint8_t RequiredData; */
+#define CMD_Get_App_Info               0x12 /* From Msg->Data[3]: int32_t AlgoFreq; uint8_t RequiredData; */
 
 #define CMD_Set_DateTime               0x0C
 #define CMD_Enter_DFU_Mode             0x0E

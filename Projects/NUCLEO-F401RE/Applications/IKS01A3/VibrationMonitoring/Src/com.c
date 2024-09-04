@@ -30,20 +30,20 @@
 
 /* Private types -------------------------------------------------------------*/
 /* Private defines -----------------------------------------------------------*/
-#define Uart_Msg_Max_Size TMsg_MaxLen
+#define UART_MSG_MAX_SIZE Msg_MaxLen
 
 /* Private macro -------------------------------------------------------------*/
 /* Exported variables --------------------------------------------------------*/
-volatile uint8_t UartRxBuffer[UART_RxBufferSize];
+volatile uint8_t UartRxBuffer[UART_RX_BUFFER_SIZE];
 volatile uint32_t UsartBaudRate = 921600;
 
 extern UART_HandleTypeDef UartHandle; /* This "redundant" line is here to fulfil MISRA C-2012 rule 8.4 */
 UART_HandleTypeDef UartHandle;
-TUart_Engine UartEngine;
+Uart_Engine_t UartEngine;
 
 /* Private variables ---------------------------------------------------------*/
 static DMA_HandleTypeDef HdmaRx;
-static volatile uint8_t UartTxBuffer[TMsg_MaxLen * 2];
+static volatile uint8_t UartTxBuffer[Msg_MaxLen * 2];
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -52,17 +52,21 @@ static volatile uint8_t UartTxBuffer[TMsg_MaxLen * 2];
  * @param  Msg the pointer to the message to be received
  * @retval 1 if a complete message is found, 0 otherwise
  */
-int UART_ReceivedMSG(TMsg *Msg)
+int32_t UART_ReceivedMSG(Msg_t *Msg)
 {
-  uint16_t i, j, k, j2;
-  uint16_t dma_counter, length;
+  uint16_t i;
+  uint16_t j;
+  uint16_t k;
+  uint16_t j2;
+  uint16_t length;
+  uint16_t dma_counter;
   uint8_t data;
   uint16_t source = 0;
   uint8_t inc;
 
   if (Get_DMA_Flag_Status(&HdmaRx) == (uint32_t)RESET)
   {
-    dma_counter = (uint16_t)UART_RxBufferSize - (uint16_t)Get_DMA_Counter(&HdmaRx);
+    dma_counter = (uint16_t)UART_RX_BUFFER_SIZE - (uint16_t)Get_DMA_Counter(&HdmaRx);
 
     if (dma_counter >= UartEngine.StartOfMsg)
     {
@@ -70,7 +74,7 @@ int UART_ReceivedMSG(TMsg *Msg)
     }
     else
     {
-      length = (uint16_t)UART_RxBufferSize + dma_counter - UartEngine.StartOfMsg;
+      length = (uint16_t)UART_RX_BUFFER_SIZE + dma_counter - UartEngine.StartOfMsg;
     }
 
     j = UartEngine.StartOfMsg;
@@ -79,12 +83,12 @@ int UART_ReceivedMSG(TMsg *Msg)
     {
       data = UartRxBuffer[j];
       j++;
-      if (j >= (uint16_t)UART_RxBufferSize)
+      if (j >= (uint16_t)UART_RX_BUFFER_SIZE)
       {
         j = 0;
       }
 
-      if (data == (uint8_t)TMsg_EOF)
+      if (data == (uint8_t)Msg_EOF)
       {
         j = UartEngine.StartOfMsg;
         for (i = 0; i < k; i += inc)
@@ -93,7 +97,7 @@ int UART_ReceivedMSG(TMsg *Msg)
           uint8_t  Source1;
           uint8_t *Dest;
 
-          j2 = (j + 1U) % (uint16_t)UART_RxBufferSize;
+          j2 = (j + 1U) % (uint16_t)UART_RX_BUFFER_SIZE;
 
           Source0 = UartRxBuffer[j];
           Source1 = UartRxBuffer[j2];
@@ -107,12 +111,12 @@ int UART_ReceivedMSG(TMsg *Msg)
             return 0;
           }
 
-          j = (j + inc) % (uint16_t)UART_RxBufferSize;
+          j = (j + inc) % (uint16_t)UART_RX_BUFFER_SIZE;
           source++;
         }
 
         Msg->Len = source;
-        j = (j + 1U) % (uint16_t)UART_RxBufferSize; /* skip TMsg_EOF */
+        j = (j + 1U) % (uint16_t)UART_RX_BUFFER_SIZE; /* skip Msg_EOF */
         UartEngine.StartOfMsg = j;
 
         if (CHK_CheckAndRemove(Msg) != 0) /* check message integrity */
@@ -122,7 +126,7 @@ int UART_ReceivedMSG(TMsg *Msg)
       }
     }
 
-    if (length > (uint16_t)Uart_Msg_Max_Size)
+    if (length > (uint16_t)UART_MSG_MAX_SIZE)
     {
       UartEngine.StartOfMsg = dma_counter;
     }
@@ -136,7 +140,7 @@ int UART_ReceivedMSG(TMsg *Msg)
  * @param  Msg the pointer to the message to be sent
  * @retval None
  */
-void UART_SendMsg(TMsg *Msg)
+void UART_SendMsg(Msg_t *Msg)
 {
   uint16_t count_out;
 
@@ -219,13 +223,13 @@ void USARTConfig(void)
   USART_DMA_Configuration();
 
   UartHandle.pRxBuffPtr = (uint8_t *)UartRxBuffer; /* MISRA C-2012 rule 11.8 violation for purpose */
-  UartHandle.RxXferSize = UART_RxBufferSize;
+  UartHandle.RxXferSize = UART_RX_BUFFER_SIZE;
   UartHandle.ErrorCode = (uint32_t)HAL_UART_ERROR_NONE;
 
   /* Enable the DMA transfer for the receiver request by setting the DMAR bit
   in the UART CR3 register */
   /* MISRA C-2012 rule 11.8 violation for purpose */
-  (void)HAL_UART_Receive_DMA(&UartHandle, (uint8_t *)UartRxBuffer, UART_RxBufferSize);
+  (void)HAL_UART_Receive_DMA(&UartHandle, (uint8_t *)UartRxBuffer, UART_RX_BUFFER_SIZE);
 }
 
 /**

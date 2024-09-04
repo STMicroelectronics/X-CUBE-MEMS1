@@ -2,11 +2,11 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.10.0.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.0.0 instances.
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -44,13 +44,13 @@ extern "C" {
 volatile uint8_t DataLoggerActive = 0;
 volatile uint32_t SensorsEnabled = 0;
 char LibVersion[35];
-int LibVersionLen;
+int32_t LibVersionLen;
 volatile uint8_t SensorReadRequest = 0;
 uint8_t UseOfflineData = 0;
 offline_data_t OfflineData[OFFLINE_DATA_SIZE];
-int OfflineDataReadIndex = 0;
-int OfflineDataWriteIndex = 0;
-int OfflineDataCount = 0;
+int32_t OfflineDataReadIndex = 0;
+int32_t OfflineDataWriteIndex = 0;
+int32_t OfflineDataCount = 0;
 uint32_t AlgoFreq = ALGO_FREQ;
 
 /* Extern variables ----------------------------------------------------------*/
@@ -68,15 +68,15 @@ static int64_t Timestamp = 0;
 /* Private function prototypes -----------------------------------------------*/
 static void MX_ActivityRecognition_Init(void);
 static void MX_ActivityRecognition_Process(void);
-static void AR_Data_Handler(TMsg *Msg);
+static void AR_Data_Handler(Msg_t *Msg);
 static void Init_Sensors(void);
-static void RTC_Handler(TMsg *Msg);
-static void Accelero_Sensor_Handler(TMsg *Msg);
-static void Gyro_Sensor_Handler(TMsg *Msg);
-static void Magneto_Sensor_Handler(TMsg *Msg);
-static void Pressure_Sensor_Handler(TMsg *Msg);
-static void Temperature_Sensor_Handler(TMsg *Msg);
-static void Humidity_Sensor_Handler(TMsg *Msg);
+static void RTC_Handler(Msg_t *Msg);
+static void Accelero_Sensor_Handler(Msg_t *Msg);
+static void Gyro_Sensor_Handler(Msg_t *Msg);
+static void Magneto_Sensor_Handler(Msg_t *Msg);
+static void Pressure_Sensor_Handler(Msg_t *Msg);
+static void Temperature_Sensor_Handler(Msg_t *Msg);
+static void Humidity_Sensor_Handler(Msg_t *Msg);
 static void TIM_Config(uint32_t Freq);
 static void DWT_Init(void);
 static void DWT_Start(void);
@@ -126,7 +126,7 @@ void MX_MEMS_Process(void)
   */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-  if (htim->Instance == BSP_IP_TIM_Handle.Instance)
+  if (htim->Instance == BSP_IP_TIM_HANDLE.Instance)
   {
     SensorReadRequest = 1;
   }
@@ -160,7 +160,7 @@ static void MX_ActivityRecognition_Init(void)
   BSP_COM_Init(COM1);
 
   /* Initialize Timer */
-  BSP_IP_TIM_Init();
+  BSP_IP_TIM_INIT();
 
   /* Configure Timer to run with desired algorithm frequency */
   TIM_Config(ALGO_FREQ);
@@ -191,14 +191,14 @@ static void MX_ActivityRecognition_Init(void)
   */
 static void MX_ActivityRecognition_Process(void)
 {
-  static TMsg msg_dat;
-  static TMsg msg_cmd;
+  static Msg_t msg_dat;
+  static Msg_t msg_cmd;
 
-  if (UART_ReceivedMSG((TMsg *)&msg_cmd) == 1)
+  if (UART_ReceivedMSG((Msg_t *)&msg_cmd) == 1)
   {
     if (msg_cmd.Data[0] == DEV_ADDR)
     {
-      (void)HandleMSG((TMsg *)&msg_cmd);
+      (void)HandleMSG((Msg_t *)&msg_cmd);
     }
   }
 
@@ -269,7 +269,7 @@ static void Init_Sensors(void)
   * @param  Msg the time+date part of the stream
   * @retval None
   */
-static void RTC_Handler(TMsg *Msg)
+static void RTC_Handler(Msg_t *Msg)
 {
   uint8_t sub_sec = 0;
   RTC_DateTypeDef sdatestructureget;
@@ -310,7 +310,7 @@ static void RTC_Handler(TMsg *Msg)
   * @param  Msg the Activity Recognition data part of the stream
   * @retval None
   */
-static void AR_Data_Handler(TMsg *Msg)
+static void AR_Data_Handler(Msg_t *Msg)
 {
   uint32_t elapsed_time_us = 0U;
   MAR_input_t data_in = {.acc_x = 0.0f, .acc_y = 0.0f, .acc_z = 0.0f};
@@ -343,7 +343,7 @@ static void AR_Data_Handler(TMsg *Msg)
   * @param  Msg the ACC part of the stream
   * @retval None
   */
-static void Accelero_Sensor_Handler(TMsg *Msg)
+static void Accelero_Sensor_Handler(Msg_t *Msg)
 {
   if ((SensorsEnabled & ACCELEROMETER_SENSOR) == ACCELEROMETER_SENSOR)
   {
@@ -369,7 +369,7 @@ static void Accelero_Sensor_Handler(TMsg *Msg)
   * @param  Msg the GYR part of the stream
   * @retval None
   */
-static void Gyro_Sensor_Handler(TMsg *Msg)
+static void Gyro_Sensor_Handler(Msg_t *Msg)
 {
   if ((SensorsEnabled & GYROSCOPE_SENSOR) == GYROSCOPE_SENSOR)
   {
@@ -395,15 +395,15 @@ static void Gyro_Sensor_Handler(TMsg *Msg)
   * @param  Msg the MAG part of the stream
   * @retval None
   */
-static void Magneto_Sensor_Handler(TMsg *Msg)
+static void Magneto_Sensor_Handler(Msg_t *Msg)
 {
   if ((SensorsEnabled & MAGNETIC_SENSOR) == MAGNETIC_SENSOR)
   {
     if (UseOfflineData == 1)
     {
-     MagValue.x = OfflineData[OfflineDataReadIndex].magnetic_field_x_mgauss;
-     MagValue.y = OfflineData[OfflineDataReadIndex].magnetic_field_y_mgauss;
-     MagValue.z = OfflineData[OfflineDataReadIndex].magnetic_field_z_mgauss;
+      MagValue.x = OfflineData[OfflineDataReadIndex].magnetic_field_x_mgauss;
+      MagValue.y = OfflineData[OfflineDataReadIndex].magnetic_field_y_mgauss;
+      MagValue.z = OfflineData[OfflineDataReadIndex].magnetic_field_z_mgauss;
     }
     else
     {
@@ -421,7 +421,7 @@ static void Magneto_Sensor_Handler(TMsg *Msg)
   * @param  Msg the PRESS part of the stream
   * @retval None
   */
-static void Pressure_Sensor_Handler(TMsg *Msg)
+static void Pressure_Sensor_Handler(Msg_t *Msg)
 {
   if ((SensorsEnabled & PRESSURE_SENSOR) == PRESSURE_SENSOR)
   {
@@ -443,7 +443,7 @@ static void Pressure_Sensor_Handler(TMsg *Msg)
   * @param  Msg the TEMP part of the stream
   * @retval None
   */
-static void Temperature_Sensor_Handler(TMsg *Msg)
+static void Temperature_Sensor_Handler(Msg_t *Msg)
 {
   if ((SensorsEnabled & TEMPERATURE_SENSOR) == TEMPERATURE_SENSOR)
   {
@@ -465,7 +465,7 @@ static void Temperature_Sensor_Handler(TMsg *Msg)
   * @param  Msg the HUM part of the stream
   * @retval None
   */
-static void Humidity_Sensor_Handler(TMsg *Msg)
+static void Humidity_Sensor_Handler(Msg_t *Msg)
 {
   if ((SensorsEnabled & HUMIDITY_SENSOR) == HUMIDITY_SENSOR)
   {
@@ -489,16 +489,25 @@ static void Humidity_Sensor_Handler(TMsg *Msg)
   */
 static void TIM_Config(uint32_t Freq)
 {
-  const uint32_t tim_counter_clock = 4000; /* TIM counter clock 4 kHz */
+  uint32_t tim_counter_clock;
+
+  if (SystemCoreClock > 120000000)
+  {
+    tim_counter_clock = 4000; /* TIM counter clock 4 kHz */
+  }
+  else
+  {
+    tim_counter_clock = 2000; /* TIM counter clock 2 kHz */
+  }
   uint32_t prescaler_value = (uint32_t)((SystemCoreClock / tim_counter_clock) - 1);
   uint32_t period = (tim_counter_clock / Freq) - 1;
 
-  BSP_IP_TIM_Handle.Init.Prescaler = prescaler_value;
-  BSP_IP_TIM_Handle.Init.CounterMode = TIM_COUNTERMODE_UP;
-  BSP_IP_TIM_Handle.Init.Period = period;
-  BSP_IP_TIM_Handle.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  BSP_IP_TIM_Handle.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_Base_Init(&BSP_IP_TIM_Handle) != HAL_OK)
+  BSP_IP_TIM_HANDLE.Init.Prescaler = prescaler_value;
+  BSP_IP_TIM_HANDLE.Init.CounterMode = TIM_COUNTERMODE_UP;
+  BSP_IP_TIM_HANDLE.Init.Period = period;
+  BSP_IP_TIM_HANDLE.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  BSP_IP_TIM_HANDLE.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&BSP_IP_TIM_HANDLE) != HAL_OK)
   {
     Error_Handler();
   }

@@ -159,7 +159,7 @@ int32_t LSM6DSO16IS_Init(LSM6DSO16IS_Object_t *pObj)
   int32_t ret = LSM6DSO16IS_OK;
 
   /* Set main memory bank */
-  if (LSM6DSO16IS_Set_Mem_Bank(pObj, LSM6DSO16IS_MAIN_MEM_BANK) != LSM6DSO16IS_OK)
+  if (LSM6DSO16IS_Set_Mem_Bank(pObj, (uint8_t)LSM6DSO16IS_MAIN_MEM_BANK) != LSM6DSO16IS_OK)
   {
     ret = LSM6DSO16IS_ERROR;
   }
@@ -419,42 +419,56 @@ int32_t LSM6DSO16IS_ACC_GetOutputDataRate(LSM6DSO16IS_Object_t *pObj, float_t *O
       *Odr = 0.0f;
       break;
 
+    case LSM6DSO16IS_XL_ODR_AT_1Hz6_LP:
+      *Odr = 1.6f;
+      break;
+
+    case LSM6DSO16IS_XL_ODR_AT_12Hz5_LP:
     case LSM6DSO16IS_XL_ODR_AT_12Hz5_HP:
       *Odr = 12.5f;
       break;
 
+    case LSM6DSO16IS_XL_ODR_AT_26H_LP:
     case LSM6DSO16IS_XL_ODR_AT_26H_HP:
       *Odr = 26.0f;
       break;
 
+    case LSM6DSO16IS_XL_ODR_AT_52Hz_LP:
     case LSM6DSO16IS_XL_ODR_AT_52Hz_HP:
       *Odr = 52.0f;
       break;
 
+    case LSM6DSO16IS_XL_ODR_AT_104Hz_LP:
     case LSM6DSO16IS_XL_ODR_AT_104Hz_HP:
       *Odr = 104.0f;
       break;
 
+    case LSM6DSO16IS_XL_ODR_AT_208Hz_LP:
     case LSM6DSO16IS_XL_ODR_AT_208Hz_HP:
       *Odr = 208.0f;
       break;
 
+    case LSM6DSO16IS_XL_ODR_AT_416Hz_LP:
     case LSM6DSO16IS_XL_ODR_AT_416Hz_HP:
       *Odr = 416.0f;
       break;
 
+    case LSM6DSO16IS_XL_ODR_AT_833Hz_LP:
     case LSM6DSO16IS_XL_ODR_AT_833Hz_HP:
       *Odr = 833.0f;
       break;
 
+    case LSM6DSO16IS_XL_ODR_AT_1667Hz_LP:
     case LSM6DSO16IS_XL_ODR_AT_1667Hz_HP:
       *Odr = 1667.0f;
       break;
 
+    case LSM6DSO16IS_XL_ODR_AT_3333Hz_LP:
     case LSM6DSO16IS_XL_ODR_AT_3333Hz_HP:
       *Odr = 3333.0f;
       break;
 
+    case LSM6DSO16IS_XL_ODR_AT_6667Hz_LP:
     case LSM6DSO16IS_XL_ODR_AT_6667Hz_HP:
       *Odr = 6667.0f;
       break;
@@ -747,42 +761,52 @@ int32_t LSM6DSO16IS_GYRO_GetOutputDataRate(LSM6DSO16IS_Object_t *pObj, float_t *
       *Odr = 0.0f;
       break;
 
+    case LSM6DSO16IS_GY_ODR_AT_12Hz5_LP:
     case LSM6DSO16IS_GY_ODR_AT_12Hz5_HP:
       *Odr = 12.5f;
       break;
 
+    case LSM6DSO16IS_GY_ODR_AT_26H_LP:
     case LSM6DSO16IS_GY_ODR_AT_26H_HP:
       *Odr = 26.0f;
       break;
 
+    case LSM6DSO16IS_GY_ODR_AT_52Hz_LP:
     case LSM6DSO16IS_GY_ODR_AT_52Hz_HP:
       *Odr = 52.0f;
       break;
 
+    case LSM6DSO16IS_GY_ODR_AT_104Hz_LP:
     case LSM6DSO16IS_GY_ODR_AT_104Hz_HP:
       *Odr = 104.0f;
       break;
 
+    case LSM6DSO16IS_GY_ODR_AT_208Hz_LP:
     case LSM6DSO16IS_GY_ODR_AT_208Hz_HP:
       *Odr = 208.0f;
       break;
 
+    case LSM6DSO16IS_GY_ODR_AT_416Hz_LP:
     case LSM6DSO16IS_GY_ODR_AT_416Hz_HP:
       *Odr = 416.0f;
       break;
 
+    case LSM6DSO16IS_GY_ODR_AT_833Hz_LP:
     case LSM6DSO16IS_GY_ODR_AT_833Hz_HP:
       *Odr = 833.0f;
       break;
 
+    case LSM6DSO16IS_GY_ODR_AT_1667Hz_LP:
     case LSM6DSO16IS_GY_ODR_AT_1667Hz_HP:
       *Odr =  1667.0f;
       break;
 
+    case LSM6DSO16IS_GY_ODR_AT_3333Hz_LP:
     case LSM6DSO16IS_GY_ODR_AT_3333Hz_HP:
       *Odr =  3333.0f;
       break;
 
+    case LSM6DSO16IS_GY_ODR_AT_6667Hz_LP:
     case LSM6DSO16IS_GY_ODR_AT_6667Hz_HP:
       *Odr =  6667.0f;
       break;

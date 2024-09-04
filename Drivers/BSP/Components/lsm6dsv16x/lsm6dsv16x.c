@@ -162,6 +162,12 @@ int32_t LSM6DSV16X_RegisterBusIO(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_IO_t *pIO
   */
 int32_t LSM6DSV16X_Init(LSM6DSV16X_Object_t *pObj)
 {
+  /* Set main memory bank */
+  if (LSM6DSV16X_Set_Mem_Bank(pObj, (uint8_t)LSM6DSV16X_MAIN_MEM_BANK) != LSM6DSV16X_OK)
+  {
+    return LSM6DSV16X_ERROR;
+  }
+
   /* Enable register address automatically incremented during a multiple byte
   access with a serial interface */
   if (lsm6dsv16x_auto_increment_set(&(pObj->Ctx), PROPERTY_ENABLE) != LSM6DSV16X_OK)
@@ -430,44 +436,124 @@ int32_t LSM6DSV16X_ACC_GetOutputDataRate(LSM6DSV16X_Object_t *pObj, float *Odr)
       *Odr = 7.5f;
       break;
 
+    case LSM6DSV16X_ODR_HA02_AT_12Hz5:
+      *Odr = 12.5f;
+      break;
+
     case LSM6DSV16X_ODR_AT_15Hz:
       *Odr = 15.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA01_AT_15Hz625:
+      *Odr = 15.625f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_25Hz:
+      *Odr = 25.0f;
       break;
 
     case LSM6DSV16X_ODR_AT_30Hz:
       *Odr = 30.0f;
       break;
 
+    case LSM6DSV16X_ODR_HA01_AT_31Hz25:
+      *Odr = 31.25f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_50Hz:
+      *Odr = 50.0f;
+      break;
+
     case LSM6DSV16X_ODR_AT_60Hz:
       *Odr = 60.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA01_AT_62Hz5:
+      *Odr = 62.5f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_100Hz:
+      *Odr = 100.0f;
       break;
 
     case LSM6DSV16X_ODR_AT_120Hz:
       *Odr = 120.0f;
       break;
 
+    case LSM6DSV16X_ODR_HA01_AT_125Hz:
+      *Odr = 125.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_200Hz:
+      *Odr = 200.0f;
+      break;
+
     case LSM6DSV16X_ODR_AT_240Hz:
       *Odr = 240.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA01_AT_250Hz:
+      *Odr = 250.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_400Hz:
+      *Odr = 400.0f;
       break;
 
     case LSM6DSV16X_ODR_AT_480Hz:
       *Odr = 480.0f;
       break;
 
+    case LSM6DSV16X_ODR_HA01_AT_500Hz:
+      *Odr = 500.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_800Hz:
+      *Odr = 800.0f;
+      break;
+
     case LSM6DSV16X_ODR_AT_960Hz:
       *Odr = 960.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA01_AT_1000Hz:
+      *Odr = 1000.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_1600Hz:
+      *Odr = 1600.0f;
       break;
 
     case LSM6DSV16X_ODR_AT_1920Hz:
       *Odr = 1920.0f;
       break;
 
+    case LSM6DSV16X_ODR_HA01_AT_2000Hz:
+      *Odr = 2000.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_3200Hz:
+      *Odr = 3200.0f;
+      break;
+
     case LSM6DSV16X_ODR_AT_3840Hz:
       *Odr = 3840.0f;
       break;
 
+    case LSM6DSV16X_ODR_HA01_AT_4000Hz:
+      *Odr = 4000.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_6400Hz:
+      *Odr = 6400.0f;
+      break;
+
     case LSM6DSV16X_ODR_AT_7680Hz:
       *Odr = 7680.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA01_AT_8000Hz:
+      *Odr = 8000.0f;
       break;
 
     default:
@@ -3111,48 +3197,132 @@ int32_t LSM6DSV16X_GYRO_GetOutputDataRate(LSM6DSV16X_Object_t *pObj, float *Odr)
       *Odr = 0.0f;
       break;
 
+    case LSM6DSV16X_ODR_AT_1Hz875:
+      *Odr = 1.875f;
+      break;
+
     case LSM6DSV16X_ODR_AT_7Hz5:
       *Odr = 7.5f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_12Hz5:
+      *Odr = 12.5f;
       break;
 
     case LSM6DSV16X_ODR_AT_15Hz:
       *Odr = 15.0f;
       break;
 
+    case LSM6DSV16X_ODR_HA01_AT_15Hz625:
+      *Odr = 15.625f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_25Hz:
+      *Odr = 25.0f;
+      break;
+
     case LSM6DSV16X_ODR_AT_30Hz:
       *Odr = 30.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA01_AT_31Hz25:
+      *Odr = 31.25f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_50Hz:
+      *Odr = 50.0f;
       break;
 
     case LSM6DSV16X_ODR_AT_60Hz:
       *Odr = 60.0f;
       break;
 
+    case LSM6DSV16X_ODR_HA01_AT_62Hz5:
+      *Odr = 62.5f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_100Hz:
+      *Odr = 100.0f;
+      break;
+
     case LSM6DSV16X_ODR_AT_120Hz:
       *Odr = 120.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA01_AT_125Hz:
+      *Odr = 125.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_200Hz:
+      *Odr = 200.0f;
       break;
 
     case LSM6DSV16X_ODR_AT_240Hz:
       *Odr = 240.0f;
       break;
 
+    case LSM6DSV16X_ODR_HA01_AT_250Hz:
+      *Odr = 250.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_400Hz:
+      *Odr = 400.0f;
+      break;
+
     case LSM6DSV16X_ODR_AT_480Hz:
       *Odr = 480.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA01_AT_500Hz:
+      *Odr = 500.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_800Hz:
+      *Odr = 800.0f;
       break;
 
     case LSM6DSV16X_ODR_AT_960Hz:
       *Odr = 960.0f;
       break;
 
+    case LSM6DSV16X_ODR_HA01_AT_1000Hz:
+      *Odr = 1000.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_1600Hz:
+      *Odr = 1600.0f;
+      break;
+
     case LSM6DSV16X_ODR_AT_1920Hz:
       *Odr = 1920.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA01_AT_2000Hz:
+      *Odr = 2000.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_3200Hz:
+      *Odr = 3200.0f;
       break;
 
     case LSM6DSV16X_ODR_AT_3840Hz:
       *Odr = 3840.0f;
       break;
 
+    case LSM6DSV16X_ODR_HA01_AT_4000Hz:
+      *Odr = 4000.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA02_AT_6400Hz:
+      *Odr = 6400.0f;
+      break;
+
     case LSM6DSV16X_ODR_AT_7680Hz:
       *Odr = 7680.0f;
+      break;
+
+    case LSM6DSV16X_ODR_HA01_AT_8000Hz:
+      *Odr = 8000.0f;
       break;
 
     default:
@@ -3350,7 +3520,7 @@ int32_t LSM6DSV16X_GYRO_GetAxesRaw(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_AxesRaw
 int32_t LSM6DSV16X_GYRO_GetAxes(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_Axes_t *AngularRate)
 {
   lsm6dsv16x_axis3bit16_t data_raw;
-  float sensitivity;
+  float sensitivity = 0.0f;
 
   /* Read raw data values */
   if (lsm6dsv16x_angular_rate_raw_get(&(pObj->Ctx), data_raw.i16bit) != LSM6DSV16X_OK)
@@ -3414,9 +3584,9 @@ int32_t LSM6DSV16X_Write_Reg(LSM6DSV16X_Object_t *pObj, uint8_t Reg, uint8_t Dat
   */
 int32_t LSM6DSV16X_ACC_Get_DRDY_Status(LSM6DSV16X_Object_t *pObj, uint8_t *Status)
 {
-  lsm6dsv16x_all_sources_t val;
+  lsm6dsv16x_data_ready_t val;
 
-  if (lsm6dsv16x_all_sources_get(&(pObj->Ctx), &val) != LSM6DSV16X_OK)
+  if (lsm6dsv16x_flag_data_ready_get(&(pObj->Ctx), &val) != LSM6DSV16X_OK)
   {
     return LSM6DSV16X_ERROR;
   }
@@ -3433,9 +3603,9 @@ int32_t LSM6DSV16X_ACC_Get_DRDY_Status(LSM6DSV16X_Object_t *pObj, uint8_t *Statu
   */
 int32_t LSM6DSV16X_GYRO_Get_DRDY_Status(LSM6DSV16X_Object_t *pObj, uint8_t *Status)
 {
-  lsm6dsv16x_all_sources_t val;
+  lsm6dsv16x_data_ready_t val;
 
-  if (lsm6dsv16x_all_sources_get(&(pObj->Ctx), &val) != LSM6DSV16X_OK)
+  if (lsm6dsv16x_flag_data_ready_get(&(pObj->Ctx), &val) != LSM6DSV16X_OK)
   {
     return LSM6DSV16X_ERROR;
   }
@@ -3782,6 +3952,30 @@ int32_t LSM6DSV16X_DRDY_Set_Mode(LSM6DSV16X_Object_t *pObj, uint8_t Mode)
   }
 
   return LSM6DSV16X_OK;
+}
+
+/**
+  * @brief  Set memory bank
+  * @param  pObj the device pObj
+  * @param  Val the value of memory bank in reg FUNC_CFG_ACCESS
+  *         0 - LSM6DSV16X_MAIN_MEM_BANK, 1 - LSM6DSV16X_EMBED_FUNC_MEM_BANK, 2 - LSM6DSV16X_SENSOR_HUB_MEM_BANK
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LSM6DSV16X_Set_Mem_Bank(LSM6DSV16X_Object_t *pObj, uint8_t Val)
+{
+  int32_t ret = LSM6DSV16X_OK;
+  lsm6dsv16x_mem_bank_t reg;
+
+  reg = (Val == 1U) ? LSM6DSV16X_EMBED_FUNC_MEM_BANK
+        : (Val == 2U) ? LSM6DSV16X_SENSOR_HUB_MEM_BANK
+        :               LSM6DSV16X_MAIN_MEM_BANK;
+
+  if (lsm6dsv16x_mem_bank_set(&(pObj->Ctx), reg) != LSM6DSV16X_OK)
+  {
+    ret = LSM6DSV16X_ERROR;
+  }
+
+  return ret;
 }
 
 /**

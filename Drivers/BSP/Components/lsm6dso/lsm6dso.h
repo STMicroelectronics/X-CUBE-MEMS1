@@ -335,6 +335,8 @@ int32_t LSM6DSO_GYRO_Set_Filter_Mode(LSM6DSO_Object_t *pObj, uint8_t LowHighPass
 
 int32_t LSM6DSO_DRDY_Set_Mode(LSM6DSO_Object_t *pObj, uint8_t Mode);
 
+int32_t LSM6DSO_Set_Mem_Bank(LSM6DSO_Object_t *pObj, uint8_t Val);
+
 /**
   * @}
   */

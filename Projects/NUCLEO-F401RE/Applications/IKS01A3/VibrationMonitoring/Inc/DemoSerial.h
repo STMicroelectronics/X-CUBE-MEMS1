@@ -44,16 +44,16 @@ extern volatile uint8_t DataLoggerActive;
 extern UART_HandleTypeDef UartHandle;
 
 /* Exported functions ------------------------------------------------------- */
-int HandleMSG(TMsg *Msg);
+int32_t HandleMSG(Msg_t *Msg);
 
-void SEND_BOARD_RESTARTED_MSG(TMsg *Msg);
-void SEND_INIT_ERR_MSG(TMsg *Msg);
+void SEND_BOARD_RESTARTED_MSG(Msg_t *Msg);
+void SEND_INIT_ERR_MSG(Msg_t *Msg);
 
 /* Private functions -------------------------------------------------------- */
-void BUILD_REPLY_HEADER(TMsg *Msg);
-void INIT_STREAMING_MSG(TMsg *Msg);
-void BUILD_NACK_HEADER(TMsg *Msg);
-void INIT_STREAMING_HEADER(TMsg *Msg);
+void BUILD_REPLY_HEADER(Msg_t *Msg);
+void INIT_STREAMING_MSG(Msg_t *Msg);
+void BUILD_NACK_HEADER(Msg_t *Msg);
+void INIT_STREAMING_HEADER(Msg_t *Msg);
 
 #ifdef __cplusplus
 }

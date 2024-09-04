@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -28,15 +28,15 @@ extern "C" {
 
 #if (defined BSP_MOTION_SENSORS)
 #include "custom_motion_sensors.h"
-#endif
+#endif /* BSP_MOTION_SENSORS */
 
 #if (defined BSP_ENV_SENSORS)
 #include "custom_env_sensors.h"
-#endif
+#endif /* BSP_ENV_SENSORS */
 
 #if (defined BSP_HYBRID_SENSORS)
 #include "custom_hybrid_sensors.h"
-#endif
+#endif /* BSP_HYBRID_SENSORS */
 
 typedef struct
 {
@@ -98,5 +98,9 @@ void BSP_SENSOR_MAG_SetFullScale(int32_t Fullscale);
 void BSP_SENSOR_ACC_GetFullScale(int32_t *Fullscale);
 void BSP_SENSOR_GYR_GetFullScale(int32_t *Fullscale);
 void BSP_SENSOR_MAG_GetFullScale(int32_t *Fullscale);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* CUSTOM_MEMS_CONTROL_H */

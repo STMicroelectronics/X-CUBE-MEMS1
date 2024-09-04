@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -125,7 +125,7 @@ void MotionFX_manager_stop_9X(void)
  * @param  length  Library version string length
  * @retval None
  */
-void MotionFX_manager_get_version(char *version, int *length)
+void MotionFX_manager_get_version(char *version, int32_t *length)
 {
   *length = (int)MotionFX_CM0P_GetLibVersion(version);
 }
@@ -146,7 +146,7 @@ void MotionFX_manager_MagCal_run(MFX_CM0P_MagCal_input_t *data_in, MFX_CM0P_MagC
  * @param  None
  * @retval None
  */
-void MotionFX_manager_MagCal_start(int sampletime)
+void MotionFX_manager_MagCal_start(int32_t sampletime)
 {
   MotionFX_CM0P_MagCal_init(sampletime, 1);
 }
@@ -156,14 +156,14 @@ void MotionFX_manager_MagCal_start(int sampletime)
  * @param  None
  * @retval None
  */
-void MotionFX_manager_MagCal_stop(int sampletime)
+void MotionFX_manager_MagCal_stop(int32_t sampletime)
 {
   MotionFX_CM0P_MagCal_init(sampletime, 0);
 }
 
 /**
  * @brief  Load calibration parameter from memory
- * @param  dataSize length ot the data
+ * @param  dataSize length of the data
  * @param  data pointer to the data
  * @retval (1) fail, (0) success
  */
@@ -174,7 +174,7 @@ char MotionFX_LoadMagCalFromNVM(unsigned short int dataSize, unsigned int *data)
 
 /**
  * @brief  Save calibration parameter to memory
- * @param  dataSize length ot the data
+ * @param  dataSize length of the data
  * @param  data pointer to the data
  * @retval (1) fail, (0) success
  */

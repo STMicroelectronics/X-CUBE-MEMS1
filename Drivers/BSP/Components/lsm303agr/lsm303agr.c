@@ -1061,7 +1061,7 @@ int32_t LSM303AGR_MAG_GetAxesRaw(LSM303AGR_MAG_Object_t *pObj, LSM303AGR_AxesRaw
 int32_t LSM303AGR_MAG_GetAxes(LSM303AGR_MAG_Object_t *pObj, LSM303AGR_Axes_t *MagneticField)
 {
   lsm303agr_axis3bit16_t data_raw;
-  float sensitivity;
+  float sensitivity = 0.0f;
 
   /* Read raw data values. */
   if (lsm303agr_magnetic_raw_get(&(pObj->Ctx), data_raw.i16bit) != LSM303AGR_OK)

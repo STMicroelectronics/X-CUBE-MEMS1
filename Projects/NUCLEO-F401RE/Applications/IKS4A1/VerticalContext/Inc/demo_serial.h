@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -80,16 +80,16 @@ extern volatile uint32_t SensorsEnabled;
 extern volatile uint8_t SensorReadRequest;
 extern uint8_t UseOfflineData;
 extern offline_data_t OfflineData[OFFLINE_DATA_SIZE];
-extern int OfflineDataReadIndex;
-extern int OfflineDataWriteIndex;
-extern int OfflineDataCount;
+extern int32_t OfflineDataReadIndex;
+extern int32_t OfflineDataWriteIndex;
+extern int32_t OfflineDataCount;
 extern uint32_t AlgoFreq;
 
 /* Exported functions ------------------------------------------------------- */
-void BUILD_REPLY_HEADER(TMsg *Msg);
-void INIT_STREAMING_HEADER(TMsg *Msg);
-void INIT_STREAMING_MSG(TMsg *Msg);
-int HandleMSG(TMsg *Msg);
+void BUILD_REPLY_HEADER(Msg_t *Msg);
+void INIT_STREAMING_HEADER(Msg_t *Msg);
+void INIT_STREAMING_MSG(Msg_t *Msg);
+int32_t HandleMSG(Msg_t *Msg);
 
 void RTC_DateRegulate(uint8_t y, uint8_t m, uint8_t d, uint8_t dw);
 void RTC_TimeRegulate(uint8_t hh, uint8_t mm, uint8_t ss);

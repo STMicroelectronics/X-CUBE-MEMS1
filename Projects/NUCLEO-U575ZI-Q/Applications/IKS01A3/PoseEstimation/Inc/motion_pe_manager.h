@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -38,7 +38,7 @@ extern "C" {
 /* Exported Functions Prototypes ---------------------------------------------*/
 void MotionPE_manager_init(void);
 void MotionPE_manager_run(MPE_input_t *data_in, MPE_output_t *data_out);
-void MotionPE_manager_get_version(char *version, int *length);
+void MotionPE_manager_get_version(char *version, int32_t *length);
 
 #ifdef __cplusplus
 }

@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -577,7 +577,7 @@ int32_t BSP_COM_SelectLogPort(COM_TypeDef COM)
 
 struct __FILE
 {
-  int dummyVar; //Just for the sake of redefining __FILE, we won't we using it anyways ;)
+  int32_t dummyVar; //Just for the sake of redefining __FILE, we won't we using it anyways ;)
 };
 
 FILE __stdout;
@@ -591,9 +591,9 @@ FILE __stdout;
 #endif /* If not Microlib */
 #endif /* For arm compiler 5 */
 #if defined(__ICCARM__) /* For IAR */
-size_t __write(int Handle, const unsigned char *Buf, size_t Bufsize)
+size_t __write(int32_t Handle, const unsigned char *Buf, size_t Bufsize)
 {
-  int i;
+  int32_t i;
 
   for(i=0; i<Bufsize; i++)
   {
@@ -603,13 +603,13 @@ size_t __write(int Handle, const unsigned char *Buf, size_t Bufsize)
   return Bufsize;
 }
 #elif defined(__CC_ARM) || (defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)) /* For ARM Compiler 5 and 6 */
-int fputc (int ch, FILE *f)
+int32_t fputc (int32_t ch, FILE *f)
 {
   (void)HAL_UART_Transmit(&hcom_uart[COM_ActiveLogPort], (uint8_t *)&ch, 1, COM_POLL_TIMEOUT);
   return ch;
 }
 #else /* For GCC Toolchains */
-int __io_putchar (int ch)
+int32_t __io_putchar (int32_t ch)
 {
   (void)HAL_UART_Transmit(&hcom_uart[COM_ActiveLogPort], (uint8_t *)&ch, 1, COM_POLL_TIMEOUT);
   return ch;

@@ -173,6 +173,12 @@ int32_t ASM330LHHX_Init(ASM330LHHX_Object_t *pObj)
     return ASM330LHHX_ERROR;
   }
 
+  /* Set main memory bank */
+  if (ASM330LHHX_Set_Mem_Bank(pObj, (uint8_t)ASM330LHHX_USER_BANK) != ASM330LHHX_OK)
+  {
+    return ASM330LHHX_ERROR;
+  }
+
   /* Enable BDU */
   if (asm330lhhx_block_data_update_set(&(pObj->Ctx), PROPERTY_ENABLE) != ASM330LHHX_OK)
   {
@@ -406,6 +412,10 @@ int32_t ASM330LHHX_ACC_GetOutputDataRate(ASM330LHHX_Object_t *pObj, float *Odr)
   {
     case ASM330LHHX_XL_ODR_OFF:
       *Odr = 0.0f;
+      break;
+
+    case ASM330LHHX_XL_ODR_6Hz5: /* (low power only) */
+      *Odr = 6.5f;
       break;
 
     case ASM330LHHX_XL_ODR_12Hz5:
@@ -903,7 +913,7 @@ int32_t ASM330LHHX_GYRO_GetAxesRaw(ASM330LHHX_Object_t *pObj, ASM330LHHX_AxesRaw
 int32_t ASM330LHHX_GYRO_GetAxes(ASM330LHHX_Object_t *pObj, ASM330LHHX_Axes_t *AngularRate)
 {
   asm330lhhx_axis3bit16_t data_raw;
-  float sensitivity;
+  float sensitivity = 0.0f;
 
   /* Read raw data values. */
   if (asm330lhhx_angular_rate_raw_get(&(pObj->Ctx), data_raw.i16bit) != ASM330LHHX_OK)
@@ -2021,6 +2031,30 @@ int32_t ASM330LHHX_FIFO_GYRO_Set_BDR(ASM330LHHX_Object_t *pObj, float Bdr)
   }
 
   return ASM330LHHX_OK;
+}
+
+/**
+  * @brief  Set memory bank
+  * @param  pObj the device pObj
+  * @param  Val the value of memory bank in reg FUNC_CFG_ACCESS
+  *         0 - ASM330LHHX_USER_BANK, 1 - ASM330LHHX_SENSOR_HUB_BANK, 2 - ASM330LHHX_EMBEDDED_FUNC_BANK
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t ASM330LHHX_Set_Mem_Bank(ASM330LHHX_Object_t *pObj, uint8_t Val)
+{
+  int32_t ret = ASM330LHHX_OK;
+  asm330lhhx_reg_access_t reg;
+
+  reg = (Val == 1U) ? ASM330LHHX_SENSOR_HUB_BANK
+        : (Val == 2U) ? ASM330LHHX_EMBEDDED_FUNC_BANK
+        :               ASM330LHHX_USER_BANK;
+
+  if (asm330lhhx_mem_bank_set(&(pObj->Ctx), reg) != ASM330LHHX_OK)
+  {
+    ret = ASM330LHHX_ERROR;
+  }
+
+  return ret;
 }
 
 /**

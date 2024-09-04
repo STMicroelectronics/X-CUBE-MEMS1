@@ -42,20 +42,20 @@
  * @param  Source source
  * @retval Total number of bytes processed
  */
-int ByteStuffCopyByte(uint8_t *Dest, uint8_t Source)
+int32_t ByteStuffCopyByte(uint8_t *Dest, uint8_t Source)
 {
-  int ret = 2;
+  int32_t ret = 2;
 
   switch (Source)
   {
-    case TMsg_EOF:
-      Dest[0] = TMsg_BS;
-      Dest[1] = TMsg_BS_EOF;
+    case Msg_EOF:
+      Dest[0] = Msg_BS;
+      Dest[1] = Msg_BS_EOF;
       break;
 
-    case TMsg_BS:
-      Dest[0] = TMsg_BS;
-      Dest[1] = TMsg_BS;
+    case Msg_BS:
+      Dest[0] = Msg_BS;
+      Dest[1] = Msg_BS;
       break;
 
     default:
@@ -73,7 +73,7 @@ int ByteStuffCopyByte(uint8_t *Dest, uint8_t Source)
  * @param  Source source
  * @retval Total number of bytes processed
  */
-int ByteStuffCopy(uint8_t *Dest, TMsg *Source)
+int32_t ByteStuffCopy(uint8_t *Dest, Msg_t *Source)
 {
   uint32_t i;
   int32_t count = 0;
@@ -83,7 +83,7 @@ int ByteStuffCopy(uint8_t *Dest, TMsg *Source)
     count += ByteStuffCopyByte(&Dest[count], Source->Data[i]);
   }
 
-  Dest[count] = TMsg_EOF;
+  Dest[count] = Msg_EOF;
   count++;
   return count;
 }
@@ -94,23 +94,23 @@ int ByteStuffCopy(uint8_t *Dest, TMsg *Source)
  * @param  Dest destination
  * @retval Number of input bytes processed (1 or 2) or 0 for invalid sequence
  */
-int ReverseByteStuffCopyByte(uint8_t *Source, uint8_t *Dest)
+int32_t ReverseByteStuffCopyByte(uint8_t *Source, uint8_t *Dest)
 {
-  if (Source[0] == (uint8_t)TMsg_BS)
+  if (Source[0] == (uint8_t)Msg_BS)
   {
-    if (Source[1] == (uint8_t)TMsg_BS)
+    if (Source[1] == (uint8_t)Msg_BS)
     {
-      *Dest = TMsg_BS;
+      *Dest = Msg_BS;
       return 2;
     }
 
-    if (Source[1] == (uint8_t)TMsg_BS_EOF)
+    if (Source[1] == (uint8_t)Msg_BS_EOF)
     {
-      *Dest = TMsg_EOF;
+      *Dest = Msg_EOF;
       return 2;
     }
 
-    return 0; // invalide sequence
+    return 0; /* Invalid sequence */
   }
   else
   {
@@ -126,23 +126,23 @@ int ReverseByteStuffCopyByte(uint8_t *Source, uint8_t *Dest)
  * @param  Dest the destination data
  * @retval Number of input bytes processed (1 or 2) or 0 for invalid sequence
  */
-int ReverseByteStuffCopyByte2(uint8_t Source0, uint8_t Source1, uint8_t *Dest)
+int32_t ReverseByteStuffCopyByte2(uint8_t Source0, uint8_t Source1, uint8_t *Dest)
 {
-  if (Source0 == (uint8_t)TMsg_BS)
+  if (Source0 == (uint8_t)Msg_BS)
   {
-    if (Source1 == (uint8_t)TMsg_BS)
+    if (Source1 == (uint8_t)Msg_BS)
     {
-      *Dest = TMsg_BS;
+      *Dest = Msg_BS;
       return 2;
     }
 
-    if (Source1 == (uint8_t)TMsg_BS_EOF)
+    if (Source1 == (uint8_t)Msg_BS_EOF)
     {
-      *Dest = TMsg_EOF;
+      *Dest = Msg_EOF;
       return 2;
     }
 
-    return 0; // invalid sequence
+    return 0; /* Invalid sequence */
   }
   else
   {
@@ -157,16 +157,16 @@ int ReverseByteStuffCopyByte2(uint8_t Source0, uint8_t Source1, uint8_t *Dest)
  * @param  Source source
  * @retval 1 if the operation succeeds, 0 if an error occurs
  */
-int ReverseByteStuffCopy(TMsg *Dest, uint8_t *Source)
+int32_t ReverseByteStuffCopy(Msg_t *Dest, uint8_t *Source)
 {
   uint32_t count = 0;
   int32_t state = 0;
 
-  while ((*Source) != (uint8_t)TMsg_EOF)
+  while ((*Source) != (uint8_t)Msg_EOF)
   {
     if (state == 0)
     {
-      if ((*Source) == (uint8_t)TMsg_BS)
+      if ((*Source) == (uint8_t)Msg_BS)
       {
         state = 1;
       }
@@ -178,21 +178,21 @@ int ReverseByteStuffCopy(TMsg *Dest, uint8_t *Source)
     }
     else
     {
-      if ((*Source) == (uint8_t)TMsg_BS)
+      if ((*Source) == (uint8_t)Msg_BS)
       {
-        Dest->Data[count] = TMsg_BS;
+        Dest->Data[count] = Msg_BS;
         count++;
       }
       else
       {
-        if ((*Source) == (uint8_t)TMsg_BS_EOF)
+        if ((*Source) == (uint8_t)Msg_BS_EOF)
         {
-          Dest->Data[count] = TMsg_EOF;
+          Dest->Data[count] = Msg_EOF;
           count++;
         }
         else
         {
-          return 0; // invalid sequence
+          return 0; /* Invalid sequence */
         }
       }
 
@@ -216,7 +216,7 @@ int ReverseByteStuffCopy(TMsg *Dest, uint8_t *Source)
  * @param  Msg pointer to the message
  * @retval None
  */
-void CHK_ComputeAndAdd(TMsg *Msg)
+void CHK_ComputeAndAdd(Msg_t *Msg)
 {
   uint8_t chk = 0;
   uint32_t i;
@@ -235,7 +235,7 @@ void CHK_ComputeAndAdd(TMsg *Msg)
  * @param  Msg pointer to the message
  * @retval A number different from 0 if the operation succeeds, 0 if an error occurs
  */
-int CHK_CheckAndRemove(TMsg *Msg)
+int32_t CHK_CheckAndRemove(Msg_t *Msg)
 {
   uint8_t chk = 0;
   uint32_t i;
@@ -312,7 +312,7 @@ void Serialize_s32(uint8_t *Dest, int32_t Source, uint32_t Len)
  * @brief  Unbuild a Number from an array (LSB first)
  * @param  Source source
  * @param  Len number of bytes
- * @retval Rebuild signed int variable
+ * @retval Rebuild signed int32_t variable
  */
 int32_t Deserialize_s32(uint8_t *Source, uint32_t Len)
 {

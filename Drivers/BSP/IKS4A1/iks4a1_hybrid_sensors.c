@@ -691,12 +691,12 @@ static int32_t LIS2DTW12_0_Probe(uint32_t Functions)
   /* Configure the hybrid sensor driver */
   io_ctx.BusType  = LIS2DTW12_I2C_BUS; /* I2C */
   io_ctx.Address  = LIS2DTW12_I2C_ADD_L;
-  io_ctx.Init     = IKS4A1_I2C_Init;
-  io_ctx.DeInit   = IKS4A1_I2C_DeInit;
-  io_ctx.ReadReg  = IKS4A1_I2C_ReadReg;
-  io_ctx.WriteReg = IKS4A1_I2C_WriteReg;
-  io_ctx.GetTick  = IKS4A1_GetTick;
-  io_ctx.Delay    = IKS4A1_Delay;
+  io_ctx.Init     = IKS4A1_I2C_INIT;
+  io_ctx.DeInit   = IKS4A1_I2C_DEINIT;
+  io_ctx.ReadReg  = IKS4A1_I2C_READ_REG;
+  io_ctx.WriteReg = IKS4A1_I2C_WRITE_REG;
+  io_ctx.GetTick  = IKS4A1_GET_TICK;
+  io_ctx.Delay    = IKS4A1_DELAY;
 
   if (LIS2DTW12_RegisterBusIO(&lis2dtw12_obj_0, &io_ctx) != LIS2DTW12_OK)
   {

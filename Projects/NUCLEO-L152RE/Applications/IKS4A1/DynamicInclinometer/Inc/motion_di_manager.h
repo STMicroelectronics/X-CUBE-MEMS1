@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -44,7 +44,7 @@ void MotionDI_set_gyro_calibration_mode(MDI_cal_type_t mode);
 void MotionDI_get_gyro_calibration(MDI_cal_output_t *gyro_cal);
 void MotionDI_reset_gyro_calibration(void);
 void MotionDI_manager_run(MDI_input_t *data_in, MDI_output_t *data_out);
-void MotionDI_manager_get_version(char *version, int *length);
+void MotionDI_manager_get_version(char *version, int32_t *length);
 
 #ifdef __cplusplus
 }

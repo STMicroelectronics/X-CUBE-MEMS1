@@ -1,12 +1,4 @@
 
----
-pagetitle: Readme
-lang: en
----
-::: {.row}
-::: {.col-sm-12 .col-lg-8}
-
-
 ## <b>DataLogTerminal Example Description</b>
 
 This example shows how to use sensor expansion board to send sensor data from a Nucleo board using UART to a connected PC or Desktop and display it on generic applications like TeraTerm.
@@ -79,7 +71,3 @@ All rights reserved.
 This software is licensed under terms that can be found in the LICENSE file
 in the root directory of this software component.
 If no LICENSE file comes with this software, it is provided AS-IS.
-
-:::
-:::
-

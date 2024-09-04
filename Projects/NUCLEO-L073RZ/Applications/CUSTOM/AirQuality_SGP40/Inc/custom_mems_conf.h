@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -39,20 +39,20 @@ extern "C" {
 
 #define USE_CUSTOM_ENV_SENSOR_SGP40_0             1U
 
-#define CUSTOM_LPS22DF_0_I2C_Init BSP_I2C1_Init
-#define CUSTOM_LPS22DF_0_I2C_DeInit BSP_I2C1_DeInit
-#define CUSTOM_LPS22DF_0_I2C_ReadReg BSP_I2C1_ReadReg
-#define CUSTOM_LPS22DF_0_I2C_WriteReg BSP_I2C1_WriteReg
+#define CUSTOM_LPS22DF_0_I2C_INIT BSP_I2C1_Init
+#define CUSTOM_LPS22DF_0_I2C_DEINIT BSP_I2C1_DeInit
+#define CUSTOM_LPS22DF_0_I2C_READ_REG BSP_I2C1_ReadReg
+#define CUSTOM_LPS22DF_0_I2C_WRITE_REG BSP_I2C1_WriteReg
 
-#define CUSTOM_SHT40AD1B_0_I2C_Init BSP_I2C1_Init
-#define CUSTOM_SHT40AD1B_0_I2C_DeInit BSP_I2C1_DeInit
-#define CUSTOM_SHT40AD1B_0_I2C_Read BSP_I2C1_Recv
-#define CUSTOM_SHT40AD1B_0_I2C_Write BSP_I2C1_Send
+#define CUSTOM_SHT40AD1B_0_I2C_INIT BSP_I2C1_Init
+#define CUSTOM_SHT40AD1B_0_I2C_DEINIT BSP_I2C1_DeInit
+#define CUSTOM_SHT40AD1B_0_I2C_READ BSP_I2C1_Recv
+#define CUSTOM_SHT40AD1B_0_I2C_WRITE BSP_I2C1_Send
 
-#define CUSTOM_SGP40_0_I2C_Init BSP_I2C1_Init
-#define CUSTOM_SGP40_0_I2C_DeInit BSP_I2C1_DeInit
-#define CUSTOM_SGP40_0_I2C_Read BSP_I2C1_Recv
-#define CUSTOM_SGP40_0_I2C_Write BSP_I2C1_Send
+#define CUSTOM_SGP40_0_I2C_INIT BSP_I2C1_Init
+#define CUSTOM_SGP40_0_I2C_DEINIT BSP_I2C1_DeInit
+#define CUSTOM_SGP40_0_I2C_READ BSP_I2C1_Recv
+#define CUSTOM_SGP40_0_I2C_WRITE BSP_I2C1_Send
 
 #ifdef __cplusplus
 }

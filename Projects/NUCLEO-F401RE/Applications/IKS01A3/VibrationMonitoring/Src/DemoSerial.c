@@ -62,13 +62,13 @@ static uint8_t PresentationString[] = {"MEMS shield demo,"FW_ID","FW_VERSION","L
 static volatile uint8_t DataStreamingDest = 1;
 
 /* Private function prototypes -----------------------------------------------*/
-static uint8_t Handle_SUBCMD(TMsg *Msg);
-static void Send_String(TMsg *Msg, uint8_t *String);
-static void Send_Avail_Sensor_List(TMsg *Msg, uint8_t *SensorList);
-static void Send_Sensor_FS_List(TMsg *Msg, uint32_t *FsList);
-static void Send_Sensor_ODR_List(TMsg *Msg, float *OdrList);
-static void Send_Samples_List(TMsg *Msg, uint32_t *SamplesList);
-static void Send_ErrorMsg(TMsg *Msg);
+static uint8_t Handle_SUBCMD(Msg_t *Msg);
+static void Send_String(Msg_t *Msg, uint8_t *String);
+static void Send_Avail_Sensor_List(Msg_t *Msg, uint8_t *SensorList);
+static void Send_Sensor_FS_List(Msg_t *Msg, uint32_t *FsList);
+static void Send_Sensor_ODR_List(Msg_t *Msg, float *OdrList);
+static void Send_Samples_List(Msg_t *Msg, uint32_t *SamplesList);
+static void Send_ErrorMsg(Msg_t *Msg);
 static uint8_t Get_Actual_FS_Index(uint8_t *Value);
 static uint8_t Get_Actual_ODR_Index(uint8_t *Value);
 static uint8_t Get_Actual_Samples_Index(uint8_t *Value);
@@ -80,7 +80,7 @@ static uint8_t Get_Actual_Sensor_Index(uint8_t *Value);
  * @param  Msg the pointer to the message to be built
  * @retval None
  */
-void BUILD_REPLY_HEADER(TMsg *Msg)
+void BUILD_REPLY_HEADER(Msg_t *Msg)
 {
   Msg->Data[0] = Msg->Data[1];
   Msg->Data[1] = DEV_ADDR;
@@ -92,7 +92,7 @@ void BUILD_REPLY_HEADER(TMsg *Msg)
  * @param  Msg the pointer to the header to be initialized
  * @retval None
  */
-void INIT_STREAMING_HEADER(TMsg *Msg)
+void INIT_STREAMING_HEADER(Msg_t *Msg)
 {
   Msg->Data[0] = DataStreamingDest;
   Msg->Data[1] = DEV_ADDR;
@@ -105,7 +105,7 @@ void INIT_STREAMING_HEADER(TMsg *Msg)
  * @param  Msg the pointer to the message to be initialized
  * @retval None
  */
-void INIT_STREAMING_MSG(TMsg *Msg)
+void INIT_STREAMING_MSG(Msg_t *Msg)
 {
   uint32_t i;
 
@@ -125,12 +125,12 @@ void INIT_STREAMING_MSG(TMsg *Msg)
  * @param  Msg the pointer to the message to be handled
  * @retval 1 if the message is correctly handled, 0 otherwise
  */
-int HandleMSG(TMsg *Msg)
+int32_t HandleMSG(Msg_t *Msg)
 /*  DestAddr | SouceAddr | CMD | PAYLOAD
  *      1          1        1       N
  */
 {
-  int ret = 1;
+  int32_t ret = 1;
   uint32_t i;
 
   if (Msg->Len < 2U)
@@ -319,7 +319,7 @@ int HandleMSG(TMsg *Msg)
   return ret;
 }
 
-void SEND_INIT_ERR_MSG(TMsg *Msg)
+void SEND_INIT_ERR_MSG(Msg_t *Msg)
 {
   Msg->Data[0] = 1;
   Msg->Data[1] = DEV_ADDR;
@@ -329,7 +329,7 @@ void SEND_INIT_ERR_MSG(TMsg *Msg)
   UART_SendMsg(Msg);
 }
 
-void SEND_BOARD_RESTARTED_MSG(TMsg *Msg)
+void SEND_BOARD_RESTARTED_MSG(Msg_t *Msg)
 {
   Msg->Data[0] = 1;
   Msg->Data[1] = DEV_ADDR;
@@ -340,7 +340,7 @@ void SEND_BOARD_RESTARTED_MSG(TMsg *Msg)
 }
 
 /* Private functions ---------------------------------------------------------*/
-static uint8_t Handle_SUBCMD(TMsg *Msg)
+static uint8_t Handle_SUBCMD(Msg_t *Msg)
 {
   uint8_t ret_val = 1;
   uint8_t *sensor_list;
@@ -612,9 +612,9 @@ static uint8_t Get_Actual_Sensor_Index(uint8_t *Value)
   return 0;
 }
 
-static void Send_String(TMsg *Msg, uint8_t *String)
+static void Send_String(Msg_t *Msg, uint8_t *String)
 {
-  int i = 0;
+  int32_t i = 0;
   BUILD_REPLY_HEADER(Msg);
 
   while (i < strlen((char const *)String))
@@ -627,9 +627,9 @@ static void Send_String(TMsg *Msg, uint8_t *String)
   UART_SendMsg(Msg);
 }
 
-static void Send_Avail_Sensor_List(TMsg *Msg, uint8_t *SensorList)
+static void Send_Avail_Sensor_List(Msg_t *Msg, uint8_t *SensorList)
 {
-  int i = 0;
+  int32_t i = 0;
   char sensorNames[64];
   char tmp[20];
   BUILD_REPLY_HEADER(Msg);
@@ -654,9 +654,9 @@ static void Send_Avail_Sensor_List(TMsg *Msg, uint8_t *SensorList)
   UART_SendMsg(Msg);
 }
 
-static void Send_Sensor_FS_List(TMsg *Msg, uint32_t *FsList)
+static void Send_Sensor_FS_List(Msg_t *Msg, uint32_t *FsList)
 {
-  int i = 0;
+  int32_t i = 0;
   BUILD_REPLY_HEADER(Msg);
 
   Serialize(&Msg->Data[5], FsList[0], 4);
@@ -670,9 +670,9 @@ static void Send_Sensor_FS_List(TMsg *Msg, uint32_t *FsList)
   UART_SendMsg(Msg);
 }
 
-static void Send_Sensor_ODR_List(TMsg *Msg, float *OdrList)
+static void Send_Sensor_ODR_List(Msg_t *Msg, float *OdrList)
 {
-  int i = 0;
+  int32_t i = 0;
   BUILD_REPLY_HEADER(Msg);
 
   Serialize(&Msg->Data[5], (int) OdrList[0], 4);
@@ -686,9 +686,9 @@ static void Send_Sensor_ODR_List(TMsg *Msg, float *OdrList)
   UART_SendMsg(Msg);
 }
 
-static void Send_Samples_List(TMsg *Msg, uint32_t *SamplesList)
+static void Send_Samples_List(Msg_t *Msg, uint32_t *SamplesList)
 {
-  int i = 0;
+  int32_t i = 0;
   BUILD_REPLY_HEADER(Msg);
 
   Serialize(&Msg->Data[5], (int) SamplesList[0], 4);
@@ -702,7 +702,7 @@ static void Send_Samples_List(TMsg *Msg, uint32_t *SamplesList)
   UART_SendMsg(Msg);
 }
 
-static void Send_ErrorMsg(TMsg *Msg)
+static void Send_ErrorMsg(Msg_t *Msg)
 {
   Msg->Data[5] = 0;
   BUILD_REPLY_HEADER(Msg);

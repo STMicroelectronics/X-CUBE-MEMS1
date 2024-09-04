@@ -119,6 +119,12 @@ int32_t STHS34PF80_RegisterBusIO(STHS34PF80_Object_t *pObj, STHS34PF80_IO_t *pIO
   */
 int32_t STHS34PF80_Init(STHS34PF80_Object_t *pObj)
 {
+  /* Set main memory bank */
+  if (STHS34PF80_Set_Mem_Bank(pObj, (uint8_t)STHS34PF80_MAIN_MEM_BANK) != STHS34PF80_OK)
+  {
+    return STHS34PF80_ERROR;
+  }
+
   if (pObj->is_initialized == 0U)
   {
     /* Set default ODR */
@@ -811,6 +817,84 @@ int32_t STHS34PF80_GetSensitivity(STHS34PF80_Object_t *pObj, uint16_t *Value)
   }
 
   return STHS34PF80_OK;
+}
+
+
+/**
+  * @}
+  */
+
+/**
+  * @brief  Get the Ambient temperature shock
+  * @param  pObj the device pObj
+  * @param  Value pointer where the Ambient temperature shock is written
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t STHS34PF80_GetAmbTempShock(STHS34PF80_Object_t *pObj, int16_t *Value)
+{
+  if (sths34pf80_tamb_shock_raw_get(&(pObj->Ctx), Value) != STHS34PF80_OK)
+  {
+    return STHS34PF80_ERROR;
+  }
+  
+  return STHS34PF80_OK;
+}
+
+
+/**
+  * @brief  Get the object temperature compensated
+  * @param  pObj the device pObj
+  * @param  Value pointer where the object temperature compensated is written
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t STHS34PF80_GetObjectTempCompensated(STHS34PF80_Object_t *pObj, int16_t *Value)
+{
+  if (sths34pf80_tobj_comp_raw_get(&(pObj->Ctx), Value) != STHS34PF80_OK)
+  {
+    return STHS34PF80_ERROR;
+  }
+  
+  return STHS34PF80_OK;
+}
+
+
+/**
+  * @brief  Get the Presence temperature 
+  * @param  pObj the device pObj
+  * @param  Value pointer where the Presence temperature is written
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t STHS34PF80_GetPresenceTemperature(STHS34PF80_Object_t *pObj, int16_t *Value)
+{
+  if (sths34pf80_tpresence_raw_get(&(pObj->Ctx), Value) != STHS34PF80_OK)
+  {
+    return STHS34PF80_ERROR;
+  }
+  
+  return STHS34PF80_OK;
+}
+
+/**
+  * @brief  Set memory bank
+  * @param  pObj the device pObj
+  * @param  Val the value of memory bank in reg FUNC_CFG_ACCESS
+  *         0 - STHS34PF80_MAIN_MEM_BANK, 1 - STHS34PF80_EMBED_FUNC_MEM_BANK
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t STHS34PF80_Set_Mem_Bank(STHS34PF80_Object_t *pObj, uint8_t Val)
+{
+  int32_t ret = STHS34PF80_OK;
+  sths34pf80_mem_bank_t reg;
+
+  reg = (Val == 1U) ? STHS34PF80_EMBED_FUNC_MEM_BANK
+        :               STHS34PF80_MAIN_MEM_BANK;
+
+  if (sths34pf80_mem_bank_set(&(pObj->Ctx), reg) != STHS34PF80_OK)
+  {
+    ret = STHS34PF80_ERROR;
+  }
+
+  return ret;
 }
 
 /**

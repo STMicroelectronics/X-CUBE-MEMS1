@@ -83,7 +83,7 @@
           <AfterMake>
             <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name>$K\ARM\ARMCC\bin\fromelf.exe --bin --output=.\STM32L152RE_NUCLEO\Objects\@L.bin !L</UserProg1Name>
+            <UserProg1Name>$K\ARM\ARMCLANG\bin\fromelf.exe --bin --output=.\STM32L152RE_NUCLEO\Objects\@L.bin !L</UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
@@ -341,7 +341,7 @@
               <MiscControls></MiscControls>
               <Define>STM32L152xE,USE_HAL_DRIVER,USE_STM32L1XX_NUCLEO</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Inc;..\..\..\..\..\..\Drivers\BSP\Components\Common;..\..\..\..\..\..\Drivers\BSP\Components\ism330dhcx;..\..\..\..\..\..\Drivers\BSP\STM32L1xx_Nucleo;..\..\..\..\..\..\Drivers\BSP\IKS02A1;..\..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32L1xx\Include;..\..\..\..\..\..\Drivers\CMSIS\Include;..\..\..\..\..\..\Drivers\STM32L1xx_HAL_Driver\Inc;..\..\..\..\..\..\Drivers\BSP\Components\iis2dlpc;..\..\..\..\..\..\Drivers\BSP\Components\iis2iclx;..\..\..\..\..\..\Drivers\BSP\Components\iis2mdc;..\..\..\..\..\..\Drivers\BSP\Components\asm330lhhx;..\..\..\..\..\..\Drivers\BSP\Components\sht40ad1b</IncludePath>
+              <IncludePath>..\Inc;..\..\..\..\..\..\Drivers\BSP\Components\Common;..\..\..\..\..\..\Drivers\BSP\Components\ism330dhcx;..\..\..\..\..\..\Drivers\BSP\STM32L1xx_Nucleo;..\..\..\..\..\..\Drivers\BSP\IKS02A1;..\..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32L1xx\Include;..\..\..\..\..\..\Drivers\CMSIS\Include;..\..\..\..\..\..\Drivers\STM32L1xx_HAL_Driver\Inc;..\..\..\..\..\..\Drivers\BSP\Components\iis2dlpc;..\..\..\..\..\..\Drivers\BSP\Components\iis2iclx;..\..\..\..\..\..\Drivers\BSP\Components\iis2mdc;..\..\..\..\..\..\Drivers\BSP\Components\asm330lhhx;..\..\..\..\..\..\Drivers\BSP\Components\sht40ad1b;..\..\..\..\..\..\Drivers\BSP\Components\ism330bx</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -414,6 +414,16 @@
               <FileName>iis2mdc_reg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\iis2mdc\iis2mdc_reg.c</FilePath>
+            </File>
+            <File>
+              <FileName>ism330bx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\ism330bx\ism330bx.c</FilePath>
+            </File>
+            <File>
+              <FileName>ism330bx_reg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\ism330bx\ism330bx_reg.c</FilePath>
             </File>
             <File>
               <FileName>iis2iclx.c</FileName>

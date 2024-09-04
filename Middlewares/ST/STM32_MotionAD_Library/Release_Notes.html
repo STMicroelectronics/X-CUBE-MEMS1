@@ -5,62 +5,97 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Release Notes for MotionAD Library</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
   <link rel="stylesheet" href="_htmresc/mini-st_2020.css" />
+  <link rel="icon" type="image/x-icon" href="_htmresc/favicon.png" />
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-  <link rel="icon" type="image/x-icon" href="_htmresc/favicon.png" />
 </head>
 <body>
 <div class="row">
 <div class="col-sm-12 col-lg-4">
 <center>
-<h1 id="release-notes-for-motionad-airplane-detection-library">Release Notes for MotionAD Airplane Detection Library</h1>
+<h1 id="release-notes-for-motionad-airplane-detection-library">Release
+Notes for MotionAD Airplane Detection Library</h1>
 <p>Copyright © 2022 STMicroelectronics<br />
 </p>
-<a href="https://www.st.com" class="logo"><img src="_htmresc/st_logo_2020.png" alt="ST logo" /></a>
+<a href="https://www.st.com" class="logo"><img
+src="_htmresc/st_logo_2020.png" alt="ST logo" /></a>
 </center>
 <h1 id="purpose">Purpose</h1>
 <p><strong>What is MotionAD?</strong></p>
 <ul>
 <li>The MotionAD provides real-time airplane mode data.</li>
-<li>The library acquires data from the accelerometer, pressure and temperature sensors and performs the algorithm to detect the airplane mode from takeoff till landing.</li>
+<li>The library acquires data from the accelerometer, pressure and
+temperature sensors and performs the algorithm to detect the airplane
+mode from takeoff till landing.</li>
 </ul>
-<p>The library is generated for each ARM Cortex-M core with EABI compiler thus the library might be used with any other compiler which supports ARM EABI specification.</p>
-<p>The library is available for two different wchar variable lengths - 16 bit (wc16) and 32bit (wc32).</p>
-<p>By default the libraries are compiled with option -mfloat-abi=softfp which allows use of floating-point instructions but maintains compatibility with the soft-float ABI. The libraries ending with suffix hard are compiled with option -mfloat-abi=hard and uses floating-point instructions and the floating-point ABI.</p>
+<p>The library is generated for each ARM Cortex-M core with EABI
+compiler thus the library might be used with any other compiler which
+supports ARM EABI specification.</p>
+<p>The library is available for two different wchar variable lengths -
+16 bit (wc16) and 32bit (wc32).</p>
+<p>By default the libraries are compiled with option -mfloat-abi=softfp
+which allows use of floating-point instructions but maintains
+compatibility with the soft-float ABI. The libraries ending with suffix
+hard are compiled with option -mfloat-abi=hard and uses floating-point
+instructions and the floating-point ABI.</p>
 <p>Here is the list of references to the user documents:</p>
 <ul>
-<li><a href="https://www.st.com/resource/en/user_manual/dm00705943-getting-started-with-motionad-airplane-detection-library-in-xcubemems1-expansion-for-stm32cube-stmicroelectronics.pdf">Getting started with MotionAD airplane detection library in X-CUBE-MEMS1 expansion for STM32Cube</a></li>
-<li><a href="https://www.st.com/resource/en/user_manual/dm00157069-getting-started-with-the-xcubemems1-motion-mems-and-environmental-sensor-software-expansion-for-stm32cube-stmicroelectronics.pdf">Getting started with the X-CUBE-MEMS1 motion MEMS and environmental sensor software expansion for STM32Cube</a></li>
+<li><a
+href="https://www.st.com/resource/en/user_manual/um2722-getting-started-with-motionad-airplane-detection-library-in-xcubemems1-expansion-for-stm32cube-stmicroelectronics.pdf">Getting
+started with MotionAD airplane detection library in X-CUBE-MEMS1
+expansion for STM32Cube</a></li>
+<li><a
+href="https://www.st.com/resource/en/user_manual/dm00157069-getting-started-with-the-xcubemems1-motion-mems-and-environmental-sensor-software-expansion-for-stm32cube-stmicroelectronics.pdf">Getting
+started with the X-CUBE-MEMS1 motion MEMS and environmental sensor
+software expansion for STM32Cube</a></li>
 </ul>
 </div>
-<div class="col-sm-12 col-lg-8">
-<h1 id="update-history">Update history</h1>
+<section id="update-history" class="col-sm-12 col-lg-8">
+<h1>Update history</h1>
 <div class="collapse">
-<input type="checkbox" id="collapse-section12" checked aria-hidden="true"> <label for="collapse-section12" aria-hidden="true">V1.1.1 / 24-August-2021</label>
+<input type="checkbox" id="collapse-section12" checked aria-hidden="true">
+<label for="collapse-section12" aria-hidden="true">V1.1.1 /
+24-August-2021</label>
 <div>
 <h2 id="main-changes">Main changes</h2>
 <h3 id="patch-release">Patch release</h3>
 <ul>
-<li>Changed F767 CPU to F722 in order to switch FPU DP to SP for CM7</li>
+<li>Changed F767 CPU to F722 in order to switch FPU DP to SP for
+CM7</li>
 </ul>
-<h2 id="development-toolchains-and-compilers">Development toolchains and compilers</h2>
+<h2 id="development-toolchains-and-compilers">Development toolchains and
+compilers</h2>
 <ul>
 <li>IAR Embedded Workbench for ARM (EWARM) toolchain V8.50.9</li>
-<li>RealView Microcontroller Development Kit (MDK-ARM) toolchain V5.32.0</li>
+<li>RealView Microcontroller Development Kit (MDK-ARM) toolchain
+V5.32.0</li>
 <li>STM32CubeIDE V1.7.0</li>
 </ul>
 </div>
 </div>
 <div class="collapse">
-<input type="checkbox" id="collapse-section11" aria-hidden="true"> <label for="collapse-section11" aria-hidden="true">V1.1.0 / 21-April-2021</label>
+<input type="checkbox" id="collapse-section11" aria-hidden="true">
+<label for="collapse-section11" aria-hidden="true">V1.1.0 /
+21-April-2021</label>
 <div>
 <h2 id="main-changes-1">Main changes</h2>
 <h3 id="maintenance-release">Maintenance release</h3>
@@ -68,48 +103,57 @@
 <li>Added CM33F support</li>
 <li>Updated Release Notes to new format</li>
 </ul>
-<h2 id="development-toolchains-and-compilers-1">Development toolchains and compilers</h2>
+<h2 id="development-toolchains-and-compilers-1">Development toolchains
+and compilers</h2>
 <ul>
 <li>IAR Embedded Workbench for ARM (EWARM) toolchain V8.50.9</li>
-<li>RealView Microcontroller Development Kit (MDK-ARM) toolchain V5.32.0</li>
+<li>RealView Microcontroller Development Kit (MDK-ARM) toolchain
+V5.32.0</li>
 <li>STM32CubeIDE V1.6.1</li>
 </ul>
 </div>
 </div>
 <div class="collapse">
-<input type="checkbox" id="collapse-section9" aria-hidden="true"> <label for="collapse-section9" aria-hidden="true">V1.0.3 / 28-May-2020</label>
+<input type="checkbox" id="collapse-section9" aria-hidden="true">
+<label for="collapse-section9" aria-hidden="true">V1.0.3 /
+28-May-2020</label>
 <div>
 <h2 id="main-changes-2">Main changes</h2>
 <h3 id="patch-release-1">Patch release</h3>
 <ul>
 <li>Library compiled in STM32CubeIDE</li>
 </ul>
-<h2 id="development-toolchains-and-compilers-2">Development toolchains and compilers</h2>
+<h2 id="development-toolchains-and-compilers-2">Development toolchains
+and compilers</h2>
 <ul>
 <li>STM32CubeIDE V1.3.1</li>
 </ul>
 </div>
 </div>
 <div class="collapse">
-<input type="checkbox" id="collapse-section1" aria-hidden="true"> <label for="collapse-section1" aria-hidden="true">V1.0.2 / 25-March-2020</label>
+<input type="checkbox" id="collapse-section1" aria-hidden="true">
+<label for="collapse-section1" aria-hidden="true">V1.0.2 /
+25-March-2020</label>
 <div>
 <h2 id="main-changes-3">Main changes</h2>
 <h3 id="first-release">First release</h3>
 <ul>
 <li>First official release</li>
 </ul>
-<h2 id="development-toolchains-and-compilers-3">Development toolchains and compilers</h2>
+<h2 id="development-toolchains-and-compilers-3">Development toolchains
+and compilers</h2>
 <ul>
 <li>System Workbench for STM32 V2.7.2</li>
 </ul>
 </div>
 </div>
-</div>
+</section>
 </div>
 <footer class="sticky">
 <div class="columns">
 <div class="column" style="width:95%;">
-<p>For complete documentation on <strong>MotionAD</strong> , visit: <a href="https://www.st.com/en/embedded-software/x-cube-mems1.html">X-CUBE-MEMS1</a></p>
+<p>For complete documentation on <strong>MotionAD</strong> , visit: <a
+href="https://www.st.com/en/embedded-software/x-cube-mems1.html">X-CUBE-MEMS1</a></p>
 </div><div class="column" style="width:5%;">
 <p><abbr title="Based on template cx566953 version 2.0">Info</abbr></p>
 </div>

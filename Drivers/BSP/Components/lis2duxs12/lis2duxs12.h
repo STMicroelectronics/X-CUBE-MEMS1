@@ -256,6 +256,8 @@ int32_t LIS2DUXS12_ACC_Get_6D_Orientation_YH(LIS2DUXS12_Object_t *pObj, uint8_t 
 int32_t LIS2DUXS12_ACC_Get_6D_Orientation_ZL(LIS2DUXS12_Object_t *pObj, uint8_t *ZLow);
 int32_t LIS2DUXS12_ACC_Get_6D_Orientation_ZH(LIS2DUXS12_Object_t *pObj, uint8_t *ZHigh);
 
+int32_t LIS2DUXS12_Set_Mem_Bank(LIS2DUXS12_Object_t *pObj, uint8_t Val);
+
 /**
   * @}
   */

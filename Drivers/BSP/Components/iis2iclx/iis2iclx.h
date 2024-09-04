@@ -248,6 +248,8 @@ int32_t IIS2ICLX_ACC_Enable_DRDY_Interrupt(IIS2ICLX_Object_t *pObj);
 int32_t IIS2ICLX_ACC_Set_Filter_Mode(IIS2ICLX_Object_t *pObj, uint8_t LowHighPassFlag, uint8_t FilterMode);
 int32_t IIS2ICLX_ACC_Set_Sleep_Duration(IIS2ICLX_Object_t *pObj, uint8_t Duration);
 
+int32_t IIS2ICLX_Set_Mem_Bank(IIS2ICLX_Object_t *pObj, uint8_t Val);
+
 /**
   * @}
   */

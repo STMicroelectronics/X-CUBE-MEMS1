@@ -500,6 +500,19 @@ int32_t IKS4A1_MOTION_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint8
       break;
 #endif
 
+#if (USE_IKS4A1_MOTION_SENSOR_ISM330BX_0 == 1)
+    case IKS4A1_ISM330BX_0:
+      if (ISM330BX_Read_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -953,6 +966,19 @@ int32_t IKS4A1_MOTION_SENSOR_Write_Register(uint32_t Instance, uint8_t Reg, uint
 #if (USE_IKS4A1_MOTION_SENSOR_LSM6DSO16IS_0 == 1)
     case IKS4A1_LSM6DSO16IS_0:
       if (LSM6DSO16IS_Write_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+#if (USE_IKS4A1_MOTION_SENSOR_ISM330BX_0 == 1)
+    case IKS4A1_ISM330BX_0:
+      if (ISM330BX_Read_Reg(MotionCompObj[Instance], Reg, &Data) != BSP_ERROR_NONE)
       {
         ret = BSP_ERROR_COMPONENT_FAILURE;
       }
@@ -1848,6 +1874,37 @@ int32_t IKS4A1_MOTION_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Functio
       else if ((Function & MOTION_GYRO) == MOTION_GYRO)
       {
         if (LSM6DSO16IS_GYRO_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
+#if (USE_IKS4A1_MOTION_SENSOR_ISM330BX_0 == 1)
+    case IKS4A1_ISM330BX_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (ISM330BX_ACC_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else if ((Function & MOTION_GYRO) == MOTION_GYRO)
+      {
+        if (ISM330BX_GYRO_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
         {
           ret = BSP_ERROR_COMPONENT_FAILURE;
         }
@@ -3200,7 +3257,7 @@ int32_t IKS4A1_MOTION_SENSOR_FIFO_Set_Watermark_Level(uint32_t Instance, uint16_
   {
 #if (USE_IKS4A1_MOTION_SENSOR_LSM6DSV16X_0 == 1)
     case IKS4A1_LSM6DSV16X_0:
-      if (LSM6DSV16X_FIFO_Set_Watermark_Level(MotionCompObj[Instance], Watermark) != BSP_ERROR_NONE)
+      if (LSM6DSV16X_FIFO_Set_Watermark_Level(MotionCompObj[Instance], (uint8_t)Watermark) != BSP_ERROR_NONE)
       {
         ret = BSP_ERROR_COMPONENT_FAILURE;
       }

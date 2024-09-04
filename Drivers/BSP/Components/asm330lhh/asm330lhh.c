@@ -896,7 +896,7 @@ int32_t ASM330LHH_GYRO_GetAxesRaw(ASM330LHH_Object_t *pObj, ASM330LHH_AxesRaw_t 
 int32_t ASM330LHH_GYRO_GetAxes(ASM330LHH_Object_t *pObj, ASM330LHH_Axes_t *AngularRate)
 {
   asm330lhh_axis3bit16_t data_raw;
-  float sensitivity;
+  float sensitivity = 0.0f;
 
   /* Read raw data values. */
   if (asm330lhh_angular_rate_raw_get(&(pObj->Ctx), data_raw.i16bit) != ASM330LHH_OK)

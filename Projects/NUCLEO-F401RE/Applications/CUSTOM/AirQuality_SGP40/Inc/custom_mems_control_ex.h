@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -85,9 +85,17 @@ void BSP_SENSOR_TEMP_GetGainFactor(uint8_t *Value);
 void BSP_SENSOR_TEMP_GetSensitivity(uint16_t *Value);
 #endif /* PRESENCEDETECTION_STHS34PF80_DEMO */
 
+#if (defined APPROACHLEAVE_STHS34PF80_DEMO)
+void BSP_SENSOR_TEMP_GetTObjRaw(int16_t *Value);
+#endif /* APPROACHLEAVE_STHS34PF80_DEMO */
+
 #if (defined AIRQUALITY_SGP40_DEMO)
 void BSP_SENSOR_Gas_Set_Humidity(float Value);
 void BSP_SENSOR_Gas_Set_Temperature(float Value);
 #endif /* AIRQUALITY_SGP40_DEMO */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* CUSTOM_MEMS_CONTROL_EX_H */

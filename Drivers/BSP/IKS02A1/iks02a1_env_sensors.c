@@ -48,7 +48,8 @@ void *EnvCompObj[IKS02A1_ENV_INSTANCES_NBR];
 
 /* We define a jump table in order to get the correct index from the desired function. */
 /* This table should have a size equal to the maximum value of a function plus 1.      */
-static uint32_t FunctionIndex[] = {0, 0, 1, 1, 2, 2, 2, 2, 3};
+/* But due to MISRA it has to be increased to 15 + 1. */
+static uint32_t FunctionIndex[] = {0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3};
 static ENV_SENSOR_FuncDrv_t *EnvFuncDrv[IKS02A1_ENV_INSTANCES_NBR][IKS02A1_ENV_FUNCTIONS_NBR];
 static ENV_SENSOR_CommonDrv_t *EnvDrv[IKS02A1_ENV_INSTANCES_NBR];
 static IKS02A1_ENV_SENSOR_Ctx_t EnvCtx[IKS02A1_ENV_INSTANCES_NBR];
@@ -308,7 +309,7 @@ int32_t IKS02A1_ENV_SENSOR_Disable(uint32_t Instance, uint32_t Function)
   * @param  Odr pointer to Output Data Rate read value
   * @retval BSP status
   */
-int32_t IKS02A1_ENV_SENSOR_GetOutputDataRate(uint32_t Instance, uint32_t Function, float *Odr)
+int32_t IKS02A1_ENV_SENSOR_GetOutputDataRate(uint32_t Instance, uint32_t Function, float_t *Odr)
 {
   int32_t ret;
 
@@ -347,7 +348,7 @@ int32_t IKS02A1_ENV_SENSOR_GetOutputDataRate(uint32_t Instance, uint32_t Functio
   * @param  Odr Output Data Rate value to be set
   * @retval BSP status
   */
-int32_t IKS02A1_ENV_SENSOR_SetOutputDataRate(uint32_t Instance, uint32_t Function, float Odr)
+int32_t IKS02A1_ENV_SENSOR_SetOutputDataRate(uint32_t Instance, uint32_t Function, float_t Odr)
 {
   int32_t ret;
 
@@ -386,7 +387,7 @@ int32_t IKS02A1_ENV_SENSOR_SetOutputDataRate(uint32_t Instance, uint32_t Functio
   * @param  Value pointer to environmental sensor value
   * @retval BSP status
   */
-int32_t IKS02A1_ENV_SENSOR_GetValue(uint32_t Instance, uint32_t Function, float *Value)
+int32_t IKS02A1_ENV_SENSOR_GetValue(uint32_t Instance, uint32_t Function, float_t *Value)
 {
   int32_t ret;
 
@@ -442,12 +443,12 @@ static int32_t SHT40AD1B_0_Probe(uint32_t Functions)
   /* Configure the environmental sensor driver */
   io_ctx.BusType  = SHT40AD1B_I2C_BUS; /* I2C */
   io_ctx.Address  = SHT40AD1B_I2C_ADDRESS;
-  io_ctx.Init     = IKS02A1_I2C_Init;
-  io_ctx.DeInit   = IKS02A1_I2C_DeInit;
+  io_ctx.Init     = IKS02A1_I2C_INIT;
+  io_ctx.DeInit   = IKS02A1_I2C_DEINIT;
   io_ctx.Read     = IKS02A1_I2C_Read;
   io_ctx.Write    = IKS02A1_I2C_Write;
-  io_ctx.GetTick  = IKS02A1_GetTick;
-  io_ctx.Delay    = IKS02A1_Delay;
+  io_ctx.GetTick  = IKS02A1_GET_TICK;
+  io_ctx.Delay    = IKS02A1_DELAY;
 
   if (SHT40AD1B_RegisterBusIO(&sht40ad1b_obj_0, &io_ctx) != SHT40AD1B_OK)
   {

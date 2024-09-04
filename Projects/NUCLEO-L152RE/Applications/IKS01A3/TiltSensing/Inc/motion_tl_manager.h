@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -42,7 +42,7 @@ void MotionTL_manager_run(MTL_input_t *data_in, uint64_t timestamp_ms, MTL_outpu
 void MotionTL_manager_getAngleMode(MTL_angle_mode_t *mode);
 void MotionTL_manager_setAngleMode(MTL_angle_mode_t mode);
 
-void MotionTL_manager_get_version(char *version, int *length);
+void MotionTL_manager_get_version(char *version, int32_t *length);
 
 void MotionTL_manager_calibratePosition(MTL_cal_position_t cal_position);
 MTL_cal_result_t MotionTL_manager_getCalibrationValues(MTL_acc_cal_t *acc_cal);

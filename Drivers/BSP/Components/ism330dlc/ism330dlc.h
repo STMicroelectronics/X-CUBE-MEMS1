@@ -306,6 +306,8 @@ int32_t ISM330DLC_FIFO_ACC_Get_Axis(ISM330DLC_Object_t *pObj, int32_t *Accelerat
 int32_t ISM330DLC_FIFO_GYRO_Set_Decimation(ISM330DLC_Object_t *pObj, uint8_t Decimation);
 int32_t ISM330DLC_FIFO_GYRO_Get_Axis(ISM330DLC_Object_t *pObj, int32_t *AngularVelocity);
 
+int32_t ISM330DLC_Set_Mem_Bank(ISM330DLC_Object_t *pObj, uint8_t Val);
+
 /**
   * @}
   */

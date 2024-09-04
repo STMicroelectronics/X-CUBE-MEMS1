@@ -148,6 +148,13 @@ int32_t IIS2ICLX_Init(IIS2ICLX_Object_t *pObj)
     return IIS2ICLX_ERROR;
   }
 
+  /* Set main memory bank */
+  if (IIS2ICLX_Set_Mem_Bank(pObj, (uint8_t)IIS2ICLX_USER_BANK) != IIS2ICLX_OK)
+  {
+    return IIS2ICLX_ERROR;
+  }
+
+
   /* Enable register address automatically incremented during a multiple byte
   access with a serial interface. */
   if (iis2iclx_auto_increment_set(&(pObj->Ctx), PROPERTY_ENABLE) != IIS2ICLX_OK)
@@ -1532,6 +1539,30 @@ int32_t IIS2ICLX_FIFO_ACC_Set_BDR(IIS2ICLX_Object_t *pObj, float Bdr)
   }
 
   return IIS2ICLX_OK;
+}
+
+/**
+  * @brief  Set memory bank
+  * @param  pObj the device pObj
+  * @param  Val the value of memory bank in reg FUNC_CFG_ACCESS
+  *         0 - IIS2ICLX_USER_BANK, 1 - IIS2ICLX_SENSOR_HUB_BANK, 2 - IIS2ICLX_EMBEDDED_FUNC_BANK
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t IIS2ICLX_Set_Mem_Bank(IIS2ICLX_Object_t *pObj, uint8_t Val)
+{
+  int32_t ret = IIS2ICLX_OK;
+  iis2iclx_reg_access_t reg;
+
+  reg = (Val == 1U) ? IIS2ICLX_SENSOR_HUB_BANK
+        : (Val == 2U) ? IIS2ICLX_EMBEDDED_FUNC_BANK
+        :               IIS2ICLX_USER_BANK;
+
+  if (iis2iclx_mem_bank_set(&(pObj->Ctx), reg) != IIS2ICLX_OK)
+  {
+    ret = IIS2ICLX_ERROR;
+  }
+
+  return ret;
 }
 
 /**

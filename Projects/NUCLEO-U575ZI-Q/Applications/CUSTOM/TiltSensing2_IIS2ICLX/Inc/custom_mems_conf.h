@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -35,10 +35,10 @@ extern "C" {
 
 #define USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0       1U
 
-#define CUSTOM_IIS2ICLX_0_I2C_Init BSP_I2C1_Init
-#define CUSTOM_IIS2ICLX_0_I2C_DeInit BSP_I2C1_DeInit
-#define CUSTOM_IIS2ICLX_0_I2C_ReadReg BSP_I2C1_ReadReg
-#define CUSTOM_IIS2ICLX_0_I2C_WriteReg BSP_I2C1_WriteReg
+#define CUSTOM_IIS2ICLX_0_I2C_INIT BSP_I2C1_Init
+#define CUSTOM_IIS2ICLX_0_I2C_DEINIT BSP_I2C1_DeInit
+#define CUSTOM_IIS2ICLX_0_I2C_READ_REG BSP_I2C1_ReadReg
+#define CUSTOM_IIS2ICLX_0_I2C_WRITE_REG BSP_I2C1_WriteReg
 
 #ifdef __cplusplus
 }

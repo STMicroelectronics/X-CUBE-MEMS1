@@ -275,7 +275,7 @@ int32_t LSM6DSV16B_GYRO_Set_Power_Mode(LSM6DSV16B_Object_t *pObj, uint8_t PowerM
 int32_t LSM6DSV16B_ACC_Set_Filter_Mode(LSM6DSV16B_Object_t *pObj, uint8_t LowHighPassFlag, uint8_t FilterMode);
 int32_t LSM6DSV16B_GYRO_Set_Filter_Mode(LSM6DSV16B_Object_t *pObj, uint8_t LowHighPassFlag, uint8_t FilterMode);
 
-
+int32_t LSM6DSV16B_Set_Mem_Bank(LSM6DSV16B_Object_t *pObj, uint8_t Val);
 
 /**
  * @}

@@ -91,7 +91,7 @@ uint8_t Init_Demo(void);
 uint8_t Restart_FIFO(void);
 uint8_t Get_HP_Filter(void);
 uint8_t Set_HP_Filter(uint8_t value);
-void Get_Msg(TMsg *Msg, ACTIVE_AXIS_t AxisActive);
+void Get_Msg(Msg_t *Msg, ACTIVE_AXIS_t AxisActive);
 uint8_t *Get_Sensor_List(void);
 uint8_t Set_ODR(uint8_t value);
 uint8_t Set_Full_Scale(uint8_t value);

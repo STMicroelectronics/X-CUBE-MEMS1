@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -37,14 +37,14 @@ extern "C" {
 #define USE_IKS4A1_MOTION_SENSOR_LIS2MDL_0                     1U
 #define USE_IKS4A1_MOTION_SENSOR_LSM6DSO16IS_0                 1U
 
-#define IKS4A1_I2C_Init BSP_I2C1_Init
-#define IKS4A1_I2C_DeInit BSP_I2C1_DeInit
-#define IKS4A1_I2C_ReadReg BSP_I2C1_ReadReg
-#define IKS4A1_I2C_WriteReg BSP_I2C1_WriteReg
-#define IKS4A1_I2C_Read BSP_I2C1_Recv
-#define IKS4A1_I2C_Write BSP_I2C1_Send
-#define IKS4A1_GetTick BSP_GetTick
-#define IKS4A1_Delay HAL_Delay
+#define IKS4A1_I2C_INIT BSP_I2C1_Init
+#define IKS4A1_I2C_DEINIT BSP_I2C1_DeInit
+#define IKS4A1_I2C_READ_REG BSP_I2C1_ReadReg
+#define IKS4A1_I2C_WRITE_REG BSP_I2C1_WriteReg
+#define IKS4A1_I2C_READ BSP_I2C1_Recv
+#define IKS4A1_I2C_WRITE BSP_I2C1_Send
+#define IKS4A1_GET_TICK BSP_GetTick
+#define IKS4A1_DELAY HAL_Delay
 
 #define BUS_IKS4A1_INSTANCE BUS_I2C1_INSTANCE
 #define BUS_IKS4A1_CLK_DISABLE() __HAL_RCC_I2C1_CLK_DISABLE()

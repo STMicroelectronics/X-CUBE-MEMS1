@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -16,7 +16,7 @@
   ******************************************************************************
   */
 
- /* Define to prevent recursive inclusion -------------------------------------*/
+/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef IKS01A3_MEMS_CONTROL_H
 #define IKS01A3_MEMS_CONTROL_H
 
@@ -85,5 +85,9 @@ void BSP_SENSOR_MAG_SetFullScale(int32_t Fullscale);
 void BSP_SENSOR_ACC_GetFullScale(int32_t *Fullscale);
 void BSP_SENSOR_GYR_GetFullScale(int32_t *Fullscale);
 void BSP_SENSOR_MAG_GetFullScale(int32_t *Fullscale);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* IKS01A3_MEMS_CONTROL_H */

@@ -547,7 +547,7 @@ int32_t LIS2MDL_MAG_GetAxes(LIS2MDL_Object_t *pObj, LIS2MDL_Axes_t *MagneticFiel
 {
   uint8_t buff[6];
   lis2mdl_axis3bit16_t data_raw;
-  float sensitivity;
+  float sensitivity = 0.0f;
 
   if (pObj->IO.BusType == LSM6DSOX_SENSORHUB_LIS2MDL_I2C_BUS) /* LSM6DSOX SensorHub with LIS2MDL example */
   {

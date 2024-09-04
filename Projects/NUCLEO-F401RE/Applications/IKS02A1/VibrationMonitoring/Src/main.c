@@ -64,7 +64,7 @@ extern sAxesMagBuff_t AccAxesAvgMagBuff;
 gui_settings_t GuiSettings = {.hp_filter = 0, .switch_HP_to_DC_null = 0};
 uint8_t SensorList[NUM_SENSORS + 1];
 volatile uint32_t SensorsEnabled = 0;
-extern int UseLSI;
+extern int32_t UseLSI;
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -109,8 +109,8 @@ static void En_Dis_HP_Or_DCnull(void);
 int main(void); /* This "redundant" line is here to fulfil MISRA C-2012 rule 8.4 */
 int main(void)
 {
-  TMsg msg_dat;
-  TMsg msg_cmd;
+  Msg_t msg_dat;
+  Msg_t msg_cmd;
   ACTIVE_AXIS_t axis_active;
 
   /* STM32xxxx HAL library initialization:
@@ -149,21 +149,21 @@ int main(void)
 
   if (Init_Demo() != 0)
   {
-    SEND_BOARD_RESTARTED_MSG((TMsg *)&msg_cmd);
+    SEND_BOARD_RESTARTED_MSG((Msg_t *)&msg_cmd);
   }
   else
   {
-    SEND_INIT_ERR_MSG((TMsg *)&msg_cmd);
+    SEND_INIT_ERR_MSG((Msg_t *)&msg_cmd);
     Error_Handler();
   }
 
   for (;;)
   {
-    if (UART_ReceivedMSG((TMsg *)&msg_cmd) != 1)
+    if (UART_ReceivedMSG((Msg_t *)&msg_cmd) != 1)
     {
       if (msg_cmd.Data[0] == DEV_ADDR)
       {
-        (void)HandleMSG((TMsg *)&msg_cmd);
+        (void)HandleMSG((Msg_t *)&msg_cmd);
       }
     }
 
@@ -421,7 +421,7 @@ uint8_t *Get_Sensor_List(void)
   * @param  AxisActive currently active axis index
   * @retval None
   */
-void Get_Msg(TMsg *Msg, ACTIVE_AXIS_t AxisActive)
+void Get_Msg(Msg_t *Msg, ACTIVE_AXIS_t AxisActive)
 {
   uint32_t k = 0;
   float err = -1.0f;

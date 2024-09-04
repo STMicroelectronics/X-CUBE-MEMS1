@@ -110,12 +110,15 @@ typedef struct
 
 typedef int32_t (*stmdev_write_ptr)(void *, uint8_t, uint8_t *, uint16_t);
 typedef int32_t (*stmdev_read_ptr)(void *, uint8_t, uint8_t *, uint16_t);
+typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
 typedef struct
 {
   /** Component mandatory fields **/
   stmdev_write_ptr  write_reg;
   stmdev_read_ptr   read_reg;
+  /** Component optional fields **/
+  stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
 } stmdev_ctx_t;
@@ -1025,7 +1028,7 @@ typedef struct
 #endif /* DRV_BYTE_ORDER */
 } lsm6dso16is_slv0_subadd_t;
 
-#define LSM6DSO16IS_SLAVE0_CONFIG                   0x17U
+#define LSM6DSO16IS_SLV0_CONFIG                   0x17U
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
@@ -1061,7 +1064,7 @@ typedef struct
 #endif /* DRV_BYTE_ORDER */
 } lsm6dso16is_slv1_subadd_t;
 
-#define LSM6DSO16IS_SLAVE1_CONFIG                   0x1AU
+#define LSM6DSO16IS_SLV1_CONFIG                   0x1AU
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
@@ -1095,7 +1098,7 @@ typedef struct
 #endif /* DRV_BYTE_ORDER */
 } lsm6dso16is_slv2_subadd_t;
 
-#define LSM6DSO16IS_SLAVE2_CONFIG                   0x1DU
+#define LSM6DSO16IS_SLV2_CONFIG                   0x1DU
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
@@ -1129,7 +1132,7 @@ typedef struct
 #endif /* DRV_BYTE_ORDER */
 } lsm6dso16is_slv3_subadd_t;
 
-#define LSM6DSO16IS_SLAVE3_CONFIG                   0x20U
+#define LSM6DSO16IS_SLV3_CONFIG                   0x20U
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
@@ -2298,6 +2301,19 @@ typedef union
   *
   */
 
+#ifndef __weak
+#define __weak __attribute__((weak))
+#endif /* __weak */
+
+/*
+ * These are the basic platform dependent I/O routines to read
+ * and write device registers connected on a standard bus.
+ * The driver keeps offering a default implementation based on function
+ * pointers to read/write routines for backward compatibility.
+ * The __weak directive allows the final application to overwrite
+ * them with a custom implementation.
+ */
+
 int32_t lsm6dso16is_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
                              uint8_t *data,
                              uint16_t len);
@@ -2325,8 +2341,7 @@ typedef enum
   LSM6DSO16IS_ISPU_MEM_BANK =             0x3,
 } lsm6dso16is_mem_bank_t;
 int32_t lsm6dso16is_mem_bank_set(stmdev_ctx_t *ctx, lsm6dso16is_mem_bank_t val);
-int32_t lsm6dso16is_mem_bank_get(stmdev_ctx_t *ctx,
-                                 lsm6dso16is_mem_bank_t *val);
+int32_t lsm6dso16is_mem_bank_get(stmdev_ctx_t *ctx, lsm6dso16is_mem_bank_t *val);
 
 typedef enum
 {
@@ -2341,8 +2356,7 @@ int32_t lsm6dso16is_data_ready_mode_get(stmdev_ctx_t *ctx,
 int32_t lsm6dso16is_device_id_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dso16is_device_id_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lsm6dso16is_reset_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dso16is_reset_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lsm6dso16is_software_reset(stmdev_ctx_t *ctx);
 
 int32_t lsm6dso16is_boot_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dso16is_boot_get(stmdev_ctx_t *ctx, uint8_t *val);
@@ -2352,14 +2366,10 @@ typedef enum
   LSM6DSO16IS_HIGH_PERFOMANCE_MODE_ENABLED =        0x0,
   LSM6DSO16IS_HIGH_PERFOMANCE_MODE_DISABLED =       0x1,
 } lsm6dso16is_hm_mode_t;
-int32_t lsm6dso16is_xl_hm_mode_set(stmdev_ctx_t *ctx,
-                                   lsm6dso16is_hm_mode_t val);
-int32_t lsm6dso16is_xl_hm_mode_get(stmdev_ctx_t *ctx,
-                                   lsm6dso16is_hm_mode_t *val);
-int32_t lsm6dso16is_gy_hm_mode_set(stmdev_ctx_t *ctx,
-                                   lsm6dso16is_hm_mode_t val);
-int32_t lsm6dso16is_gy_hm_mode_get(stmdev_ctx_t *ctx,
-                                   lsm6dso16is_hm_mode_t *val);
+int32_t lsm6dso16is_xl_hm_mode_set(stmdev_ctx_t *ctx, lsm6dso16is_hm_mode_t val);
+int32_t lsm6dso16is_xl_hm_mode_get(stmdev_ctx_t *ctx, lsm6dso16is_hm_mode_t *val);
+int32_t lsm6dso16is_gy_hm_mode_set(stmdev_ctx_t *ctx, lsm6dso16is_hm_mode_t val);
+int32_t lsm6dso16is_gy_hm_mode_get(stmdev_ctx_t *ctx, lsm6dso16is_hm_mode_t *val);
 
 typedef enum
 {
@@ -2490,16 +2500,14 @@ typedef enum
   LSM6DSO16IS_SPI_3_WIRE =                0x1,
 } lsm6dso16is_spi_mode_t;
 int32_t lsm6dso16is_spi_mode_set(stmdev_ctx_t *ctx, lsm6dso16is_spi_mode_t val);
-int32_t lsm6dso16is_spi_mode_get(stmdev_ctx_t *ctx,
-                                 lsm6dso16is_spi_mode_t *val);
+int32_t lsm6dso16is_spi_mode_get(stmdev_ctx_t *ctx, lsm6dso16is_spi_mode_t *val);
 
 typedef enum
 {
   LSM6DSO16IS_I2C_ENABLE =                0x0,
   LSM6DSO16IS_I2C_DISABLE =               0x1,
 } lsm6dso16is_ui_i2c_mode_t;
-int32_t lsm6dso16is_ui_i2c_mode_set(stmdev_ctx_t *ctx,
-                                    lsm6dso16is_ui_i2c_mode_t val);
+int32_t lsm6dso16is_ui_i2c_mode_set(stmdev_ctx_t *ctx, lsm6dso16is_ui_i2c_mode_t val);
 int32_t lsm6dso16is_ui_i2c_mode_get(stmdev_ctx_t *ctx,
                                     lsm6dso16is_ui_i2c_mode_t *val);
 
@@ -2593,29 +2601,7 @@ int32_t lsm6dso16is_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *val);
 int32_t lsm6dso16is_odr_cal_reg_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dso16is_odr_cal_reg_get(stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef struct
-{
-  lsm6dso16is_sensor_hub_1_t   sh_byte_1;
-  lsm6dso16is_sensor_hub_2_t   sh_byte_2;
-  lsm6dso16is_sensor_hub_3_t   sh_byte_3;
-  lsm6dso16is_sensor_hub_4_t   sh_byte_4;
-  lsm6dso16is_sensor_hub_5_t   sh_byte_5;
-  lsm6dso16is_sensor_hub_6_t   sh_byte_6;
-  lsm6dso16is_sensor_hub_7_t   sh_byte_7;
-  lsm6dso16is_sensor_hub_8_t   sh_byte_8;
-  lsm6dso16is_sensor_hub_9_t   sh_byte_9;
-  lsm6dso16is_sensor_hub_10_t  sh_byte_10;
-  lsm6dso16is_sensor_hub_11_t  sh_byte_11;
-  lsm6dso16is_sensor_hub_12_t  sh_byte_12;
-  lsm6dso16is_sensor_hub_13_t  sh_byte_13;
-  lsm6dso16is_sensor_hub_14_t  sh_byte_14;
-  lsm6dso16is_sensor_hub_15_t  sh_byte_15;
-  lsm6dso16is_sensor_hub_16_t  sh_byte_16;
-  lsm6dso16is_sensor_hub_17_t  sh_byte_17;
-  lsm6dso16is_sensor_hub_18_t  sh_byte_18;
-} lsm6dso16is_emb_sh_read_t;
-int32_t lsm6dso16is_sh_read_data_raw_get(stmdev_ctx_t *ctx,
-                                         lsm6dso16is_emb_sh_read_t *val,
+int32_t lsm6dso16is_sh_read_data_raw_get(stmdev_ctx_t *ctx, uint8_t *val,
                                          uint8_t len);
 
 typedef enum
@@ -2690,14 +2676,11 @@ typedef struct
   uint8_t   slv_subadd;
   uint8_t   slv_len;
 } lsm6dso16is_sh_cfg_read_t;
-int32_t lsm6dso16is_sh_slv0_cfg_read(stmdev_ctx_t *ctx,
-                                     lsm6dso16is_sh_cfg_read_t *val);
-int32_t lsm6dso16is_sh_slv1_cfg_read(stmdev_ctx_t *ctx,
-                                     lsm6dso16is_sh_cfg_read_t *val);
-int32_t lsm6dso16is_sh_slv2_cfg_read(stmdev_ctx_t *ctx,
-                                     lsm6dso16is_sh_cfg_read_t *val);
-int32_t lsm6dso16is_sh_slv3_cfg_read(stmdev_ctx_t *ctx,
-                                     lsm6dso16is_sh_cfg_read_t *val);
+int32_t lsm6dso16is_sh_slv_cfg_read(stmdev_ctx_t *ctx, uint8_t idx,
+                                    lsm6dso16is_sh_cfg_read_t *val);
+
+int32_t lsm6dso16is_sh_status_get(stmdev_ctx_t *ctx,
+                                  lsm6dso16is_status_master_t *val);
 
 int32_t lsm6dso16is_ispu_reset_set(stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dso16is_ispu_reset_get(stmdev_ctx_t *ctx, uint8_t *val);
@@ -2739,15 +2722,14 @@ typedef enum
   LSM6DSO16IS_ISPU_BDU_ON_4B_4B =         0x3,
 } lsm6dso16is_ispu_bdu_t;
 int32_t lsm6dso16is_ispu_bdu_set(stmdev_ctx_t *ctx, lsm6dso16is_ispu_bdu_t val);
-int32_t lsm6dso16is_ispu_bdu_get(stmdev_ctx_t *ctx,
-                                 lsm6dso16is_ispu_bdu_t *val);
+int32_t lsm6dso16is_ispu_bdu_get(stmdev_ctx_t *ctx, lsm6dso16is_ispu_bdu_t *val);
 
 int32_t lsm6dso16is_ia_ispu_get(stmdev_ctx_t *ctx, uint32_t *val);
 
 int32_t lsm6dso16is_ispu_write_dummy_cfg(stmdev_ctx_t *ctx, uint8_t offset,
                                          uint8_t *val, uint8_t len);
-int32_t lsm6dso16is_ispu_ready_dummy_cfg(stmdev_ctx_t *ctx, uint8_t offset,
-                                         uint8_t *val, uint8_t len);
+int32_t lsm6dso16is_ispu_read_dummy_cfg(stmdev_ctx_t *ctx, uint8_t offset,
+                                        uint8_t *val, uint8_t len);
 
 typedef enum
 {

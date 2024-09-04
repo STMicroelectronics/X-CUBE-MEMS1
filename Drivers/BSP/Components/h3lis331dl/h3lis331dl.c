@@ -511,7 +511,7 @@ int32_t H3LIS331DL_ACC_GetAxesRaw(H3LIS331DL_Object_t *pObj, H3LIS331DL_AxesRaw_
 int32_t H3LIS331DL_ACC_GetAxes(H3LIS331DL_Object_t *pObj, H3LIS331DL_Axes_t *Acceleration)
 {
   H3LIS331DL_AxesRaw_t data_raw;
-  float sensitivity;
+  float sensitivity = 0.0f;
 
   /* Read raw data values. */
   if (H3LIS331DL_ACC_GetAxesRaw(pObj, &data_raw) != H3LIS331DL_OK)

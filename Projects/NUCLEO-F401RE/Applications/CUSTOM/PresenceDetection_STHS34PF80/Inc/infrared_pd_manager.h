@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -42,7 +42,7 @@ extern uint16_t Sensitivity;
 /* Exported Functions Prototypes ---------------------------------------------*/
 void InfraredPD_manager_init(void);
 void InfraredPD_manager_run(IPD_input_t *data_in, IPD_output_t *data_out);
-void InfraredPD_manager_get_version(char *version, int *length);
+void InfraredPD_manager_get_version(char *version, int32_t *length);
 
 #ifdef __cplusplus
 }

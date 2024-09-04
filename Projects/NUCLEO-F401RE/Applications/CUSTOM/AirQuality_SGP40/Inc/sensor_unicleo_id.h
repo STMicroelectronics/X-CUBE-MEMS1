@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -27,6 +27,7 @@ extern "C" {
 /* Exported defines ----------------------------------------------------------*/
 #define UNKNOWN_UNICLEO_ID          0xFF
 
+/* ACC GYR */
 #define LSM6DS0_UNICLEO_ID          1
 #define LSM6DS3_UNICLEO_ID          2
 #define LSM6DSL_UNICLEO_ID          3
@@ -66,13 +67,16 @@ extern "C" {
 #define LIS2DUX12_UNICLEO_ID        37
 #define LIS2DUXS12_UNICLEO_ID       38
 #define LSM6DSV32X_UNICLEO_ID       39
+#define ISM330BX_UNICLEO_ID         40
 
+/* MAG */
 #define LIS3MDL_UNICLEO_ID          1
 #define LSM303AGR_UNICLEO_ID_MAG    2
 #define LIS2MDL_UNICLEO_ID          3
 #define IIS2MDC_UNICLEO_ID          4
 #define ISM303DAC_UNICLEO_ID_MAG    5
 
+/* PRESS */
 #define LPS25HB_UNICLEO_ID_ONBOARD  1
 #define LPS25HB_UNICLEO_ID_DIL      2
 #define LPS22HB_UNICLEO_ID          3
@@ -86,6 +90,7 @@ extern "C" {
 #define ILPS28QSW_UNICLEO_ID        11
 #define LPS28DFW_UNICLEO_ID         12
 
+/* TEMP GAS */
 #define HTS221_UNICLEO_ID           1
 #define STTS751_UNICLEO_ID          2
 #define STTS22H_UNICLEO_ID          3

@@ -414,7 +414,7 @@ int32_t IIS2MDC_MAG_GetAxesRaw(IIS2MDC_Object_t *pObj, IIS2MDC_AxesRaw_t *Value)
 int32_t IIS2MDC_MAG_GetAxes(IIS2MDC_Object_t *pObj, IIS2MDC_Axes_t *MagneticField)
 {
   iis2mdc_axis3bit16_t data_raw;
-  float sensitivity;
+  float sensitivity = 0.0f;
 
   /* Read raw data values. */
   if (iis2mdc_magnetic_raw_get(&(pObj->Ctx), data_raw.i16bit) != IIS2MDC_OK)

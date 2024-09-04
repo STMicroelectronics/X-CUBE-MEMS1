@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -50,7 +50,7 @@ typedef enum
 void MotionAC_manager_init(MAC_enable_lib_t enable);
 void MotionAC_manager_update(MAC_input_t *data_in, uint8_t *is_calibrated);
 void MotionAC_manager_get_params(MAC_output_t *data_out);
-void MotionAC_manager_get_version(char *version, int *length);
+void MotionAC_manager_get_version(char *version, int32_t *length);
 void MotionAC_manager_compensate(MOTION_SENSOR_Axes_t *DataIn, MOTION_SENSOR_Axes_t *DataOut);
 
 int16_t acc_bias_to_mg(float acc_bias);

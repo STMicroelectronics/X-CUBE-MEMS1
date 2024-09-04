@@ -44,7 +44,7 @@
 volatile uint8_t DataLoggerActive;
 
 /* Private variables ---------------------------------------------------------*/
-static uint8_t PresentationString[] = {"MEMS shield demo,101,10.0.0,0.0.0,IKS01A3"};
+static uint8_t PresentationString[] = {"MEMS shield demo,101,11.0.0,0.0.0,IKS01A3"};
 static volatile uint8_t DataStreamingDest = 1;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -54,7 +54,7 @@ static volatile uint8_t DataStreamingDest = 1;
  * @param  Msg the pointer to the message to be built
  * @retval None
  */
-void BUILD_REPLY_HEADER(TMsg *Msg)
+void BUILD_REPLY_HEADER(Msg_t *Msg)
 {
   Msg->Data[0] = Msg->Data[1];
   Msg->Data[1] = DEV_ADDR;
@@ -66,7 +66,7 @@ void BUILD_REPLY_HEADER(TMsg *Msg)
  * @param  Msg the pointer to the message to be built
  * @retval None
  */
-void BUILD_NACK_HEADER(TMsg *Msg)
+void BUILD_NACK_HEADER(Msg_t *Msg)
 {
   Msg->Data[0] = Msg->Data[1];
   Msg->Data[1] = DEV_ADDR;
@@ -78,7 +78,7 @@ void BUILD_NACK_HEADER(TMsg *Msg)
  * @param  Msg the pointer to the header to be initialized
  * @retval None
  */
-void INIT_STREAMING_HEADER(TMsg *Msg)
+void INIT_STREAMING_HEADER(Msg_t *Msg)
 {
   Msg->Data[0] = DataStreamingDest;
   Msg->Data[1] = DEV_ADDR;
@@ -91,7 +91,7 @@ void INIT_STREAMING_HEADER(TMsg *Msg)
  * @param  Msg the pointer to the message to be initialized
  * @retval None
  */
-void INIT_STREAMING_MSG(TMsg *Msg)
+void INIT_STREAMING_MSG(Msg_t *Msg)
 {
   uint32_t i;
 
@@ -111,12 +111,12 @@ void INIT_STREAMING_MSG(TMsg *Msg)
  * @param  Msg the pointer to the message to be handled
  * @retval 1 if the message is correctly handled, 0 otherwise
  */
-int HandleMSG(TMsg *Msg)
+int32_t HandleMSG(Msg_t *Msg)
 /*  DestAddr | SourceAddr | CMD | SUBCMD | PAYLOAD
         1           1        1       1        N    */
 {
   uint32_t i;
-  int ret = 1;
+  int32_t ret = 1;
 
   if (Msg->Len < 2U)
   {

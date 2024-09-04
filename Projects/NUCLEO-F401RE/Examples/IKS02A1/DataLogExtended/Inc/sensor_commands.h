@@ -56,6 +56,6 @@ extern uint32_t PrsInstance;
 
 /* Private functions ---------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-int Handle_Sensor_command(TMsg *Msg);
+int32_t Handle_Sensor_command(Msg_t *Msg);
 
 #endif /* SENSOR_COMMANDS_H */

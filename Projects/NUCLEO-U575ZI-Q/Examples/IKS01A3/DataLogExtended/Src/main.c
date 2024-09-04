@@ -49,7 +49,7 @@ typedef struct displayFloatToInt_s
 #define DELAY(x)  for (__IO uint32_t counter = (x); counter > 0U; counter--) {}
 
 /* Public variables ----------------------------------------------------------*/
-int UseLSI = 0;
+int32_t UseLSI = 0;
 uint8_t UpdateInterrupt = 0;
 uint32_t SensorsEnabled = 0;
 uint32_t StartTime = 0;
@@ -80,17 +80,17 @@ static void MX_RTC_Init(void);
 static void Enable_Disable_Sensors(void);
 static void Float_To_Int(float In, displayFloatToInt_t *OutValue, int32_t DecPrec);
 
-static void Time_Handler(TMsg *Msg);
-static void Press_Sensor_Handler(TMsg *Msg, uint32_t Instance);
-static void Temp_Sensor_Handler(TMsg *Msg, uint32_t Instance);
-static void Hum_Sensor_Handler(TMsg *Msg, uint32_t Instance);
-static void Accelero_Sensor_Handler(TMsg *Msg, uint32_t Instance);
-static void Gyro_Sensor_Handler(TMsg *Msg, uint32_t Instance);
-static void Magneto_Sensor_Handler(TMsg *Msg, uint32_t Instance);
-static void Sensors_Interrupt_Handler(TMsg *Msg);
-static void MLC_Handler(TMsg *Msg);
-static void FSM_Handler(TMsg *Msg);
-static void QVAR_Handler(TMsg *Msg, uint32_t Instance);
+static void Time_Handler(Msg_t *Msg);
+static void Press_Sensor_Handler(Msg_t *Msg, uint32_t Instance);
+static void Temp_Sensor_Handler(Msg_t *Msg, uint32_t Instance);
+static void Hum_Sensor_Handler(Msg_t *Msg, uint32_t Instance);
+static void Accelero_Sensor_Handler(Msg_t *Msg, uint32_t Instance);
+static void Gyro_Sensor_Handler(Msg_t *Msg, uint32_t Instance);
+static void Magneto_Sensor_Handler(Msg_t *Msg, uint32_t Instance);
+static void Sensors_Interrupt_Handler(Msg_t *Msg);
+static void MLC_Handler(Msg_t *Msg);
+static void FSM_Handler(Msg_t *Msg);
+static void QVAR_Handler(Msg_t *Msg, uint32_t Instance);
 
 static void DIL24_INT1_Force_Low(void);
 static uint32_t DWT_Delay_Init(void);
@@ -111,8 +111,8 @@ static uint32_t DWT_Delay_Init(void);
  */
 int main(void)
 {
-  TMsg msg_dat;
-  TMsg msg_cmd;
+  Msg_t msg_dat;
+  Msg_t msg_cmd;
 
   /* STM32F4xx HAL library initialization:
   - Configure the Flash prefetch, instruction and Data caches
@@ -161,11 +161,11 @@ int main(void)
   for (;;)
   {
     /* Process incoming messages */
-    if (UART_ReceivedMSG((TMsg *)&msg_cmd) == 1)
+    if (UART_ReceivedMSG((Msg_t *)&msg_cmd) == 1)
     {
       if (msg_cmd.Data[0] == DEV_ADDR)
       {
-        (void)HandleMSG((TMsg *)&msg_cmd);
+        (void)HandleMSG((Msg_t *)&msg_cmd);
         if (DataLoggerActive != 0U)
         {
           AutoInit = 0;
@@ -289,11 +289,11 @@ static void MX_GPIO_Init(void)
   // LSM6DSO INT1                        PF14
   // LSM6DSO INT2                        PE11
   // LPS22HH INT1                        PE9
-  // STTS751 INT                         PC1
+  // STTS751 int32_t                        PC1
   // DIL24 INT1                          PC0 (initialized separately)
-  // LIS2MDL DRDY/LIS2DW12 INT           PC3
+  // LIS2MDL DRDY/LIS2DW12 int32_t          PC3
   // LIS2DW12 INT/LIS2MDL DRDY           PB0
-  // USER INT                            PF15
+  // USER int32_t                           PF15
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOB_CLK_ENABLE();
@@ -526,7 +526,7 @@ static void Float_To_Int(float In, displayFloatToInt_t *OutValue, int32_t DecPre
  * @param  Msg the time part of the stream
  * @retval None
  */
-static void Time_Handler(TMsg *Msg)
+static void Time_Handler(Msg_t *Msg)
 {
   uint32_t time_us;
 
@@ -554,7 +554,7 @@ static void Time_Handler(TMsg *Msg)
  * @param  Instance the device instance
  * @retval None
  */
-static void Press_Sensor_Handler(TMsg *Msg, uint32_t Instance)
+static void Press_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
 {
   float pressure;
   uint8_t status = 0;
@@ -591,7 +591,7 @@ static void Press_Sensor_Handler(TMsg *Msg, uint32_t Instance)
  * @param  Instance the device instance
  * @retval None
  */
-static void Temp_Sensor_Handler(TMsg *Msg, uint32_t Instance)
+static void Temp_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
 {
   float temperature;
   uint8_t status = 0;
@@ -711,7 +711,7 @@ static void Temp_Sensor_Handler(TMsg *Msg, uint32_t Instance)
  * @param  Instance the device instance
  * @retval None
  */
-static void Hum_Sensor_Handler(TMsg *Msg, uint32_t Instance)
+static void Hum_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
 {
   float humidity;
   uint8_t status = 0;
@@ -771,7 +771,7 @@ static void Hum_Sensor_Handler(TMsg *Msg, uint32_t Instance)
  * @param  Instance the device instance
  * @retval None
  */
-static void Accelero_Sensor_Handler(TMsg *Msg, uint32_t Instance)
+static void Accelero_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
 {
   int32_t data[6];
   IKS01A3_MOTION_SENSOR_Axes_t acceleration;
@@ -839,7 +839,7 @@ static void Accelero_Sensor_Handler(TMsg *Msg, uint32_t Instance)
  * @param  Instance the device instance
  * @retval None
  */
-static void Gyro_Sensor_Handler(TMsg *Msg, uint32_t Instance)
+static void Gyro_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
 {
   int32_t data[6];
   IKS01A3_MOTION_SENSOR_Axes_t angular_velocity;
@@ -881,7 +881,7 @@ static void Gyro_Sensor_Handler(TMsg *Msg, uint32_t Instance)
  * @param  Instance the device instance
  * @retval None
  */
-static void Magneto_Sensor_Handler(TMsg *Msg, uint32_t Instance)
+static void Magneto_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
 {
   int32_t data[3];
   IKS01A3_MOTION_SENSOR_Axes_t magnetic_field;
@@ -922,7 +922,7 @@ static void Magneto_Sensor_Handler(TMsg *Msg, uint32_t Instance)
  * @param  Msg the INTERRUPT part of the stream
  * @retval None
  */
-static void Sensors_Interrupt_Handler(TMsg *Msg)
+static void Sensors_Interrupt_Handler(Msg_t *Msg)
 {
   uint8_t int_status = 0;
   static uint8_t mem_int_status = 0;
@@ -964,7 +964,7 @@ static void Sensors_Interrupt_Handler(TMsg *Msg)
  * @param  Msg the MLC part of the stream
  * @retval None
  */
-static void MLC_Handler(TMsg *Msg)
+static void MLC_Handler(Msg_t *Msg)
 {
   int32_t i = 0;
   uint8_t new_status = 0;
@@ -1111,6 +1111,23 @@ static void MLC_Handler(TMsg *Msg)
 
     (void)IKS01A3_MOTION_SENSOR_Write_Register(IKS01A3_LSM6DSV16BX_0, LSM6DSV16BX_FUNC_CFG_ACCESS, LSM6DSV16BX_MAIN_MEM_BANK << 7);
   }
+  else if ((AccInstance == IKS01A3_ISM330BX_0) && (GyrInstance == IKS01A3_ISM330BX_0))
+  {
+    mlc_status_max = 4;
+
+#if (MLC_STATUS_MAX < 4)
+#error "ERROR: Array index out of bounds!"
+#endif
+
+    (void)IKS01A3_MOTION_SENSOR_Write_Register(IKS01A3_ISM330BX_0, ISM330BX_FUNC_CFG_ACCESS, ISM330BX_EMBED_FUNC_MEM_BANK << 7);
+
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_ISM330BX_0, ISM330BX_MLC1_SRC, &mlc_status[0]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_ISM330BX_0, ISM330BX_MLC2_SRC, &mlc_status[1]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_ISM330BX_0, ISM330BX_MLC3_SRC, &mlc_status[2]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_ISM330BX_0, ISM330BX_MLC4_SRC, &mlc_status[3]);
+
+    (void)IKS01A3_MOTION_SENSOR_Write_Register(IKS01A3_ISM330BX_0, ISM330BX_FUNC_CFG_ACCESS, ISM330BX_MAIN_MEM_BANK << 7);
+  }
   else if (AccInstance == IKS01A3_LIS2DUX12_0)
   {
     mlc_status_max = 4;
@@ -1210,7 +1227,7 @@ static void MLC_Handler(TMsg *Msg)
  * @param  Msg the FSM part of the stream
  * @retval None
  */
-static void FSM_Handler(TMsg *Msg)
+static void FSM_Handler(Msg_t *Msg)
 {
   int32_t i = 0;
   uint8_t new_status = 0;
@@ -1488,6 +1505,29 @@ static void FSM_Handler(TMsg *Msg)
 
     (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV16BX_0, LSM6DSV16BX_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
+  else if ((AccInstance == IKS01A3_ISM330BX_0) && (GyrInstance == IKS01A3_ISM330BX_0))
+  {
+    fsm_status_max = 9;
+
+#if (FSM_STATUS_MAX < 9)
+#error "ERROR: Array index out of bounds!"
+#endif
+
+    (void)IKS01A3_MOTION_SENSOR_Write_Register(IKS01A3_ISM330BX_0, ISM330BX_FUNC_CFG_ACCESS, ISM330BX_EMBED_FUNC_MEM_BANK << 7);
+
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_ISM330BX_0, ISM330BX_FSM_OUTS1, &fsm_status[0]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_ISM330BX_0, ISM330BX_FSM_OUTS2, &fsm_status[1]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_ISM330BX_0, ISM330BX_FSM_OUTS3, &fsm_status[2]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_ISM330BX_0, ISM330BX_FSM_OUTS4, &fsm_status[3]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_ISM330BX_0, ISM330BX_FSM_OUTS5, &fsm_status[4]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_ISM330BX_0, ISM330BX_FSM_OUTS6, &fsm_status[5]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_ISM330BX_0, ISM330BX_FSM_OUTS7, &fsm_status[6]);
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_ISM330BX_0, ISM330BX_FSM_OUTS8, &fsm_status[7]);
+
+    (void)IKS01A3_MOTION_SENSOR_Write_Register(IKS01A3_ISM330BX_0, ISM330BX_FUNC_CFG_ACCESS, ISM330BX_MAIN_MEM_BANK << 7);
+
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_ISM330BX_0, ISM330BX_FSM_STATUS_MAINPAGE, &fsm_status[8]);
+  }
   else if (AccInstance == IKS01A3_LIS2DUX12_0)
   {
     fsm_status_max = 9;
@@ -1662,7 +1702,7 @@ static void FSM_Handler(TMsg *Msg)
  * @param  Msg the QVAR part of the stream
  * @retval None
  */
-static void QVAR_Handler(TMsg *Msg, uint32_t Instance)
+static void QVAR_Handler(Msg_t *Msg, uint32_t Instance)
 {
   uint8_t qvar_data_available = 0;
 
@@ -1676,6 +1716,12 @@ static void QVAR_Handler(TMsg *Msg, uint32_t Instance)
   {
     lsm6dsv16bx_status_reg_t status;
     (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV16BX_0, LSM6DSV16BX_STATUS_REG, (uint8_t *)&status);
+    qvar_data_available = status.ah_qvarda;
+  }
+  else if ((AccInstance == IKS01A3_ISM330BX_0) && (GyrInstance == IKS01A3_ISM330BX_0))
+  {
+    ism330bx_status_reg_t status;
+    (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_ISM330BX_0, ISM330BX_STATUS_REG, (uint8_t *)&status);
     qvar_data_available = status.ah_qvarda;
   }
   else if (AccInstance == IKS01A3_LIS2DUXS12_0)
@@ -1723,6 +1769,12 @@ static void QVAR_Handler(TMsg *Msg, uint32_t Instance)
       (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV16BX_0, LSM6DSV16BX_AH_QVAR_OUT_L, &value.u8bit[0]);
       (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_LSM6DSV16BX_0, LSM6DSV16BX_AH_QVAR_OUT_H, &value.u8bit[1]);
       qvar_mv = value.i16bit / LSM6DSV16BX_QVAR_GAIN;
+    }
+    else if ((AccInstance == IKS01A3_ISM330BX_0) && (GyrInstance == IKS01A3_ISM330BX_0))
+    {
+      (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_ISM330BX_0, ISM330BX_AH_QVAR_OUT_L, &value.u8bit[0]);
+      (void)IKS01A3_MOTION_SENSOR_Read_Register(IKS01A3_ISM330BX_0, ISM330BX_AH_QVAR_OUT_H, &value.u8bit[1]);
+      qvar_mv = value.i16bit / ISM330BX_QVAR_GAIN;
     }
     else if (AccInstance == IKS01A3_LIS2DUXS12_0)
     {
@@ -1852,7 +1904,7 @@ static void MX_RTC_Init(void)
   */
 void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIOPin)
 {
-  int do_operation = 0;
+  int32_t do_operation = 0;
   uint32_t int_current_time2_local;
 
   if (GPIOPin == KEY_BUTTON_PIN)

@@ -160,6 +160,12 @@ int32_t STHS34PF80_GetGainFactor(STHS34PF80_Object_t *pObj, uint8_t *Value);
 int32_t STHS34PF80_GetSensData(STHS34PF80_Object_t *pObj, uint8_t *Value);
 int32_t STHS34PF80_GetSensitivity(STHS34PF80_Object_t *pObj, uint16_t *Value);
 
+int32_t STHS34PF80_GetAmbTempShock(STHS34PF80_Object_t *pObj, int16_t *Value);
+int32_t STHS34PF80_GetObjectTempCompensated(STHS34PF80_Object_t *pObj, int16_t *Value);
+int32_t STHS34PF80_GetPresenceTemperature(STHS34PF80_Object_t *pObj, int16_t *Value);
+
+int32_t STHS34PF80_Set_Mem_Bank(STHS34PF80_Object_t *pObj, uint8_t Val);
+
 /**
   * @}
   */

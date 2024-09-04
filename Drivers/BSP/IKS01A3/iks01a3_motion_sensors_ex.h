@@ -87,7 +87,7 @@ int32_t IKS01A3_MOTION_SENSOR_Enable_Wake_Up_Detection(uint32_t Instance, IKS01A
 int32_t IKS01A3_MOTION_SENSOR_Disable_Wake_Up_Detection(uint32_t Instance);
 int32_t IKS01A3_MOTION_SENSOR_Set_Wake_Up_Threshold(uint32_t Instance, uint8_t Threshold);
 int32_t IKS01A3_MOTION_SENSOR_Set_Wake_Up_Duration(uint32_t Instance, uint8_t Duration);
-int32_t IKS01A3_MOTION_SENSOR_Enable_Inactivity_Detection(uint32_t Instance, IKS01A3_MOTION_SENSOR_IntPin_t IntPin);
+int32_t IKS01A3_MOTION_SENSOR_Enable_Inactivity_Detection(uint32_t Instance);
 int32_t IKS01A3_MOTION_SENSOR_Disable_Inactivity_Detection(uint32_t Instance);
 int32_t IKS01A3_MOTION_SENSOR_Set_Sleep_Duration(uint32_t Instance, uint8_t Duration);
 int32_t IKS01A3_MOTION_SENSOR_Enable_Single_Tap_Detection(uint32_t Instance, IKS01A3_MOTION_SENSOR_IntPin_t IntPin);

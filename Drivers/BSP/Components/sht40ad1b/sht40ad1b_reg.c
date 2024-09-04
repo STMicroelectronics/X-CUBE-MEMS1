@@ -144,6 +144,55 @@ int32_t sht40ad1b_data_get(stmdev_ctx_t *ctx, float_t *buffer)
   return 0;
 }
 
+
+/**
+  * @brief  serial ID value [get]
+  *
+  * @param  ctx     read / write interface definitions
+  * @param  buffer  buffer to store humidity and temperature values pair
+  * @retval         interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t sht40ad1b_serial_get(stmdev_ctx_t *ctx, uint32_t *buffer)
+{
+  uint8_t command = 0x89;  // TODO: Replace value 0x89 with enum value
+  uint8_t data[6] = {0};
+
+  if (sht40ad1b_write_reg(ctx, 0, &command, 1) != 0)
+  {
+    return 1;
+  }
+
+  /* Wait 10 ms */
+  ctx->mdelay(10);
+
+  if (sht40ad1b_read_reg(ctx, 0, data, 6) != 0)
+  {
+    return 1;
+  }
+
+  uint16_t serial_first_part = (data[0] * 0x100U) + data[1];
+  uint8_t first_value_crc  = data[2];
+  uint16_t serial_second_part  = (data[3] * 0x100U) + data[4];
+  uint8_t second_value_crc   = data[5];
+
+  /* Check CRC first part */
+  if (crc_check(&data[0], 2, first_value_crc) != 0U)
+  {
+    return 1;
+  }
+
+  /* Check CRC second part */
+  if (crc_check(&data[3], 2, second_value_crc) != 0U)
+  {
+    return 1;
+  }
+  
+  *buffer = (serial_first_part<<16) + serial_second_part;
+  
+  return 0;
+}
+
 /**
   * @}
   *

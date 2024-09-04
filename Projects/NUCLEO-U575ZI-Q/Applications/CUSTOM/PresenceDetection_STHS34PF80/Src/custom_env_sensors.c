@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -453,14 +453,18 @@ static int32_t STHS34PF80_0_Probe(uint32_t Functions)
   /* Configure the driver */
   io_ctx.BusType     = STHS34PF80_I2C_BUS; /* I2C */
   io_ctx.Address     = STHS34PF80_I2C_ADD;
-  io_ctx.Init        = CUSTOM_STHS34PF80_0_I2C_Init;
-  io_ctx.DeInit      = CUSTOM_STHS34PF80_0_I2C_DeInit;
-  io_ctx.ReadReg     = CUSTOM_STHS34PF80_0_I2C_ReadReg;
-  io_ctx.WriteReg    = CUSTOM_STHS34PF80_0_I2C_WriteReg;
+  io_ctx.Init        = CUSTOM_STHS34PF80_0_I2C_INIT;
+  io_ctx.DeInit      = CUSTOM_STHS34PF80_0_I2C_DEINIT;
+  io_ctx.ReadReg     = CUSTOM_STHS34PF80_0_I2C_READ_REG;
+  io_ctx.WriteReg    = CUSTOM_STHS34PF80_0_I2C_WRITE_REG;
   io_ctx.GetTick     = BSP_GetTick;
   io_ctx.Delay       = HAL_Delay;
 
   if (STHS34PF80_RegisterBusIO(&sths34pf80_obj_0, &io_ctx) != STHS34PF80_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (STHS34PF80_Set_Mem_Bank(&sths34pf80_obj_0, STHS34PF80_MAIN_MEM_BANK) != STHS34PF80_OK)
   {
     ret = BSP_ERROR_UNKNOWN_COMPONENT;
   }

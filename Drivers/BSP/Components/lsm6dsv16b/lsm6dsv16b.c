@@ -162,6 +162,12 @@ int32_t LSM6DSV16B_RegisterBusIO(LSM6DSV16B_Object_t *pObj, LSM6DSV16B_IO_t *pIO
  */
 int32_t LSM6DSV16B_Init(LSM6DSV16B_Object_t *pObj)
 {
+  /* Set main memory bank */
+  if (LSM6DSV16B_Set_Mem_Bank(pObj, (uint8_t)LSM6DSV16B_MAIN_MEM_BANK) != LSM6DSV16B_OK)
+  {
+    return LSM6DSV16B_ERROR;
+  }
+
   /* Enable register address automatically incremented during a multiple byte
   access with a serial interface. */
   if (lsm6dsv16b_auto_increment_set(&(pObj->Ctx), PROPERTY_ENABLE) != LSM6DSV16B_OK)
@@ -1063,7 +1069,7 @@ int32_t LSM6DSV16B_GYRO_GetAxesRaw(LSM6DSV16B_Object_t *pObj, LSM6DSV16B_AxesRaw
 int32_t LSM6DSV16B_GYRO_GetAxes(LSM6DSV16B_Object_t *pObj, LSM6DSV16B_Axes_t *AngularRate)
 {
   lsm6dsv16b_axis3bit16_t data_raw;
-  float_t sensitivity;
+  float_t sensitivity = 0.0f;
 
   /* Read raw data values. */
   if (lsm6dsv16b_angular_rate_raw_get(&(pObj->Ctx), data_raw.i16bit) != LSM6DSV16B_OK)
@@ -1155,6 +1161,29 @@ int32_t LSM6DSV16B_GYRO_Get_DRDY_Status(LSM6DSV16B_Object_t *pObj, uint8_t *Stat
 
   *Status = val.drdy_gy;
   return LSM6DSV16B_OK;
+}
+
+/**
+  * @brief  Set memory bank
+  * @param  pObj the device pObj
+  * @param  Val the value of memory bank in reg FUNC_CFG_ACCESS
+  *         0 - LSM6DSV16B_MAIN_MEM_BANK, 1 - LSM6DSV16B_EMBED_FUNC_MEM_BANK
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LSM6DSV16B_Set_Mem_Bank(LSM6DSV16B_Object_t *pObj, uint8_t Val)
+{
+  int32_t ret = LSM6DSV16B_OK;
+  lsm6dsv16b_mem_bank_t reg;
+
+  reg = (Val == 1U) ? LSM6DSV16B_EMBED_FUNC_MEM_BANK
+        :               LSM6DSV16B_MAIN_MEM_BANK;
+
+  if (lsm6dsv16b_mem_bank_set(&(pObj->Ctx), reg) != LSM6DSV16B_OK)
+  {
+    ret = LSM6DSV16B_ERROR;
+  }
+
+  return ret;
 }
 
 /**

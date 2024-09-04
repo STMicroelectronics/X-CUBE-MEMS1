@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -16,7 +16,7 @@
   ******************************************************************************
   */
 
- /* Define to prevent recursive inclusion -------------------------------------*/
+/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef IKS4A1_MEMS_CONTROL_EX_H
 #define IKS4A1_MEMS_CONTROL_EX_H
 
@@ -55,5 +55,9 @@ void BSP_SENSOR_ACC_GetDRDYStatus(uint8_t *Status);
 
 void BSP_ACC_GYR_Read_FSM_Data(uint8_t *Data);
 void BSP_ACC_GYR_Read_MLC_Data(uint8_t *Data);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* IKS4A1_MEMS_CONTROL_EX_H */

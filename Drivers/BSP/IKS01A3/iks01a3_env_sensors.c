@@ -48,7 +48,8 @@ void *EnvCompObj[IKS01A3_ENV_INSTANCES_NBR];
 
 /* We define a jump table in order to get the correct index from the desired function. */
 /* This table should have a size equal to the maximum value of a function plus 1.      */
-static uint32_t FunctionIndex[] = {0, 0, 1, 1, 2, 2, 2, 2, 3};
+/* But due to MISRA it has to be increased to 15 + 1. */
+static uint32_t FunctionIndex[] = {0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3};
 static ENV_SENSOR_FuncDrv_t     *EnvFuncDrv[IKS01A3_ENV_INSTANCES_NBR][IKS01A3_ENV_FUNCTIONS_NBR];
 static ENV_SENSOR_CommonDrv_t   *EnvDrv[IKS01A3_ENV_INSTANCES_NBR];
 static IKS01A3_ENV_SENSOR_Ctx_t  EnvCtx[IKS01A3_ENV_INSTANCES_NBR];
@@ -732,7 +733,7 @@ int32_t IKS01A3_ENV_SENSOR_Disable(uint32_t Instance, uint32_t Function)
   * @param  Odr pointer to Output Data Rate read value
   * @retval BSP status
   */
-int32_t IKS01A3_ENV_SENSOR_GetOutputDataRate(uint32_t Instance, uint32_t Function, float *Odr)
+int32_t IKS01A3_ENV_SENSOR_GetOutputDataRate(uint32_t Instance, uint32_t Function, float_t *Odr)
 {
   int32_t ret;
 
@@ -769,7 +770,7 @@ int32_t IKS01A3_ENV_SENSOR_GetOutputDataRate(uint32_t Instance, uint32_t Functio
   * @param  Odr Output Data Rate value to be set
   * @retval BSP status
   */
-int32_t IKS01A3_ENV_SENSOR_SetOutputDataRate(uint32_t Instance, uint32_t Function, float Odr)
+int32_t IKS01A3_ENV_SENSOR_SetOutputDataRate(uint32_t Instance, uint32_t Function, float_t Odr)
 {
   int32_t ret;
 
@@ -806,7 +807,7 @@ int32_t IKS01A3_ENV_SENSOR_SetOutputDataRate(uint32_t Instance, uint32_t Functio
   * @param  Value pointer to environmental sensor value
   * @retval BSP status
   */
-int32_t IKS01A3_ENV_SENSOR_GetValue(uint32_t Instance, uint32_t Function, float *Value)
+int32_t IKS01A3_ENV_SENSOR_GetValue(uint32_t Instance, uint32_t Function, float_t *Value)
 {
   int32_t ret;
 
@@ -862,11 +863,11 @@ static int32_t HTS221_0_Probe(uint32_t Functions)
   /* Configure the environmental sensor driver */
   io_ctx.BusType     = HTS221_I2C_BUS; /* I2C */
   io_ctx.Address     = HTS221_I2C_ADDRESS;
-  io_ctx.Init        = IKS01A3_I2C_Init;
-  io_ctx.DeInit      = IKS01A3_I2C_DeInit;
-  io_ctx.ReadReg     = IKS01A3_I2C_ReadReg;
-  io_ctx.WriteReg    = IKS01A3_I2C_WriteReg;
-  io_ctx.GetTick     = IKS01A3_GetTick;
+  io_ctx.Init        = IKS01A3_I2C_INIT;
+  io_ctx.DeInit      = IKS01A3_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS01A3_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS01A3_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS01A3_GET_TICK;
 
   if (HTS221_RegisterBusIO(&hts221_obj_0, &io_ctx) != HTS221_OK)
   {
@@ -954,12 +955,12 @@ static int32_t SHT40AD1B_0_Probe(uint32_t Functions)
   /* Configure the environmental sensor driver */
   io_ctx.BusType  = SHT40AD1B_I2C_BUS; /* I2C */
   io_ctx.Address  = SHT40AD1B_I2C_ADDRESS;
-  io_ctx.Init     = IKS01A3_I2C_Init;
-  io_ctx.DeInit   = IKS01A3_I2C_DeInit;
+  io_ctx.Init     = IKS01A3_I2C_INIT;
+  io_ctx.DeInit   = IKS01A3_I2C_DEINIT;
   io_ctx.Read     = IKS01A3_I2C_Read;
   io_ctx.Write    = IKS01A3_I2C_Write;
-  io_ctx.GetTick  = IKS01A3_GetTick;
-  io_ctx.Delay    = IKS01A3_Delay;
+  io_ctx.GetTick  = IKS01A3_GET_TICK;
+  io_ctx.Delay    = IKS01A3_DELAY;
 
   if (SHT40AD1B_RegisterBusIO(&sht40ad1b_obj_0, &io_ctx) != SHT40AD1B_OK)
   {
@@ -1047,12 +1048,12 @@ static int32_t SGP40_0_Probe(uint32_t Functions)
   /* Configure the environmental sensor driver */
   io_ctx.BusType  = SGP40_I2C_BUS; /* I2C */
   io_ctx.Address  = SGP40_I2C_ADDRESS;
-  io_ctx.Init     = IKS01A3_I2C_Init;
-  io_ctx.DeInit   = IKS01A3_I2C_DeInit;
+  io_ctx.Init     = IKS01A3_I2C_INIT;
+  io_ctx.DeInit   = IKS01A3_I2C_DEINIT;
   io_ctx.Read     = IKS01A3_I2C_Read;
   io_ctx.Write    = IKS01A3_I2C_Write;
-  io_ctx.GetTick  = IKS01A3_GetTick;
-  io_ctx.Delay    = IKS01A3_Delay;
+  io_ctx.GetTick  = IKS01A3_GET_TICK;
+  io_ctx.Delay    = IKS01A3_DELAY;
 
   if (SGP40_RegisterBusIO(&sgp40_obj_0, &io_ctx) != SGP40_OK)
   {
@@ -1131,11 +1132,11 @@ static int32_t LPS22HH_0_Probe(uint32_t Functions)
   /* Configure the pressure driver */
   io_ctx.BusType     = LPS22HH_I2C_BUS; /* I2C */
   io_ctx.Address     = LPS22HH_I2C_ADD_H;
-  io_ctx.Init        = IKS01A3_I2C_Init;
-  io_ctx.DeInit      = IKS01A3_I2C_DeInit;
-  io_ctx.ReadReg     = IKS01A3_I2C_ReadReg;
-  io_ctx.WriteReg    = IKS01A3_I2C_WriteReg;
-  io_ctx.GetTick     = IKS01A3_GetTick;
+  io_ctx.Init        = IKS01A3_I2C_INIT;
+  io_ctx.DeInit      = IKS01A3_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS01A3_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS01A3_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS01A3_GET_TICK;
 
   if (LPS22HH_RegisterBusIO(&lps22hh_obj_0, &io_ctx) != LPS22HH_OK)
   {
@@ -1223,11 +1224,11 @@ static int32_t STTS751_0_Probe(uint32_t Functions)
   /* Configure the pressure driver */
   io_ctx.BusType     = STTS751_I2C_BUS; /* I2C */
   io_ctx.Address     = STTS751_1xxxx_ADD_7K5;
-  io_ctx.Init        = IKS01A3_I2C_Init;
-  io_ctx.DeInit      = IKS01A3_I2C_DeInit;
-  io_ctx.ReadReg     = IKS01A3_I2C_ReadReg;
-  io_ctx.WriteReg    = IKS01A3_I2C_WriteReg;
-  io_ctx.GetTick     = IKS01A3_GetTick;
+  io_ctx.Init        = IKS01A3_I2C_INIT;
+  io_ctx.DeInit      = IKS01A3_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS01A3_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS01A3_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS01A3_GET_TICK;
 
   if (STTS751_RegisterBusIO(&stts751_obj_0, &io_ctx) != STTS751_OK)
   {
@@ -1306,11 +1307,11 @@ static int32_t LPS33HW_0_Probe(uint32_t Functions)
   /* Configure the pressure driver */
   io_ctx.BusType     = LPS33HW_I2C_BUS; /* I2C */
   io_ctx.Address     = LPS33HW_I2C_ADD_L;
-  io_ctx.Init        = IKS01A3_I2C_Init;
-  io_ctx.DeInit      = IKS01A3_I2C_DeInit;
-  io_ctx.ReadReg     = IKS01A3_I2C_ReadReg;
-  io_ctx.WriteReg    = IKS01A3_I2C_WriteReg;
-  io_ctx.GetTick     = IKS01A3_GetTick;
+  io_ctx.Init        = IKS01A3_I2C_INIT;
+  io_ctx.DeInit      = IKS01A3_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS01A3_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS01A3_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS01A3_GET_TICK;
 
   if (LPS33HW_RegisterBusIO(&lps33hw_obj_0, &io_ctx) != LPS33HW_OK)
   {
@@ -1398,11 +1399,11 @@ static int32_t STTS22H_0_Probe(uint32_t Functions)
   /* Configure the pressure driver */
   io_ctx.BusType     = STTS22H_I2C_BUS; /* I2C */
   io_ctx.Address     = STTS22H_I2C_ADD_H;
-  io_ctx.Init        = IKS01A3_I2C_Init;
-  io_ctx.DeInit      = IKS01A3_I2C_DeInit;
-  io_ctx.ReadReg     = IKS01A3_I2C_ReadReg;
-  io_ctx.WriteReg    = IKS01A3_I2C_WriteReg;
-  io_ctx.GetTick     = IKS01A3_GetTick;
+  io_ctx.Init        = IKS01A3_I2C_INIT;
+  io_ctx.DeInit      = IKS01A3_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS01A3_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS01A3_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS01A3_GET_TICK;
 
   if (STTS22H_RegisterBusIO(&stts22h_obj_0, &io_ctx) != STTS22H_OK)
   {
@@ -1481,11 +1482,11 @@ static int32_t LPS33K_0_Probe(uint32_t Functions)
   /* Configure the pressure driver */
   io_ctx.BusType     = LPS33K_I2C_BUS; /* I2C */
   io_ctx.Address     = LPS33K_I2C_ADD;
-  io_ctx.Init        = IKS01A3_I2C_Init;
-  io_ctx.DeInit      = IKS01A3_I2C_DeInit;
-  io_ctx.ReadReg     = IKS01A3_I2C_ReadReg;
-  io_ctx.WriteReg    = IKS01A3_I2C_WriteReg;
-  io_ctx.GetTick     = IKS01A3_GetTick;
+  io_ctx.Init        = IKS01A3_I2C_INIT;
+  io_ctx.DeInit      = IKS01A3_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS01A3_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS01A3_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS01A3_GET_TICK;
 
   if (LPS33K_RegisterBusIO(&lps33k_obj_0, &io_ctx) != LPS33K_OK)
   {
@@ -1573,11 +1574,11 @@ static int32_t LPS22CH_0_Probe(uint32_t Functions)
   /* Configure the pressure driver */
   io_ctx.BusType     = LPS22CH_I2C_BUS; /* I2C */
   io_ctx.Address     = LPS22CH_I2C_ADD_L;
-  io_ctx.Init        = IKS01A3_I2C_Init;
-  io_ctx.DeInit      = IKS01A3_I2C_DeInit;
-  io_ctx.ReadReg     = IKS01A3_I2C_ReadReg;
-  io_ctx.WriteReg    = IKS01A3_I2C_WriteReg;
-  io_ctx.GetTick     = IKS01A3_GetTick;
+  io_ctx.Init        = IKS01A3_I2C_INIT;
+  io_ctx.DeInit      = IKS01A3_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS01A3_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS01A3_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS01A3_GET_TICK;
 
   if (LPS22CH_RegisterBusIO(&lps22ch_obj_0, &io_ctx) != LPS22CH_OK)
   {
@@ -1664,11 +1665,11 @@ static int32_t LPS27HHTW_0_Probe(uint32_t Functions)
   /* Configure the pressure driver */
   io_ctx.BusType     = LPS27HHTW_I2C_BUS; /* I2C */
   io_ctx.Address     = LPS27HHTW_I2C_ADD_L;
-  io_ctx.Init        = IKS01A3_I2C_Init;
-  io_ctx.DeInit      = IKS01A3_I2C_DeInit;
-  io_ctx.ReadReg     = IKS01A3_I2C_ReadReg;
-  io_ctx.WriteReg    = IKS01A3_I2C_WriteReg;
-  io_ctx.GetTick     = IKS01A3_GetTick;
+  io_ctx.Init        = IKS01A3_I2C_INIT;
+  io_ctx.DeInit      = IKS01A3_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS01A3_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS01A3_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS01A3_GET_TICK;
 
   if (LPS27HHTW_RegisterBusIO(&lps27hhtw_obj_0, &io_ctx) != LPS27HHTW_OK)
   {
@@ -1755,11 +1756,11 @@ static int32_t LPS22DF_0_Probe(uint32_t Functions)
   /* Configure the pressure driver */
   io_ctx.BusType     = LPS22DF_I2C_BUS; /* I2C */
   io_ctx.Address     = LPS22DF_I2C_ADD_L;
-  io_ctx.Init        = IKS01A3_I2C_Init;
-  io_ctx.DeInit      = IKS01A3_I2C_DeInit;
-  io_ctx.ReadReg     = IKS01A3_I2C_ReadReg;
-  io_ctx.WriteReg    = IKS01A3_I2C_WriteReg;
-  io_ctx.GetTick     = IKS01A3_GetTick;
+  io_ctx.Init        = IKS01A3_I2C_INIT;
+  io_ctx.DeInit      = IKS01A3_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS01A3_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS01A3_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS01A3_GET_TICK;
 
   if (LPS22DF_RegisterBusIO(&lps22df_obj_0, &io_ctx) != LPS22DF_OK)
   {
@@ -1846,11 +1847,11 @@ static int32_t ILPS22QS_0_Probe(uint32_t Functions)
   /* Configure the pressure driver */
   io_ctx.BusType     = ILPS22QS_I2C_BUS; /* I2C */
   io_ctx.Address     = ILPS22QS_I2C_ADD;
-  io_ctx.Init        = IKS01A3_I2C_Init;
-  io_ctx.DeInit      = IKS01A3_I2C_DeInit;
-  io_ctx.ReadReg     = IKS01A3_I2C_ReadReg;
-  io_ctx.WriteReg    = IKS01A3_I2C_WriteReg;
-  io_ctx.GetTick     = IKS01A3_GetTick;
+  io_ctx.Init        = IKS01A3_I2C_INIT;
+  io_ctx.DeInit      = IKS01A3_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS01A3_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS01A3_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS01A3_GET_TICK;
 
   if (ILPS22QS_RegisterBusIO(&ilps22qs_obj_0, &io_ctx) != ILPS22QS_OK)
   {
@@ -1937,11 +1938,11 @@ static int32_t ILPS28QSW_0_Probe(uint32_t Functions)
   /* Configure the pressure driver */
   io_ctx.BusType     = ILPS28QSW_I2C_BUS; /* I2C */
   io_ctx.Address     = ILPS28QSW_I2C_ADD;
-  io_ctx.Init        = IKS01A3_I2C_Init;
-  io_ctx.DeInit      = IKS01A3_I2C_DeInit;
-  io_ctx.ReadReg     = IKS01A3_I2C_ReadReg;
-  io_ctx.WriteReg    = IKS01A3_I2C_WriteReg;
-  io_ctx.GetTick     = IKS01A3_GetTick;
+  io_ctx.Init        = IKS01A3_I2C_INIT;
+  io_ctx.DeInit      = IKS01A3_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS01A3_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS01A3_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS01A3_GET_TICK;
 
   if (ILPS28QSW_RegisterBusIO(&ilps28qsv_obj_0, &io_ctx) != ILPS28QSW_OK)
   {
@@ -2028,11 +2029,11 @@ static int32_t LPS28DFW_0_Probe(uint32_t Functions)
   /* Configure the pressure driver */
   io_ctx.BusType     = LPS28DFW_I2C_BUS; /* I2C */
   io_ctx.Address     = LPS28DFW_I2C_ADD_L;
-  io_ctx.Init        = IKS01A3_I2C_Init;
-  io_ctx.DeInit      = IKS01A3_I2C_DeInit;
-  io_ctx.ReadReg     = IKS01A3_I2C_ReadReg;
-  io_ctx.WriteReg    = IKS01A3_I2C_WriteReg;
-  io_ctx.GetTick     = IKS01A3_GetTick;
+  io_ctx.Init        = IKS01A3_I2C_INIT;
+  io_ctx.DeInit      = IKS01A3_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS01A3_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS01A3_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS01A3_GET_TICK;
 
   if (LPS28DFW_RegisterBusIO(&lps28dfw_obj_0, &io_ctx) != LPS28DFW_OK)
   {

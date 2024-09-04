@@ -46,7 +46,7 @@ extern void *MotionCompObj[IKS02A1_MOTION_INSTANCES_NBR];
   */
 
 /**
-  * @brief  Get the status of data ready bit (available only for ISM330DHCX, IIS2DLPC, IIS2MDC, ASM330LHHX sensors)
+  * @brief  Get the status of data ready bit (available only for ISM330DHCX, IIS2DLPC, IIS2MDC, ASM330LHHX, ISM330BX sensors)
   * @param  Instance the device instance
   * @param  Function Motion sensor function. Could be:
   *         - MOTION_ACCELERO or MOTION_GYRO for instance IKS02A1_ISM330DHCX_0, IKS02A1_ASM330LHHX_0
@@ -183,6 +183,37 @@ int32_t IKS02A1_MOTION_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Functi
       break;
 #endif
 
+#if (USE_IKS02A1_MOTION_SENSOR_ISM330BX_0 == 1)
+    case IKS02A1_ISM330BX_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (ISM330BX_ACC_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else if ((Function & MOTION_GYRO) == MOTION_GYRO)
+      {
+        if (ISM330BX_GYRO_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -192,7 +223,7 @@ int32_t IKS02A1_MOTION_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Functi
 }
 
 /**
-  * @brief  Get the register value (available only for ISM330DHCX, IIS2DLPC, IIS2MDC, ASM330LHHX sensors)
+  * @brief  Get the register value (available only for ISM330DHCX, IIS2DLPC, IIS2MDC, ASM330LHHX, ISM330BX sensors)
   * @param  Instance the device instance
   * @param  Reg address to be read
   * @param  Data pointer where the value is written to
@@ -278,7 +309,7 @@ int32_t IKS02A1_MOTION_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint
 }
 
 /**
-  * @brief  Set the register value (available only for ISM330DHCX, IIS2DLPC, IIS2MDC, ASM330LHHX sensors)
+  * @brief  Set the register value (available only for ISM330DHCX, IIS2DLPC, IIS2MDC, ASM330LHHX, ISM330BX sensors)
   * @param  Instance the device instance
   * @param  Reg address to be read
   * @param  Data value to be written
@@ -355,6 +386,19 @@ int32_t IKS02A1_MOTION_SENSOR_Write_Register(uint32_t Instance, uint8_t Reg, uin
       break;
 #endif
 
+#if (USE_IKS02A1_MOTION_SENSOR_ISM330BX_0 == 1)
+    case IKS02A1_ISM330BX_0:
+      if (ISM330BX_Read_Reg(MotionCompObj[Instance], Reg, &Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -404,7 +448,7 @@ int32_t IKS02A1_MOTION_SENSOR_FIFO_Get_Num_Samples(uint32_t Instance, uint16_t *
   * @param  Bdr FIFO BDR value
   * @retval BSP status
   */
-int32_t IKS02A1_MOTION_SENSOR_FIFO_Set_BDR(uint32_t Instance, uint32_t Function, float Bdr)
+int32_t IKS02A1_MOTION_SENSOR_FIFO_Set_BDR(uint32_t Instance, uint32_t Function, float_t Bdr)
 {
   int32_t ret;
 

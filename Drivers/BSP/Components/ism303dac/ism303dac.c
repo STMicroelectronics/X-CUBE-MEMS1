@@ -980,7 +980,7 @@ int32_t ISM303DAC_MAG_GetAxesRaw(ISM303DAC_MAG_Object_t *pObj, ISM303DAC_AxesRaw
 int32_t ISM303DAC_MAG_GetAxes(ISM303DAC_MAG_Object_t *pObj, ISM303DAC_Axes_t *MagneticField)
 {
   ism303dac_axis3bit16_t data_raw;
-  float sensitivity;
+  float sensitivity = 0.0f;
 
   /* Read raw data values. */
   if (ism303dac_magnetic_raw_get(&(pObj->Ctx), data_raw.i16bit) != ISM303DAC_OK)

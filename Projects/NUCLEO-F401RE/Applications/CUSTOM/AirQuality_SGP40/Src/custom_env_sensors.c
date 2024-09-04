@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -517,10 +517,10 @@ static int32_t LPS22DF_0_Probe(uint32_t Functions)
   /* Configure the driver */
   io_ctx.BusType     = LPS22DF_I2C_BUS; /* I2C */
   io_ctx.Address     = LPS22DF_I2C_ADD_L; /* SA0 = GND */
-  io_ctx.Init        = CUSTOM_LPS22DF_0_I2C_Init;
-  io_ctx.DeInit      = CUSTOM_LPS22DF_0_I2C_DeInit;
-  io_ctx.ReadReg     = CUSTOM_LPS22DF_0_I2C_ReadReg;
-  io_ctx.WriteReg    = CUSTOM_LPS22DF_0_I2C_WriteReg;
+  io_ctx.Init        = CUSTOM_LPS22DF_0_I2C_INIT;
+  io_ctx.DeInit      = CUSTOM_LPS22DF_0_I2C_DEINIT;
+  io_ctx.ReadReg     = CUSTOM_LPS22DF_0_I2C_READ_REG;
+  io_ctx.WriteReg    = CUSTOM_LPS22DF_0_I2C_WRITE_REG;
   io_ctx.GetTick     = BSP_GetTick;
   io_ctx.Delay       = HAL_Delay;
 
@@ -611,10 +611,10 @@ static int32_t SHT40AD1B_0_Probe(uint32_t Functions)
   /* Configure the driver */
   io_ctx.BusType     = SHT40AD1B_I2C_BUS; /* I2C */
   io_ctx.Address     = SHT40AD1B_I2C_ADDRESS;
-  io_ctx.Init        = CUSTOM_SHT40AD1B_0_I2C_Init;
-  io_ctx.DeInit      = CUSTOM_SHT40AD1B_0_I2C_DeInit;
-  io_ctx.Read        = CUSTOM_SHT40AD1B_0_I2C_Read;
-  io_ctx.Write       = CUSTOM_SHT40AD1B_0_I2C_Write;
+  io_ctx.Init        = CUSTOM_SHT40AD1B_0_I2C_INIT;
+  io_ctx.DeInit      = CUSTOM_SHT40AD1B_0_I2C_DEINIT;
+  io_ctx.Read        = CUSTOM_SHT40AD1B_0_I2C_READ;
+  io_ctx.Write       = CUSTOM_SHT40AD1B_0_I2C_WRITE;
   io_ctx.GetTick     = BSP_GetTick;
   io_ctx.Delay       = HAL_Delay;
 
@@ -705,10 +705,10 @@ static int32_t SGP40_0_Probe(uint32_t Functions)
   /* Configure the driver */
   io_ctx.BusType     = SGP40_I2C_BUS; /* I2C */
   io_ctx.Address     = SGP40_I2C_ADDRESS;
-  io_ctx.Init        = CUSTOM_SGP40_0_I2C_Init;
-  io_ctx.DeInit      = CUSTOM_SGP40_0_I2C_DeInit;
-  io_ctx.Read        = CUSTOM_SGP40_0_I2C_Read;
-  io_ctx.Write       = CUSTOM_SGP40_0_I2C_Write;
+  io_ctx.Init        = CUSTOM_SGP40_0_I2C_INIT;
+  io_ctx.DeInit      = CUSTOM_SGP40_0_I2C_DEINIT;
+  io_ctx.Read        = CUSTOM_SGP40_0_I2C_READ;
+  io_ctx.Write       = CUSTOM_SGP40_0_I2C_WRITE;
   io_ctx.GetTick     = BSP_GetTick;
   io_ctx.Delay       = HAL_Delay;
 

@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -74,6 +74,10 @@ int32_t CUSTOM_ENV_SENSOR_Get_AvgT(uint32_t Instance, uint8_t *Value);
 int32_t CUSTOM_ENV_SENSOR_Get_GainFactor(uint32_t Instance, uint8_t *Value);
 int32_t CUSTOM_ENV_SENSOR_Get_Sensitivity(uint32_t Instance, uint16_t *Value);
 #endif /* PRESENCEDETECTION_STHS34PF80_DEMO */
+
+#if (defined APPROACHLEAVE_STHS34PF80_DEMO)
+int32_t CUSTOM_ENV_SENSOR_Get_TObjRaw(uint32_t Instance, int16_t *Value);
+#endif /* APPROACHLEAVE_STHS34PF80_DEMO */
 
 #if (defined AIRQUALITY_SGP40_DEMO)
 int32_t CUSTOM_ENV_SENSOR_Set_Humidity(uint32_t Instance, float Value);

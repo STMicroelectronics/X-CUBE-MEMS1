@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -69,7 +69,7 @@ void MotionMC_manager_get_params(MMC_CM0P_Output_t *data_out)
  * @param  length  Library version string length
  * @retval None
  */
-void MotionMC_manager_get_version(char *version, int *length)
+void MotionMC_manager_get_version(char *version, int32_t *length)
 {
   *length = (int)MotionMC_CM0P_GetLibVersion(version);
 }
@@ -94,10 +94,10 @@ void MotionMC_manager_compensate(MOTION_SENSOR_Axes_t *data_raw, MOTION_SENSOR_A
 
   /* Compensate magnetometer data */
   /* NOTE: Convert hard iron coefficients [uT] to [mGauss] */
-  for (int i = 0; i < 3; i++)
+  for (int32_t i = 0; i < 3; i++)
   {
     mag_comp_mG[i] = 0.0f;
-    for (int j = 0; j < 3; j++)
+    for (int32_t j = 0; j < 3; j++)
     {
       mag_comp_mG[i] += (mag_raw_mG[j]  -  data_out.HI_Bias[j] * 10.0f)  *  data_out.SI_Matrix[i][j];
     }

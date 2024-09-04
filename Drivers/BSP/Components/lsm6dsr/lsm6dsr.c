@@ -166,6 +166,13 @@ int32_t LSM6DSR_Init(LSM6DSR_Object_t *pObj)
     }
   }
 
+  /* Set main memory bank */
+  if (LSM6DSR_Set_Mem_Bank(pObj, (uint8_t)LSM6DSR_USER_BANK) != LSM6DSR_OK)
+  {
+    return LSM6DSR_ERROR;
+  }
+
+
   /* Enable register address automatically incremented during a multiple byte
   access with a serial interface. */
   if (lsm6dsr_auto_increment_set(&(pObj->Ctx), PROPERTY_ENABLE) != LSM6DSR_OK)
@@ -406,6 +413,10 @@ int32_t LSM6DSR_ACC_GetOutputDataRate(LSM6DSR_Object_t *pObj, float *Odr)
   {
     case LSM6DSR_XL_ODR_OFF:
       *Odr = 0.0f;
+      break;
+
+    case LSM6DSR_XL_ODR_1Hz6: /* (low power only) */
+      *Odr = 1.6f;
       break;
 
     case LSM6DSR_XL_ODR_12Hz5:
@@ -903,7 +914,7 @@ int32_t LSM6DSR_GYRO_GetAxesRaw(LSM6DSR_Object_t *pObj, LSM6DSR_AxesRaw_t *Value
 int32_t LSM6DSR_GYRO_GetAxes(LSM6DSR_Object_t *pObj, LSM6DSR_Axes_t *AngularRate)
 {
   lsm6dsr_axis3bit16_t data_raw;
-  float sensitivity;
+  float sensitivity = 0.0f;
 
   /* Read raw data values. */
   if (lsm6dsr_angular_rate_raw_get(&(pObj->Ctx), data_raw.i16bit) != LSM6DSR_OK)
@@ -2731,6 +2742,30 @@ int32_t LSM6DSR_FIFO_GYRO_Set_BDR(LSM6DSR_Object_t *pObj, float Bdr)
   }
 
   return LSM6DSR_OK;
+}
+
+/**
+  * @brief  Set memory bank
+  * @param  pObj the device pObj
+  * @param  Val the value of memory bank in reg FUNC_CFG_ACCESS
+  *         0 - LSM6DSR_USER_BANK, 1 - LSM6DSR_SENSOR_HUB_BANK, 2 - LSM6DSR_EMBEDDED_FUNC_BANK
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LSM6DSR_Set_Mem_Bank(LSM6DSR_Object_t *pObj, uint8_t Val)
+{
+  int32_t ret = LSM6DSR_OK;
+  lsm6dsr_reg_access_t reg;
+
+  reg = (Val == 1U) ? LSM6DSR_SENSOR_HUB_BANK
+        : (Val == 2U) ? LSM6DSR_EMBEDDED_FUNC_BANK
+        :               LSM6DSR_USER_BANK;
+
+  if (lsm6dsr_mem_bank_set(&(pObj->Ctx), reg) != LSM6DSR_OK)
+  {
+    ret = LSM6DSR_ERROR;
+  }
+
+  return ret;
 }
 
 /**

@@ -66,13 +66,13 @@ static uint8_t AccNameList[][SENSOR_NAME_MAX_LENGTH] = {"LSM6DSO", "LIS2DW12", "
                                                         "LIS2DTW12 (DIL24)", "LIS2DU12 (DIL24)", "ASM330LHHX (DIL24)",
                                                         "LSM6DSV16X (DIL24)", "LSM6DSV16BX (DIL24)", "LSM6DSV (DIL24)",
                                                         "LSM6DSV16B (DIL24)", "LIS2DUX12 (DIL24)", "LIS2DUXS12 (DIL24)",
-                                                        "LSM6DSV32X (DIL24)"};
+                                                        "LSM6DSV32X (DIL24)", "ISM330BX (DIL24)"};
 static uint8_t GyrNameList[][SENSOR_NAME_MAX_LENGTH] = {"LSM6DSO", "ASM330LHH (DIL24)", "ISM330DLC (DIL24)",
                                                         "LSM6DSOX (DIL24)", "LSM6DSR (DIL24)", "A3G4250D (DIL24)",
                                                         "LSM6DSRX (DIL24)", "ISM330DHCX (DIL24)", "LSM6DSO32 (DIL24)",
                                                         "LSM6DSO32X (DIL24)", "ASM330LHHX (DIL24)", "LSM6DSV16X (DIL24)",
                                                         "LSM6DSV16BX (DIL24)", "LSM6DSV (DIL24)", "LSM6DSV16B (DIL24)",
-                                                        "LSM6DSV32X (DIL24)"};
+                                                        "LSM6DSV32X (DIL24)", "ISM330BX (DIL24)"};
 static uint8_t MagNameList[][SENSOR_NAME_MAX_LENGTH] = {"LIS2MDL", "IIS2MDC (DIL24)", "ISM303DAC (DIL24)", "LIS3MDL (DIL24)",
                                                         "LIS2MDL SH (DIL24)"};
 static uint8_t HumNameList[][SENSOR_NAME_MAX_LENGTH] = {"HTS221", "SHT40AD1B (DIL24)"};
@@ -115,6 +115,7 @@ static uint32_t AccInstanceList[] = {
   IKS01A3_LIS2DUX12_0,
   IKS01A3_LIS2DUXS12_0,
   IKS01A3_LSM6DSV32X_0,
+  IKS01A3_ISM330BX_0,
 };
 static uint32_t GyrInstanceList[] = {
   IKS01A3_LSM6DSO_0,
@@ -133,6 +134,7 @@ static uint32_t GyrInstanceList[] = {
   IKS01A3_LSM6DSV_0,
   IKS01A3_LSM6DSV16B_0,
   IKS01A3_LSM6DSV32X_0,
+  IKS01A3_ISM330BX_0,
 };
 static uint32_t MagInstanceList[] = {
   IKS01A3_LIS2MDL_0,
@@ -202,6 +204,7 @@ static uint32_t HybridAccInstanceList[] = {
   NOT_HYBRID_SENSOR, /* LIS2DUX12 */
   NOT_HYBRID_SENSOR, /* LIS2DUXS12 */
   NOT_HYBRID_SENSOR, /* LSM6DSV32X */
+  NOT_HYBRID_SENSOR, /* ISM330BX */
 };
 static uint32_t HybridTmpInstanceList[] = {
   NOT_HYBRID_SENSOR, /* HTS221 */
@@ -252,6 +255,7 @@ static uint32_t AccFsList[][5] = { /* g */
   {4, 2, 4, 8, 16},                /* LIS2DUX12 */
   {4, 2, 4, 8, 16},                /* LIS2DUXS12 */
   {4, 4, 8, 16, 32},               /* LSM6DSV32X */
+  {4, 2, 4, 8, 16},                /* ISM330BX */
 };
 static uint32_t GyrFsList[][7] = {      /* dps */
   {5, 125, 250, 500, 1000, 2000},       /* LSM6DSO */
@@ -270,6 +274,7 @@ static uint32_t GyrFsList[][7] = {      /* dps */
   {6, 125, 250, 500, 1000, 2000, 4000}, /* LSM6DSV16 */
   {6, 125, 250, 500, 1000, 2000, 4000}, /* LSM6DSV16B */
   {6, 125, 250, 500, 1000, 2000, 4000}, /* LSM6DSV32X */
+  {6, 125, 250, 500, 1000, 2000, 4000}, /* ISM330BX */
 };
 static uint32_t MagFsList[][5] = { /* Ga */
   {1, 50},                         /* LIS2MDL */
@@ -342,6 +347,7 @@ static float AccOdrList[][13] = {                                     /* Hz */
   {10, 1.6, 3, 6, 12.5, 25, 50, 100, 200, 400, 800},                  /* LIS2DUX12 */
   {10, 1.6, 3, 6, 12.5, 25, 50, 100, 200, 400, 800},                  /* LIS2DUXS12 */
   {12, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV32X */
+  {11, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840},       /* ISM330BX */
 };
 static float GyrOdrList[][12] = {                              /* Hz */
   {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667},    /* LSM6DSO */
@@ -360,6 +366,7 @@ static float GyrOdrList[][12] = {                              /* Hz */
   {11, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV */
   {11, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV16B */
   {11, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV32X */
+  {10, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840},       /* ISM330BX */
 };
 static float MagOdrList[][9] = {            /* Hz */
   {4, 10, 20, 50, 100},                     /* LIS2MDL */
@@ -417,23 +424,23 @@ static uint8_t TmpIndex;
 static uint8_t PrsIndex;
 
 /* Private function prototypes -----------------------------------------------*/
-static int SC_Get_Sensor_Name(TMsg *Msg);
-static int SC_Read_Register(TMsg *Msg);
-static int SC_Write_Register(TMsg *Msg);
-static int SC_Get_Full_Scale_List(TMsg *Msg);
-static int SC_Set_Full_Scale(TMsg *Msg);
-static int SC_Get_Full_Scale(TMsg *Msg);
-static int SC_Get_ODR_List(TMsg *Msg);
-static int SC_Set_ODR(TMsg *Msg);
-static int SC_Get_ODR(TMsg *Msg);
-static int SC_Get_Sensor_List(TMsg *Msg);
-static int SC_Set_Sensor_Index(TMsg *Msg);
+static int32_t SC_Get_Sensor_Name(Msg_t *Msg);
+static int32_t SC_Read_Register(Msg_t *Msg);
+static int32_t SC_Write_Register(Msg_t *Msg);
+static int32_t SC_Get_Full_Scale_List(Msg_t *Msg);
+static int32_t SC_Set_Full_Scale(Msg_t *Msg);
+static int32_t SC_Get_Full_Scale(Msg_t *Msg);
+static int32_t SC_Get_ODR_List(Msg_t *Msg);
+static int32_t SC_Set_ODR(Msg_t *Msg);
+static int32_t SC_Get_ODR(Msg_t *Msg);
+static int32_t SC_Get_Sensor_List(Msg_t *Msg);
+static int32_t SC_Set_Sensor_Index(Msg_t *Msg);
 
-static void Send_Sensor_Name(TMsg *Msg, uint8_t *SensorName);
-static void Send_Sensor_FS_List(TMsg *Msg, uint32_t *FsList);
-static void Send_Sensor_ODR_List(TMsg *Msg, float *OdrList);
+static void Send_Sensor_Name(Msg_t *Msg, uint8_t *SensorName);
+static void Send_Sensor_FS_List(Msg_t *Msg, uint32_t *FsList);
+static void Send_Sensor_ODR_List(Msg_t *Msg, float *OdrList);
 
-static int Is_DIL24_Sensor(uint8_t *SensorName);
+static int32_t Is_DIL24_Sensor(uint8_t *SensorName);
 static void DIL24_INT1_Init(void);
 
 static void FloatToArray(uint8_t *Dest, float data);
@@ -445,9 +452,9 @@ static void ArrayToFloat(uint8_t *Source, float *data);
  * @param  Msg the pointer to the message to be handled
  * @retval 1 if the message is correctly handled, 0 otherwise
  */
-int Handle_Sensor_command(TMsg *Msg)
+int32_t Handle_Sensor_command(Msg_t *Msg)
 {
-  int ret;
+  int32_t ret;
 
   /* Commands */
   switch (Msg->Data[3])
@@ -510,9 +517,9 @@ int Handle_Sensor_command(TMsg *Msg)
  * @param  Msg the pointer to the message to be handled
  * @retval 1 if the message is correctly handled, 0 otherwise
  */
-static int SC_Get_Sensor_Name(TMsg *Msg)
+static int32_t SC_Get_Sensor_Name(Msg_t *Msg)
 {
-  int ret = 1;
+  int32_t ret = 1;
 
   /* Sensor Type */
   switch (Msg->Data[4])
@@ -554,10 +561,10 @@ static int SC_Get_Sensor_Name(TMsg *Msg)
  * @param  Msg the pointer to the message to be handled
  * @retval 1 if the message is correctly handled, 0 otherwise
  */
-static int SC_Read_Register(TMsg *Msg)
+static int32_t SC_Read_Register(Msg_t *Msg)
 {
   uint8_t reg_value = 0;
-  int ret = 1;
+  int32_t ret = 1;
 
   /* Sensor Type */
   switch (Msg->Data[4])
@@ -646,9 +653,9 @@ static int SC_Read_Register(TMsg *Msg)
  * @param  Msg the pointer to the message to be handled
  * @retval 1 if the message is correctly handled, 0 otherwise
  */
-static int SC_Write_Register(TMsg *Msg)
+static int32_t SC_Write_Register(Msg_t *Msg)
 {
-  int ret = 1;
+  int32_t ret = 1;
 
   /* Sensor Type */
   switch (Msg->Data[4])
@@ -736,9 +743,9 @@ static int SC_Write_Register(TMsg *Msg)
  * @param  Msg the pointer to the message to be handled
  * @retval 1 if the message is correctly handled, 0 otherwise
  */
-static int SC_Get_Full_Scale_List(TMsg *Msg)
+static int32_t SC_Get_Full_Scale_List(Msg_t *Msg)
 {
-  int ret = 1;
+  int32_t ret = 1;
 
   /* Sensor Type */
   switch (Msg->Data[4])
@@ -780,10 +787,10 @@ static int SC_Get_Full_Scale_List(TMsg *Msg)
  * @param  Msg the pointer to the message to be handled
  * @retval 1 if the message is correctly handled, 0 otherwise
  */
-static int SC_Set_Full_Scale(TMsg *Msg)
+static int32_t SC_Set_Full_Scale(Msg_t *Msg)
 {
   uint32_t full_scale = Deserialize(&Msg->Data[5], 4);
-  int ret = 1;
+  int32_t ret = 1;
 
   /* Sensor Type */
   switch (Msg->Data[4])
@@ -845,10 +852,10 @@ static int SC_Set_Full_Scale(TMsg *Msg)
  * @param  Msg the pointer to the message to be handled
  * @retval 1 if the message is correctly handled, 0 otherwise
  */
-static int SC_Get_Full_Scale(TMsg *Msg)
+static int32_t SC_Get_Full_Scale(Msg_t *Msg)
 {
   int32_t full_scale = 0;
-  int ret = 1;
+  int32_t ret = 1;
 
   /* Sensor Type */
   switch (Msg->Data[4])
@@ -911,9 +918,9 @@ static int SC_Get_Full_Scale(TMsg *Msg)
  * @param  Msg the pointer to the message to be handled
  * @retval 1 if the message is correctly handled, 0 otherwise
  */
-static int SC_Get_ODR_List(TMsg *Msg)
+static int32_t SC_Get_ODR_List(Msg_t *Msg)
 {
-  int ret = 1;
+  int32_t ret = 1;
 
   /* Sensor Type */
   switch (Msg->Data[4])
@@ -955,10 +962,10 @@ static int SC_Get_ODR_List(TMsg *Msg)
  * @param  Msg the pointer to the message to be handled
  * @retval 1 if the message is correctly handled, 0 otherwise
  */
-static int SC_Set_ODR(TMsg *Msg)
+static int32_t SC_Set_ODR(Msg_t *Msg)
 {
   float odr = 0.0f;
-  int ret = 1;
+  int32_t ret = 1;
 
   ArrayToFloat(&Msg->Data[5], &odr);
 
@@ -1048,10 +1055,10 @@ static int SC_Set_ODR(TMsg *Msg)
  * @param  Msg the pointer to the message to be handled
  * @retval 1 if the message is correctly handled, 0 otherwise
  */
-static int SC_Get_ODR(TMsg *Msg)
+static int32_t SC_Get_ODR(Msg_t *Msg)
 {
   float odr = 0.0f;
-  int ret = 1;
+  int32_t ret = 1;
 
   /* Sensor Type */
   switch (Msg->Data[4])
@@ -1140,10 +1147,10 @@ static int SC_Get_ODR(TMsg *Msg)
  * @param  Msg the pointer to the message to be handled
  * @retval 1 if the message is correctly handled, 0 otherwise
  */
-static int SC_Get_Sensor_List(TMsg *Msg)
+static int32_t SC_Get_Sensor_List(Msg_t *Msg)
 {
-  int ret = 1;
-  int i;
+  int32_t ret = 1;
+  int32_t i;
 
   /* Sensor Type */
   switch (Msg->Data[4])
@@ -1251,9 +1258,9 @@ static int SC_Get_Sensor_List(TMsg *Msg)
  * @param  Msg the pointer to the message to be handled
  * @retval 1 if the message is correctly handled, 0 otherwise
  */
-static int SC_Set_Sensor_Index(TMsg *Msg)
+static int32_t SC_Set_Sensor_Index(Msg_t *Msg)
 {
-  int ret = 1;
+  int32_t ret = 1;
 
   /* Sensor Type */
   switch (Msg->Data[4])
@@ -1481,7 +1488,7 @@ static int SC_Set_Sensor_Index(TMsg *Msg)
  * @param  SensorName the sensor name
  * @retval 1 if the message is correctly handled, 0 otherwise
  */
-static void Send_Sensor_Name(TMsg *Msg, uint8_t *SensorName)
+static void Send_Sensor_Name(Msg_t *Msg, uint8_t *SensorName)
 {
   uint32_t i = 0;
   BUILD_REPLY_HEADER(Msg);
@@ -1502,7 +1509,7 @@ static void Send_Sensor_Name(TMsg *Msg, uint8_t *SensorName)
  * @param  FsList the sensor full scale list
  * @retval 1 if the message is correctly handled, 0 otherwise
  */
-static void Send_Sensor_FS_List(TMsg *Msg, uint32_t *FsList)
+static void Send_Sensor_FS_List(Msg_t *Msg, uint32_t *FsList)
 {
   uint32_t i;
   BUILD_REPLY_HEADER(Msg);
@@ -1524,7 +1531,7 @@ static void Send_Sensor_FS_List(TMsg *Msg, uint32_t *FsList)
  * @param  OdrList the sensor output data rate list
  * @retval 1 if the message is correctly handled, 0 otherwise
  */
-static void Send_Sensor_ODR_List(TMsg *Msg, float *OdrList)
+static void Send_Sensor_ODR_List(Msg_t *Msg, float *OdrList)
 {
   uint32_t i;
   BUILD_REPLY_HEADER(Msg);
@@ -1545,7 +1552,7 @@ static void Send_Sensor_ODR_List(TMsg *Msg, float *OdrList)
  * @param  SensorName the pointer to sensor name string
  * @retval 1 if sensor is a DIL24 sensor, 0 otherwise
  */
-static int Is_DIL24_Sensor(uint8_t *SensorName)
+static int32_t Is_DIL24_Sensor(uint8_t *SensorName)
 {
   uint8_t string[] = " (DIL24)";
   size_t size = strlen((const char *)string);

@@ -305,6 +305,8 @@ int32_t LSM6DSRX_FIFO_ACC_Set_BDR(LSM6DSRX_Object_t *pObj, float Bdr);
 int32_t LSM6DSRX_FIFO_GYRO_Get_Axes(LSM6DSRX_Object_t *pObj, LSM6DSRX_Axes_t *AngularVelocity);
 int32_t LSM6DSRX_FIFO_GYRO_Set_BDR(LSM6DSRX_Object_t *pObj, float Bdr);
 
+int32_t LSM6DSRX_Set_Mem_Bank(LSM6DSRX_Object_t *pObj, uint8_t Val);
+
 /**
   * @}
   */

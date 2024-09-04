@@ -264,6 +264,8 @@ int32_t LSM6DSO32_Write_Reg(LSM6DSO32_Object_t *pObj, uint8_t reg, uint8_t Data)
 int32_t LSM6DSO32_ACC_Get_DRDY_Status(LSM6DSO32_Object_t *pObj, uint8_t *Status);
 int32_t LSM6DSO32_GYRO_Get_DRDY_Status(LSM6DSO32_Object_t *pObj, uint8_t *Status);
 
+int32_t LSM6DSO32_Set_Mem_Bank(LSM6DSO32_Object_t *pObj, uint8_t Val);
+
 /**
   * @}
   */

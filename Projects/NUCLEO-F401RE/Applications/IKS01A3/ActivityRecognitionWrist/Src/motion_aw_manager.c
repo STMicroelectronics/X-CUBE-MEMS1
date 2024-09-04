@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -63,7 +63,7 @@ void MotionAW_manager_run(MAW_input_t *data_in, MAW_output_t *data_out, int64_t 
  * @param  length  Library version string length
  * @retval None
  */
-void MotionAW_manager_get_version(char *version, int *length)
+void MotionAW_manager_get_version(char *version, int32_t *length)
 {
   *length = (int)MotionAW_GetLibVersion(version);
 }

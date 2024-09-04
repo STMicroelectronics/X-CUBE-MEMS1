@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -67,9 +67,9 @@ void MotionGC_manager_set_knobs(MGC_knobs_t *knobs)
  * @param  bias_update  pointer to an integer that is set to 1 if the gyroscope bias was updated, 0 otherwise
  * @retval none
  */
-void MotionGC_manager_update(MGC_input_t *data_in, MGC_output_t *gyro_bias, int *bias_update)
+void MotionGC_manager_update(MGC_input_t *data_in, MGC_output_t *gyro_bias, int16_t *bias_update)
 {
-  MotionGC_Update(data_in, gyro_bias, bias_update);
+  MotionGC_Update(data_in, gyro_bias, (int *)bias_update);
 }
 
 /**
@@ -108,7 +108,7 @@ void MotionGC_manager_set_frequency(float freq)
  * @param  length  Library version string length
  * @retval none
  */
-void MotionGC_manager_get_version(char *version, int *length)
+void MotionGC_manager_get_version(char *version, int32_t *length)
 {
   *length = (int)MotionGC_GetLibVersion(version);
 }

@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -84,7 +84,7 @@ void MotionFA_manager_run(MFA_input_t *data_in, MFA_output_t *data_out)
  * @param  length  Library version string length
  * @retval None
  */
-void MotionFA_manager_get_version(char *version, int *length)
+void MotionFA_manager_get_version(char *version, int32_t *length)
 {
   *length = (int)MotionFA_GetLibVersion(version);
 }

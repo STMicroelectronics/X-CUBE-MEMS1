@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -62,7 +62,7 @@ void EnvAQ_manager_run(int32_t voc_raw_value, int32_t *voc_index_value)
   * @param  length  Algorithm version string length
   * @retval none
   */
-void EnvAQ_manager_get_version(char *version, int *length)
+void EnvAQ_manager_get_version(char *version, int32_t *length)
 {
   char str1[35] = "ST EnvAQ v1.0.0";
   strcpy(version, str1);

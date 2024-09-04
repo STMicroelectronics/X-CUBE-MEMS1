@@ -48,7 +48,8 @@ void *MotionCompObj[IKS02A1_MOTION_INSTANCES_NBR];
 
 /* We define a jump table in order to get the correct index from the desired function. */
 /* This table should have a size equal to the maximum value of a function plus 1.      */
-static uint32_t FunctionIndex[5] = {0, 0, 1, 1, 2};
+/* But due to MISRA it has to be increased to 7 + 1. */
+static uint32_t FunctionIndex[] = {0, 0, 1, 1, 2, 2, 2, 2, 3};
 static MOTION_SENSOR_FuncDrv_t *MotionFuncDrv[IKS02A1_MOTION_INSTANCES_NBR][IKS02A1_MOTION_FUNCTIONS_NBR];
 static MOTION_SENSOR_CommonDrv_t *MotionDrv[IKS02A1_MOTION_INSTANCES_NBR];
 static IKS02A1_MOTION_SENSOR_Ctx_t MotionCtx[IKS02A1_MOTION_INSTANCES_NBR];
@@ -79,6 +80,10 @@ static int32_t IIS2ICLX_0_Probe(uint32_t Functions);
 
 #if (USE_IKS02A1_MOTION_SENSOR_ASM330LHHX_0 == 1)
 static int32_t ASM330LHHX_0_Probe(uint32_t Functions);
+#endif
+
+#if (USE_IKS02A1_MOTION_SENSOR_ISM330BX_0 == 1)
+static int32_t ISM330BX_0_Probe(uint32_t Functions);
 #endif
 
 /**
@@ -211,6 +216,31 @@ int32_t IKS02A1_MOTION_SENSOR_Init(uint32_t Instance, uint32_t Functions)
 #if (USE_IKS02A1_MOTION_SENSOR_ASM330LHHX_0 == 1)
     case IKS02A1_ASM330LHHX_0:
       if (ASM330LHHX_0_Probe(Functions) != BSP_ERROR_NONE)
+      {
+        return BSP_ERROR_NO_INIT;
+      }
+      if (MotionDrv[Instance]->GetCapabilities(MotionCompObj[Instance], (void *)&cap) != BSP_ERROR_NONE)
+      {
+        return BSP_ERROR_UNKNOWN_COMPONENT;
+      }
+      if (cap.Acc == 1U)
+      {
+        component_functions |= MOTION_ACCELERO;
+      }
+      if (cap.Gyro == 1U)
+      {
+        component_functions |= MOTION_GYRO;
+      }
+      if (cap.Magneto == 1U)
+      {
+        component_functions |= MOTION_MAGNETO;
+      }
+      break;
+#endif
+
+#if (USE_IKS02A1_MOTION_SENSOR_ISM330BX_0 == 1)
+    case IKS02A1_ISM330BX_0:
+      if (ISM330BX_0_Probe(Functions) != BSP_ERROR_NONE)
       {
         return BSP_ERROR_NO_INIT;
       }
@@ -503,7 +533,7 @@ int32_t IKS02A1_MOTION_SENSOR_GetAxesRaw(uint32_t Instance, uint32_t Function, I
   * @param  Sensitivity pointer to sensitivity read value
   * @retval BSP status
   */
-int32_t IKS02A1_MOTION_SENSOR_GetSensitivity(uint32_t Instance, uint32_t Function, float *Sensitivity)
+int32_t IKS02A1_MOTION_SENSOR_GetSensitivity(uint32_t Instance, uint32_t Function, float_t *Sensitivity)
 {
   int32_t ret;
 
@@ -544,7 +574,7 @@ int32_t IKS02A1_MOTION_SENSOR_GetSensitivity(uint32_t Instance, uint32_t Functio
   * @param  Odr pointer to Output Data Rate read value
   * @retval BSP status
   */
-int32_t IKS02A1_MOTION_SENSOR_GetOutputDataRate(uint32_t Instance, uint32_t Function, float *Odr)
+int32_t IKS02A1_MOTION_SENSOR_GetOutputDataRate(uint32_t Instance, uint32_t Function, float_t *Odr)
 {
   int32_t ret;
 
@@ -625,7 +655,7 @@ int32_t IKS02A1_MOTION_SENSOR_GetFullScale(uint32_t Instance, uint32_t Function,
   * @param  Odr Output Data Rate value to be set
   * @retval BSP status
   */
-int32_t IKS02A1_MOTION_SENSOR_SetOutputDataRate(uint32_t Instance, uint32_t Function, float Odr)
+int32_t IKS02A1_MOTION_SENSOR_SetOutputDataRate(uint32_t Instance, uint32_t Function, float_t Odr)
 {
   int32_t ret;
 
@@ -720,14 +750,18 @@ static int32_t ISM330DHCX_0_Probe(uint32_t Functions)
   /* Configure the accelero driver */
   io_ctx.BusType     = ISM330DHCX_I2C_BUS; /* I2C */
   io_ctx.Address     = ISM330DHCX_I2C_ADD_H;
-  io_ctx.Init        = IKS02A1_I2C_Init;
-  io_ctx.DeInit      = IKS02A1_I2C_DeInit;
-  io_ctx.ReadReg     = IKS02A1_I2C_ReadReg;
-  io_ctx.WriteReg    = IKS02A1_I2C_WriteReg;
-  io_ctx.GetTick     = IKS02A1_GetTick;
-  io_ctx.Delay       = IKS02A1_Delay;
+  io_ctx.Init        = IKS02A1_I2C_INIT;
+  io_ctx.DeInit      = IKS02A1_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS02A1_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS02A1_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS02A1_GET_TICK;
+  io_ctx.Delay       = IKS02A1_DELAY;
 
   if (ISM330DHCX_RegisterBusIO(&ism330dhcx_obj_0, &io_ctx) != ISM330DHCX_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (ISM330DHCX_Set_Mem_Bank(&ism330dhcx_obj_0, ISM330DHCX_USER_BANK) != ISM330DHCX_OK)
   {
     ret = BSP_ERROR_UNKNOWN_COMPONENT;
   }
@@ -803,12 +837,12 @@ static int32_t IIS2DLPC_0_Probe(uint32_t Functions)
   /* Configure the accelero driver */
   io_ctx.BusType     = IIS2DLPC_I2C_BUS; /* I2C */
   io_ctx.Address     = IIS2DLPC_I2C_ADD_H;
-  io_ctx.Init        = IKS02A1_I2C_Init;
-  io_ctx.DeInit      = IKS02A1_I2C_DeInit;
-  io_ctx.ReadReg     = IKS02A1_I2C_ReadReg;
-  io_ctx.WriteReg    = IKS02A1_I2C_WriteReg;
-  io_ctx.GetTick     = IKS02A1_GetTick;
-  io_ctx.Delay       = IKS02A1_Delay;
+  io_ctx.Init        = IKS02A1_I2C_INIT;
+  io_ctx.DeInit      = IKS02A1_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS02A1_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS02A1_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS02A1_GET_TICK;
+  io_ctx.Delay       = IKS02A1_DELAY;
 
   if (IIS2DLPC_RegisterBusIO(&iis2dlpc_obj_0, &io_ctx) != IIS2DLPC_OK)
   {
@@ -877,12 +911,12 @@ static int32_t IIS2MDC_0_Probe(uint32_t Functions)
   /* Configure the accelero driver */
   io_ctx.BusType     = IIS2MDC_I2C_BUS; /* I2C */
   io_ctx.Address     = IIS2MDC_I2C_ADD;
-  io_ctx.Init        = IKS02A1_I2C_Init;
-  io_ctx.DeInit      = IKS02A1_I2C_DeInit;
-  io_ctx.ReadReg     = IKS02A1_I2C_ReadReg;
-  io_ctx.WriteReg    = IKS02A1_I2C_WriteReg;
-  io_ctx.GetTick     = IKS02A1_GetTick;
-  io_ctx.Delay       = IKS02A1_Delay;
+  io_ctx.Init        = IKS02A1_I2C_INIT;
+  io_ctx.DeInit      = IKS02A1_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS02A1_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS02A1_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS02A1_GET_TICK;
+  io_ctx.Delay       = IKS02A1_DELAY;
 
   if (IIS2MDC_RegisterBusIO(&iis2mdc_obj_0, &io_ctx) != IIS2MDC_OK)
   {
@@ -951,14 +985,18 @@ static int32_t IIS2ICLX_0_Probe(uint32_t Functions)
   /* Configure the accelero driver */
   io_ctx.BusType     = IIS2ICLX_I2C_BUS; /* I2C */
   io_ctx.Address     = IIS2ICLX_I2C_ADD_L;
-  io_ctx.Init        = IKS02A1_I2C_Init;
-  io_ctx.DeInit      = IKS02A1_I2C_DeInit;
-  io_ctx.ReadReg     = IKS02A1_I2C_ReadReg;
-  io_ctx.WriteReg    = IKS02A1_I2C_WriteReg;
-  io_ctx.GetTick     = IKS02A1_GetTick;
-  io_ctx.Delay       = IKS02A1_Delay;
+  io_ctx.Init        = IKS02A1_I2C_INIT;
+  io_ctx.DeInit      = IKS02A1_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS02A1_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS02A1_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS02A1_GET_TICK;
+  io_ctx.Delay       = IKS02A1_DELAY;
 
   if (IIS2ICLX_RegisterBusIO(&iis2iclx_obj_0, &io_ctx) != IIS2ICLX_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (IIS2ICLX_Set_Mem_Bank(&iis2iclx_obj_0, IIS2ICLX_USER_BANK) != IIS2ICLX_OK)
   {
     ret = BSP_ERROR_UNKNOWN_COMPONENT;
   }
@@ -1025,14 +1063,18 @@ static int32_t ASM330LHHX_0_Probe(uint32_t Functions)
   /* Configure the accelero driver */
   io_ctx.BusType     = ASM330LHHX_I2C_BUS; /* I2C */
   io_ctx.Address     = ASM330LHHX_I2C_ADD_L;
-  io_ctx.Init        = IKS02A1_I2C_Init;
-  io_ctx.DeInit      = IKS02A1_I2C_DeInit;
-  io_ctx.ReadReg     = IKS02A1_I2C_ReadReg;
-  io_ctx.WriteReg    = IKS02A1_I2C_WriteReg;
-  io_ctx.GetTick     = IKS02A1_GetTick;
-  io_ctx.Delay       = IKS02A1_Delay;
+  io_ctx.Init        = IKS02A1_I2C_INIT;
+  io_ctx.DeInit      = IKS02A1_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS02A1_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS02A1_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS02A1_GET_TICK;
+  io_ctx.Delay       = IKS02A1_DELAY;
 
   if (ASM330LHHX_RegisterBusIO(&asm330lhhx_obj_0, &io_ctx) != ASM330LHHX_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (ASM330LHHX_Set_Mem_Bank(&asm330lhhx_obj_0, ASM330LHHX_USER_BANK) != ASM330LHHX_OK)
   {
     ret = BSP_ERROR_UNKNOWN_COMPONENT;
   }
@@ -1074,6 +1116,92 @@ static int32_t ASM330LHHX_0_Probe(uint32_t Functions)
                                                                             void *)&ASM330LHHX_ACC_Driver;
 
       if (MotionDrv[IKS02A1_ASM330LHHX_0]->Init(MotionCompObj[IKS02A1_ASM330LHHX_0]) != ASM330LHHX_OK)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_MAGNETO) == MOTION_MAGNETO))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+  }
+  return ret;
+}
+#endif
+
+#if (USE_IKS02A1_MOTION_SENSOR_ISM330BX_0  == 1)
+/**
+  * @brief  Register Bus IOs for instance 0 if component ID is OK
+  * @retval BSP status
+  */
+static int32_t ISM330BX_0_Probe(uint32_t Functions)
+{
+  ISM330BX_IO_t            io_ctx;
+  uint8_t                  id;
+  static ISM330BX_Object_t ism330bx_obj_0;
+  ISM330BX_Capabilities_t  cap;
+  int32_t ret = BSP_ERROR_NONE;
+
+  /* Configure the accelero driver */
+  io_ctx.BusType     = ISM330BX_I2C_BUS; /* I2C */
+  io_ctx.Address     = ISM330BX_I2C_ADD_L;
+  io_ctx.Init        = IKS02A1_I2C_INIT;
+  io_ctx.DeInit      = IKS02A1_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS02A1_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS02A1_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS02A1_GET_TICK;
+  io_ctx.Delay       = IKS02A1_DELAY;
+
+  if (ISM330BX_RegisterBusIO(&ism330bx_obj_0, &io_ctx) != ISM330BX_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (ISM330BX_Set_Mem_Bank(&ism330bx_obj_0, ISM330BX_MAIN_MEM_BANK) != ISM330BX_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (ISM330BX_ReadID(&ism330bx_obj_0, &id) != ISM330BX_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (id != ISM330BX_ID)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else
+  {
+    (void)ISM330BX_GetCapabilities(&ism330bx_obj_0, &cap);
+    MotionCtx[IKS02A1_ISM330BX_0].Functions = ((uint32_t)cap.Gyro) | ((uint32_t)cap.Acc << 1) | ((uint32_t)cap.Magneto << 2);
+
+    MotionCompObj[IKS02A1_ISM330BX_0] = &ism330bx_obj_0;
+    /* The second cast (void *) is added to bypass Misra R11.3 rule */
+    MotionDrv[IKS02A1_ISM330BX_0] = (MOTION_SENSOR_CommonDrv_t *)(void *)&ISM330BX_COMMON_Driver;
+
+    if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_GYRO) == MOTION_GYRO) && (cap.Gyro == 1U))
+    {
+      /* The second cast (void *) is added to bypass Misra R11.3 rule */
+      MotionFuncDrv[IKS02A1_ISM330BX_0][FunctionIndex[MOTION_GYRO]] = (MOTION_SENSOR_FuncDrv_t *)(void *)&ISM330BX_GYRO_Driver;
+
+      if (MotionDrv[IKS02A1_ISM330BX_0]->Init(MotionCompObj[IKS02A1_ISM330BX_0]) != ISM330BX_OK)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_ACCELERO) == MOTION_ACCELERO) && (cap.Acc == 1U))
+    {
+      /* The second cast (void *) is added to bypass Misra R11.3 rule */
+      MotionFuncDrv[IKS02A1_ISM330BX_0][FunctionIndex[MOTION_ACCELERO]] = (MOTION_SENSOR_FuncDrv_t *)(void *)&ISM330BX_ACC_Driver;
+
+      if (MotionDrv[IKS02A1_ISM330BX_0]->Init(MotionCompObj[IKS02A1_ISM330BX_0]) != ISM330BX_OK)
       {
         ret = BSP_ERROR_COMPONENT_FAILURE;
       }

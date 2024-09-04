@@ -27,8 +27,8 @@
  * @{
  */
 
-extern int UseLSI; /* This "redundant" line is here to fulfil MISRA C-2012 rule 8.4 */
-int UseLSI = 0;
+extern int32_t UseLSI; /* This "redundant" line is here to fulfil MISRA C-2012 rule 8.4 */
+int32_t UseLSI = 0;
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/

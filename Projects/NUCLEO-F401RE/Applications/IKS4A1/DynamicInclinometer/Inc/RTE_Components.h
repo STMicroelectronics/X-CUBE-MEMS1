@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -17,12 +17,12 @@
   ******************************************************************************
   */
 /* USER CODE END Header */
-  /* Define to prevent recursive inclusion -------------------------------------*/
+/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef  __RTE_COMPONENTS_H__
 #define  __RTE_COMPONENTS_H__
 
 /* Defines ------------------------------------------------------------------*/
-/* STMicroelectronics.X-CUBE-MEMS1.10.0.0 */
+/* STMicroelectronics.X-CUBE-MEMS1.11.0.0 */
 #define IKS4A1
 #define IKS4A1_DYNAMICINCLINOMETER_DEMO
 

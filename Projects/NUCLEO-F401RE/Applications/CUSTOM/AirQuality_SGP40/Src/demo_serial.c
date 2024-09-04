@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -65,7 +65,7 @@ static volatile uint8_t DataStreamingDest = 1;
   * @param  Msg the pointer to the message to be built
   * @retval None
   */
-void BUILD_REPLY_HEADER(TMsg *Msg)
+void BUILD_REPLY_HEADER(Msg_t *Msg)
 {
   Msg->Data[0] = Msg->Data[1];
   Msg->Data[1] = DEV_ADDR;
@@ -77,7 +77,7 @@ void BUILD_REPLY_HEADER(TMsg *Msg)
   * @param  Msg the pointer to the header to be initialized
   * @retval None
   */
-void INIT_STREAMING_HEADER(TMsg *Msg)
+void INIT_STREAMING_HEADER(Msg_t *Msg)
 {
   Msg->Data[0] = DataStreamingDest;
   Msg->Data[1] = DEV_ADDR;
@@ -90,7 +90,7 @@ void INIT_STREAMING_HEADER(TMsg *Msg)
   * @param  Msg the pointer to the message to be initialized
   * @retval None
   */
-void INIT_STREAMING_MSG(TMsg *Msg)
+void INIT_STREAMING_MSG(Msg_t *Msg)
 {
   uint32_t i;
 
@@ -110,12 +110,12 @@ void INIT_STREAMING_MSG(TMsg *Msg)
   * @param  Msg the pointer to the message to be handled
   * @retval 1 if the message is correctly handled, 0 otherwise
   */
-int HandleMSG(TMsg *Msg)
+int32_t HandleMSG(Msg_t *Msg)
 /*  DestAddr | SourceAddr | CMD | PAYLOAD
  *      1          1         1       N
  */
 {
-  int ret = 1;
+  int32_t ret = 1;
   uint32_t i;
   char ps[64];
   uint32_t ps_len = 0;
@@ -281,7 +281,7 @@ int HandleMSG(TMsg *Msg)
         BSP_SENSOR_MAG_Enable();
       }
 
-      (void)HAL_TIM_Base_Start_IT(&BSP_IP_TIM_Handle);
+      (void)HAL_TIM_Base_Start_IT(&BSP_IP_TIM_HANDLE);
       DataLoggerActive = 1;
 
       DataStreamingDest = Msg->Data[1];
@@ -297,7 +297,7 @@ int HandleMSG(TMsg *Msg)
       }
 
       DataLoggerActive = 0;
-      (void)HAL_TIM_Base_Stop_IT(&BSP_IP_TIM_Handle);
+      (void)HAL_TIM_Base_Stop_IT(&BSP_IP_TIM_HANDLE);
 
       /* Disable all sensors */
       BSP_SENSOR_ACC_Disable();
@@ -382,7 +382,7 @@ int HandleMSG(TMsg *Msg)
         UseOfflineData = 1U;
         sensors_enabled_prev = SensorsEnabled;
         SensorsEnabled = 0xFFFFFFFFU;
-        (void)HAL_TIM_Base_Stop_IT(&BSP_IP_TIM_Handle);
+        (void)HAL_TIM_Base_Stop_IT(&BSP_IP_TIM_HANDLE);
       }
       else
       {
@@ -477,7 +477,7 @@ void Get_PresentationString(char *PresentationString, uint32_t *Length)
   const uint8_t string_pointer_shift = strlen("ST EnvXX v"); /* Shift string pointer by this amount */
   char *lib_version_num;
   char lib_version_string[64];
-  int lib_version_len = 0;
+  int32_t lib_version_len = 0;
   const char ps[] = {"MEMS shield demo,30,"FW_VERSION",%s,"BOARD_NAME};
 
   EnvAQ_manager_get_version(lib_version_string, &lib_version_len);

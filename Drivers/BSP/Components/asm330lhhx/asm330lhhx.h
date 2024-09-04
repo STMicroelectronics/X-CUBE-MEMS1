@@ -288,6 +288,8 @@ int32_t ASM330LHHX_FIFO_ACC_Set_BDR(ASM330LHHX_Object_t *pObj, float Bdr);
 int32_t ASM330LHHX_FIFO_GYRO_Get_Axes(ASM330LHHX_Object_t *pObj, ASM330LHHX_Axes_t *AngularVelocity);
 int32_t ASM330LHHX_FIFO_GYRO_Set_BDR(ASM330LHHX_Object_t *pObj, float Bdr);
 
+int32_t ASM330LHHX_Set_Mem_Bank(ASM330LHHX_Object_t *pObj, uint8_t Val);
+
 /**
   * @}
   */

@@ -813,7 +813,7 @@ int32_t IKS01A3_ENV_SENSOR_Write_Register(uint32_t Instance, uint8_t Reg, uint8_
   * @param  Value the high temperature threshold to be set
   * @retval BSP status
   */
-int32_t IKS01A3_ENV_SENSOR_Set_High_Temperature_Threshold(uint32_t Instance, float Value)
+int32_t IKS01A3_ENV_SENSOR_Set_High_Temperature_Threshold(uint32_t Instance, float_t Value)
 {
   int32_t ret;
 
@@ -846,7 +846,7 @@ int32_t IKS01A3_ENV_SENSOR_Set_High_Temperature_Threshold(uint32_t Instance, flo
   * @param  Value the low temperature threshold to be set
   * @retval BSP status
   */
-int32_t IKS01A3_ENV_SENSOR_Set_Low_Temperature_Threshold(uint32_t Instance, float Value)
+int32_t IKS01A3_ENV_SENSOR_Set_Low_Temperature_Threshold(uint32_t Instance, float_t Value)
 {
   int32_t ret;
 
@@ -949,7 +949,7 @@ int32_t IKS01A3_ENV_SENSOR_Set_Event_Pin(uint32_t Instance, uint8_t Enable)
   * @param  Temp the temperature data
   * @retval BSP status
   */
-int32_t IKS01A3_ENV_SENSOR_FIFO_Get_Data(uint32_t Instance, float *Press, float *Temp)
+int32_t IKS01A3_ENV_SENSOR_FIFO_Get_Data(uint32_t Instance, float_t *Press, float_t *Temp)
 {
   int32_t ret;
 

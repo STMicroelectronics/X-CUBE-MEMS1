@@ -167,6 +167,12 @@ int32_t LSM6DSO_Init(LSM6DSO_Object_t *pObj)
     }
   }
 
+  /* Set main memory bank */
+  if (LSM6DSO_Set_Mem_Bank(pObj, (uint8_t)LSM6DSO_USER_BANK) != LSM6DSO_OK)
+  {
+    return LSM6DSO_ERROR;
+  }
+
   /* Enable register address automatically incremented during a multiple byte
   access with a serial interface. */
   if (lsm6dso_auto_increment_set(&(pObj->Ctx), PROPERTY_ENABLE) != LSM6DSO_OK)
@@ -1165,7 +1171,7 @@ int32_t LSM6DSO_GYRO_GetAxesRaw(LSM6DSO_Object_t *pObj, LSM6DSO_AxesRaw_t *Value
 int32_t LSM6DSO_GYRO_GetAxes(LSM6DSO_Object_t *pObj, LSM6DSO_Axes_t *AngularRate)
 {
   lsm6dso_axis3bit16_t data_raw;
-  float_t sensitivity;
+  float_t sensitivity = 0.0f;
 
   /* Read raw data values. */
   if (lsm6dso_angular_rate_raw_get(&(pObj->Ctx), data_raw.i16bit) != LSM6DSO_OK)
@@ -3734,6 +3740,30 @@ int32_t LSM6DSO_DRDY_Set_Mode(LSM6DSO_Object_t *pObj, uint8_t Mode)
   }
 
   return LSM6DSO_OK;
+}
+
+/**
+  * @brief  Set memory bank
+  * @param  pObj the device pObj
+  * @param  Val the value of memory bank in reg FUNC_CFG_ACCESS
+  *         0 - LSM6DSO_USER_BANK, 1 - LSM6DSO_SENSOR_HUB_BANK, 2 - LSM6DSO_EMBEDDED_FUNC_BANK
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LSM6DSO_Set_Mem_Bank(LSM6DSO_Object_t *pObj, uint8_t Val)
+{
+  int32_t ret = LSM6DSO_OK;
+  lsm6dso_reg_access_t reg;
+
+  reg = (Val == 1U) ? LSM6DSO_SENSOR_HUB_BANK
+        : (Val == 2U) ? LSM6DSO_EMBEDDED_FUNC_BANK
+        :               LSM6DSO_USER_BANK;
+
+  if (lsm6dso_mem_bank_set(&(pObj->Ctx), reg) != LSM6DSO_OK)
+  {
+    ret = LSM6DSO_ERROR;
+  }
+
+  return ret;
 }
 
 /**

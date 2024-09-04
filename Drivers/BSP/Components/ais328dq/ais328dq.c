@@ -511,7 +511,7 @@ int32_t AIS328DQ_ACC_GetAxesRaw(AIS328DQ_Object_t *pObj, AIS328DQ_AxesRaw_t *Val
 int32_t AIS328DQ_ACC_GetAxes(AIS328DQ_Object_t *pObj, AIS328DQ_Axes_t *Acceleration)
 {
   AIS328DQ_AxesRaw_t data_raw;
-  float sensitivity;
+  float sensitivity = 0.0f;
 
   /* Read raw data values. */
   if (AIS328DQ_ACC_GetAxesRaw(pObj, &data_raw) != AIS328DQ_OK)

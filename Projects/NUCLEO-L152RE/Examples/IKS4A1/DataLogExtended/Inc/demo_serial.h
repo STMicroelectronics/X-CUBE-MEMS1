@@ -38,10 +38,10 @@
 
 extern volatile uint8_t DataLoggerActive;
 
-int HandleMSG(TMsg *Msg);
-void BUILD_REPLY_HEADER(TMsg *Msg);
-void BUILD_NACK_HEADER(TMsg *Msg);
-void INIT_STREAMING_MSG(TMsg *Msg);
-void INIT_STREAMING_HEADER(TMsg *Msg);
+int32_t HandleMSG(Msg_t *Msg);
+void BUILD_REPLY_HEADER(Msg_t *Msg);
+void BUILD_NACK_HEADER(Msg_t *Msg);
+void INIT_STREAMING_MSG(Msg_t *Msg);
+void INIT_STREAMING_HEADER(Msg_t *Msg);
 
 #endif /* DEMO_SERIAL_H */

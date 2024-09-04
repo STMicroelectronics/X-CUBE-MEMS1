@@ -333,6 +333,8 @@ int32_t LSM6DSO32X_ACC_Enable_Inactivity_Detection(LSM6DSO32X_Object_t *pObj, ls
 int32_t LSM6DSO32X_ACC_Disable_Inactivity_Detection(LSM6DSO32X_Object_t *pObj);
 int32_t LSM6DSO32X_ACC_Set_Sleep_Duration(LSM6DSO32X_Object_t *pObj, uint8_t Duration);
 
+int32_t LSM6DSO32X_Set_Mem_Bank(LSM6DSO32X_Object_t *pObj, uint8_t Val);
+
 /**
   * @}
   */

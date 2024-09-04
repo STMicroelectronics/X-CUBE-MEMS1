@@ -557,26 +557,32 @@ static int32_t LPS27HHTW_GetOutputDataRate(LPS27HHTW_Object_t *pObj, float *Odr)
   switch (odr_low_level)
   {
     case LPS27HHTW_POWER_DOWN:
+    case LPS27HHTW_ONE_SHOOT:
       *Odr = 0.0f;
       break;
 
     case LPS27HHTW_1_Hz:
+    case LPS27HHTW_1_Hz_LOW_NOISE:
       *Odr = 1.0f;
       break;
 
     case LPS27HHTW_10_Hz:
+    case LPS27HHTW_10_Hz_LOW_NOISE:
       *Odr = 10.0f;
       break;
 
     case LPS27HHTW_25_Hz:
+    case LPS27HHTW_25_Hz_LOW_NOISE:
       *Odr = 25.0f;
       break;
 
     case LPS27HHTW_50_Hz:
+    case LPS27HHTW_50_Hz_LOW_NOISE:
       *Odr = 50.0f;
       break;
 
     case LPS27HHTW_75_Hz:
+    case LPS27HHTW_75_Hz_LOW_NOISE:
       *Odr = 75.0f;
       break;
 

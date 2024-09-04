@@ -36,11 +36,11 @@ typedef struct
 {
   uint8_t *pDMA_Buffer;
   uint16_t StartOfMsg;
-} TUart_Engine;
+} Uart_Engine_t;
 
 /* Exported defines ----------------------------------------------------------*/
-#define UART_RxBufferSize (2 * TMsg_MaxLen)
-#define UART_TxBufferSize (2 * TMsg_MaxLen)
+#define UART_RX_BUFFER_SIZE (2 * Msg_MaxLen)
+#define UART_TX_BUFFER_SIZE (2 * Msg_MaxLen)
 
 /* User can use this section to tailor USARTx/UARTx instance used and associated resources */
 /* Definition for USARTx clock resources */
@@ -64,8 +64,8 @@ extern UART_HandleTypeDef UartHandle;
 extern DMA_HandleTypeDef HdmaRx;
 extern DMA_HandleTypeDef HdmaTx;
 
-extern volatile uint8_t UartRxBuffer[UART_RxBufferSize];
-extern TUart_Engine UartEngine;
+extern volatile uint8_t UartRxBuffer[UART_RX_BUFFER_SIZE];
+extern Uart_Engine_t UartEngine;
 extern volatile uint32_t UsartBaudRate;
 extern volatile uint8_t ReadyToSend;
 
@@ -73,8 +73,8 @@ extern volatile uint8_t ReadyToSend;
 /* Private functions ---------------------------------------------------------*/
 /* Exported functions --------------------------------------------------------*/
 void USARTConfig(void);
-int UART_ReceivedMSG(TMsg *Msg);
-void UART_SendMsg(TMsg *Msg);
+int32_t UART_ReceivedMSG(Msg_t *Msg);
+void UART_SendMsg(Msg_t *Msg);
 void USART_DMA_Configuration(void);
 
 #ifdef __cplusplus

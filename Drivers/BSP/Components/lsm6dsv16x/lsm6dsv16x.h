@@ -389,6 +389,8 @@ int32_t LSM6DSV16X_GYRO_Enable_DRDY_On_INT2(LSM6DSV16X_Object_t *pObj);
 int32_t LSM6DSV16X_GYRO_Disable_DRDY_On_INT2(LSM6DSV16X_Object_t *pObj);
 int32_t LSM6DSV16X_DRDY_Set_Mode(LSM6DSV16X_Object_t *pObj, uint8_t Mode);
 
+int32_t LSM6DSV16X_Set_Mem_Bank(LSM6DSV16X_Object_t *pObj, uint8_t Val);
+
 /**
   * @}
   */

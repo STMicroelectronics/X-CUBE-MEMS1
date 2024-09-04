@@ -95,6 +95,13 @@ void MotionPW_Initialize(void);
 void MotionPW_Update(MPW_input_t *data_in, MPW_output_t *data_out);
 
 /**
+ * @brief  Update energy threshold
+ * @param  energy_threshold  pointer to energy threshold
+ * @retval none
+ */
+void MotionPW_UpdateEnergyThreshold(float *energy_threshold);
+
+/**
  * @brief  Get the library version
  * @param  version pointer to an array of 35 char
  * @retval Number of characters in the version string

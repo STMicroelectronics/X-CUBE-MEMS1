@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -35,10 +35,10 @@ extern "C" {
 /* Exported Types ------------------------------------------------------------*/
 /* Imported Variables --------------------------------------------------------*/
 /* Exported Functions Prototypes ---------------------------------------------*/
-void MotionMC_manager_init(int sampletime, unsigned short int enable);
+void MotionMC_manager_init(int32_t sampletime, unsigned short int enable);
 void MotionMC_manager_update(MMC_Input_t *data_in);
 void MotionMC_manager_get_params(MMC_Output_t *data_out);
-void MotionMC_manager_get_version(char *version, int *length);
+void MotionMC_manager_get_version(char *version, int32_t *length);
 void MotionMC_manager_compensate(MOTION_SENSOR_Axes_t *data_raw, MOTION_SENSOR_Axes_t *data_comp);
 
 int32_t mag_val_to_mGauss(float mag_val_uT);

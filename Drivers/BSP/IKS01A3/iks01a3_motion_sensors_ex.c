@@ -48,7 +48,7 @@ extern void *MotionCompObj[IKS01A3_MOTION_INSTANCES_NBR];
 /**
   * @brief  Get the status of data ready bit (available only for LSM6DSO, LIS2DW12, LIS2MDL, ASM330LHH,
   *         IIS2DLPC, IIS2MDC, ISM303DAC, ISM330DLC, LIS2DH12, LSM6DSOX, AIS2IH, LSM6DSO32X, LIS2DU12,
-  *         ASM330LHHX, LSM6DSV16X, LSM6DSV16BX, LSM6DSV32X sensors)
+  *         ASM330LHHX, LSM6DSV16X, LSM6DSV16BX, LSM6DSV32X, ISM330BX sensors)
   * @param  Instance the device instance
   * @param  Function Motion sensor function. Could be:
   *         - MOTION_ACCELERO or MOTION_GYRO for instance IKS01A3_LSM6DSO_0
@@ -908,6 +908,37 @@ int32_t IKS01A3_MOTION_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Functi
       break;
 #endif
 
+#if (USE_IKS01A3_MOTION_SENSOR_ISM330BX_0 == 1)
+    case IKS01A3_ISM330BX_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (ISM330BX_ACC_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else if ((Function & MOTION_GYRO) == MOTION_GYRO)
+      {
+        if (ISM330BX_GYRO_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -919,7 +950,7 @@ int32_t IKS01A3_MOTION_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Functi
 /**
   * @brief  Get the register value (available only for LSM6DSO, LIS2DW12, LIS2MDL, ASM330LHH, IIS2DLPC,
   *         IIS2MDC, ISM303DAC, ISM330DLC, LIS2DH12, LSM6DSOX, AIS2IH, LSM6DSO32X, LIS2DU12, ASM330LHHX,
-  *         LSM6DSV16X, LSM6DSV16BX, LSM6DSV32X sensors)
+  *         LSM6DSV16X, LSM6DSV16BX, LSM6DSV32X, ISM330BX sensors)
   * @param  Instance the device instance
   * @param  Reg address to be read
   * @param  Data pointer where the value is written to
@@ -1360,6 +1391,19 @@ int32_t IKS01A3_MOTION_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint
       break;
 #endif
 
+#if (USE_IKS01A3_MOTION_SENSOR_ISM330BX_0 == 1)
+    case IKS01A3_ISM330BX_0:
+      if (ISM330BX_Read_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -1371,7 +1415,7 @@ int32_t IKS01A3_MOTION_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint
 /**
   * @brief  Set the register value (available only for LSM6DSO, LIS2DW12, LIS2MDL, ASM330LHH, IIS2DLPC,
   *         IIS2MDC, ISM303DAC, ISM330DLC, LIS2DH12, LSM6DSOX, AIS2IH, LSM6DSO32X, LIS2DU12, ASM330LHHX,
-  *         LSM6DSV16X, LSM6DSV16BX, LSM6DSV32X sensors)
+  *         LSM6DSV16X, LSM6DSV16BX, LSM6DSV32X, ISM330BX sensors)
   * @param  Instance the device instance
   * @param  Reg address to be read
   * @param  Data value to be written
@@ -1802,6 +1846,19 @@ int32_t IKS01A3_MOTION_SENSOR_Write_Register(uint32_t Instance, uint8_t Reg, uin
 #if (USE_IKS01A3_MOTION_SENSOR_LSM6DSV32X_0 == 1)
     case IKS01A3_LSM6DSV32X_0:
       if (LSM6DSV32X_Write_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+#if (USE_IKS01A3_MOTION_SENSOR_ISM330BX_0 == 1)
+    case IKS01A3_ISM330BX_0:
+      if (ISM330BX_Write_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
       {
         ret = BSP_ERROR_COMPONENT_FAILURE;
       }
@@ -2455,7 +2512,7 @@ int32_t IKS01A3_MOTION_SENSOR_Set_Wake_Up_Duration(uint32_t Instance, uint8_t Du
   * @param  IntPin the interrupt pin to be used
   * @retval BSP status
   */
-int32_t IKS01A3_MOTION_SENSOR_Enable_Inactivity_Detection(uint32_t Instance, IKS01A3_MOTION_SENSOR_IntPin_t IntPin)
+int32_t IKS01A3_MOTION_SENSOR_Enable_Inactivity_Detection(uint32_t Instance)
 {
   int32_t ret;
 
@@ -3485,7 +3542,7 @@ int32_t IKS01A3_MOTION_SENSOR_FIFO_Get_Full_Status(uint32_t Instance, uint8_t *S
   * @param  Odr FIFO BDR value
   * @retval BSP status
   */
-int32_t IKS01A3_MOTION_SENSOR_FIFO_Set_BDR(uint32_t Instance, uint32_t Function, float Bdr)
+int32_t IKS01A3_MOTION_SENSOR_FIFO_Set_BDR(uint32_t Instance, uint32_t Function, float_t Bdr)
 {
   int32_t ret;
 

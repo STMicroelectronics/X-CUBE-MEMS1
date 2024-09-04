@@ -24,15 +24,11 @@
 #include <stdint.h>
 
 /* Exported defines --------------------------------------------------------*/
-#define TMsg_EOF                0xF0
-#define TMsg_BS                 0xF1
-#define TMsg_BS_EOF             0xF2
+#define Msg_EOF                0xF0
+#define Msg_BS                 0xF1
+#define Msg_BS_EOF             0xF2
 
-#ifdef USE_USB_OTG_HS
-#define TMsg_MaxLen             512
-#else
-#define TMsg_MaxLen             256
-#endif
+#define Msg_MaxLen             1024
 
 /* Exported types ------------------------------------------------------------*/
 /**
@@ -41,19 +37,19 @@
 typedef struct
 {
   uint32_t Len;
-  uint8_t Data[TMsg_MaxLen];
-} TMsg;
+  uint8_t Data[Msg_MaxLen];
+} Msg_t;
 
 /* Exported macro ------------------------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-int ByteStuffCopyByte(uint8_t *Dest, uint8_t Source);
-int ReverseByteStuffCopyByte2(uint8_t Source0, uint8_t Source1, uint8_t *Dest);
-int ByteStuffCopy(uint8_t *Dest, TMsg *Source);
-int ReverseByteStuffCopyByte(uint8_t *Source, uint8_t *Dest);
-int ReverseByteStuffCopy(TMsg *Dest, uint8_t *Source);
-void CHK_ComputeAndAdd(TMsg *Msg);
-int CHK_CheckAndRemove(TMsg *Msg);
+int32_t ByteStuffCopyByte(uint8_t *Dest, uint8_t Source);
+int32_t ReverseByteStuffCopyByte2(uint8_t Source0, uint8_t Source1, uint8_t *Dest);
+int32_t ByteStuffCopy(uint8_t *Dest, Msg_t *Source);
+int32_t ReverseByteStuffCopyByte(uint8_t *Source, uint8_t *Dest);
+int32_t ReverseByteStuffCopy(Msg_t *Dest, uint8_t *Source);
+void CHK_ComputeAndAdd(Msg_t *Msg);
+int32_t CHK_CheckAndRemove(Msg_t *Msg);
 uint32_t Deserialize(uint8_t *Source, uint32_t Len);
 int32_t Deserialize_s32(uint8_t *Source, uint32_t Len);
 void Serialize(uint8_t *Dest, uint32_t Source, uint32_t Len);

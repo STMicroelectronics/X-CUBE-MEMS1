@@ -232,6 +232,8 @@ int32_t LIS2DUX12_ACC_Set_SelfTest(LIS2DUX12_Object_t *pObj, uint8_t Val);
 int32_t LIS2DUX12_ACC_Get_DRDY_Status(LIS2DUX12_Object_t *pObj, uint8_t *Status);
 int32_t LIS2DUX12_ACC_Get_Init_Status(LIS2DUX12_Object_t *pObj, uint8_t *Status);
 
+int32_t LIS2DUX12_Set_Mem_Bank(LIS2DUX12_Object_t *pObj, uint8_t Val);
+
 /**
   * @}
   */

@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -38,7 +38,7 @@ extern "C" {
 /* Exported Functions Prototypes ---------------------------------------------*/
 void MotionFA_manager_init(void);
 void MotionFA_manager_run(MFA_input_t *data_in, MFA_output_t *data_out);
-void MotionFA_manager_get_version(char *version, int *length);
+void MotionFA_manager_get_version(char *version, int32_t *length);
 void MotionFA_manager_reset_counter(void);
 void MotionFA_manager_set_activity(MFA_activity_t activity);
 void MotionFA_manager_get_activity(MFA_activity_t *activity);

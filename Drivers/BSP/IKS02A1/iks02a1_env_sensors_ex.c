@@ -46,8 +46,7 @@ extern void *EnvCompObj[IKS02A1_ENV_INSTANCES_NBR];
   */
 
 /**
-  * @brief  Get the status of data ready bit (available only for HTS221, LPS22HH, STTS751, LPS33HW, LPS33K,
-  *         LPS22CH, LPS27HHTW, LPS22DF, ILPS22QS, ILPS28QSW, LPS28DFW sensors)
+  * @brief  Get the status of data ready bit (available only for SHT40AD1B sensor)
   * @param  Instance the device instance
   * @param  Function Environmental sensor function. Could be:
   *         - ENV_HUMIDITY or ENV_TEMPERATURE for instance IKS02A1_HTS221_0
@@ -102,8 +101,7 @@ int32_t IKS02A1_ENV_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Function,
 }
 
 /**
-  * @brief  Get the register value (available only for HTS221, LPS22HH, STTS751, LPS33HW, LPS33K,
-  *         LPS22CH, LPS27HHTW, LPS22DF, ILPS22QS, ILPS28QSW, LPS28DFW sensors)
+  * @brief  Get the register value
   * @param  Instance the device instance
   * @param  Reg address to be read
   * @param  Data pointer where the value is written to
@@ -111,10 +109,18 @@ int32_t IKS02A1_ENV_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Function,
   */
 int32_t IKS02A1_ENV_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint8_t *Data)
 {
+  (void)Reg;
+  (void)Data;
   int32_t ret;
 
   switch (Instance)
   {
+#if (USE_IKS02A1_ENV_SENSOR_SHT40AD1B_0 == 1)
+    case IKS02A1_SHT40AD1B_0:
+      ret = BSP_ERROR_WRONG_PARAM;
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -124,8 +130,7 @@ int32_t IKS02A1_ENV_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint8_t
 }
 
 /**
-  * @brief  Set the register value (available only for HTS221, LPS22HH, STTS751, LPS33HW, LPS33K,
-  *         LPS22CH, LPS27HHTW, LPS22DF, ILPS22QS, ILPS28QSW, LPS28DFW sensors)
+  * @brief  Set the register value
   * @param  Instance the device instance
   * @param  Reg address to be read
   * @param  Data value to be written
@@ -133,10 +138,18 @@ int32_t IKS02A1_ENV_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint8_t
   */
 int32_t IKS02A1_ENV_SENSOR_Write_Register(uint32_t Instance, uint8_t Reg, uint8_t Data)
 {
+  (void)Reg;
+  (void)Data;
   int32_t ret;
 
   switch (Instance)
   {
+#if (USE_IKS02A1_ENV_SENSOR_SHT40AD1B_0 == 1)
+    case IKS02A1_SHT40AD1B_0:
+      ret = BSP_ERROR_WRONG_PARAM;
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;

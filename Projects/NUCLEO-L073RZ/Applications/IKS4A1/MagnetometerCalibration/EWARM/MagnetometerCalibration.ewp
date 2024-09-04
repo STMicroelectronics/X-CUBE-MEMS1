@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
-  <fileVersion>3</fileVersion>
+  <fileVersion>2</fileVersion>
   <configuration>
     <name>MagnetometerCalibration</name>
     <toolchain>
@@ -11,7 +11,7 @@
       <name>General</name>
       <archiveVersion>3</archiveVersion>
       <data>
-        <version>31</version>
+        <version>24</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -31,12 +31,22 @@
           <state>0</state>
         </option>
         <option>
+          <name>Input variant</name>
+          <version>3</version>
+          <state>1</state>
+        </option>
+        <option>
           <name>Input description</name>
-          <state>Full formatting, without multibyte support.</state>
+          <state>Full formatting.</state>
+        </option>
+        <option>
+          <name>Output variant</name>
+          <version>2</version>
+          <state>1</state>
         </option>
         <option>
           <name>Output description</name>
-          <state>Full formatting, without multibyte support.</state>
+          <state>Full formatting.</state>
         </option>
         <option>
           <name>GOutputBinary</name>
@@ -62,11 +72,11 @@
         </option>
         <option>
           <name>OGProductVersion</name>
-          <state>5.10.0.159</state>
+          <state>4.41A</state>
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>8.32.3.20186</state>
+          <state>7.50.3.10745</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -108,15 +118,15 @@
         <option>
           <name>GeneralMisraRules04</name>
           <version>0</version>
-          <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+          <state>011111111111111110111111111111111111111111111010110100111111111111110111111111111111111111111111111111110111111011111111111111111111111111111</state>
         </option>
         <option>
           <name>RTConfigPath2</name>
-          <state>$TOOLKIT_DIR$\inc\c\DLib_Config_Full.h</state>
+          <state>$TOOLKIT_DIR$\INC\c\DLib_Config_Full.h</state>
         </option>
         <option>
           <name>GBECoreSlave</name>
-          <version>27</version>
+          <version>22</version>
           <state></state>
         </option>
         <option>
@@ -133,8 +143,8 @@
         </option>
         <option>
           <name>CoreVariant</name>
-          <version>27</version>
-          <state>59</state>
+          <version>22</version>
+          <state>0</state>
         </option>
         <option>
           <name>GFPUDeviceSlave</name>
@@ -148,7 +158,7 @@
         <option>
           <name>NrRegs</name>
           <version>0</version>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>NEON</name>
@@ -156,58 +166,8 @@
         </option>
         <option>
           <name>GFPUCoreSlave2</name>
-          <version>27</version>
-          <state>59</state>
-        </option>
-        <option>
-          <name>OGCMSISPackSelectDevice</name>
-        </option>
-        <option>
-          <name>OgLibHeap</name>
+          <version>22</version>
           <state>0</state>
-        </option>
-        <option>
-          <name>OGLibAdditionalLocale</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>OGPrintfVariant</name>
-          <version>0</version>
-          <state>1</state>
-        </option>
-        <option>
-          <name>OGPrintfMultibyteSupport</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>OGScanfVariant</name>
-          <version>0</version>
-          <state>1</state>
-        </option>
-        <option>
-          <name>OGScanfMultibyteSupport</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>GenLocaleTags</name>
-          <state></state>
-        </option>
-        <option>
-          <name>GenLocaleDisplayOnly</name>
-          <state></state>
-        </option>
-        <option>
-          <name>DSPExtension</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>TrustZone</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>TrustZoneModes</name>
-          <version>0</version>
-          <state>1</state>
         </option>
       </data>
     </settings>
@@ -215,7 +175,7 @@
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>35</version>
+        <version>31</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -322,6 +282,10 @@
           <state>0</state>
         </option>
         <option>
+          <name>CCMultibyteSupport</name>
+          <state>0</state>
+        </option>
+        <option>
           <name>CCDiagWarnAreErr</name>
           <state>0</state>
         </option>
@@ -376,6 +340,10 @@
           <state>.text</state>
         </option>
         <option>
+          <name>IInterwork2</name>
+          <state>0</state>
+        </option>
+        <option>
           <name>IProcessorMode2</name>
           <state>1</state>
         </option>
@@ -427,8 +395,20 @@
           <state>0</state>
         </option>
         <option>
+          <name>IccCppDialect</name>
+          <state>2</state>
+        </option>
+        <option>
+          <name>IccExceptions</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IccRTTI</name>
+          <state>0</state>
+        </option>
+        <option>
           <name>IccStaticDestr</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>IccCppInlineSemantics</name>
@@ -455,41 +435,13 @@
           <name>CCGuardCalls</name>
           <state>1</state>
         </option>
-        <option>
-          <name>CCEncSource</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>CCEncOutput</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>CCEncOutputBom</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CCEncInput</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IccExceptions2</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IccRTTI2</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>OICompilerExtraOption</name>
-          <state>1</state>
-        </option>
       </data>
     </settings>
     <settings>
       <name>AARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>10</version>
+        <version>9</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -618,6 +570,10 @@
           <state>$FILE_BNAME$.o</state>
         </option>
         <option>
+          <name>AMultibyteSupport</name>
+          <state>0</state>
+        </option>
+        <option>
           <name>ALimitErrorsCheck</name>
           <state>0</state>
         </option>
@@ -703,13 +659,9 @@
       <name>ILINK</name>
       <archiveVersion>0</archiveVersion>
       <data>
-        <version>22</version>
+        <version>17</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
-        <option>
-          <name>IlinkOutputFile</name>
-          <state>MagnetometerCalibration.out</state>
-        </option>
         <option>
           <name>IlinkLibIOConfig</name>
           <state>1</state>
@@ -721,6 +673,10 @@
         <option>
           <name>IlinkInputFileSlave</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>IlinkOutputFile</name>
+          <state>MagnetometerCalibration.out</state>
         </option>
         <option>
           <name>IlinkDebugInfoEnable</name>
@@ -975,7 +931,7 @@
         </option>
         <option>
           <name>CrcAlgorithm</name>
-          <version>1</version>
+          <version>0</version>
           <state>1</state>
         </option>
         <option>
@@ -990,38 +946,6 @@
         <option>
           <name>IlinkLogCallGraph</name>
           <state>0</state>
-        </option>
-        <option>
-          <name>IlinkIcfFile_AltDefault</name>
-          <state></state>
-        </option>
-        <option>
-          <name>IlinkEncInput</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IlinkEncOutput</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IlinkEncOutputBom</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>IlinkHeapSelect</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>IlinkLocaleSelect</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>IlinkTrustzoneImportLibraryOut</name>
-          <state></state>
-        </option>
-        <option>
-          <name>OILinkExtraOption</name>
-          <state>1</state>
         </option>
       </data>
     </settings>
@@ -1048,11 +972,6 @@
     </settings>
     <settings>
       <name>BILINK</name>
-      <archiveVersion>0</archiveVersion>
-      <data></data>
-    </settings>
-    <settings>
-      <name>Coder</name>
       <archiveVersion>0</archiveVersion>
       <data></data>
     </settings>

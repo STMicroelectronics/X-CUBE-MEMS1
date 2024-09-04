@@ -162,6 +162,12 @@ int32_t LSM6DSV32X_RegisterBusIO(LSM6DSV32X_Object_t *pObj, LSM6DSV32X_IO_t *pIO
   */
 int32_t LSM6DSV32X_Init(LSM6DSV32X_Object_t *pObj)
 {
+  /* Set main memory bank */
+  if (LSM6DSV32X_Set_Mem_Bank(pObj, (uint8_t)LSM6DSV32X_MAIN_MEM_BANK) != LSM6DSV32X_OK)
+  {
+    return LSM6DSV32X_ERROR;
+  }
+
   /* Enable register address automatically incremented during a multiple byte
   access with a serial interface. */
   if (lsm6dsv32x_auto_increment_set(&(pObj->Ctx), PROPERTY_ENABLE) != LSM6DSV32X_OK)
@@ -388,7 +394,7 @@ int32_t LSM6DSV32X_ACC_GetSensitivity(LSM6DSV32X_Object_t *pObj, float_t *Sensit
       break;
 
     case LSM6DSV32X_32g:
-      *Sensitivity = LSM6DSV32X_ACC_SENSITIVITY_FS_16G;
+      *Sensitivity = LSM6DSV32X_ACC_SENSITIVITY_FS_32G;
       break;
 
     default:
@@ -2973,7 +2979,7 @@ int32_t LSM6DSV32X_FIFO_GYRO_Set_BDR(LSM6DSV32X_Object_t *pObj, float_t Bdr)
             : (Bdr <=  240.0f) ? LSM6DSV32X_GY_BATCHED_AT_240Hz
             : (Bdr <=  480.0f) ? LSM6DSV32X_GY_BATCHED_AT_480Hz
             : (Bdr <=  960.0f) ? LSM6DSV32X_GY_BATCHED_AT_960Hz
-            : (Bdr <=  1920.0f) ? LSM6DSV32X_GY_BATCHED_AT_1920Hz
+            : (Bdr <= 1920.0f) ? LSM6DSV32X_GY_BATCHED_AT_1920Hz
             : (Bdr <= 3840.0f) ? LSM6DSV32X_GY_BATCHED_AT_3840Hz
             :                    LSM6DSV32X_GY_BATCHED_AT_7680Hz;
 
@@ -3362,7 +3368,7 @@ int32_t LSM6DSV32X_GYRO_GetAxesRaw(LSM6DSV32X_Object_t *pObj, LSM6DSV32X_AxesRaw
 int32_t LSM6DSV32X_GYRO_GetAxes(LSM6DSV32X_Object_t *pObj, LSM6DSV32X_Axes_t *AngularRate)
 {
   lsm6dsv32x_axis3bit16_t data_raw;
-  float_t sensitivity;
+  float_t sensitivity = 0.0f;
 
   /* Read raw data values. */
   if (lsm6dsv32x_angular_rate_raw_get(&(pObj->Ctx), data_raw.i16bit) != LSM6DSV32X_OK)
@@ -3457,6 +3463,30 @@ int32_t LSM6DSV32X_GYRO_Get_DRDY_Status(LSM6DSV32X_Object_t *pObj, uint8_t *Stat
 }
 
 /**
+  * @brief  Set memory bank
+  * @param  pObj the device pObj
+  * @param  Val the value of memory bank in reg FUNC_CFG_ACCESS
+  *         0 - LSM6DSV32X_MAIN_MEM_BANK, 1 - LSM6DSV32X_EMBED_FUNC_MEM_BANK, 2 - LSM6DSV32X_SENSOR_HUB_MEM_BANK
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LSM6DSV32X_Set_Mem_Bank(LSM6DSV32X_Object_t *pObj, uint8_t Val)
+{
+  int32_t ret = LSM6DSV32X_OK;
+  lsm6dsv32x_mem_bank_t reg;
+
+  reg = (Val == 1U) ? LSM6DSV32X_EMBED_FUNC_MEM_BANK
+        : (Val == 2U) ? LSM6DSV32X_SENSOR_HUB_MEM_BANK
+        :               LSM6DSV32X_MAIN_MEM_BANK;
+
+  if (lsm6dsv32x_mem_bank_set(&(pObj->Ctx), reg) != LSM6DSV32X_OK)
+  {
+    ret = LSM6DSV32X_ERROR;
+  }
+
+  return ret;
+}
+
+/**
   * @}
   */
 
@@ -3485,7 +3515,7 @@ static int32_t LSM6DSV32X_ACC_SetOutputDataRate_When_Enabled(LSM6DSV32X_Object_t
             : (Odr <=  960.0f) ? LSM6DSV32X_XL_ODR_AT_960Hz
             : (Odr <= 1920.0f) ? LSM6DSV32X_XL_ODR_AT_1920Hz
             : (Odr <= 3840.0f) ? LSM6DSV32X_XL_ODR_AT_3840Hz
-            :                      LSM6DSV32X_XL_ODR_AT_7680Hz;
+            :                    LSM6DSV32X_XL_ODR_AT_7680Hz;
 
   /* Output data rate selection. */
   if (lsm6dsv32x_xl_data_rate_set(&(pObj->Ctx), new_odr) != LSM6DSV32X_OK)
@@ -3515,7 +3545,7 @@ static int32_t LSM6DSV32X_ACC_SetOutputDataRate_When_Disabled(LSM6DSV32X_Object_
                   : (Odr <=  960.0f) ? LSM6DSV32X_XL_ODR_AT_960Hz
                   : (Odr <= 1920.0f) ? LSM6DSV32X_XL_ODR_AT_1920Hz
                   : (Odr <= 3840.0f) ? LSM6DSV32X_XL_ODR_AT_3840Hz
-                  :                      LSM6DSV32X_XL_ODR_AT_7680Hz;
+                  :                    LSM6DSV32X_XL_ODR_AT_7680Hz;
 
   return LSM6DSV32X_OK;
 }

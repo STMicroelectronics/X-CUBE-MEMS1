@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -39,7 +39,7 @@ extern MTL2_knobs_t MTL2_Knobs;
 /* Exported Functions Prototypes ---------------------------------------------*/
 void MotionTL2_manager_init(void);
 void MotionTL2_manager_run(MTL2_input_t *data_in, uint64_t timestamp_ms, MTL2_output_t *data_out);
-void MotionTL2_manager_get_version(char *version, int *length);
+void MotionTL2_manager_get_version(char *version, int32_t *length);
 
 #ifdef __cplusplus
 }

@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -37,7 +37,7 @@ extern "C" {
 /* Exported Functions Prototypes ---------------------------------------------*/
 void EnvAQ_manager_init(void);
 void EnvAQ_manager_run(int32_t voc_raw_value, int32_t *voc_index_value);
-void EnvAQ_manager_get_version(char *version, int *length);
+void EnvAQ_manager_get_version(char *version, int32_t *length);
 
 #ifdef __cplusplus
 }

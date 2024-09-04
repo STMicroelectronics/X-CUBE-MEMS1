@@ -163,6 +163,12 @@ int32_t ISM330DLC_Init(ISM330DLC_Object_t *pObj)
     return ISM330DLC_ERROR;
   }
 
+  /* Set main memory bank */
+  if (ISM330DLC_Set_Mem_Bank(pObj, (uint8_t)ISM330DLC_USER_BANK) != ISM330DLC_OK)
+  {
+    return ISM330DLC_ERROR;
+  }
+
   /* Enable register address automatically incremented during a multiple byte
   access with a serial interface. */
   if (ism330dlc_auto_increment_set(&(pObj->Ctx), PROPERTY_ENABLE) != ISM330DLC_OK)
@@ -895,7 +901,7 @@ int32_t ISM330DLC_GYRO_GetAxesRaw(ISM330DLC_Object_t *pObj, ISM330DLC_AxesRaw_t 
 int32_t ISM330DLC_GYRO_GetAxes(ISM330DLC_Object_t *pObj, ISM330DLC_Axes_t *AngularRate)
 {
   ism330dlc_axis3bit16_t data_raw;
-  float sensitivity;
+  float sensitivity = 0.0f;
 
   /* Read raw data values. */
   if (ism330dlc_angular_rate_raw_get(&(pObj->Ctx), data_raw.i16bit) != ISM330DLC_OK)
@@ -2809,6 +2815,29 @@ int32_t ISM330DLC_FIFO_GYRO_Get_Axis(ISM330DLC_Object_t *pObj, int32_t *AngularV
   *AngularVelocity = (int32_t)angular_velocity_float;
 
   return ISM330DLC_OK;
+}
+
+/**
+  * @brief  Set memory bank
+  * @param  pObj the device pObj
+  * @param  Val the value of memory bank in reg FUNC_CFG_ACCESS
+  *         0 - ISM330DLC_USER_BANK, 1 - ISM330DLC_BANK_A
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t ISM330DLC_Set_Mem_Bank(ISM330DLC_Object_t *pObj, uint8_t Val)
+{
+  int32_t ret = ISM330DLC_OK;
+  ism330dlc_func_cfg_en_t reg;
+
+  reg = (Val == 1U) ? ISM330DLC_BANK_A
+        :               ISM330DLC_USER_BANK;
+
+  if (ism330dlc_mem_bank_set(&(pObj->Ctx), reg) != ISM330DLC_OK)
+  {
+    ret = ISM330DLC_ERROR;
+  }
+
+  return ret;
 }
 
 /**

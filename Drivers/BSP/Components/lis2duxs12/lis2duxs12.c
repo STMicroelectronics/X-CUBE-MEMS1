@@ -188,6 +188,13 @@ int32_t LIS2DUXS12_Init(LIS2DUXS12_Object_t *pObj)
     }
   }
 
+  /* Set main memory bank */
+  if (LIS2DUXS12_Set_Mem_Bank(pObj, (uint8_t)LIS2DUXS12_MAIN_MEM_BANK) != LIS2DUXS12_OK)
+  {
+    return LIS2DUXS12_ERROR;
+  }
+
+
   /* Enable register address automatically incremented during a multiple byte
   access with a serial interface. Enable BDU. */
   if (lis2duxs12_init_set(&(pObj->Ctx), LIS2DUXS12_SENSOR_ONLY_ON) != LIS2DUXS12_OK)
@@ -763,6 +770,29 @@ int32_t LIS2DUXS12_ACC_Get_Init_Status(LIS2DUXS12_Object_t *pObj, uint8_t *Statu
   *Status = pObj->is_initialized;
 
   return LIS2DUXS12_OK;
+}
+
+/**
+  * @brief  Set memory bank
+  * @param  pObj the device pObj
+  * @param  Val the value of memory bank in reg FUNC_CFG_ACCESS
+  *         0 - LIS2DUXS12_MAIN_MEM_BANK, 1 - LIS2DUXS12_EMBED_FUNC_MEM_BANK
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LIS2DUXS12_Set_Mem_Bank(LIS2DUXS12_Object_t *pObj, uint8_t Val)
+{
+  int32_t ret = LIS2DUXS12_OK;
+  lis2duxs12_mem_bank_t reg;
+
+  reg = (Val == 1U) ? LIS2DUXS12_EMBED_FUNC_MEM_BANK
+        :               LIS2DUXS12_MAIN_MEM_BANK;
+
+  if (lis2duxs12_mem_bank_set(&(pObj->Ctx), reg) != LIS2DUXS12_OK)
+  {
+    ret = LIS2DUXS12_ERROR;
+  }
+
+  return ret;
 }
 
 /**

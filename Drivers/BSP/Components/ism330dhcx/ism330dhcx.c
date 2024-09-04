@@ -83,6 +83,7 @@ static int32_t ISM330DHCX_ACC_SetOutputDataRate_When_Enabled(ISM330DHCX_Object_t
 static int32_t ISM330DHCX_ACC_SetOutputDataRate_When_Disabled(ISM330DHCX_Object_t *pObj, float Odr);
 static int32_t ISM330DHCX_GYRO_SetOutputDataRate_When_Enabled(ISM330DHCX_Object_t *pObj, float Odr);
 static int32_t ISM330DHCX_GYRO_SetOutputDataRate_When_Disabled(ISM330DHCX_Object_t *pObj, float Odr);
+static int32_t ISM330DHCX_GetActualOutputDataRate(ISM330DHCX_Object_t *pObj, float Odr, float *ActualOdr);
 
 /**
   * @}
@@ -159,6 +160,12 @@ int32_t ISM330DHCX_Init(ISM330DHCX_Object_t *pObj)
 {
   /* Set DEVICE_CONF bit */
   if (ism330dhcx_device_conf_set(&(pObj->Ctx), PROPERTY_ENABLE) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
+  /* Set main memory bank */
+  if (ISM330DHCX_Set_Mem_Bank(pObj, (uint8_t)ISM330DHCX_USER_BANK) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
@@ -456,6 +463,10 @@ int32_t ISM330DHCX_ACC_GetOutputDataRate(ISM330DHCX_Object_t *pObj, float *Odr)
 
     case ISM330DHCX_XL_ODR_6667Hz:
       *Odr = 6667.0f;
+      break;
+
+    case ISM330DHCX_XL_ODR_1Hz6:
+      *Odr = 1.6f;
       break;
 
     default:
@@ -913,7 +924,7 @@ int32_t ISM330DHCX_GYRO_GetAxesRaw(ISM330DHCX_Object_t *pObj, ISM330DHCX_AxesRaw
 int32_t ISM330DHCX_GYRO_GetAxes(ISM330DHCX_Object_t *pObj, ISM330DHCX_Axes_t *AngularRate)
 {
   ism330dhcx_axis3bit16_t data_raw;
-  float sensitivity;
+  float sensitivity = 0.0f;
 
   /* Read raw data values. */
   if (ism330dhcx_angular_rate_raw_get(&(pObj->Ctx), data_raw.i16bit) != ISM330DHCX_OK)
@@ -1008,6 +1019,32 @@ int32_t ISM330DHCX_Set_INT1_Drdy(ISM330DHCX_Object_t *pObj, uint8_t Status)
   reg.int1_ctrl.int1_drdy_xl = Status;
 
   if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT1_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
+  return ISM330DHCX_OK;
+}
+
+/**
+  * @brief  Set the ISM330DHCX FIFO full interrupt on INT2 pin
+  * @param  pObj the device pObj
+  * @param  Status DRDY interrupt on INT2 pin status
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t ISM330DHCX_Set_INT2_Drdy(ISM330DHCX_Object_t *pObj, uint8_t Status)
+{
+  ism330dhcx_reg_t reg;
+
+  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
+  reg.int2_ctrl.int2_drdy_xl = Status;
+
+  if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+
   {
     return ISM330DHCX_ERROR;
   }
@@ -2755,6 +2792,53 @@ int32_t ISM330DHCX_FIFO_Full_Set_INT1(ISM330DHCX_Object_t *pObj, uint8_t Status)
 }
 
 /**
+  * @brief  Set the ISM330DHCX FIFO full interrupt on INT2 pin
+  * @param  pObj the device pObj
+  * @param  Status FIFO full interrupt on INT2 pin status
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t ISM330DHCX_FIFO_Set_INT2_Drdy(ISM330DHCX_Object_t *pObj, uint8_t Status)
+{
+  ism330dhcx_reg_t reg;
+
+  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
+  reg.int2_ctrl.int2_fifo_full = Status;
+
+  if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
+  return ISM330DHCX_OK;
+}
+
+/**
+  * @brief  Get the ISM330DHCX FIFO accelero single word (16-bit data)
+  * @param  pObj the device pObj
+  * @param  Acceleration FIFO single data
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t ISM330DHCX_FIFO_Get_Data_Word(ISM330DHCX_Object_t *pObj, int16_t *data_raw)
+{
+  uint8_t data[6];
+
+  if (ISM330DHCX_FIFO_Get_Data(pObj, data) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
+  data_raw[0] = ((int16_t)data[1] << 8) | data[0];
+  data_raw[1] = ((int16_t)data[3] << 8) | data[2];
+  data_raw[2] = ((int16_t)data[5] << 8) | data[4];
+
+  return ISM330DHCX_OK;
+}
+
+/**
   * @brief  Get the ISM330DHCX FIFO accelero single sample (16-bit data) and calculate acceleration [mg]
   * @param  pObj the device pObj
   * @param  Acceleration FIFO single accelero axis [mg]
@@ -2788,28 +2872,6 @@ int32_t ISM330DHCX_FIFO_ACC_Get_Axis(ISM330DHCX_Object_t *pObj, ISM330DHCX_Axes_
   Acceleration->x = (int32_t)acceleration_float[0];
   Acceleration->y = (int32_t)acceleration_float[1];
   Acceleration->z = (int32_t)acceleration_float[2];
-
-  return ISM330DHCX_OK;
-}
-
-/**
-  * @brief  Get the ISM330DHCX FIFO accelero single word (16-bit data)
-  * @param  pObj the device pObj
-  * @param  Acceleration FIFO single data
-  * @retval 0 in case of success, an error code otherwise
-  */
-int32_t ISM330DHCX_FIFO_Get_Data_Word(ISM330DHCX_Object_t *pObj, int16_t *data_raw)
-{
-  uint8_t data[6];
-
-  if (ISM330DHCX_FIFO_Get_Data(pObj, data) != ISM330DHCX_OK)
-  {
-    return ISM330DHCX_ERROR;
-  }
-
-  data_raw[0] = ((int16_t)data[1] << 8) | data[0];
-  data_raw[1] = ((int16_t)data[3] << 8) | data[2];
-  data_raw[2] = ((int16_t)data[5] << 8) | data[4];
 
   return ISM330DHCX_OK;
 }
@@ -2972,6 +3034,66 @@ int32_t ISM330DHCX_DRDY_Set_Mode(ISM330DHCX_Object_t *pObj, uint8_t Mode)
 }
 
 /**
+  * @brief  Get the ISM330DHCX accelerometer sensor actual output data rate
+  * @param  pObj the device pObj
+  * @param  ActualOdr pointer where the actual output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t ISM330DHCX_ACC_GetActualOutputDataRate(ISM330DHCX_Object_t *pObj, float *ActualOdr)
+{
+  float odr;
+
+  if (ISM330DHCX_ACC_GetOutputDataRate(pObj, &odr) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
+  return ISM330DHCX_GetActualOutputDataRate(pObj, odr, ActualOdr);
+}
+
+/**
+  * @brief  Get the ISM330DHCX gyroscope sensor actual output data rate
+  * @param  pObj the device pObj
+  * @param  ActualOdr pointer where the actual output data rate is written
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t ISM330DHCX_GYRO_GetActualOutputDataRate(ISM330DHCX_Object_t *pObj, float *ActualOdr)
+{
+  float odr;
+
+  if (ISM330DHCX_GYRO_GetOutputDataRate(pObj, &odr) != ISM330DHCX_OK)
+  {
+    return ISM330DHCX_ERROR;
+  }
+
+  return ISM330DHCX_GetActualOutputDataRate(pObj, odr, ActualOdr);
+}
+
+/**
+  * @brief  Set memory bank
+  * @param  pObj the device pObj
+  * @param  Val the value of memory bank in reg FUNC_CFG_ACCESS
+  *         0 - ISM330DHCX_USER_BANK, 1 - ISM330DHCX_SENSOR_HUB_BANK, 2 - ISM330DHCX_EMBEDDED_FUNC_BANK
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t ISM330DHCX_Set_Mem_Bank(ISM330DHCX_Object_t *pObj, uint8_t Val)
+{
+  int32_t ret = ISM330DHCX_OK;
+  ism330dhcx_reg_access_t reg;
+
+  reg = (Val == 1U) ? ISM330DHCX_SENSOR_HUB_BANK
+        : (Val == 2U) ? ISM330DHCX_EMBEDDED_FUNC_BANK
+        :               ISM330DHCX_USER_BANK;
+
+  if (ism330dhcx_mem_bank_set(&(pObj->Ctx), reg) != ISM330DHCX_OK)
+  {
+    ret = ISM330DHCX_ERROR;
+  }
+
+  return ret;
+}
+
+/**
   * @}
   */
 
@@ -3084,55 +3206,44 @@ static int32_t ISM330DHCX_GYRO_SetOutputDataRate_When_Disabled(ISM330DHCX_Object
 }
 
 /**
-  * @brief  Set the ISM330DHCX FIFO full interrupt on INT2 pin
+  * @brief  Get the ISM330DHCX sensor actual output data rate
   * @param  pObj the device pObj
-  * @param  Status FIFO full interrupt on INT2 pin status
+  * @param  Odr the current accelerometer or gyroscope output data rate
+  * @param  ActualOdr pointer where the actual output data rate is written
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t ISM330DHCX_FIFO_Set_INT2_Drdy(ISM330DHCX_Object_t *pObj, uint8_t Status)
+static int32_t ISM330DHCX_GetActualOutputDataRate(ISM330DHCX_Object_t *pObj, float Odr, float *ActualOdr)
 {
-  ism330dhcx_reg_t reg;
+  uint8_t internal_freq_fine;
+  float odr_coeff;
 
-  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ISM330DHCX_Read_Reg(pObj, ISM330DHCX_INTERNAL_FREQ_FINE, &internal_freq_fine) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
 
-  reg.int2_ctrl.int2_fifo_full = Status;
+  odr_coeff = (Odr == 12.5f) ? 512.0f
+              : (Odr ==   26.0f) ? 256.0f
+              : (Odr ==   52.0f) ? 128.0f
+              : (Odr ==  104.0f) ? 64.0f
+              : (Odr ==  208.0f) ? 32.0f
+              : (Odr ==  416.0f) ? 16.0f
+              : (Odr ==  833.0f) ? 8.0f
+              : (Odr == 1666.0f) ? 4.0f
+              : (Odr == 3332.0f) ? 2.0f
+              : (Odr == 6667.0f) ? 1.0f
+              :                    -1.0f;
 
-  if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (odr_coeff == -1.0f)
   {
     return ISM330DHCX_ERROR;
   }
+
+  *ActualOdr = ((6667.0f + ((0.0015f * internal_freq_fine) * 6667.0f)) / odr_coeff);
 
   return ISM330DHCX_OK;
 }
 
-/**
-  * @brief  Set the ISM330DHCX FIFO full interrupt on INT2 pin
-  * @param  pObj the device pObj
-  * @param  Status DRDY interrupt on INT2 pin status
-  * @retval 0 in case of success, an error code otherwise
-  */
-int32_t ISM330DHCX_Set_INT2_Drdy(ISM330DHCX_Object_t *pObj, uint8_t Status)
-{
-  ism330dhcx_reg_t reg;
-
-  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
-  {
-    return ISM330DHCX_ERROR;
-  }
-
-  reg.int2_ctrl.int2_drdy_xl = Status;
-
-  if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
-
-  {
-    return ISM330DHCX_ERROR;
-  }
-
-  return ISM330DHCX_OK;
-}
 /**
   * @brief  Wrap Read register component function to Bus IO function
   * @param  Handle the device handler

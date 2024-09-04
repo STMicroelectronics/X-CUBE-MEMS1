@@ -78,17 +78,18 @@ extern "C" {
 #define USE_IKS4A1_MOTION_SENSOR_LSM6DSV16B_0                  1U
 #define USE_IKS4A1_MOTION_SENSOR_LIS2DUX12_0                   1U
 #define USE_IKS4A1_MOTION_SENSOR_LSM6DSV32X_0                  1U
+#define USE_IKS4A1_MOTION_SENSOR_ISM330BX_0                    1U
 
 #define USE_IKS4A1_HYBRID_SENSOR_LIS2DTW12_0                   1U
 
-#define IKS4A1_I2C_Init BSP_I2C1_Init
-#define IKS4A1_I2C_DeInit BSP_I2C1_DeInit
-#define IKS4A1_I2C_ReadReg BSP_I2C1_ReadReg
-#define IKS4A1_I2C_WriteReg BSP_I2C1_WriteReg
-#define IKS4A1_I2C_Read BSP_I2C1_Recv
-#define IKS4A1_I2C_Write BSP_I2C1_Send
-#define IKS4A1_Delay HAL_Delay
-#define IKS4A1_GetTick BSP_GetTick
+#define IKS4A1_I2C_INIT BSP_I2C1_Init
+#define IKS4A1_I2C_DEINIT BSP_I2C1_DeInit
+#define IKS4A1_I2C_READ_REG BSP_I2C1_ReadReg
+#define IKS4A1_I2C_WRITE_REG BSP_I2C1_WriteReg
+#define IKS4A1_I2C_READ BSP_I2C1_Recv
+#define IKS4A1_I2C_WRITE BSP_I2C1_Send
+#define IKS4A1_DELAY HAL_Delay
+#define IKS4A1_GET_TICK BSP_GetTick
 
 #ifdef __cplusplus
 }

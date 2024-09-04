@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    motion_sd.h
   * @author  MEMS Application Team
-  * @version V1.2.1
-  * @date    24-August-2021
+  * @version V1.3.0
+  * @date    30-April-2024
   * @brief   Header for motion_sd module
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2017 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file

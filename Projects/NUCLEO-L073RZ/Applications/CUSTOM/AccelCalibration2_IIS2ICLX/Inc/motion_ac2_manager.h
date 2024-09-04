@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -38,7 +38,7 @@ extern "C" {
 void MotionAC2_manager_init(float *freq);
 void MotionAC2_manager_update(MAC2_input_t *data_in, uint64_t timestamp_ms, uint8_t *is_calibrated);
 void MotionAC2_manager_get_params(MAC2_cal_params_t *data_out);
-void MotionAC2_manager_get_version(char *version, int *length);
+void MotionAC2_manager_get_version(char *version, int32_t *length);
 void MotionAC2_manager_compensate(MOTION_SENSOR_Axes_t *data_in, float data_out[2]);
 
 #ifdef __cplusplus

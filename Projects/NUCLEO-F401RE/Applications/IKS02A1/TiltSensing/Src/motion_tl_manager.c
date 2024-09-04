@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -92,7 +92,7 @@ void MotionTL_manager_setAngleMode(MTL_angle_mode_t mode)
  * @param  length  Library version string length
  * @retval None
  */
-void MotionTL_manager_get_version(char *version, int *length)
+void MotionTL_manager_get_version(char *version, int32_t *length)
 {
   *length = (int)MotionTL_GetLibVersion(version);
 }
@@ -144,7 +144,7 @@ void MotionTL_manager_getEstimatedMeasTime(float *time_s)
 
 /**
  * @brief  Load calibration parameter from memory
- * @param  dataSize length ot the data
+ * @param  dataSize length of the data
  * @param  data pointer to the data
  * @retval (1) fail, (0) success
  */
@@ -155,7 +155,7 @@ char MotionFX_LoadMagCalFromNVM(unsigned short int dataSize, unsigned int *data)
 
 /**
  * @brief  Save calibration parameter to memory
- * @param  dataSize length ot the data
+ * @param  dataSize length of the data
  * @param  data pointer to the data
  * @retval (1) fail, (0) success
  */

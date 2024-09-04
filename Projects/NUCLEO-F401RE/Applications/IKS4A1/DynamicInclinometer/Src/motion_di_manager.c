@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -41,8 +41,8 @@ extern MDI_cal_type_t GyrCalMode;
 static MDI_knobs_t iKnobs;
 static MDI_knobs_t *ipKnobs = &iKnobs;
 
-static volatile int sampleToDiscard = SAMPLETODISCARD;
-static int discardedCount = 0;
+static volatile int32_t sampleToDiscard = SAMPLETODISCARD;
+static int32_t discardedCount = 0;
 
 /* Private function prototypes -----------------------------------------------*/
 static void float_array_set(float array[], float value, uint32_t count);
@@ -187,7 +187,7 @@ void MotionDI_manager_run(MDI_input_t *data_in, MDI_output_t *data_out)
  * @param  length  Library version string length
  * @retval None
  */
-void MotionDI_manager_get_version(char *version, int *length)
+void MotionDI_manager_get_version(char *version, int32_t *length)
 {
   *length = (int)MotionDI_GetLibVersion(version);
 }

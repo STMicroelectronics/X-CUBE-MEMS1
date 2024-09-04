@@ -51,7 +51,7 @@ extern "C" {
 #define MLC_ENABLED                             0x00000400U
 #define QVAR_ENABLED                            0x00001000U
 
-extern int UseLSI;
+extern int32_t UseLSI;
 extern uint32_t SensorsEnabled;
 extern uint32_t StartTime;
 extern uint8_t UpdateInterrupt;

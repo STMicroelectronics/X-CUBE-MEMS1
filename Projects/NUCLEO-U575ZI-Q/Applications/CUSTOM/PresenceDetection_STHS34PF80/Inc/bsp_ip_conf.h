@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -37,8 +37,8 @@ extern "C" {
 /* Exported variables --------------------------------------------------------*/
 /* Exported defines ----------------------------------------------------------*/
 extern TIM_HandleTypeDef htim3;
-#define BSP_IP_TIM_Handle htim3
-#define BSP_IP_TIM_Init MX_TIM3_Init
+#define BSP_IP_TIM_HANDLE htim3
+#define BSP_IP_TIM_INIT MX_TIM3_Init
 
 extern RTC_HandleTypeDef hrtc;
 

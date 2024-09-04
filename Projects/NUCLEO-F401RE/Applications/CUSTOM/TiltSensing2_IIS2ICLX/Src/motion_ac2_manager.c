@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -68,7 +68,7 @@ void MotionAC2_manager_get_params(MAC2_cal_params_t *data_out)
  * @param  length  Library version string length
  * @retval none
  */
-void MotionAC2_manager_get_version(char *version, int *length)
+void MotionAC2_manager_get_version(char *version, int32_t *length)
 {
   *length = (int)MotionAC2_GetLibVersion(version);
 }

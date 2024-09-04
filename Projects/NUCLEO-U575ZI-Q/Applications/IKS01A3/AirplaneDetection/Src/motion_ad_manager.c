@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -35,7 +35,7 @@
  * @param  xl_odr  Accelerometer ODR in Hz (nearrest int)
  * @retval None
  */
-void MotionAD_manager_init(int xl_odr)
+void MotionAD_manager_init(int32_t xl_odr)
 {
   MotionAD_Initialize(xl_odr);
 }
@@ -57,7 +57,7 @@ void MotionAD_manager_run(MAD_input_t *data_in, MAD_output_t *data_out)
  * @param  length  Library version string length
  * @retval None
  */
-void MotionAD_manager_get_version(char *version, int *length)
+void MotionAD_manager_get_version(char *version, int32_t *length)
 {
   *length = (int)MotionAD_GetLibVersion(version);
 }
