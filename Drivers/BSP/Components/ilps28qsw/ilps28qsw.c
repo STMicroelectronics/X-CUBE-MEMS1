@@ -356,7 +356,7 @@ int32_t ILPS28QSW_PRESS_GetPressure(ILPS28QSW_Object_t *pObj, float *Value)
     return ILPS28QSW_ERROR;
   }
 
-  *Value = data.sample.press_hpa;
+  *Value = data.pressure.hpa;
 
   return ILPS28QSW_OK;
 }

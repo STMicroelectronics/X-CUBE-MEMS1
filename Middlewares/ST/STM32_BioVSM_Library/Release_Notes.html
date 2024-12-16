@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Release Notes for BioVSM Library</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="_htmresc/mini-st_2020.css" />
+  <link rel="icon" type="image/x-icon" href="_htmresc/favicon.png" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div class="row">
+<div class="col-sm-12 col-lg-4">
+<center>
+<h1 id="release-notes-for-biovsm-vital-sign-monitoring-library">Release
+Notes for BioVSM Vital Sign Monitoring Library</h1>
+<p>Copyright © 2024 STMicroelectronics<br />
+</p>
+<a href="https://www.st.com" class="logo"><img
+src="_htmresc/st_logo_2020.png" alt="ST logo" /></a>
+</center>
+<h1 id="purpose">Purpose</h1>
+<p><strong>What is BioVSM?</strong></p>
+<ul>
+<li>The BioVSM provides information about real-time Vital Signs
+Monitoring (VSM) indexes using ST1VAFE6AX and ST1VAFE3BX sensor.</li>
+<li>The library acquires vertical analog front-end (vAFE) data from the
+sensors and calculates Vital Signs Monitoring indexes. It is able to
+monitor the followings: Band-pass filtered ECG voltage, Lead-off
+detection, N-peak detection, Most recent NN-interval value, Heartbeat
+rate (HR), Maximum heartbeat rate, Minimum heartbeat rate, Standard
+deviation of NN-intervals (SDNN), Root mean square of successive
+differences of NN-intervals (RMSSD), Standard deviation of successive
+differences of NN-intervals (SDSD), Percentage of successive differences
+of NN-intervals that are higher than 50 ms (PNN50) and Percentage of
+successive differences of NN-intervals that are higher than 20 ms
+(PNN20)</li>
+</ul>
+<p>The library is generated for each ARM Cortex-M core with EABI
+compiler thus the library might be used with any other compiler which
+supports ARM EABI specification.</p>
+<p>The library is available for two different wchar variable lengths -
+16 bit (wc16) and 32bit (wc32).</p>
+<p>By default the libraries are compiled with option -mfloat-abi=softfp
+which allows use of floating-point instructions but maintains
+compatibility with the soft-float ABI. The libraries ending with suffix
+hard are compiled with option -mfloat-abi=hard and uses floating-point
+instructions and the floating-point ABI.</p>
+<p>Here is the list of references to the user documents:</p>
+<ul>
+<li><a
+href="https://www.st.com/resource/en/user_manual/dm00157069-getting-started-with-the-xcubemems1-motion-mems-and-environmental-sensor-software-expansion-for-stm32cube-stmicroelectronics.pdf">Getting
+started with BioVSM Vital Sign Monitoring library in X-CUBE-MEMS1
+expansion for STM32Cube</a></li>
+<li><a
+href="https://www.st.com/resource/en/user_manual/dm00157069-getting-started-with-the-xcubemems1-motion-mems-and-environmental-sensor-software-expansion-for-stm32cube-stmicroelectronics.pdf">Getting
+started with the X-CUBE-MEMS1 motion MEMS and environmental sensor
+software expansion for STM32Cube</a></li>
+</ul>
+</div>
+<section id="update-history" class="col-sm-12 col-lg-8">
+<h1>Update history</h1>
+<div class="collapse">
+<input type="checkbox" id="collapse-section1" checked aria-hidden="true">
+<label for="collapse-section1" aria-hidden="true">V1.0.0 /
+8-August-2024</label>
+<h2 id="main-changes">Main changes</h2>
+<h3 id="first-release">First release</h3>
+<ul>
+<li>First official release</li>
+</ul>
+</div>
+</section>
+</div>
+<footer class="sticky">
+<div class="columns">
+<div class="column" style="width:95%;">
+<p>For complete documentation on <strong>BioVSM</strong>, visit: <a
+href="https://www.st.com/en/embedded-software/x-cube-mems1.html">X-CUBE-MEMS1</a></p>
+</div><div class="column" style="width:5%;">
+<p><abbr title="Based on template cx566953 version 2.0">Info</abbr></p>
+</div>
+</div>
+</footer>
+</body>
+</html>

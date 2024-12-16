@@ -17753,7 +17753,7 @@ typedef struct
 #define RCC_CFGR_MCO1PRE_1                 (0x2UL << RCC_CFGR_MCO1PRE_Pos)      /*!< 0x02000000 */
 #define RCC_CFGR_MCO1PRE_2                 (0x4UL << RCC_CFGR_MCO1PRE_Pos)      /*!< 0x04000000 */
 
-#if defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F411xE) || defined(STM32F412Rx) || defined(STM32F412Vx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F415xx) || defined(STM32F417xx) || defined(STM32F423xx) || defined(STM32F427xx) || defined(STM32F429xx) || defined(STM32F437xx) || defined(STM32F439xx) || defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx)
+#if defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F410Tx) || defined(STM32F411xE) || defined(STM32F412Cx) || defined(STM32F412Rx) || defined(STM32F412Vx) || defined(STM32F412Zx) || defined(STM32F413xx) || defined(STM32F415xx) || defined(STM32F417xx) || defined(STM32F423xx) || defined(STM32F427xx) || defined(STM32F429xx) || defined(STM32F437xx) || defined(STM32F439xx) || defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx)
 #define RCC_CFGR_MCO2PRE_Pos               (27U)
 #define RCC_CFGR_MCO2PRE_Msk               (0x7UL << RCC_CFGR_MCO2PRE_Pos)      /*!< 0x38000000 */
 #define RCC_CFGR_MCO2PRE                   RCC_CFGR_MCO2PRE_Msk
@@ -17766,7 +17766,7 @@ typedef struct
 #define RCC_CFGR_MCO2                      RCC_CFGR_MCO2_Msk
 #define RCC_CFGR_MCO2_0                    (0x1UL << RCC_CFGR_MCO2_Pos)         /*!< 0x40000000 */
 #define RCC_CFGR_MCO2_1                    (0x2UL << RCC_CFGR_MCO2_Pos)         /*!< 0x80000000 */
-#endif /* STM32F401xC || STM32F401xE || STM32F405xx || STM32F407xx || STM32F410Cx || STM32F410Rx || STM32F410Tx || STM32F411xE|| STM32F412Rx || STM32F412Vx || STM32F412Zx || STM32F413xx || STM32F415xx || STM32F417xx || STM32F423xx || STM32F427xx || STM32F429xx || STM32F437xx || STM32F439xx || STM32F446xx || STM32F469xx || STM32F479xx */
+#endif /* STM32F401xC || STM32F401xE || STM32F405xx || STM32F407xx || STM32F410Cx || STM32F410Rx || STM32F410Tx || STM32F411xE ||  STM32F412Cx || STM32F412Rx || STM32F412Vx || STM32F412Zx || STM32F413xx || STM32F415xx || STM32F417xx || STM32F423xx || STM32F427xx || STM32F429xx || STM32F437xx || STM32F439xx || STM32F446xx || STM32F469xx || STM32F479xx */
 
 /********************  Bit definition for RCC_CIR register  *******************/
 #define RCC_CIR_LSIRDYF_Pos                (0U)

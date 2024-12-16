@@ -51,8 +51,8 @@ int32_t UART_ReceivedMSG(Msg_t *Msg)
   uint16_t j;
   uint16_t k;
   uint16_t j2;
-  uint16_t dma_counter;
   uint16_t length;
+  uint16_t dma_counter;
   uint8_t data;
   uint16_t source = 0;
   uint8_t inc;

@@ -560,6 +560,10 @@ typedef union
   *
   */
 
+#ifndef __weak
+#define __weak __attribute__((weak))
+#endif /* __weak */
+
 /*
  * These are the basic platform dependent I/O routines to read
  * and write device registers connected on a standard bus.
@@ -568,14 +572,14 @@ typedef union
  * The default implementation is declared with a __weak directive to
  * allow the final application to overwrite it with a custom implementation.
  */
-int32_t sths34pf80_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t sths34pf80_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                             uint8_t *data,
                             uint16_t len);
-int32_t sths34pf80_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t sths34pf80_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                              uint8_t *data,
                              uint16_t len);
 
-int32_t sths34pf80_device_id_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t sths34pf80_device_id_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
@@ -588,8 +592,8 @@ typedef enum
   STHS34PF80_AVG_TMOS_1024 = 0x6,
   STHS34PF80_AVG_TMOS_2048 = 0x7,
 } sths34pf80_avg_tobject_num_t;
-int32_t sths34pf80_avg_tobject_num_set(stmdev_ctx_t *ctx, sths34pf80_avg_tobject_num_t val);
-int32_t sths34pf80_avg_tobject_num_get(stmdev_ctx_t *ctx, sths34pf80_avg_tobject_num_t *val);
+int32_t sths34pf80_avg_tobject_num_set(const stmdev_ctx_t *ctx, sths34pf80_avg_tobject_num_t val);
+int32_t sths34pf80_avg_tobject_num_get(const stmdev_ctx_t *ctx, sths34pf80_avg_tobject_num_t *val);
 
 typedef enum
 {
@@ -598,8 +602,9 @@ typedef enum
   STHS34PF80_AVG_T_2 = 0x2,
   STHS34PF80_AVG_T_1 = 0x3,
 } sths34pf80_avg_tambient_num_t;
-int32_t sths34pf80_avg_tambient_num_set(stmdev_ctx_t *ctx, sths34pf80_avg_tambient_num_t val);
-int32_t sths34pf80_avg_tambient_num_get(stmdev_ctx_t *ctx, sths34pf80_avg_tambient_num_t *val);
+int32_t sths34pf80_avg_tambient_num_set(const stmdev_ctx_t *ctx, sths34pf80_avg_tambient_num_t val);
+int32_t sths34pf80_avg_tambient_num_get(const stmdev_ctx_t *ctx,
+                                        sths34pf80_avg_tambient_num_t *val);
 
 typedef enum
 {
@@ -607,69 +612,63 @@ typedef enum
   STHS34PF80_GAIN_DEFAULT_MODE = 0x7,
 } sths34pf80_gain_mode_t;
 
-int32_t sths34pf80_gain_mode_set(stmdev_ctx_t *ctx, sths34pf80_gain_mode_t val);
-int32_t sths34pf80_gain_mode_get(stmdev_ctx_t *ctx, sths34pf80_gain_mode_t *val);
+int32_t sths34pf80_gain_mode_set(const stmdev_ctx_t *ctx, sths34pf80_gain_mode_t val);
+int32_t sths34pf80_gain_mode_get(const stmdev_ctx_t *ctx, sths34pf80_gain_mode_t *val);
 
-int32_t sths34pf80_tmos_sensitivity_set(stmdev_ctx_t *ctx, uint16_t *val);
-int32_t sths34pf80_tmos_sensitivity_get(stmdev_ctx_t *ctx, uint16_t *val);
-
-typedef enum
-{
-  STHS34PF80_TMOS_ODR_OFF = 0x0,
-  STHS34PF80_TMOS_ODR_AT_0Hz25 = 0x1,
-  STHS34PF80_TMOS_ODR_AT_0Hz50 = 0x2,
-  STHS34PF80_TMOS_ODR_AT_1Hz = 0x3,
-  STHS34PF80_TMOS_ODR_AT_2Hz = 0x4,
-  STHS34PF80_TMOS_ODR_AT_4Hz = 0x5,
-  STHS34PF80_TMOS_ODR_AT_8Hz = 0x6,
-  STHS34PF80_TMOS_ODR_AT_15Hz = 0x7,
-  STHS34PF80_TMOS_ODR_AT_30Hz = 0x8,
-} sths34pf80_tmos_odr_t;
-int32_t sths34pf80_tmos_odr_set(stmdev_ctx_t *ctx, sths34pf80_tmos_odr_t val);
-int32_t sths34pf80_tmos_odr_get(stmdev_ctx_t *ctx, sths34pf80_tmos_odr_t *val);
-
-int32_t sths34pf80_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t sths34pf80_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t sths34pf80_tobject_sensitivity_set(const stmdev_ctx_t *ctx, uint16_t *val);
+int32_t sths34pf80_tobject_sensitivity_get(const stmdev_ctx_t *ctx, uint16_t *val);
 
 typedef enum
 {
-  STHS34PF80_TMOS_IDLE_MODE = 0x0,
-  STHS34PF80_TMOS_ONE_SHOT = 0x1,
-} sths34pf80_tmos_one_shot_t;
-int32_t sths34pf80_tmos_one_shot_set(stmdev_ctx_t *ctx, sths34pf80_tmos_one_shot_t val);
-int32_t sths34pf80_tmos_one_shot_get(stmdev_ctx_t *ctx, sths34pf80_tmos_one_shot_t *val);
+  STHS34PF80_ODR_OFF = 0x0,
+  STHS34PF80_ODR_AT_0Hz25 = 0x1,
+  STHS34PF80_ODR_AT_0Hz50 = 0x2,
+  STHS34PF80_ODR_AT_1Hz = 0x3,
+  STHS34PF80_ODR_AT_2Hz = 0x4,
+  STHS34PF80_ODR_AT_4Hz = 0x5,
+  STHS34PF80_ODR_AT_8Hz = 0x6,
+  STHS34PF80_ODR_AT_15Hz = 0x7,
+  STHS34PF80_ODR_AT_30Hz = 0x8,
+} sths34pf80_odr_t;
+int32_t sths34pf80_odr_set(const stmdev_ctx_t *ctx, sths34pf80_odr_t val);
+int32_t sths34pf80_odr_get(const stmdev_ctx_t *ctx, sths34pf80_odr_t *val);
+
+int32_t sths34pf80_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t sths34pf80_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val);
+
+typedef enum
+{
+  STHS34PF80_IDLE_MODE = 0x0,
+  STHS34PF80_ONE_SHOT = 0x1,
+} sths34pf80_one_shot_t;
+int32_t sths34pf80_one_shot_set(const stmdev_ctx_t *ctx, sths34pf80_one_shot_t val);
+int32_t sths34pf80_one_shot_get(const stmdev_ctx_t *ctx, sths34pf80_one_shot_t *val);
 
 typedef enum
 {
   STHS34PF80_MAIN_MEM_BANK = 0x0,
   STHS34PF80_EMBED_FUNC_MEM_BANK = 0x1,
 } sths34pf80_mem_bank_t;
-int32_t sths34pf80_mem_bank_set(stmdev_ctx_t *ctx, sths34pf80_mem_bank_t val);
-int32_t sths34pf80_mem_bank_get(stmdev_ctx_t *ctx, sths34pf80_mem_bank_t *val);
+int32_t sths34pf80_mem_bank_set(const stmdev_ctx_t *ctx, sths34pf80_mem_bank_t val);
+int32_t sths34pf80_mem_bank_get(const stmdev_ctx_t *ctx, sths34pf80_mem_bank_t *val);
 
-int32_t sths34pf80_boot_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t sths34pf80_boot_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t sths34pf80_boot_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t sths34pf80_boot_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef struct
 {
   uint8_t drdy : 1;
-} sths34pf80_tmos_drdy_status_t;
-int32_t sths34pf80_tmos_drdy_status_get(stmdev_ctx_t *ctx, sths34pf80_tmos_drdy_status_t *val);
+} sths34pf80_drdy_status_t;
+int32_t sths34pf80_drdy_status_get(const stmdev_ctx_t *ctx, sths34pf80_drdy_status_t *val);
 
-typedef struct
-{
-  uint8_t tamb_shock_flag : 1;
-  uint8_t mot_flag : 1;
-  uint8_t pres_flag : 1;
-} sths34pf80_tmos_func_status_t;
-int32_t sths34pf80_tmos_func_status_get(stmdev_ctx_t *ctx, sths34pf80_tmos_func_status_t *val);
+int32_t sths34pf80_func_status_get(const stmdev_ctx_t *ctx, sths34pf80_func_status_t *val);
 
-int32_t sths34pf80_tobject_raw_get(stmdev_ctx_t *ctx, int16_t *val);
-int32_t sths34pf80_tambient_raw_get(stmdev_ctx_t *ctx, int16_t *val);
-int32_t sths34pf80_tobj_comp_raw_get(stmdev_ctx_t *ctx, int16_t *val);
-int32_t sths34pf80_tpresence_raw_get(stmdev_ctx_t *ctx, int16_t *val);
-int32_t sths34pf80_tmotion_raw_get(stmdev_ctx_t *ctx, int16_t *val);
-int32_t sths34pf80_tamb_shock_raw_get(stmdev_ctx_t *ctx, int16_t *val);
+int32_t sths34pf80_tobject_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
+int32_t sths34pf80_tambient_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
+int32_t sths34pf80_tobj_comp_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
+int32_t sths34pf80_tpresence_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
+int32_t sths34pf80_tmotion_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
+int32_t sths34pf80_tamb_shock_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
 
 typedef enum
 {
@@ -681,37 +680,37 @@ typedef enum
   STHS34PF80_LPF_ODR_DIV_400 = 0x5,
   STHS34PF80_LPF_ODR_DIV_800 = 0x6,
 } sths34pf80_lpf_bandwidth_t;
-int32_t sths34pf80_lpf_m_bandwidth_set(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t val);
-int32_t sths34pf80_lpf_m_bandwidth_get(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t *val);
-int32_t sths34pf80_lpf_p_m_bandwidth_set(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t val);
-int32_t sths34pf80_lpf_p_m_bandwidth_get(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t *val);
-int32_t sths34pf80_lpf_a_t_bandwidth_set(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t val);
-int32_t sths34pf80_lpf_a_t_bandwidth_get(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t *val);
-int32_t sths34pf80_lpf_p_bandwidth_set(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t val);
-int32_t sths34pf80_lpf_p_bandwidth_get(stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t *val);
+int32_t sths34pf80_lpf_m_bandwidth_set(const stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t val);
+int32_t sths34pf80_lpf_m_bandwidth_get(const stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t *val);
+int32_t sths34pf80_lpf_p_m_bandwidth_set(const stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t val);
+int32_t sths34pf80_lpf_p_m_bandwidth_get(const stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t *val);
+int32_t sths34pf80_lpf_a_t_bandwidth_set(const stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t val);
+int32_t sths34pf80_lpf_a_t_bandwidth_get(const stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t *val);
+int32_t sths34pf80_lpf_p_bandwidth_set(const stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t val);
+int32_t sths34pf80_lpf_p_bandwidth_get(const stmdev_ctx_t *ctx, sths34pf80_lpf_bandwidth_t *val);
 
 typedef enum
 {
-  STHS34PF80_TMOS_INT_HIZ = 0x0,
-  STHS34PF80_TMOS_INT_DRDY = 0x1,
-  STHS34PF80_TMOS_INT_OR = 0x2,
-} sths34pf80_tmos_route_int_t;
-int32_t sths34pf80_tmos_route_int_set(stmdev_ctx_t *ctx, sths34pf80_tmos_route_int_t val);
-int32_t sths34pf80_tmos_route_int_get(stmdev_ctx_t *ctx, sths34pf80_tmos_route_int_t *val);
+  STHS34PF80_INT_HIZ = 0x0,
+  STHS34PF80_INT_DRDY = 0x1,
+  STHS34PF80_INT_OR = 0x2,
+} sths34pf80_route_int_t;
+int32_t sths34pf80_route_int_set(const stmdev_ctx_t *ctx, sths34pf80_route_int_t val);
+int32_t sths34pf80_route_int_get(const stmdev_ctx_t *ctx, sths34pf80_route_int_t *val);
 
 typedef enum
 {
-  STHS34PF80_TMOS_INT_NONE = 0x0,
-  STHS34PF80_TMOS_INT_TSHOCK = 0x1,
-  STHS34PF80_TMOS_INT_MOTION = 0x2,
-  STHS34PF80_TMOS_INT_TSHOCK_MOTION = 0x3,
-  STHS34PF80_TMOS_INT_PRESENCE = 0x4,
-  STHS34PF80_TMOS_INT_TSHOCK_PRESENCE = 0x5,
-  STHS34PF80_TMOS_INT_MOTION_PRESENCE = 0x6,
-  STHS34PF80_TMOS_INT_ALL = 0x7,
-} sths34pf80_tmos_int_or_t;
-int32_t sths34pf80_tmos_int_or_set(stmdev_ctx_t *ctx, sths34pf80_tmos_int_or_t val);
-int32_t sths34pf80_tmos_int_or_get(stmdev_ctx_t *ctx, sths34pf80_tmos_int_or_t *val);
+  STHS34PF80_INT_NONE = 0x0,
+  STHS34PF80_INT_TSHOCK = 0x1,
+  STHS34PF80_INT_MOTION = 0x2,
+  STHS34PF80_INT_TSHOCK_MOTION = 0x3,
+  STHS34PF80_INT_PRESENCE = 0x4,
+  STHS34PF80_INT_TSHOCK_PRESENCE = 0x5,
+  STHS34PF80_INT_MOTION_PRESENCE = 0x6,
+  STHS34PF80_INT_ALL = 0x7,
+} sths34pf80_int_or_t;
+int32_t sths34pf80_int_or_set(const stmdev_ctx_t *ctx, sths34pf80_int_or_t val);
+int32_t sths34pf80_int_or_get(const stmdev_ctx_t *ctx, sths34pf80_int_or_t *val);
 
 typedef struct
 {
@@ -727,46 +726,47 @@ typedef struct
     STHS34PF80_ACTIVE_LOW = 0x1,
   } polarity;
 } sths34pf80_int_mode_t;
-int32_t sths34pf80_int_mode_set(stmdev_ctx_t *ctx, sths34pf80_int_mode_t val);
-int32_t sths34pf80_int_mode_get(stmdev_ctx_t *ctx, sths34pf80_int_mode_t *val);
+int32_t sths34pf80_int_mode_set(const stmdev_ctx_t *ctx, sths34pf80_int_mode_t val);
+int32_t sths34pf80_int_mode_get(const stmdev_ctx_t *ctx, sths34pf80_int_mode_t *val);
 
 typedef enum
 {
   STHS34PF80_DRDY_PULSED = 0x0,
   STHS34PF80_DRDY_LATCHED = 0x1,
 } sths34pf80_drdy_mode_t;
-int32_t sths34pf80_drdy_mode_set(stmdev_ctx_t *ctx, sths34pf80_drdy_mode_t val);
-int32_t sths34pf80_drdy_mode_get(stmdev_ctx_t *ctx, sths34pf80_drdy_mode_t *val);
+int32_t sths34pf80_drdy_mode_set(const stmdev_ctx_t *ctx, sths34pf80_drdy_mode_t val);
+int32_t sths34pf80_drdy_mode_get(const stmdev_ctx_t *ctx, sths34pf80_drdy_mode_t *val);
 
-int32_t sths34pf80_func_cfg_write(stmdev_ctx_t *ctx, uint8_t addr, uint8_t *data, uint8_t len);
-int32_t sths34pf80_func_cfg_read(stmdev_ctx_t *ctx, uint8_t addr, uint8_t *data, uint8_t len);
+int32_t sths34pf80_func_cfg_write(const stmdev_ctx_t *ctx, uint8_t addr, uint8_t *data,
+                                  uint8_t len);
+int32_t sths34pf80_func_cfg_read(const stmdev_ctx_t *ctx, uint8_t addr, uint8_t *data, uint8_t len);
 
-int32_t sths34pf80_presence_threshold_set(stmdev_ctx_t *ctx, uint16_t val);
-int32_t sths34pf80_presence_threshold_get(stmdev_ctx_t *ctx, uint16_t *val);
+int32_t sths34pf80_presence_threshold_set(const stmdev_ctx_t *ctx, uint16_t val);
+int32_t sths34pf80_presence_threshold_get(const stmdev_ctx_t *ctx, uint16_t *val);
 
-int32_t sths34pf80_motion_threshold_set(stmdev_ctx_t *ctx, uint16_t val);
-int32_t sths34pf80_motion_threshold_get(stmdev_ctx_t *ctx, uint16_t *val);
+int32_t sths34pf80_motion_threshold_set(const stmdev_ctx_t *ctx, uint16_t val);
+int32_t sths34pf80_motion_threshold_get(const stmdev_ctx_t *ctx, uint16_t *val);
 
-int32_t sths34pf80_tambient_shock_threshold_set(stmdev_ctx_t *ctx, uint16_t val);
-int32_t sths34pf80_tambient_shock_threshold_get(stmdev_ctx_t *ctx, uint16_t *val);
+int32_t sths34pf80_tambient_shock_threshold_set(const stmdev_ctx_t *ctx, uint16_t val);
+int32_t sths34pf80_tambient_shock_threshold_get(const stmdev_ctx_t *ctx, uint16_t *val);
 
-int32_t sths34pf80_motion_hysteresis_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t sths34pf80_motion_hysteresis_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t sths34pf80_motion_hysteresis_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t sths34pf80_motion_hysteresis_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t sths34pf80_presence_hysteresis_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t sths34pf80_presence_hysteresis_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t sths34pf80_presence_hysteresis_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t sths34pf80_presence_hysteresis_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t sths34pf80_tambient_shock_hysteresis_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t sths34pf80_tambient_shock_hysteresis_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t sths34pf80_tambient_shock_hysteresis_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t sths34pf80_tambient_shock_hysteresis_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t sths34pf80_int_or_pulsed_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t sths34pf80_int_or_pulsed_get(stmdev_ctx_t *ctx, uint8_t *val);
-int32_t sths34pf80_tobject_algo_compensation_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t sths34pf80_tobject_algo_compensation_get(stmdev_ctx_t *ctx, uint8_t *val);
-int32_t sths34pf80_presence_abs_value_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t sths34pf80_presence_abs_value_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t sths34pf80_int_or_pulsed_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t sths34pf80_int_or_pulsed_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t sths34pf80_tobject_algo_compensation_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t sths34pf80_tobject_algo_compensation_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t sths34pf80_presence_abs_value_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t sths34pf80_presence_abs_value_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t sths34pf80_reset_algo(stmdev_ctx_t *ctx);
+int32_t sths34pf80_algo_reset(const stmdev_ctx_t *ctx);
 
 #ifdef __cplusplus
 }

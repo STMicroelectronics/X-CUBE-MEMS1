@@ -279,7 +279,7 @@ int32_t IIS2MDC_MAG_Disable(IIS2MDC_Object_t *pObj)
   * @param  Sensitivity pointer
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t IIS2MDC_MAG_GetSensitivity(IIS2MDC_Object_t *pObj, float *Sensitivity)
+int32_t IIS2MDC_MAG_GetSensitivity(IIS2MDC_Object_t *pObj, float_t *Sensitivity)
 {
   UNUSED(pObj);
   *Sensitivity = IIS2MDC_MAG_SENSITIVITY_FS_50GAUSS;
@@ -293,7 +293,7 @@ int32_t IIS2MDC_MAG_GetSensitivity(IIS2MDC_Object_t *pObj, float *Sensitivity)
   * @param  Odr pointer where the output data rate is written
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t IIS2MDC_MAG_GetOutputDataRate(IIS2MDC_Object_t *pObj, float *Odr)
+int32_t IIS2MDC_MAG_GetOutputDataRate(IIS2MDC_Object_t *pObj, float_t *Odr)
 {
   int32_t ret = IIS2MDC_OK;
   iis2mdc_odr_t odr_low_level;
@@ -336,7 +336,7 @@ int32_t IIS2MDC_MAG_GetOutputDataRate(IIS2MDC_Object_t *pObj, float *Odr)
   * @param  Odr the output data rate value to be set
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t IIS2MDC_MAG_SetOutputDataRate(IIS2MDC_Object_t *pObj, float Odr)
+int32_t IIS2MDC_MAG_SetOutputDataRate(IIS2MDC_Object_t *pObj, float_t Odr)
 {
   iis2mdc_odr_t new_odr;
 
@@ -414,7 +414,7 @@ int32_t IIS2MDC_MAG_GetAxesRaw(IIS2MDC_Object_t *pObj, IIS2MDC_AxesRaw_t *Value)
 int32_t IIS2MDC_MAG_GetAxes(IIS2MDC_Object_t *pObj, IIS2MDC_Axes_t *MagneticField)
 {
   iis2mdc_axis3bit16_t data_raw;
-  float sensitivity = 0.0f;
+  float_t sensitivity = 0.0f;
 
   /* Read raw data values. */
   if (iis2mdc_magnetic_raw_get(&(pObj->Ctx), data_raw.i16bit) != IIS2MDC_OK)
@@ -426,9 +426,9 @@ int32_t IIS2MDC_MAG_GetAxes(IIS2MDC_Object_t *pObj, IIS2MDC_Axes_t *MagneticFiel
   (void)IIS2MDC_MAG_GetSensitivity(pObj, &sensitivity);
 
   /* Calculate the data. */
-  MagneticField->x = (int32_t)((float)((float)data_raw.i16bit[0] * sensitivity));
-  MagneticField->y = (int32_t)((float)((float)data_raw.i16bit[1] * sensitivity));
-  MagneticField->z = (int32_t)((float)((float)data_raw.i16bit[2] * sensitivity));
+  MagneticField->x = (int32_t)((float_t)((float_t)data_raw.i16bit[0] * sensitivity));
+  MagneticField->y = (int32_t)((float_t)((float_t)data_raw.i16bit[1] * sensitivity));
+  MagneticField->z = (int32_t)((float_t)((float_t)data_raw.i16bit[2] * sensitivity));
 
   return IIS2MDC_OK;
 }

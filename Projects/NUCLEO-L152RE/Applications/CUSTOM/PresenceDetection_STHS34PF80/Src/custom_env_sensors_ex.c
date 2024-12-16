@@ -521,6 +521,74 @@ int32_t CUSTOM_ENV_SENSOR_Get_One_Shot_Status(uint32_t Instance, uint8_t *Status
   return ret;
 }
 
+#if ((defined PRESENCEDETECTION_STHS34PF80_DEMO) || (defined APPROACHLEAVE_STHS34PF80_DEMO))
+/**
+  * @brief  Get the TObjRaw value from infrared temperature sensor
+  * @param  Instance the device instance
+  * @param  Value the object raw temperature data
+  * @retval BSP status
+  */
+int32_t CUSTOM_ENV_SENSOR_Get_TObjRaw(uint32_t Instance, int16_t *Value)
+{
+  int32_t ret;
+
+  switch (Instance)
+  {
+#if (USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 == 1)
+    case CUSTOM_STHS34PF80_0:
+      if (STHS34PF80_GetObjectTemperatureRaw(EnvCompObj[Instance], Value) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+    default:
+      ret = BSP_ERROR_WRONG_PARAM;
+      break;
+  }
+
+  return ret;
+}
+
+/**
+  * @brief  Set the AvgTmos value to infrared temperature sensor
+  * @param  Instance the device instance
+  * @param  Value the AvgTmos data
+  * @retval BSP status
+  */
+int32_t CUSTOM_ENV_SENSOR_Set_AvgTmos(uint32_t Instance, uint16_t Value)
+{
+  int32_t ret;
+
+  switch (Instance)
+  {
+#if (USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 == 1)
+    case CUSTOM_STHS34PF80_0:
+      if (STHS34PF80_SetAvgTmos(EnvCompObj[Instance], Value) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+    default:
+      ret = BSP_ERROR_WRONG_PARAM;
+      break;
+  }
+
+  return ret;
+}
+#endif /* PRESENCEDETECTION_STHS34PF80_DEMO || APPROACHLEAVE_STHS34PF80_DEMO */
+
 #if (defined PRESENCEDETECTION_STHS34PF80_DEMO)
 /**
   * @brief  Get the TAmbRaw value from infrared temperature sensor
@@ -556,39 +624,6 @@ int32_t CUSTOM_ENV_SENSOR_Get_TAmbRaw(uint32_t Instance, int16_t *Value)
 }
 
 /**
-  * @brief  Get the TObjRaw value from infrared temperature sensor
-  * @param  Instance the device instance
-  * @param  Value the object raw temperature data
-  * @retval BSP status
-  */
-int32_t CUSTOM_ENV_SENSOR_Get_TObjRaw(uint32_t Instance, int16_t *Value)
-{
-  int32_t ret;
-
-  switch (Instance)
-  {
-#if (USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 == 1)
-    case CUSTOM_STHS34PF80_0:
-      if (STHS34PF80_GetObjectTemperatureRaw(EnvCompObj[Instance], Value) != BSP_ERROR_NONE)
-      {
-        ret = BSP_ERROR_COMPONENT_FAILURE;
-      }
-      else
-      {
-        ret = BSP_ERROR_NONE;
-      }
-      break;
-#endif
-
-    default:
-      ret = BSP_ERROR_WRONG_PARAM;
-      break;
-  }
-
-  return ret;
-}
-
-/**
   * @brief  Get the AvgTmos value from infrared temperature sensor
   * @param  Instance the device instance
   * @param  Value the AvgTmos data
@@ -603,39 +638,6 @@ int32_t CUSTOM_ENV_SENSOR_Get_AvgTmos(uint32_t Instance, uint16_t *Value)
 #if (USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 == 1)
     case CUSTOM_STHS34PF80_0:
       if (STHS34PF80_GetAvgTmos(EnvCompObj[Instance], Value) != BSP_ERROR_NONE)
-      {
-        ret = BSP_ERROR_COMPONENT_FAILURE;
-      }
-      else
-      {
-        ret = BSP_ERROR_NONE;
-      }
-      break;
-#endif
-
-    default:
-      ret = BSP_ERROR_WRONG_PARAM;
-      break;
-  }
-
-  return ret;
-}
-
-/**
-  * @brief  Set the AvgTmos value to infrared temperature sensor
-  * @param  Instance the device instance
-  * @param  Value the AvgTmos data
-  * @retval BSP status
-  */
-int32_t CUSTOM_ENV_SENSOR_Set_AvgTmos(uint32_t Instance, uint16_t Value)
-{
-  int32_t ret;
-
-  switch (Instance)
-  {
-#if (USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 == 1)
-    case CUSTOM_STHS34PF80_0:
-      if (STHS34PF80_SetAvgTmos(EnvCompObj[Instance], Value) != BSP_ERROR_NONE)
       {
         ret = BSP_ERROR_COMPONENT_FAILURE;
       }
@@ -753,41 +755,6 @@ int32_t CUSTOM_ENV_SENSOR_Get_Sensitivity(uint32_t Instance, uint16_t *Value)
   return ret;
 }
 #endif /* PRESENCEDETECTION_STHS34PF80_DEMO */
-
-#if (defined APPROACHLEAVE_STHS34PF80_DEMO)
-/**
-  * @brief  Get the TObjRaw value from infrared temperature sensor
-  * @param  Instance the device instance
-  * @param  Value the object raw temperature data
-  * @retval BSP status
-  */
-int32_t CUSTOM_ENV_SENSOR_Get_TObjRaw(uint32_t Instance, int16_t *Value)
-{
-  int32_t ret;
-
-  switch (Instance)
-  {
-#if (USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 == 1)
-    case CUSTOM_STHS34PF80_0:
-      if (STHS34PF80_GetObjectTemperatureRaw(EnvCompObj[Instance], Value) != BSP_ERROR_NONE)
-      {
-        ret = BSP_ERROR_COMPONENT_FAILURE;
-      }
-      else
-      {
-        ret = BSP_ERROR_NONE;
-      }
-      break;
-#endif
-
-    default:
-      ret = BSP_ERROR_WRONG_PARAM;
-      break;
-  }
-
-  return ret;
-}
-#endif /* APPROACHLEAVE_STHS34PF80_DEMO */
 
 #if (defined AIRQUALITY_SGP40_DEMO)
 /**

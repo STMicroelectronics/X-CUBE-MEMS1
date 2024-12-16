@@ -414,11 +414,6 @@ int32_t LSM6DSO32_ACC_GetOutputDataRate(LSM6DSO32_Object_t *pObj, float_t *Odr)
       *Odr = 0.0f;
       break;
 
-    case LSM6DSO32_XL_ODR_6Hz5_ULTRA_LOW_PW:
-    case LSM6DSO32_XL_ODR_6Hz5_LOW_PW:
-      *Odr = 6.5f;
-      break;
-
     case LSM6DSO32_XL_ODR_12Hz5_ULTRA_LOW_PW:
     case LSM6DSO32_XL_ODR_12Hz5_LOW_PW:
     case LSM6DSO32_XL_ODR_12Hz5_HIGH_PERF:

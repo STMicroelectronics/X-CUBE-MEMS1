@@ -449,6 +449,36 @@ void BSP_ACC_GYR_Read_MLC_Data(uint8_t *Data)
 }
 #endif /* CUSTOM_ALGOBUILDER_FW_TEMPLATE */
 
+#if ((defined PRESENCEDETECTION_STHS34PF80_DEMO) || (defined APPROACHLEAVE_STHS34PF80_DEMO))
+/**
+  * @brief  Get the TObjRaw value from infrared temperature sensor
+  * @param  Value pointer where the value is written to
+  * @retval None
+  */
+void BSP_SENSOR_TEMP_GetTObjRaw(int16_t *Value)
+{
+#if (defined BSP_ENV_SENSORS)
+#ifdef CUSTOM_TEMP_INSTANCE_0
+  (void)CUSTOM_ENV_SENSOR_Get_TObjRaw(CUSTOM_TEMP_INSTANCE_0, Value);
+#endif
+#endif
+}
+
+/**
+  * @brief  Set the AvgTmos value to infrared temperature sensor
+  * @param  Value the value to be written to
+  * @retval None
+  */
+void BSP_SENSOR_TEMP_SetAvgTmos(uint16_t Value)
+{
+#if (defined BSP_ENV_SENSORS)
+#ifdef CUSTOM_TEMP_INSTANCE_0
+  (void)CUSTOM_ENV_SENSOR_Set_AvgTmos(CUSTOM_TEMP_INSTANCE_0, Value);
+#endif
+#endif
+}
+#endif /* PRESENCEDETECTION_STHS34PF80_DEMO || APPROACHLEAVE_STHS34PF80_DEMO */
+
 #if (defined PRESENCEDETECTION_STHS34PF80_DEMO)
 /**
   * @brief  Get the TAmbRaw value from infrared temperature sensor
@@ -465,20 +495,6 @@ void BSP_SENSOR_TEMP_GetTAmbRaw(int16_t *Value)
 }
 
 /**
-  * @brief  Get the TObjRaw value from infrared temperature sensor
-  * @param  Value pointer where the value is written to
-  * @retval None
-  */
-void BSP_SENSOR_TEMP_GetTObjRaw(int16_t *Value)
-{
-#if (defined BSP_ENV_SENSORS)
-#ifdef CUSTOM_TEMP_INSTANCE_0
-  (void)CUSTOM_ENV_SENSOR_Get_TObjRaw(CUSTOM_TEMP_INSTANCE_0, Value);
-#endif
-#endif
-}
-
-/**
   * @brief  Get the AvgTmos value from infrared temperature sensor
   * @param  Value pointer where the value is written to
   * @retval None
@@ -488,20 +504,6 @@ void BSP_SENSOR_TEMP_GetAvgTmos(uint16_t *Value)
 #if (defined BSP_ENV_SENSORS)
 #ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Get_AvgTmos(CUSTOM_TEMP_INSTANCE_0, Value);
-#endif
-#endif
-}
-
-/**
-  * @brief  Set the AvgTmos value to infrared temperature sensor
-  * @param  Value the value to be written to
-  * @retval None
-  */
-void BSP_SENSOR_TEMP_SetAvgTmos(uint16_t Value)
-{
-#if (defined BSP_ENV_SENSORS)
-#ifdef CUSTOM_TEMP_INSTANCE_0
-  (void)CUSTOM_ENV_SENSOR_Set_AvgTmos(CUSTOM_TEMP_INSTANCE_0, Value);
 #endif
 #endif
 }
@@ -548,22 +550,6 @@ void BSP_SENSOR_TEMP_GetSensitivity(uint16_t *Value)
 #endif
 }
 #endif /* PRESENCEDETECTION_STHS34PF80_DEMO */
-
-#if (defined APPROACHLEAVE_STHS34PF80_DEMO)
-/**
-  * @brief  Get the TObjRaw value from infrared temperature sensor
-  * @param  Value pointer where the value is written to
-  * @retval None
-  */
-void BSP_SENSOR_TEMP_GetTObjRaw(int16_t *Value)
-{
-#if (defined BSP_ENV_SENSORS)
-#ifdef CUSTOM_TEMP_INSTANCE_0
-  (void)CUSTOM_ENV_SENSOR_Get_TObjRaw(CUSTOM_TEMP_INSTANCE_0, Value);
-#endif
-#endif
-}
-#endif /* APPROACHLEAVE_STHS34PF80_DEMO */
 
 #if (defined AIRQUALITY_SGP40_DEMO)
 /**

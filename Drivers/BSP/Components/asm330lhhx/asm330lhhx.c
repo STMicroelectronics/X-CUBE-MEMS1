@@ -414,10 +414,6 @@ int32_t ASM330LHHX_ACC_GetOutputDataRate(ASM330LHHX_Object_t *pObj, float *Odr)
       *Odr = 0.0f;
       break;
 
-    case ASM330LHHX_XL_ODR_6Hz5: /* (low power only) */
-      *Odr = 6.5f;
-      break;
-
     case ASM330LHHX_XL_ODR_12Hz5:
       *Odr = 12.5f;
       break;

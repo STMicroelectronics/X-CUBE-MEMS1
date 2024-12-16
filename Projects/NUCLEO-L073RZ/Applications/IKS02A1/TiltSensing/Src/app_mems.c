@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.0.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.1.0 instances.
   ******************************************************************************
   * @attention
   *
@@ -357,13 +357,15 @@ static void TL_Data_Handler(Msg_t *Msg)
 {
   uint32_t elapsed_time_us = 0U;
   uint32_t prev_tick = 0U;
-  MTL_input_t data_in = {
+  MTL_input_t data_in =
+  {
     .acc_x = 0.0f,
     .acc_y = 0.0f,
     .acc_z = 0.0f,
   };
 
-  static MTL_output_t data_out = {
+  static MTL_output_t data_out =
+  {
     .theta_3x = 0.0f,
     .psi_3x   = 0.0f,
     .phi_3x   = 0.0f,
@@ -375,9 +377,9 @@ static void TL_Data_Handler(Msg_t *Msg)
 
   uint64_t timestamp_ms
     = (uint8_t)Msg->Data[3] * 3600000U
-    + (uint8_t)Msg->Data[4] * 60000U
-    + (uint8_t)Msg->Data[5] * 1000U
-    + (uint8_t)Msg->Data[6] * 10U;
+      + (uint8_t)Msg->Data[4] * 60000U
+      + (uint8_t)Msg->Data[5] * 1000U
+      + (uint8_t)Msg->Data[6] * 10U;
 
   if ((SensorsEnabled & ACCELEROMETER_SENSOR) == ACCELEROMETER_SENSOR)
   {

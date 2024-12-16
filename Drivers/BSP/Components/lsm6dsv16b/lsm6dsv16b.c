@@ -508,18 +508,6 @@ int32_t LSM6DSV16B_ACC_SetOutputDataRate_With_Mode(LSM6DSV16B_Object_t *pObj, fl
       ret = LSM6DSV16B_ERROR;
       break;
 
-    case LSM6DSV16B_ACC_NORMAL_MODE:
-      if (lsm6dsv16b_xl_mode_set(&(pObj->Ctx), LSM6DSV16B_XL_NORMAL_MD) != LSM6DSV16B_OK)
-      {
-        ret = LSM6DSV16B_ERROR;
-      }
-
-      /* Valid ODR: 7.5Hz <= Odr <= 1.92kHz */
-      new_odr = (Odr <    7.5f) ?    7.5f
-                : (Odr > 1920.0f) ? 1920.0f
-                :                       Odr;
-      break;
-
     case LSM6DSV16B_ACC_LOW_POWER_MODE1:
       if (lsm6dsv16b_xl_mode_set(&(pObj->Ctx), LSM6DSV16B_XL_LOW_POWER_2_AVG_MD) != LSM6DSV16B_OK)
       {
@@ -1349,7 +1337,7 @@ int32_t LSM6DSV16B_ACC_Set_Power_Mode(LSM6DSV16B_Object_t *pObj, uint8_t PowerMo
            : (PowerMode == 0x4U) ? LSM6DSV16B_XL_LOW_POWER_2_AVG_MD
            : (PowerMode == 0x5U) ? LSM6DSV16B_XL_LOW_POWER_4_AVG_MD
            : (PowerMode == 0x6U) ? LSM6DSV16B_XL_LOW_POWER_8_AVG_MD
-           :                       LSM6DSV16B_XL_NORMAL_MD;
+           :                       LSM6DSV16B_XL_HIGH_PERFORMANCE_MD;
 
   if (lsm6dsv16b_xl_mode_set(&(pObj->Ctx), new_pm) != LSM6DSV16B_OK)
   {

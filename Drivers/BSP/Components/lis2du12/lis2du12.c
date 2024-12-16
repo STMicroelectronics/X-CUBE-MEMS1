@@ -384,8 +384,8 @@ int32_t LIS2DU12_ACC_GetOutputDataRate(LIS2DU12_Object_t *pObj, float *Odr)
       *Odr = 0.0f;
       break;
 
-    case LIS2DU12_1Hz5_ULP:
-      *Odr = 1.5f;
+    case LIS2DU12_1Hz6_ULP:
+      *Odr = 1.6f;
       break;
 
     case LIS2DU12_3Hz_ULP:
@@ -650,10 +650,6 @@ int32_t LIS2DU12_Set_Interrupt_Latch(LIS2DU12_Object_t *pObj, uint8_t Status)
       mode.base_sig = LIS2DU12_INT_LEVEL;
       break;
 
-    case 1:
-      mode.base_sig = LIS2DU12_INT_PULSED;
-      break;
-
     case 3:
       mode.base_sig = LIS2DU12_INT_LATCHED;
       break;
@@ -691,7 +687,7 @@ int32_t LIS2DU12_ACC_Enable_DRDY_Interrupt(LIS2DU12_Object_t *pObj)
     return LIS2DU12_ERROR;
   }
 
-  lis2du12_pin_int2_route_t int2_route;
+  lis2du12_pin_int_route_t int2_route;
 
   if (lis2du12_pin_int2_route_get(&(pObj->Ctx), &int2_route) != LIS2DU12_OK)
   {
@@ -715,7 +711,7 @@ int32_t LIS2DU12_ACC_Enable_DRDY_Interrupt(LIS2DU12_Object_t *pObj)
   */
 int32_t LIS2DU12_ACC_Disable_DRDY_Interrupt(LIS2DU12_Object_t *pObj)
 {
-  lis2du12_pin_int2_route_t int2_route;
+  lis2du12_pin_int_route_t int2_route;
 
   if (lis2du12_pin_int2_route_get(&(pObj->Ctx), &int2_route) != LIS2DU12_OK)
   {
@@ -833,7 +829,7 @@ static int32_t LIS2DU12_ACC_SetOutputDataRate_When_Enabled(LIS2DU12_Object_t *pO
 
   if (Power == LIS2DU12_ULTRA_LOW_POWER_ENABLE)
   {
-    mode.odr = (Odr <= 1.5f) ? LIS2DU12_1Hz5_ULP
+    mode.odr = (Odr <= 1.6f) ? LIS2DU12_1Hz6_ULP
                : (Odr <= 3.0f) ? LIS2DU12_3Hz_ULP
                :                 LIS2DU12_6Hz_ULP;
   }
@@ -855,7 +851,7 @@ static int32_t LIS2DU12_ACC_SetOutputDataRate_When_Enabled(LIS2DU12_Object_t *pO
   }
 
   /* Store the current Odr value */
-  pObj->acc_odr = (mode.odr == LIS2DU12_1Hz5_ULP) ?   1.5f
+  pObj->acc_odr = (mode.odr == LIS2DU12_1Hz6_ULP) ?   1.6f
                   : (mode.odr == LIS2DU12_3Hz_ULP)  ?   3.0f
                   : (mode.odr == LIS2DU12_6Hz_ULP)  ?   6.0f
                   : (mode.odr == LIS2DU12_6Hz)      ?   6.0f

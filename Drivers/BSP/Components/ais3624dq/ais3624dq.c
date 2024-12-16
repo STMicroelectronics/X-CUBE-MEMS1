@@ -352,7 +352,7 @@ int32_t AIS3624DQ_ACC_GetOutputDataRate(AIS3624DQ_Object_t *pObj, float *Odr)
       *Odr = 1.0f;
       break;
 
-    case AIS3624DQ_ODR_5Hz2:
+    case AIS3624DQ_ODR_2Hz:
       *Odr = 2.0f;
       break;
 
@@ -603,7 +603,7 @@ static int32_t AIS3624DQ_ACC_SetOutputDataRate_When_Enabled(AIS3624DQ_Object_t *
 
   new_odr = (Odr <=   0.5f) ? AIS3624DQ_ODR_Hz5
             : (Odr <=   1.0f) ? AIS3624DQ_ODR_1Hz
-            : (Odr <=   2.0f) ? AIS3624DQ_ODR_5Hz2
+            : (Odr <=   2.0f) ? AIS3624DQ_ODR_2Hz
             : (Odr <=   5.0f) ? AIS3624DQ_ODR_5Hz
             : (Odr <=  10.0f) ? AIS3624DQ_ODR_10Hz
             : (Odr <=  50.0f) ? AIS3624DQ_ODR_50Hz
@@ -634,7 +634,7 @@ static int32_t AIS3624DQ_ACC_SetOutputDataRate_When_Disabled(AIS3624DQ_Object_t 
   /* Store the new output data rate value */
   pObj->acc_odr = (Odr <=   0.5f) ? AIS3624DQ_ODR_Hz5
                   : (Odr <=   1.0f) ? AIS3624DQ_ODR_1Hz
-                  : (Odr <=   2.0f) ? AIS3624DQ_ODR_5Hz2
+                  : (Odr <=   2.0f) ? AIS3624DQ_ODR_2Hz
                   : (Odr <=   5.0f) ? AIS3624DQ_ODR_5Hz
                   : (Odr <=  10.0f) ? AIS3624DQ_ODR_10Hz
                   : (Odr <=  50.0f) ? AIS3624DQ_ODR_50Hz

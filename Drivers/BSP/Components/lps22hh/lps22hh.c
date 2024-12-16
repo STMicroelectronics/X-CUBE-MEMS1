@@ -71,9 +71,9 @@ LPS22HH_TEMP_Drv_t LPS22HH_TEMP_Driver =
 
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
-static int32_t LPS22HH_GetOutputDataRate(LPS22HH_Object_t *pObj, float *Odr);
-static int32_t LPS22HH_SetOutputDataRate_When_Enabled(LPS22HH_Object_t *pObj, float Odr);
-static int32_t LPS22HH_SetOutputDataRate_When_Disabled(LPS22HH_Object_t *pObj, float Odr);
+static int32_t LPS22HH_GetOutputDataRate(LPS22HH_Object_t *pObj, float_t *Odr);
+static int32_t LPS22HH_SetOutputDataRate_When_Enabled(LPS22HH_Object_t *pObj, float_t Odr);
+static int32_t LPS22HH_SetOutputDataRate_When_Disabled(LPS22HH_Object_t *pObj, float_t Odr);
 static int32_t LPS22HH_Initialize(LPS22HH_Object_t *pObj);
 
 /**
@@ -309,7 +309,7 @@ int32_t LPS22HH_PRESS_Disable(LPS22HH_Object_t *pObj)
   * @param  Odr pointer where the output data rate is written
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LPS22HH_PRESS_GetOutputDataRate(LPS22HH_Object_t *pObj, float *Odr)
+int32_t LPS22HH_PRESS_GetOutputDataRate(LPS22HH_Object_t *pObj, float_t *Odr)
 {
   return LPS22HH_GetOutputDataRate(pObj, Odr);
 }
@@ -320,7 +320,7 @@ int32_t LPS22HH_PRESS_GetOutputDataRate(LPS22HH_Object_t *pObj, float *Odr)
   * @param  Odr the output data rate value to be set
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LPS22HH_PRESS_SetOutputDataRate(LPS22HH_Object_t *pObj, float Odr)
+int32_t LPS22HH_PRESS_SetOutputDataRate(LPS22HH_Object_t *pObj, float_t Odr)
 {
   /* Check if the component is enabled */
   if (pObj->press_is_enabled == 1U)
@@ -339,7 +339,7 @@ int32_t LPS22HH_PRESS_SetOutputDataRate(LPS22HH_Object_t *pObj, float Odr)
   * @param  Value pointer where the pressure value is written
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LPS22HH_PRESS_GetPressure(LPS22HH_Object_t *pObj, float *Value)
+int32_t LPS22HH_PRESS_GetPressure(LPS22HH_Object_t *pObj, float_t *Value)
 {
   lps22hh_axis1bit32_t data_raw_pressure;
 
@@ -435,7 +435,7 @@ int32_t LPS22HH_TEMP_Disable(LPS22HH_Object_t *pObj)
   * @param  Odr pointer where the output data rate is written
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LPS22HH_TEMP_GetOutputDataRate(LPS22HH_Object_t *pObj, float *Odr)
+int32_t LPS22HH_TEMP_GetOutputDataRate(LPS22HH_Object_t *pObj, float_t *Odr)
 {
   return LPS22HH_GetOutputDataRate(pObj, Odr);
 }
@@ -446,7 +446,7 @@ int32_t LPS22HH_TEMP_GetOutputDataRate(LPS22HH_Object_t *pObj, float *Odr)
   * @param  Odr the output data rate value to be set
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LPS22HH_TEMP_SetOutputDataRate(LPS22HH_Object_t *pObj, float Odr)
+int32_t LPS22HH_TEMP_SetOutputDataRate(LPS22HH_Object_t *pObj, float_t Odr)
 {
   /* Check if the component is enabled */
   if (pObj->temp_is_enabled == 1U)
@@ -465,7 +465,7 @@ int32_t LPS22HH_TEMP_SetOutputDataRate(LPS22HH_Object_t *pObj, float Odr)
   * @param  Value pointer where the temperature value is written
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LPS22HH_TEMP_GetTemperature(LPS22HH_Object_t *pObj, float *Value)
+int32_t LPS22HH_TEMP_GetTemperature(LPS22HH_Object_t *pObj, float_t *Value)
 {
   lps22hh_axis1bit16_t data_raw_temperature;
 
@@ -544,7 +544,7 @@ int32_t LPS22HH_Write_Reg(LPS22HH_Object_t *pObj, uint8_t Reg, uint8_t Data)
   * @param  Odr the output data rate value
   * @retval 0 in case of success, an error code otherwise
   */
-static int32_t LPS22HH_GetOutputDataRate(LPS22HH_Object_t *pObj, float *Odr)
+static int32_t LPS22HH_GetOutputDataRate(LPS22HH_Object_t *pObj, float_t *Odr)
 {
   int32_t ret = LPS22HH_OK;
   lps22hh_odr_t odr_low_level;
@@ -608,7 +608,7 @@ static int32_t LPS22HH_GetOutputDataRate(LPS22HH_Object_t *pObj, float *Odr)
   * @param  Odr the output data rate value to be set
   * @retval 0 in case of success, an error code otherwise
   */
-static int32_t LPS22HH_SetOutputDataRate_When_Enabled(LPS22HH_Object_t *pObj, float Odr)
+static int32_t LPS22HH_SetOutputDataRate_When_Enabled(LPS22HH_Object_t *pObj, float_t Odr)
 {
   lps22hh_odr_t new_odr;
 
@@ -639,7 +639,7 @@ static int32_t LPS22HH_SetOutputDataRate_When_Enabled(LPS22HH_Object_t *pObj, fl
   * @param  Odr the output data rate value to be set
   * @retval 0 in case of success, an error code otherwise
   */
-static int32_t LPS22HH_SetOutputDataRate_When_Disabled(LPS22HH_Object_t *pObj, float Odr)
+static int32_t LPS22HH_SetOutputDataRate_When_Disabled(LPS22HH_Object_t *pObj, float_t Odr)
 {
   pObj->last_odr = (Odr <=   1.0f) ? LPS22HH_1_Hz
                    : (Odr <=  10.0f) ? LPS22HH_10_Hz
@@ -669,7 +669,7 @@ static int32_t LPS22HH_Initialize(LPS22HH_Object_t *pObj)
   }
 
   /* Power down the device, set Low Noise Enable (bit 5), clear One Shot (bit 4) */
-  if (lps22hh_data_rate_set(&(pObj->Ctx), (lps22hh_odr_t)(LPS22HH_POWER_DOWN | 0x10)) != LPS22HH_OK)
+  if (lps22hh_data_rate_set(&(pObj->Ctx), (lps22hh_odr_t)((uint8_t)LPS22HH_POWER_DOWN | 0x10U)) != LPS22HH_OK)
   {
     return LPS22HH_ERROR;
   }
@@ -704,7 +704,7 @@ static int32_t LPS22HH_Initialize(LPS22HH_Object_t *pObj)
   * @param  Temp the temperature data
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LPS22HH_FIFO_Get_Data(LPS22HH_Object_t *pObj, float *Press, float *Temp)
+int32_t LPS22HH_FIFO_Get_Data(LPS22HH_Object_t *pObj, float_t *Press, float_t *Temp)
 {
   lps22hh_axis1bit32_t data_raw_pressure;
   lps22hh_axis1bit16_t data_raw_temperature;
@@ -800,28 +800,40 @@ int32_t LPS22HH_FIFO_Get_Level(LPS22HH_Object_t *pObj, uint8_t *Status)
   */
 int32_t LPS22HH_FIFO_Reset_Interrupt(LPS22HH_Object_t *pObj, uint8_t interrupt)
 {
+  int32_t ret = LPS22HH_OK;
+  lps22hh_pin_int_route_t pin_int;
+
+  /* Get current interrupt settings */
+  if (lps22hh_pin_int_route_get(&(pObj->Ctx), &pin_int) != LPS22HH_OK)
+  {
+    return LPS22HH_ERROR;
+  }
+
   switch (interrupt)
   {
     case 0:
-      if (lps22hh_fifo_threshold_on_int_set(&(pObj->Ctx), PROPERTY_DISABLE) != LPS22HH_OK)
-      {
-        return LPS22HH_ERROR;
-      }
+      pin_int.fifo_th = 0;
       break;
     case 1:
-      if (lps22hh_fifo_full_on_int_set(&(pObj->Ctx), PROPERTY_DISABLE) != LPS22HH_OK)
-      {
-        return LPS22HH_ERROR;
-      }
+      pin_int.fifo_full = 0;
       break;
     case 2:
-      if (lps22hh_fifo_ovr_on_int_set(&(pObj->Ctx), PROPERTY_DISABLE) != LPS22HH_OK)
-      {
-        return LPS22HH_ERROR;
-      }
+      pin_int.fifo_ovr = 0;
       break;
     default:
-      return LPS22HH_ERROR;
+      ret = LPS22HH_ERROR;
+      break;
+  }
+
+  if (ret != LPS22HH_OK)
+  {
+    return LPS22HH_ERROR;
+  }
+
+  /* Set new interrupt settings */
+  if (lps22hh_pin_int_route_set(&(pObj->Ctx), &pin_int) != LPS22HH_OK)
+  {
+    return LPS22HH_ERROR;
   }
 
   return LPS22HH_OK;
@@ -835,28 +847,40 @@ int32_t LPS22HH_FIFO_Reset_Interrupt(LPS22HH_Object_t *pObj, uint8_t interrupt)
   */
 int32_t LPS22HH_FIFO_Set_Interrupt(LPS22HH_Object_t *pObj, uint8_t interrupt)
 {
+  int32_t ret = LPS22HH_OK;
+  lps22hh_pin_int_route_t pin_int;
+
+  /* Get current interrupt settings */
+  if (lps22hh_pin_int_route_get(&(pObj->Ctx), &pin_int) != LPS22HH_OK)
+  {
+    return LPS22HH_ERROR;
+  }
+
   switch (interrupt)
   {
     case 0:
-      if (lps22hh_fifo_threshold_on_int_set(&(pObj->Ctx), PROPERTY_ENABLE) != LPS22HH_OK)
-      {
-        return LPS22HH_ERROR;
-      }
+      pin_int.fifo_th = 1;
       break;
     case 1:
-      if (lps22hh_fifo_full_on_int_set(&(pObj->Ctx), PROPERTY_ENABLE) != LPS22HH_OK)
-      {
-        return LPS22HH_ERROR;
-      }
+      pin_int.fifo_full = 1;
       break;
     case 2:
-      if (lps22hh_fifo_ovr_on_int_set(&(pObj->Ctx), PROPERTY_ENABLE) != LPS22HH_OK)
-      {
-        return LPS22HH_ERROR;
-      }
+      pin_int.fifo_ovr = 1;
       break;
     default:
-      return LPS22HH_ERROR;
+      ret = LPS22HH_ERROR;
+      break;
+  }
+
+  if (ret != LPS22HH_OK)
+  {
+    return LPS22HH_ERROR;
+  }
+
+  /* Set new interrupt settings */
+  if (lps22hh_pin_int_route_set(&(pObj->Ctx), &pin_int) != LPS22HH_OK)
+  {
+    return LPS22HH_ERROR;
   }
 
   return LPS22HH_OK;
@@ -870,6 +894,8 @@ int32_t LPS22HH_FIFO_Set_Interrupt(LPS22HH_Object_t *pObj, uint8_t interrupt)
   */
 int32_t LPS22HH_FIFO_Set_Mode(LPS22HH_Object_t *pObj, uint8_t Mode)
 {
+  int32_t ret = LPS22HH_OK;
+
   /* Verify that the passed parameter contains one of the valid values */
   switch ((lps22hh_f_mode_t)Mode)
   {
@@ -881,7 +907,13 @@ int32_t LPS22HH_FIFO_Set_Mode(LPS22HH_Object_t *pObj, uint8_t Mode)
     case LPS22HH_BYPASS_TO_FIFO_MODE:
       break;
     default:
-      return LPS22HH_ERROR;
+      ret = LPS22HH_ERROR;
+      break;
+  }
+
+  if (ret != LPS22HH_OK)
+  {
+    return LPS22HH_ERROR;
   }
 
   if (lps22hh_fifo_mode_set(&(pObj->Ctx), (lps22hh_f_mode_t)Mode) != LPS22HH_OK)
@@ -963,7 +995,7 @@ int32_t LPS22HH_Get_One_Shot_Status(LPS22HH_Object_t *pObj, uint8_t *Status)
     return LPS22HH_ERROR;
   }
 
-  if (p_da && t_da)
+  if ((p_da & t_da) != 0U)
   {
     *Status = 1;
   }
@@ -982,15 +1014,15 @@ int32_t LPS22HH_Get_One_Shot_Status(LPS22HH_Object_t *pObj, uint8_t *Status)
   */
 int32_t LPS22HH_Enable_DRDY_Interrupt(LPS22HH_Object_t *pObj)
 {
-  lps22hh_ctrl_reg3_t ctrl1_reg3;
+  lps22hh_pin_int_route_t pin_int;
 
   /* Enable Interrupt DRDY on INT1 */
-  if (lps22hh_pin_int_route_get(&(pObj->Ctx), &ctrl1_reg3) != LPS22HH_OK)
+  if (lps22hh_pin_int_route_get(&(pObj->Ctx), &pin_int) != LPS22HH_OK)
   {
     return LPS22HH_ERROR;
   }
-  ctrl1_reg3.drdy = 1;
-  if (lps22hh_pin_int_route_set(&(pObj->Ctx), &ctrl1_reg3) != LPS22HH_OK)
+  pin_int.drdy_pres = 1;
+  if (lps22hh_pin_int_route_set(&(pObj->Ctx), &pin_int) != LPS22HH_OK)
   {
     return LPS22HH_ERROR;
   }
@@ -1013,7 +1045,7 @@ int32_t LPS22HH_Set_Power_Mode(LPS22HH_Object_t *pObj, uint8_t powerMode)
     return LPS22HH_ERROR;
   }
 
-  if (powerMode == 1)
+  if (powerMode == 1U)
   {
     ctrl_reg2.low_noise_en = LPS22HH_LOW_NOISE_EN;
   }

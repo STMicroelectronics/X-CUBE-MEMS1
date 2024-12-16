@@ -45,11 +45,16 @@
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak lps22hh_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t __weak lps22hh_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                 uint8_t *data,
                                 uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->read_reg(ctx->handle, reg, data, len);
 
@@ -66,11 +71,16 @@ int32_t __weak lps22hh_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak lps22hh_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t __weak lps22hh_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                  uint8_t *data,
                                  uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->write_reg(ctx->handle, reg, data, len);
 
@@ -119,7 +129,7 @@ float_t lps22hh_from_lsb_to_celsius(int16_t lsb)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_autozero_rst_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps22hh_autozero_rst_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps22hh_interrupt_cfg_t reg;
   int32_t ret;
@@ -143,7 +153,7 @@ int32_t lps22hh_autozero_rst_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_autozero_rst_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps22hh_autozero_rst_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps22hh_interrupt_cfg_t reg;
   int32_t ret;
@@ -162,7 +172,7 @@ int32_t lps22hh_autozero_rst_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_autozero_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps22hh_autozero_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps22hh_interrupt_cfg_t reg;
   int32_t ret;
@@ -186,7 +196,7 @@ int32_t lps22hh_autozero_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_autozero_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps22hh_autozero_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps22hh_interrupt_cfg_t reg;
   int32_t ret;
@@ -205,7 +215,7 @@ int32_t lps22hh_autozero_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_pressure_snap_rst_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps22hh_pressure_snap_rst_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps22hh_interrupt_cfg_t reg;
   int32_t ret;
@@ -229,7 +239,7 @@ int32_t lps22hh_pressure_snap_rst_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_pressure_snap_rst_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps22hh_pressure_snap_rst_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps22hh_interrupt_cfg_t reg;
   int32_t ret;
@@ -248,7 +258,7 @@ int32_t lps22hh_pressure_snap_rst_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_pressure_snap_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps22hh_pressure_snap_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps22hh_interrupt_cfg_t reg;
   int32_t ret;
@@ -272,7 +282,7 @@ int32_t lps22hh_pressure_snap_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_pressure_snap_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps22hh_pressure_snap_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps22hh_interrupt_cfg_t reg;
   int32_t ret;
@@ -291,7 +301,7 @@ int32_t lps22hh_pressure_snap_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps22hh_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps22hh_ctrl_reg1_t reg;
   int32_t ret;
@@ -315,7 +325,7 @@ int32_t lps22hh_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps22hh_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps22hh_ctrl_reg1_t reg;
   int32_t ret;
@@ -334,7 +344,7 @@ int32_t lps22hh_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_data_rate_set(stmdev_ctx_t *ctx, lps22hh_odr_t val)
+int32_t lps22hh_data_rate_set(const stmdev_ctx_t *ctx, lps22hh_odr_t val)
 {
   lps22hh_ctrl_reg1_t ctrl_reg1;
   lps22hh_ctrl_reg2_t ctrl_reg2;
@@ -371,7 +381,7 @@ int32_t lps22hh_data_rate_set(stmdev_ctx_t *ctx, lps22hh_odr_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_data_rate_get(stmdev_ctx_t *ctx, lps22hh_odr_t *val)
+int32_t lps22hh_data_rate_get(const stmdev_ctx_t *ctx, lps22hh_odr_t *val)
 {
   lps22hh_ctrl_reg1_t ctrl_reg1;
   lps22hh_ctrl_reg2_t ctrl_reg2;
@@ -466,7 +476,7 @@ int32_t lps22hh_data_rate_get(stmdev_ctx_t *ctx, lps22hh_odr_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_pressure_ref_set(stmdev_ctx_t *ctx, int16_t val)
+int32_t lps22hh_pressure_ref_set(const stmdev_ctx_t *ctx, int16_t val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -489,7 +499,7 @@ int32_t lps22hh_pressure_ref_set(stmdev_ctx_t *ctx, int16_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_pressure_ref_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t lps22hh_pressure_ref_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -511,7 +521,7 @@ int32_t lps22hh_pressure_ref_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_pressure_offset_set(stmdev_ctx_t *ctx, int16_t val)
+int32_t lps22hh_pressure_offset_set(const stmdev_ctx_t *ctx, int16_t val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -534,7 +544,7 @@ int32_t lps22hh_pressure_offset_set(stmdev_ctx_t *ctx, int16_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_pressure_offset_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t lps22hh_pressure_offset_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -554,7 +564,7 @@ int32_t lps22hh_pressure_offset_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_all_sources_get(stmdev_ctx_t *ctx,
+int32_t lps22hh_all_sources_get(const stmdev_ctx_t *ctx,
                                 lps22hh_all_sources_t *val)
 {
   int32_t ret;
@@ -585,7 +595,7 @@ int32_t lps22hh_all_sources_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_status_reg_get(stmdev_ctx_t *ctx,
+int32_t lps22hh_status_reg_get(const stmdev_ctx_t *ctx,
                                lps22hh_status_t *val)
 {
   int32_t ret;
@@ -603,7 +613,7 @@ int32_t lps22hh_status_reg_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_press_flag_data_ready_get(stmdev_ctx_t *ctx,
+int32_t lps22hh_press_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                           uint8_t *val)
 {
   lps22hh_status_t reg;
@@ -623,7 +633,7 @@ int32_t lps22hh_press_flag_data_ready_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_temp_flag_data_ready_get(stmdev_ctx_t *ctx,
+int32_t lps22hh_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val)
 {
   lps22hh_status_t reg;
@@ -655,16 +665,16 @@ int32_t lps22hh_temp_flag_data_ready_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_pressure_raw_get(stmdev_ctx_t *ctx, uint32_t *buff)
+int32_t lps22hh_pressure_raw_get(const stmdev_ctx_t *ctx, uint32_t *buff)
 {
   int32_t ret;
 
   uint8_t reg[3];
   ret =  lps22hh_read_reg(ctx, LPS22HH_PRESS_OUT_XL, reg, 3);
   *buff = reg[2];
-  *buff = (*buff * 256) + reg[1];
-  *buff = (*buff * 256) + reg[0];
-  *buff *= 256;
+  *buff = (*buff * 256U) + reg[1];
+  *buff = (*buff * 256U) + reg[0];
+  *buff *= 256U;
 
   return ret;
 }
@@ -677,14 +687,14 @@ int32_t lps22hh_pressure_raw_get(stmdev_ctx_t *ctx, uint32_t *buff)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *buff)
+int32_t lps22hh_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *buff)
 {
   int32_t ret;
-
   uint8_t reg[2];
+
   ret =  lps22hh_read_reg(ctx, LPS22HH_TEMP_OUT_L, reg, 2);
-  *buff = reg[1];
-  *buff = (*buff * 256) + reg[0];
+  *buff = (int16_t)reg[1];
+  *buff = (*buff * 256) + (int16_t)reg[0];
 
   return ret;
 }
@@ -697,7 +707,7 @@ int32_t lps22hh_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *buff)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_fifo_pressure_raw_get(stmdev_ctx_t *ctx,
+int32_t lps22hh_fifo_pressure_raw_get(const stmdev_ctx_t *ctx,
                                       uint32_t *buff)
 {
   int32_t ret;
@@ -705,9 +715,9 @@ int32_t lps22hh_fifo_pressure_raw_get(stmdev_ctx_t *ctx,
   uint8_t reg[3];
   ret =  lps22hh_read_reg(ctx, LPS22HH_FIFO_DATA_OUT_PRESS_XL, reg, 3);
   *buff = reg[2];
-  *buff = (*buff * 256) + reg[1];
-  *buff = (*buff * 256) + reg[0];
-  *buff *= 256;
+  *buff = (*buff * 256U) + reg[1];
+  *buff = (*buff * 256U) + reg[0];
+  *buff *= 256U;
 
   return ret;
 }
@@ -720,15 +730,15 @@ int32_t lps22hh_fifo_pressure_raw_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_fifo_temperature_raw_get(stmdev_ctx_t *ctx,
+int32_t lps22hh_fifo_temperature_raw_get(const stmdev_ctx_t *ctx,
                                          int16_t *buff)
 {
   int32_t ret;
 
   uint8_t reg[2];
   ret =  lps22hh_read_reg(ctx, LPS22HH_FIFO_DATA_OUT_TEMP_L, reg, 2);
-  *buff = reg[1];
-  *buff = (*buff * 256) + reg[0];
+  *buff = (int16_t)reg[1];
+  *buff = (*buff * 256) + (int16_t)reg[0];
 
   return ret;
 }
@@ -753,7 +763,7 @@ int32_t lps22hh_fifo_temperature_raw_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lps22hh_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -771,7 +781,7 @@ int32_t lps22hh_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_reset_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps22hh_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps22hh_ctrl_reg2_t reg;
   int32_t ret;
@@ -796,7 +806,7 @@ int32_t lps22hh_reset_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_reset_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps22hh_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps22hh_ctrl_reg2_t reg;
   int32_t ret;
@@ -817,7 +827,7 @@ int32_t lps22hh_reset_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_auto_increment_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps22hh_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps22hh_ctrl_reg2_t reg;
   int32_t ret;
@@ -843,7 +853,7 @@ int32_t lps22hh_auto_increment_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_auto_increment_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps22hh_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps22hh_ctrl_reg2_t reg;
   int32_t ret;
@@ -863,7 +873,7 @@ int32_t lps22hh_auto_increment_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_boot_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps22hh_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps22hh_ctrl_reg2_t reg;
   int32_t ret;
@@ -888,7 +898,7 @@ int32_t lps22hh_boot_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps22hh_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps22hh_ctrl_reg2_t reg;
   int32_t ret;
@@ -920,7 +930,7 @@ int32_t lps22hh_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_lp_bandwidth_set(stmdev_ctx_t *ctx,
+int32_t lps22hh_lp_bandwidth_set(const stmdev_ctx_t *ctx,
                                  lps22hh_lpfp_cfg_t val)
 {
   lps22hh_ctrl_reg1_t reg;
@@ -945,7 +955,7 @@ int32_t lps22hh_lp_bandwidth_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_lp_bandwidth_get(stmdev_ctx_t *ctx,
+int32_t lps22hh_lp_bandwidth_get(const stmdev_ctx_t *ctx,
                                  lps22hh_lpfp_cfg_t *val)
 {
   lps22hh_ctrl_reg1_t reg;
@@ -996,7 +1006,7 @@ int32_t lps22hh_lp_bandwidth_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_i2c_interface_set(stmdev_ctx_t *ctx,
+int32_t lps22hh_i2c_interface_set(const stmdev_ctx_t *ctx,
                                   lps22hh_i2c_disable_t val)
 {
   lps22hh_if_ctrl_t reg;
@@ -1021,7 +1031,7 @@ int32_t lps22hh_i2c_interface_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_i2c_interface_get(stmdev_ctx_t *ctx,
+int32_t lps22hh_i2c_interface_get(const stmdev_ctx_t *ctx,
                                   lps22hh_i2c_disable_t *val)
 {
   lps22hh_if_ctrl_t reg;
@@ -1055,7 +1065,7 @@ int32_t lps22hh_i2c_interface_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_i3c_interface_set(stmdev_ctx_t *ctx,
+int32_t lps22hh_i3c_interface_set(const stmdev_ctx_t *ctx,
                                   lps22hh_i3c_disable_t val)
 {
   lps22hh_if_ctrl_t reg;
@@ -1081,7 +1091,7 @@ int32_t lps22hh_i3c_interface_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_i3c_interface_get(stmdev_ctx_t *ctx,
+int32_t lps22hh_i3c_interface_get(const stmdev_ctx_t *ctx,
                                   lps22hh_i3c_disable_t *val)
 {
   lps22hh_if_ctrl_t reg;
@@ -1119,7 +1129,7 @@ int32_t lps22hh_i3c_interface_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_sdo_sa0_mode_set(stmdev_ctx_t *ctx,
+int32_t lps22hh_sdo_sa0_mode_set(const stmdev_ctx_t *ctx,
                                  lps22hh_pu_en_t val)
 {
   lps22hh_if_ctrl_t reg;
@@ -1144,7 +1154,7 @@ int32_t lps22hh_sdo_sa0_mode_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_sdo_sa0_mode_get(stmdev_ctx_t *ctx,
+int32_t lps22hh_sdo_sa0_mode_get(const stmdev_ctx_t *ctx,
                                  lps22hh_pu_en_t *val)
 {
   lps22hh_if_ctrl_t reg;
@@ -1178,7 +1188,7 @@ int32_t lps22hh_sdo_sa0_mode_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_sda_mode_set(stmdev_ctx_t *ctx, lps22hh_pu_en_t val)
+int32_t lps22hh_sda_mode_set(const stmdev_ctx_t *ctx, lps22hh_pu_en_t val)
 {
   lps22hh_if_ctrl_t reg;
   int32_t ret;
@@ -1202,7 +1212,7 @@ int32_t lps22hh_sda_mode_set(stmdev_ctx_t *ctx, lps22hh_pu_en_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_sda_mode_get(stmdev_ctx_t *ctx, lps22hh_pu_en_t *val)
+int32_t lps22hh_sda_mode_get(const stmdev_ctx_t *ctx, lps22hh_pu_en_t *val)
 {
   lps22hh_if_ctrl_t reg;
   int32_t ret;
@@ -1235,7 +1245,7 @@ int32_t lps22hh_sda_mode_get(stmdev_ctx_t *ctx, lps22hh_pu_en_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_spi_mode_set(stmdev_ctx_t *ctx, lps22hh_sim_t val)
+int32_t lps22hh_spi_mode_set(const stmdev_ctx_t *ctx, lps22hh_sim_t val)
 {
   lps22hh_ctrl_reg1_t reg;
   int32_t ret;
@@ -1259,7 +1269,7 @@ int32_t lps22hh_spi_mode_set(stmdev_ctx_t *ctx, lps22hh_sim_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_spi_mode_get(stmdev_ctx_t *ctx, lps22hh_sim_t *val)
+int32_t lps22hh_spi_mode_get(const stmdev_ctx_t *ctx, lps22hh_sim_t *val)
 {
   lps22hh_ctrl_reg1_t reg;
   int32_t ret;
@@ -1305,7 +1315,7 @@ int32_t lps22hh_spi_mode_get(stmdev_ctx_t *ctx, lps22hh_sim_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_int_notification_set(stmdev_ctx_t *ctx,
+int32_t lps22hh_int_notification_set(const stmdev_ctx_t *ctx,
                                      lps22hh_lir_t val)
 {
   lps22hh_interrupt_cfg_t reg;
@@ -1330,7 +1340,7 @@ int32_t lps22hh_int_notification_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_int_notification_get(stmdev_ctx_t *ctx,
+int32_t lps22hh_int_notification_get(const stmdev_ctx_t *ctx,
                                      lps22hh_lir_t *val)
 {
   lps22hh_interrupt_cfg_t reg;
@@ -1364,7 +1374,7 @@ int32_t lps22hh_int_notification_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_pin_mode_set(stmdev_ctx_t *ctx, lps22hh_pp_od_t val)
+int32_t lps22hh_pin_mode_set(const stmdev_ctx_t *ctx, lps22hh_pp_od_t val)
 {
   lps22hh_ctrl_reg2_t reg;
   int32_t ret;
@@ -1388,7 +1398,7 @@ int32_t lps22hh_pin_mode_set(stmdev_ctx_t *ctx, lps22hh_pp_od_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_pin_mode_get(stmdev_ctx_t *ctx, lps22hh_pp_od_t *val)
+int32_t lps22hh_pin_mode_get(const stmdev_ctx_t *ctx, lps22hh_pp_od_t *val)
 {
   lps22hh_ctrl_reg2_t reg;
   int32_t ret;
@@ -1421,7 +1431,7 @@ int32_t lps22hh_pin_mode_get(stmdev_ctx_t *ctx, lps22hh_pp_od_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_pin_polarity_set(stmdev_ctx_t *ctx,
+int32_t lps22hh_pin_polarity_set(const stmdev_ctx_t *ctx,
                                  lps22hh_int_h_l_t val)
 {
   lps22hh_ctrl_reg2_t reg;
@@ -1446,7 +1456,7 @@ int32_t lps22hh_pin_polarity_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_pin_polarity_get(stmdev_ctx_t *ctx,
+int32_t lps22hh_pin_polarity_get(const stmdev_ctx_t *ctx,
                                  lps22hh_int_h_l_t *val)
 {
   lps22hh_ctrl_reg2_t reg;
@@ -1473,37 +1483,52 @@ int32_t lps22hh_pin_polarity_get(stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Select the signal that need to route on int pad.[set]
+  * @brief  Route interrupt signals on int1 pin.[set]
   *
-  * @param  ctx      read / write interface definitions
-  * @param  val      registers CTRL_REG3
-  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  val   the signals to route on int1 pin.(ptr)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_pin_int_route_set(stmdev_ctx_t *ctx,
-                                  lps22hh_ctrl_reg3_t *val)
+int32_t lps22hh_pin_int_route_set(const stmdev_ctx_t *ctx,
+                                  lps22hh_pin_int_route_t *val)
 {
+  lps22hh_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
 
-  ret =  lps22hh_write_reg(ctx, LPS22HH_CTRL_REG3, (uint8_t *) val, 1);
+  ret = lps22hh_read_reg(ctx, LPS22HH_CTRL_REG3, (uint8_t *)&ctrl_reg3, 1);
+  if (ret == 0)
+  {
+    ctrl_reg3.drdy = val->drdy_pres;
+    ctrl_reg3.int_f_wtm = val->fifo_th;
+    ctrl_reg3.int_f_ovr = val->fifo_ovr;
+    ctrl_reg3.int_f_full = val->fifo_full;
 
+    ret = lps22hh_write_reg(ctx, LPS22HH_CTRL_REG3, (uint8_t *)&ctrl_reg3, 1);
+  }
   return ret;
 }
 
 /**
-  * @brief  Select the signal that need to route on int pad.[get]
+  * @brief  Route interrupt signals on int1 pin.[get]
   *
-  * @param  ctx      read / write interface definitions
-  * @param  val      registers CTRL_REG3
-  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  val   the signals that are routed on int1 pin.(ptr)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_pin_int_route_get(stmdev_ctx_t *ctx,
-                                  lps22hh_ctrl_reg3_t *val)
+int32_t lps22hh_pin_int_route_get(const stmdev_ctx_t *ctx,
+                                  lps22hh_pin_int_route_t *val)
 {
+  lps22hh_ctrl_reg3_t ctrl_reg3;
   int32_t ret;
 
-  ret =  lps22hh_read_reg(ctx, LPS22HH_CTRL_REG3, (uint8_t *) val, 1);
+  ret = lps22hh_read_reg(ctx, LPS22HH_CTRL_REG3, (uint8_t *)&ctrl_reg3, 1);
+
+  val->drdy_pres =  ctrl_reg3.drdy;
+  val->fifo_th = ctrl_reg3.int_f_wtm;
+  val->fifo_ovr = ctrl_reg3.int_f_ovr;
+  val->fifo_full = ctrl_reg3.int_f_full;
 
   return ret;
 }
@@ -1529,7 +1554,7 @@ int32_t lps22hh_pin_int_route_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_int_on_threshold_set(stmdev_ctx_t *ctx,
+int32_t lps22hh_int_on_threshold_set(const stmdev_ctx_t *ctx,
                                      lps22hh_pe_t val)
 {
   lps22hh_interrupt_cfg_t reg;
@@ -1565,7 +1590,7 @@ int32_t lps22hh_int_on_threshold_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_int_on_threshold_get(stmdev_ctx_t *ctx,
+int32_t lps22hh_int_on_threshold_get(const stmdev_ctx_t *ctx,
                                      lps22hh_pe_t *val)
 {
   lps22hh_interrupt_cfg_t reg;
@@ -1607,7 +1632,7 @@ int32_t lps22hh_int_on_threshold_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_int_treshold_set(stmdev_ctx_t *ctx, uint16_t buff)
+int32_t lps22hh_int_threshold_set(const stmdev_ctx_t *ctx, uint16_t buff)
 {
   int32_t ret;
 
@@ -1635,7 +1660,7 @@ int32_t lps22hh_int_treshold_set(stmdev_ctx_t *ctx, uint16_t buff)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_int_treshold_get(stmdev_ctx_t *ctx, uint16_t *buff)
+int32_t lps22hh_int_threshold_get(const stmdev_ctx_t *ctx, uint16_t *buff)
 {
   int32_t ret;
 
@@ -1675,7 +1700,7 @@ int32_t lps22hh_int_treshold_get(stmdev_ctx_t *ctx, uint16_t *buff)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_fifo_mode_set(stmdev_ctx_t *ctx, lps22hh_f_mode_t val)
+int32_t lps22hh_fifo_mode_set(const stmdev_ctx_t *ctx, lps22hh_f_mode_t val)
 {
   lps22hh_fifo_ctrl_t reg;
   int32_t ret;
@@ -1699,7 +1724,7 @@ int32_t lps22hh_fifo_mode_set(stmdev_ctx_t *ctx, lps22hh_f_mode_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_fifo_mode_get(stmdev_ctx_t *ctx,
+int32_t lps22hh_fifo_mode_get(const stmdev_ctx_t *ctx,
                               lps22hh_f_mode_t *val)
 {
   lps22hh_fifo_ctrl_t reg;
@@ -1754,7 +1779,7 @@ int32_t lps22hh_fifo_mode_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_fifo_stop_on_wtm_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps22hh_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps22hh_fifo_ctrl_t reg;
   int32_t ret;
@@ -1779,7 +1804,7 @@ int32_t lps22hh_fifo_stop_on_wtm_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_fifo_stop_on_wtm_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps22hh_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps22hh_fifo_ctrl_t reg;
   int32_t ret;
@@ -1798,7 +1823,7 @@ int32_t lps22hh_fifo_stop_on_wtm_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t lps22hh_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lps22hh_fifo_wtm_t reg;
   int32_t ret;
@@ -1822,7 +1847,7 @@ int32_t lps22hh_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps22hh_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps22hh_fifo_wtm_t reg;
   int32_t ret;
@@ -1837,15 +1862,15 @@ int32_t lps22hh_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @brief  FIFO stored data level.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  buff     buffer that stores data read
+  * @param  num      buffer that stores data read
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_fifo_data_level_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t lps22hh_fifo_data_level_get(const stmdev_ctx_t *ctx, uint8_t *num)
 {
   int32_t ret;
 
-  ret =  lps22hh_read_reg(ctx, LPS22HH_FIFO_STATUS1, buff, 1);
+  ret =  lps22hh_read_reg(ctx, LPS22HH_FIFO_STATUS1, num, 1);
 
   return ret;
 }
@@ -1858,7 +1883,7 @@ int32_t lps22hh_fifo_data_level_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_fifo_src_get(stmdev_ctx_t *ctx,
+int32_t lps22hh_fifo_src_get(const stmdev_ctx_t *ctx,
                              lps22hh_fifo_status2_t *val)
 {
   int32_t ret;
@@ -1876,7 +1901,7 @@ int32_t lps22hh_fifo_src_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_fifo_full_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps22hh_fifo_full_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps22hh_fifo_status2_t reg;
   int32_t ret;
@@ -1895,7 +1920,7 @@ int32_t lps22hh_fifo_full_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps22hh_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps22hh_fifo_status2_t reg;
   int32_t ret;
@@ -1914,144 +1939,13 @@ int32_t lps22hh_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps22hh_fifo_wtm_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lps22hh_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lps22hh_fifo_status2_t reg;
   int32_t ret;
 
   ret = lps22hh_read_reg(ctx, LPS22HH_FIFO_STATUS2, (uint8_t *)&reg, 1);
   *val = reg.fifo_wtm_ia;
-
-  return ret;
-}
-
-/**
-  * @brief  FIFO overrun interrupt on INT_DRDY pin.[set]
-  *
-  * @param  stmdev_ctx_t *ctx: read / write interface definitions
-  * @param  uint8_t val: change the values of f_ovr in reg CTRL_REG3
-  * @retval          interface status (MANDATORY: return 0 -> no Error)
-  *
-  */
-int32_t lps22hh_fifo_ovr_on_int_set(stmdev_ctx_t *ctx, uint8_t val)
-{
-  lps22hh_ctrl_reg3_t reg;
-  int32_t ret;
-
-  ret = lps22hh_read_reg(ctx, LPS22HH_CTRL_REG3, (uint8_t *)&reg, 1);
-
-  if (ret == 0)
-  {
-    reg.int_f_ovr = val;
-    ret = lps22hh_write_reg(ctx, LPS22HH_CTRL_REG3, (uint8_t *)&reg, 1);
-  }
-
-  return ret;
-}
-
-/**
-  * @brief  FIFO overrun interrupt on INT_DRDY pin.[get]
-  *
-  * @param  stmdev_ctx_t *ctx: read / write interface definitions
-  * @param  uint8_t: change the values of f_ovr in reg CTRL_REG3
-  * @retval          interface status (MANDATORY: return 0 -> no Error)
-  *
-  */
-int32_t lps22hh_fifo_ovr_on_int_get(stmdev_ctx_t *ctx, uint8_t *val)
-{
-  lps22hh_ctrl_reg3_t reg;
-  int32_t ret;
-
-  ret = lps22hh_read_reg(ctx, LPS22HH_CTRL_REG3, (uint8_t *)&reg, 1);
-  *val = reg.int_f_ovr;
-
-  return ret;
-}
-
-/**
-  * @brief  FIFO watermark status on INT_DRDY pin.[set]
-  *
-  * @param  stmdev_ctx_t *ctx: read / write interface definitions
-  * @param  uint8_t val: change the values of f_fth in reg CTRL_REG3
-  * @retval          interface status (MANDATORY: return 0 -> no Error)
-  *
-  */
-int32_t lps22hh_fifo_threshold_on_int_set(stmdev_ctx_t *ctx,
-                                          uint8_t val)
-{
-  lps22hh_ctrl_reg3_t reg;
-  int32_t ret;
-
-  ret = lps22hh_read_reg(ctx, LPS22HH_CTRL_REG3, (uint8_t *)&reg, 1);
-
-  if (ret == 0)
-  {
-    reg.int_f_wtm = val;
-    ret = lps22hh_write_reg(ctx, LPS22HH_CTRL_REG3, (uint8_t *)&reg, 1);
-  }
-
-  return ret;
-}
-
-/**
-  * @brief  FIFO watermark status on INT_DRDY pin.[get]
-  *
-  * @param  lps22hb_ctx_t *ctx: read / write interface definitions
-  * @param  uint8_t: change the values of f_fth in reg CTRL_REG3
-  * @retval          interface status (MANDATORY: return 0 -> no Error)
-  *
-  */
-int32_t lps22hh_fifo_threshold_on_int_get(stmdev_ctx_t *ctx,
-                                          uint8_t *val)
-{
-  lps22hh_ctrl_reg3_t reg;
-  int32_t ret;
-
-  ret = lps22hh_read_reg(ctx, LPS22HH_CTRL_REG3, (uint8_t *)&reg, 1);
-  *val = reg.int_f_wtm;
-
-  return ret;
-}
-
-/**
-  * @brief  FIFO full flag on INT_DRDY pin.[set]
-  *
-  * @param  stmdev_ctx_t *ctx: read / write interface definitions
-  * @param  uint8_t val: change the values of f_fss5 in reg CTRL_REG3
-  * @retval          interface status (MANDATORY: return 0 -> no Error)
-  *
-  */
-int32_t lps22hh_fifo_full_on_int_set(stmdev_ctx_t *ctx, uint8_t val)
-{
-  lps22hh_ctrl_reg3_t reg;
-  int32_t ret;
-
-  ret = lps22hh_read_reg(ctx, LPS22HH_CTRL_REG3, (uint8_t *)&reg, 1);
-
-  if (ret == 0)
-  {
-    reg.int_f_full = val;
-    ret = lps22hh_write_reg(ctx, LPS22HH_CTRL_REG3, (uint8_t *)&reg, 1);
-  }
-
-  return ret;
-}
-
-/**
-  * @brief  FIFO full flag on INT_DRDY pin.[get]
-  *
-  * @param  stmdev_ctx_t *ctx: read / write interface definitions
-  * @param  uint8_t: change the values of f_fss5 in reg CTRL_REG3
-  * @retval          interface status (MANDATORY: return 0 -> no Error)
-  *
-  */
-int32_t lps22hh_fifo_full_on_int_get(stmdev_ctx_t *ctx, uint8_t *val)
-{
-  lps22hh_ctrl_reg3_t reg;
-  int32_t ret;
-
-  ret = lps22hh_read_reg(ctx, LPS22HH_CTRL_REG3, (uint8_t *)&reg, 1);
-  *val = reg.int_f_full;
 
   return ret;
 }

@@ -2,8 +2,6 @@
   ******************************************************************************
   * @file    motion_tl.h
   * @author  MEMS Application Team
-  * @version V1.5.0
-  * @date    02-August-2022
   * @brief   Header for motion_tl module
   ******************************************************************************
   * @attention
@@ -104,6 +102,7 @@ typedef enum
   MTL_MCU_BLUE_NRG1,
   MTL_MCU_BLUE_NRG2,
   MTL_MCU_BLUE_NRG_LP,
+  MTL_MCU_STM32WB0,
 } MTL_mcu_type_t;
 
 /**

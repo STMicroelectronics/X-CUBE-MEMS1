@@ -214,10 +214,11 @@ int32_t LIS2DUX12_Init(LIS2DUX12_Object_t *pObj)
     return LIS2DUX12_ERROR;
   }
 
-  /* Select default output data rate. */
+  /* Select default output data rate */
   pObj->acc_odr = 100.0f;
-  /* Select default ultra low power (disabled). */
-  pObj->power_mode = LIS2DUX12_LOW_POWER;
+
+  /* Select default high performance mode (when disabled) */
+  pObj->power_mode = LIS2DUX12_HIGH_PERFORMANCE;
 
   /* Output data rate: power down, full scale: 2g */
   lis2dux12_md_t mode =
@@ -249,9 +250,10 @@ int32_t LIS2DUX12_DeInit(LIS2DUX12_Object_t *pObj)
     return LIS2DUX12_ERROR;
   }
 
-  /* Reset output data rate. */
+  /* Reset output data rate */
   pObj->acc_odr = 0.0f;
-  /* Reset ultra low power to default value (disabled). */
+
+  /* Set low power mode (when disabled) */
   pObj->power_mode = LIS2DUX12_LOW_POWER;
 
   pObj->is_initialized = 0;
@@ -545,8 +547,8 @@ int32_t LIS2DUX12_ACC_GetOutputDataRate(LIS2DUX12_Object_t *pObj, float_t *Odr)
   */
 int32_t LIS2DUX12_ACC_SetOutputDataRate(LIS2DUX12_Object_t *pObj, float_t Odr)
 {
-  /* By default we use Ultra Low Power disabled */
-  return LIS2DUX12_ACC_SetOutputDataRate_With_Mode(pObj, Odr, LIS2DUX12_LOW_POWER);
+  /* By default we use high performance mode */
+  return LIS2DUX12_ACC_SetOutputDataRate_With_Mode(pObj, Odr, LIS2DUX12_HIGH_PERFORMANCE);
 }
 
 /**

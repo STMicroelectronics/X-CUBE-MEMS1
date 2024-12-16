@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2014-2021 STMicroelectronics.
+  * Copyright (c) 2014-2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -44,6 +44,9 @@
 #define SC_GET_ODR                                                      0x1F
 #define SC_GET_SENSOR_LIST                                              0x14
 #define SC_SET_SENSOR_INDEX                                             0x15
+#define SC_WRITE_MULTI_REGISTER                                         0x16
+#define SC_READ_MULTI_REGISTER                                          0x17
+#define SC_READ_MODIFY_WRITE_REGISTER                                   0x18
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/

@@ -486,9 +486,9 @@ int32_t BSP_USBPD_PWR_VBUSGetVoltage(uint32_t PortNum, uint32_t *pVoltage)
 
     LL_ADC_REG_StartConversion(ADC1);
 
-    val = __LL_ADC_CALC_DATA_TO_VOLTAGE(VSENSE_ADC_INSTANCE, VDDA_APPLI,
-                                        (uint32_t) LL_ADC_REG_ReadConversionData12(VSENSE_ADC_INSTANCE),
-                                        LL_ADC_RESOLUTION_12B);
+    val = (((uint32_t) LL_ADC_REG_ReadConversionData12(VSENSE_ADC_INSTANCE)) * (VDDA_APPLI))
+           / (__LL_ADC_DIGITAL_SCALE(VSENSE_ADC_INSTANCE, LL_ADC_RESOLUTION_12B));
+
     /* NUCLEO144_Q (MB1549) board is used */
     /* Value is multiplied by 7.61 (Divider R35+R34/R34 (379.9K/49.9K) for VSENSE) */
     val *= 761UL;

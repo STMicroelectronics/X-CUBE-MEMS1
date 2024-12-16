@@ -2,13 +2,11 @@
   ******************************************************************************
   * @file    motion_id.h
   * @author  MEMS Application Team
-  * @version V2.4.1
-  * @date    24-August-2021
   * @brief   Header for motion_id module
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2016-2017 STMicroelectronics.
+  * Copyright (c) 2022 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -72,6 +70,7 @@ typedef enum
   MID_MCU_BLUE_NRG1,
   MID_MCU_BLUE_NRG2,
   MID_MCU_BLUE_NRG_LP,
+  MID_MCU_STM32WB0,
 } MID_mcu_type_t;
 
 /**
@@ -134,3 +133,5 @@ uint8_t MotionID_GetLibVersion(char *version);
 #endif
 
 #endif /* _MOTION_ID_H_ */
+
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -2,8 +2,6 @@
   ******************************************************************************
   * @file    infrared_al.h
   * @author  MEMS Application Team
-  * @version V1.0.0
-  * @date    10-April-2024
   * @brief   Header for infrared_al module
   ******************************************************************************
   * @attention
@@ -52,6 +50,7 @@ typedef enum
   IAL_MCU_BLUE_NRG1,
   IAL_MCU_BLUE_NRG2,
   IAL_MCU_BLUE_NRG_LP,
+  IAL_MCU_STM32WB0,
 } IAL_mcu_type_t;
 
 typedef enum
@@ -82,7 +81,7 @@ typedef struct {
 
 typedef struct {
 	uint16_t ths;                  /* Threshold for presence detection [LSB] */
-	uint16_t abs_lat;			         /* Latency for absence trigger [ms] */
+	uint16_t abs_lat;			   /* Latency for absence trigger [ms] */
 	IAL_pres_state_t pres_init;    /* Initial presence state */
 } IAL_algo_conf_t;
 

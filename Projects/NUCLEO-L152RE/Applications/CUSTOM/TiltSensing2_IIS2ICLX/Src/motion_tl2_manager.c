@@ -20,12 +20,12 @@
 #include "motion_tl2_manager.h"
 
 /** @addtogroup MOTION_APPLICATIONS MOTION APPLICATIONS
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup TILT_SENSING2 TILT SENSING 2
  * @{
- */
+  */
 
 /* Extern variables ----------------------------------------------------------*/
 /* Private defines -----------------------------------------------------------*/
@@ -34,43 +34,43 @@
 /* Exported function prototypes ----------------------------------------------*/
 /* Exported functions --------------------------------------------------------*/
 /**
- * @brief  Initialize the MotionTL2 engine
- * @param  None
- * @retval None
- */
+  * @brief  Initialize the MotionTL2 engine
+  * @param  None
+  * @retval None
+  */
 void MotionTL2_manager_init(void)
 {
   MotionTL2_Init(MTL2_MCU_STM32);
 }
 
 /**
- * @brief  Run Tilt Sensing algorithm
- * @param  data_in  Structure containing input data
- * @param  timestamp_ms  Timestamp in [ms]
- * @param  data_out  Structure containing output data
- * @retval None
- */
+  * @brief  Run Tilt Sensing algorithm
+  * @param  data_in  Structure containing input data
+  * @param  timestamp_ms  Timestamp in [ms]
+  * @param  data_out  Structure containing output data
+  * @retval None
+  */
 void MotionTL2_manager_run(MTL2_input_t *data_in, uint64_t timestamp_ms, MTL2_output_t *data_out)
 {
   MotionTL2_Update(data_in, timestamp_ms, data_out);
 }
 
 /**
- * @brief  Get the library version
- * @param  version  Library version string (must be array of 35 char)
- * @param  length  Library version string length
- * @retval None
- */
+  * @brief  Get the library version
+  * @param  version  Library version string (must be array of 35 char)
+  * @param  length  Library version string length
+  * @retval None
+  */
 void MotionTL2_manager_get_version(char *version, int32_t *length)
 {
   *length = (int)MotionTL2_GetLibVersion(version);
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 

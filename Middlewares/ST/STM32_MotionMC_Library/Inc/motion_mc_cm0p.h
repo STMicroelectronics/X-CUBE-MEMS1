@@ -2,19 +2,16 @@
   ******************************************************************************
   * @file    motion_mc_cm0p.h
   * @author  MEMS Application Team
-  * @version V2.5.1
-  * @date    10-August-2021
   * @brief   Header for motion_mc_cm0p module
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2024 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under Software License Agreement SLA0077,
-  * the “License”. You may not use this component except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        www.st.com/sla0077
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -46,6 +43,7 @@ typedef enum
   MMC_CM0P_MCU_BLUE_NRG1,
   MMC_CM0P_MCU_BLUE_NRG2,
   MMC_CM0P_MCU_BLUE_NRG_LP,
+  MMC_CMOP_MCU_STM32WB0,
 } MMC_CM0P_mcu_type_t;
 
 typedef enum

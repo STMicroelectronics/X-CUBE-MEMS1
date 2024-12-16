@@ -137,7 +137,7 @@ int32_t STHS34PF80_Init(STHS34PF80_Object_t *pObj)
     }
 
     /* Put the component in standby mode. */
-    if (sths34pf80_tmos_odr_set(&(pObj->Ctx), STHS34PF80_TMOS_ODR_OFF) != STHS34PF80_OK)
+    if (sths34pf80_odr_set(&(pObj->Ctx), STHS34PF80_ODR_OFF) != STHS34PF80_OK)
     {
       return STHS34PF80_ERROR;
     }
@@ -274,7 +274,7 @@ int32_t STHS34PF80_TEMP_Disable(STHS34PF80_Object_t *pObj)
   }
 
   /* Put the component in standby mode. */
-  if (sths34pf80_tmos_odr_set(&(pObj->Ctx), STHS34PF80_TMOS_ODR_OFF) != STHS34PF80_OK)
+  if (sths34pf80_odr_set(&(pObj->Ctx), STHS34PF80_ODR_OFF) != STHS34PF80_OK)
   {
     return STHS34PF80_ERROR;
   }
@@ -293,48 +293,48 @@ int32_t STHS34PF80_TEMP_Disable(STHS34PF80_Object_t *pObj)
 int32_t STHS34PF80_TEMP_GetOutputDataRate(STHS34PF80_Object_t *pObj, float_t *Odr)
 {
   int32_t ret = STHS34PF80_OK;
-  sths34pf80_tmos_odr_t odr_low_level;
+  sths34pf80_odr_t odr_low_level;
 
-  if (sths34pf80_tmos_odr_get(&(pObj->Ctx), &odr_low_level) != STHS34PF80_OK)
+  if (sths34pf80_odr_get(&(pObj->Ctx), &odr_low_level) != STHS34PF80_OK)
   {
     return STHS34PF80_ERROR;
   }
 
   switch (odr_low_level)
   {
-    case STHS34PF80_TMOS_ODR_OFF:
+    case STHS34PF80_ODR_OFF:
       *Odr = 0.0f;
       break;
 
-    case STHS34PF80_TMOS_ODR_AT_0Hz25:
+    case STHS34PF80_ODR_AT_0Hz25:
       *Odr = 0.25f;
       break;
 
-    case STHS34PF80_TMOS_ODR_AT_0Hz50:
+    case STHS34PF80_ODR_AT_0Hz50:
       *Odr = 0.5f;
       break;
 
-    case STHS34PF80_TMOS_ODR_AT_1Hz:
+    case STHS34PF80_ODR_AT_1Hz:
       *Odr = 1.0f;
       break;
 
-    case STHS34PF80_TMOS_ODR_AT_2Hz:
+    case STHS34PF80_ODR_AT_2Hz:
       *Odr = 2.0f;
       break;
 
-    case STHS34PF80_TMOS_ODR_AT_4Hz:
+    case STHS34PF80_ODR_AT_4Hz:
       *Odr = 4.0f;
       break;
 
-    case STHS34PF80_TMOS_ODR_AT_8Hz:
+    case STHS34PF80_ODR_AT_8Hz:
       *Odr = 8.0f;
       break;
 
-    case STHS34PF80_TMOS_ODR_AT_15Hz:
+    case STHS34PF80_ODR_AT_15Hz:
       *Odr = 15.0f;
       break;
 
-    case STHS34PF80_TMOS_ODR_AT_30Hz:
+    case STHS34PF80_ODR_AT_30Hz:
       *Odr = 30.0f;
       break;
 
@@ -354,18 +354,18 @@ int32_t STHS34PF80_TEMP_GetOutputDataRate(STHS34PF80_Object_t *pObj, float_t *Od
   */
 int32_t STHS34PF80_TEMP_SetOutputDataRate(STHS34PF80_Object_t *pObj, float_t Odr)
 {
-  sths34pf80_tmos_odr_t new_odr;
+  sths34pf80_odr_t new_odr;
 
-  new_odr = (Odr <= 0.25f) ? STHS34PF80_TMOS_ODR_AT_0Hz25
-            : (Odr <= 0.5f) ? STHS34PF80_TMOS_ODR_AT_0Hz50
-            : (Odr <= 1.0f) ? STHS34PF80_TMOS_ODR_AT_1Hz
-            : (Odr <= 2.0f) ? STHS34PF80_TMOS_ODR_AT_2Hz
-            : (Odr <= 4.0f) ? STHS34PF80_TMOS_ODR_AT_4Hz
-            : (Odr <= 8.0f) ? STHS34PF80_TMOS_ODR_AT_8Hz
-            : (Odr <= 15.0f) ? STHS34PF80_TMOS_ODR_AT_15Hz
-            :                  STHS34PF80_TMOS_ODR_AT_30Hz;
+  new_odr = (Odr <= 0.25f) ? STHS34PF80_ODR_AT_0Hz25
+            : (Odr <= 0.5f) ? STHS34PF80_ODR_AT_0Hz50
+            : (Odr <= 1.0f) ? STHS34PF80_ODR_AT_1Hz
+            : (Odr <= 2.0f) ? STHS34PF80_ODR_AT_2Hz
+            : (Odr <= 4.0f) ? STHS34PF80_ODR_AT_4Hz
+            : (Odr <= 8.0f) ? STHS34PF80_ODR_AT_8Hz
+            : (Odr <= 15.0f) ? STHS34PF80_ODR_AT_15Hz
+            :                  STHS34PF80_ODR_AT_30Hz;
 
-  if (sths34pf80_tmos_odr_set(&(pObj->Ctx), new_odr) != STHS34PF80_OK)
+  if (sths34pf80_odr_set(&(pObj->Ctx), new_odr) != STHS34PF80_OK)
   {
     return STHS34PF80_ERROR;
   }
@@ -398,9 +398,9 @@ int32_t STHS34PF80_TEMP_GetTemperature(STHS34PF80_Object_t *pObj, float_t *Value
   */
 int32_t STHS34PF80_TEMP_Get_DRDY_Status(STHS34PF80_Object_t *pObj, uint8_t *Status)
 {
-  sths34pf80_tmos_drdy_status_t val;
+  sths34pf80_drdy_status_t val;
 
-  if (sths34pf80_tmos_drdy_status_get(&(pObj->Ctx), &val) != STHS34PF80_OK)
+  if (sths34pf80_drdy_status_get(&(pObj->Ctx), &val) != STHS34PF80_OK)
   {
     return STHS34PF80_ERROR;
   }
@@ -504,7 +504,7 @@ int32_t STHS34PF80_GetObjectTemperature(STHS34PF80_Object_t *pObj, float_t *Valu
   }
 
   /* Get the sensitivity */
-  if (sths34pf80_tmos_sensitivity_get(&(pObj->Ctx), &sensitivity) != STHS34PF80_OK)
+  if (sths34pf80_tobject_sensitivity_get(&(pObj->Ctx), &sensitivity) != STHS34PF80_OK)
   {
     return STHS34PF80_ERROR;
   }
@@ -570,10 +570,10 @@ int32_t STHS34PF80_GetPresenceData(STHS34PF80_Object_t *pObj, int16_t *Value)
   */
 int32_t STHS34PF80_GetPresenceFlag(STHS34PF80_Object_t *pObj, uint8_t *Value)
 {
-  sths34pf80_tmos_func_status_t status;
+  sths34pf80_func_status_t status;
 
   /* Get the presence flag */
-  if (sths34pf80_tmos_func_status_get(&(pObj->Ctx), &status) != STHS34PF80_OK)
+  if (sths34pf80_func_status_get(&(pObj->Ctx), &status) != STHS34PF80_OK)
   {
     return STHS34PF80_ERROR;
   }
@@ -608,10 +608,10 @@ int32_t STHS34PF80_GetMotionData(STHS34PF80_Object_t *pObj, int16_t *Value)
   */
 int32_t STHS34PF80_GetMotionFlag(STHS34PF80_Object_t *pObj, uint8_t *Value)
 {
-  sths34pf80_tmos_func_status_t status;
+  sths34pf80_func_status_t status;
 
   /* Get the motion flag */
-  if (sths34pf80_tmos_func_status_get(&(pObj->Ctx), &status) != STHS34PF80_OK)
+  if (sths34pf80_func_status_get(&(pObj->Ctx), &status) != STHS34PF80_OK)
   {
     return STHS34PF80_ERROR;
   }
@@ -811,7 +811,7 @@ int32_t STHS34PF80_GetSensData(STHS34PF80_Object_t *pObj, uint8_t *Value)
   */
 int32_t STHS34PF80_GetSensitivity(STHS34PF80_Object_t *pObj, uint16_t *Value)
 {
-  if (sths34pf80_tmos_sensitivity_get(&(pObj->Ctx), Value) != STHS34PF80_OK)
+  if (sths34pf80_tobject_sensitivity_get(&(pObj->Ctx), Value) != STHS34PF80_OK)
   {
     return STHS34PF80_ERROR;
   }

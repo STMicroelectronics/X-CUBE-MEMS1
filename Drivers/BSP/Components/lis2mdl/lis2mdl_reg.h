@@ -357,10 +357,23 @@ typedef union
   *
   */
 
-int32_t lis2mdl_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+#ifndef __weak
+#define __weak __attribute__((weak))
+#endif /* __weak */
+
+/*
+ * These are the basic platform dependent I/O routines to read
+ * and write device registers connected on a standard bus.
+ * The driver keeps offering a default implementation based on function
+ * pointers to read/write routines for backward compatibility.
+ * The __weak directive allows the final application to overwrite
+ * them with a custom implementation.
+ */
+
+int32_t lis2mdl_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                          uint8_t *data,
                          uint16_t len);
-int32_t lis2mdl_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t lis2mdl_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                           uint8_t *data,
                           uint16_t len);
 
@@ -368,8 +381,8 @@ float_t lis2mdl_from_lsb_to_mgauss(int16_t lsb);
 
 float_t lis2mdl_from_lsb_to_celsius(int16_t lsb);
 
-int32_t lis2mdl_mag_user_offset_set(stmdev_ctx_t *ctx, int16_t *val);
-int32_t lis2mdl_mag_user_offset_get(stmdev_ctx_t *ctx, int16_t *val);
+int32_t lis2mdl_mag_user_offset_set(const stmdev_ctx_t *ctx, int16_t *val);
+int32_t lis2mdl_mag_user_offset_get(const stmdev_ctx_t *ctx, int16_t *val);
 
 typedef enum
 {
@@ -377,9 +390,9 @@ typedef enum
   LIS2MDL_SINGLE_TRIGGER   = 1,
   LIS2MDL_POWER_DOWN       = 2,
 } lis2mdl_md_t;
-int32_t lis2mdl_operating_mode_set(stmdev_ctx_t *ctx,
+int32_t lis2mdl_operating_mode_set(const stmdev_ctx_t *ctx,
                                    lis2mdl_md_t val);
-int32_t lis2mdl_operating_mode_get(stmdev_ctx_t *ctx,
+int32_t lis2mdl_operating_mode_get(const stmdev_ctx_t *ctx,
                                    lis2mdl_md_t *val);
 
 typedef enum
@@ -389,28 +402,28 @@ typedef enum
   LIS2MDL_ODR_50Hz   = 2,
   LIS2MDL_ODR_100Hz  = 3,
 } lis2mdl_odr_t;
-int32_t lis2mdl_data_rate_set(stmdev_ctx_t *ctx, lis2mdl_odr_t val);
-int32_t lis2mdl_data_rate_get(stmdev_ctx_t *ctx, lis2mdl_odr_t *val);
+int32_t lis2mdl_data_rate_set(const stmdev_ctx_t *ctx, lis2mdl_odr_t val);
+int32_t lis2mdl_data_rate_get(const stmdev_ctx_t *ctx, lis2mdl_odr_t *val);
 
 typedef enum
 {
   LIS2MDL_HIGH_RESOLUTION  = 0,
   LIS2MDL_LOW_POWER        = 1,
 } lis2mdl_lp_t;
-int32_t lis2mdl_power_mode_set(stmdev_ctx_t *ctx, lis2mdl_lp_t val);
-int32_t lis2mdl_power_mode_get(stmdev_ctx_t *ctx, lis2mdl_lp_t *val);
+int32_t lis2mdl_power_mode_set(const stmdev_ctx_t *ctx, lis2mdl_lp_t val);
+int32_t lis2mdl_power_mode_get(const stmdev_ctx_t *ctx, lis2mdl_lp_t *val);
 
-int32_t lis2mdl_offset_temp_comp_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lis2mdl_offset_temp_comp_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lis2mdl_offset_temp_comp_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2mdl_offset_temp_comp_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
   LIS2MDL_ODR_DIV_2  = 0,
   LIS2MDL_ODR_DIV_4  = 1,
 } lis2mdl_lpf_t;
-int32_t lis2mdl_low_pass_bandwidth_set(stmdev_ctx_t *ctx,
+int32_t lis2mdl_low_pass_bandwidth_set(const stmdev_ctx_t *ctx,
                                        lis2mdl_lpf_t val);
-int32_t lis2mdl_low_pass_bandwidth_get(stmdev_ctx_t *ctx,
+int32_t lis2mdl_low_pass_bandwidth_get(const stmdev_ctx_t *ctx,
                                        lis2mdl_lpf_t *val);
 
 typedef enum
@@ -419,49 +432,49 @@ typedef enum
   LIS2MDL_SENS_OFF_CANC_EVERY_ODR    = 1,
   LIS2MDL_SET_SENS_ONLY_AT_POWER_ON  = 2,
 } lis2mdl_set_rst_t;
-int32_t lis2mdl_set_rst_mode_set(stmdev_ctx_t *ctx,
+int32_t lis2mdl_set_rst_mode_set(const stmdev_ctx_t *ctx,
                                  lis2mdl_set_rst_t val);
-int32_t lis2mdl_set_rst_mode_get(stmdev_ctx_t *ctx,
+int32_t lis2mdl_set_rst_mode_get(const stmdev_ctx_t *ctx,
                                  lis2mdl_set_rst_t *val);
 
-int32_t lis2mdl_set_rst_sensor_single_set(stmdev_ctx_t *ctx,
+int32_t lis2mdl_set_rst_sensor_single_set(const stmdev_ctx_t *ctx,
                                           uint8_t val);
-int32_t lis2mdl_set_rst_sensor_single_get(stmdev_ctx_t *ctx,
+int32_t lis2mdl_set_rst_sensor_single_get(const stmdev_ctx_t *ctx,
                                           uint8_t *val);
 
-int32_t lis2mdl_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lis2mdl_block_data_update_get(stmdev_ctx_t *ctx,
+int32_t lis2mdl_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2mdl_block_data_update_get(const stmdev_ctx_t *ctx,
                                       uint8_t *val);
 
-int32_t lis2mdl_mag_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lis2mdl_mag_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lis2mdl_mag_data_ovr_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lis2mdl_mag_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lis2mdl_magnetic_raw_get(stmdev_ctx_t *ctx, int16_t *val);
+int32_t lis2mdl_magnetic_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
 
-int32_t lis2mdl_temperature_raw_get(stmdev_ctx_t *ctx,  int16_t *val);
+int32_t lis2mdl_temperature_raw_get(const stmdev_ctx_t *ctx,  int16_t *val);
 
-int32_t lis2mdl_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t lis2mdl_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 
-int32_t lis2mdl_reset_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lis2mdl_reset_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lis2mdl_reset_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2mdl_reset_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lis2mdl_boot_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lis2mdl_boot_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lis2mdl_boot_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2mdl_boot_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lis2mdl_self_test_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lis2mdl_self_test_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lis2mdl_self_test_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2mdl_self_test_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
   LIS2MDL_LSB_AT_LOW_ADD  = 0,
   LIS2MDL_MSB_AT_LOW_ADD  = 1,
 } lis2mdl_ble_t;
-int32_t lis2mdl_data_format_set(stmdev_ctx_t *ctx, lis2mdl_ble_t val);
-int32_t lis2mdl_data_format_get(stmdev_ctx_t *ctx,
+int32_t lis2mdl_data_format_set(const stmdev_ctx_t *ctx, lis2mdl_ble_t val);
+int32_t lis2mdl_data_format_get(const stmdev_ctx_t *ctx,
                                 lis2mdl_ble_t *val);
 
-int32_t lis2mdl_status_get(stmdev_ctx_t *ctx,
+int32_t lis2mdl_status_get(const stmdev_ctx_t *ctx,
                            lis2mdl_status_reg_t *val);
 
 typedef enum
@@ -469,45 +482,45 @@ typedef enum
   LIS2MDL_CHECK_BEFORE  = 0,
   LIS2MDL_CHECK_AFTER   = 1,
 } lis2mdl_int_on_dataoff_t;
-int32_t lis2mdl_offset_int_conf_set(stmdev_ctx_t *ctx,
+int32_t lis2mdl_offset_int_conf_set(const stmdev_ctx_t *ctx,
                                     lis2mdl_int_on_dataoff_t val);
-int32_t lis2mdl_offset_int_conf_get(stmdev_ctx_t *ctx,
+int32_t lis2mdl_offset_int_conf_get(const stmdev_ctx_t *ctx,
                                     lis2mdl_int_on_dataoff_t *val);
 
-int32_t lis2mdl_drdy_on_pin_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lis2mdl_drdy_on_pin_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lis2mdl_drdy_on_pin_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2mdl_drdy_on_pin_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lis2mdl_int_on_pin_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t lis2mdl_int_on_pin_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lis2mdl_int_on_pin_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2mdl_int_on_pin_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lis2mdl_int_gen_conf_set(stmdev_ctx_t *ctx,
+int32_t lis2mdl_int_gen_conf_set(const stmdev_ctx_t *ctx,
                                  lis2mdl_int_crtl_reg_t *val);
-int32_t lis2mdl_int_gen_conf_get(stmdev_ctx_t *ctx,
+int32_t lis2mdl_int_gen_conf_get(const stmdev_ctx_t *ctx,
                                  lis2mdl_int_crtl_reg_t *val);
 
-int32_t lis2mdl_int_gen_source_get(stmdev_ctx_t *ctx,
+int32_t lis2mdl_int_gen_source_get(const stmdev_ctx_t *ctx,
                                    lis2mdl_int_source_reg_t *val);
 
-int32_t lis2mdl_int_gen_treshold_set(stmdev_ctx_t *ctx, uint16_t val);
-int32_t lis2mdl_int_gen_treshold_get(stmdev_ctx_t *ctx,
-                                     uint16_t *val);
+int32_t lis2mdl_int_gen_threshold_set(const stmdev_ctx_t *ctx, uint16_t val);
+int32_t lis2mdl_int_gen_threshold_get(const stmdev_ctx_t *ctx,
+                                      uint16_t *val);
 
 typedef enum
 {
   LIS2MDL_SPI_4_WIRE   = 1,
   LIS2MDL_SPI_3_WIRE   = 0,
 } lis2mdl_sim_t;
-int32_t lis2mdl_spi_mode_set(stmdev_ctx_t *ctx, lis2mdl_sim_t val);
-int32_t lis2mdl_spi_mode_get(stmdev_ctx_t *ctx, lis2mdl_sim_t *val);
+int32_t lis2mdl_spi_mode_set(const stmdev_ctx_t *ctx, lis2mdl_sim_t val);
+int32_t lis2mdl_spi_mode_get(const stmdev_ctx_t *ctx, lis2mdl_sim_t *val);
 
 typedef enum
 {
   LIS2MDL_I2C_ENABLE   = 0,
   LIS2MDL_I2C_DISABLE  = 1,
 } lis2mdl_i2c_dis_t;
-int32_t lis2mdl_i2c_interface_set(stmdev_ctx_t *ctx,
+int32_t lis2mdl_i2c_interface_set(const stmdev_ctx_t *ctx,
                                   lis2mdl_i2c_dis_t val);
-int32_t lis2mdl_i2c_interface_get(stmdev_ctx_t *ctx,
+int32_t lis2mdl_i2c_interface_get(const stmdev_ctx_t *ctx,
                                   lis2mdl_i2c_dis_t *val);
 
 /**

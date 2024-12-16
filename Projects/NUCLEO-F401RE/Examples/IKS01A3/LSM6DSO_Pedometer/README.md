@@ -58,7 +58,7 @@ STMicroelectronics
 
 ### <b>License</b>
 
-Copyright (c) 2023 STMicroelectronics.
+Copyright (c) 2024 STMicroelectronics.
 All rights reserved.
 
 This software is licensed under terms that can be found in the LICENSE file

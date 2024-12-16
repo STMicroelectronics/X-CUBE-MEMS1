@@ -2,8 +2,6 @@
   ******************************************************************************
   * @file    motion_fx.h
   * @author  MEMS Application Team
-  * @version V2.7.1
-  * @date    03-March-2023
   * @brief   Header for motion_fx module
   ******************************************************************************
   * @attention

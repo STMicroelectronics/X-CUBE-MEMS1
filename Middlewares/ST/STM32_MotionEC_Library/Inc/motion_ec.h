@@ -2,8 +2,6 @@
   ******************************************************************************
   * @file    motion_ec.h
   * @author  MEMS Application Team
-  * @version V1.5.0
-  * @date    02-August-2022
   * @brief   Header for motion_ec module
   ******************************************************************************
   * @attention
@@ -45,6 +43,7 @@ typedef enum
   MEC_MCU_BLUE_NRG1,
   MEC_MCU_BLUE_NRG2,
   MEC_MCU_BLUE_NRG_LP,
+  MEC_MCU_STM32WB0,
 } MEC_mcu_type_t;
 
 typedef struct

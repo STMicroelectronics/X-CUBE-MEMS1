@@ -731,16 +731,12 @@ static int32_t ILPS22QS_Initialize(ILPS22QS_Object_t *pObj)
   {
     bus_mode.interface = ILPS22QS_SPI_3W;
   }
-  else if (pObj->IO.BusType == ILPS22QS_SPI_4WIRES_BUS) /* SPI 3-Wires */
-  {
-    bus_mode.interface = ILPS22QS_SPI_4W;
-  }
   else
   {
     bus_mode.interface = ILPS22QS_SEL_BY_HW;
   }
 
-  bus_mode.filter = ILPS22QS_AUTO;
+  bus_mode.filter = ILPS22QS_FILTER_AUTO;
   if (ilps22qs_bus_mode_set(&(pObj->Ctx), &bus_mode) != ILPS22QS_OK)
   {
     return ILPS22QS_ERROR;

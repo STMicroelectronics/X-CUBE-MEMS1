@@ -352,7 +352,7 @@ int32_t H3LIS331DL_ACC_GetOutputDataRate(H3LIS331DL_Object_t *pObj, float *Odr)
       *Odr = 1.0f;
       break;
 
-    case H3LIS331DL_ODR_5Hz2:
+    case H3LIS331DL_ODR_2Hz:
       *Odr = 2.0f;
       break;
 
@@ -603,7 +603,7 @@ static int32_t H3LIS331DL_ACC_SetOutputDataRate_When_Enabled(H3LIS331DL_Object_t
 
   new_odr = (Odr <=   0.5f) ? H3LIS331DL_ODR_Hz5
             : (Odr <=   1.0f) ? H3LIS331DL_ODR_1Hz
-            : (Odr <=   2.0f) ? H3LIS331DL_ODR_5Hz2
+            : (Odr <=   2.0f) ? H3LIS331DL_ODR_2Hz
             : (Odr <=   5.0f) ? H3LIS331DL_ODR_5Hz
             : (Odr <=  10.0f) ? H3LIS331DL_ODR_10Hz
             : (Odr <=  50.0f) ? H3LIS331DL_ODR_50Hz
@@ -634,7 +634,7 @@ static int32_t H3LIS331DL_ACC_SetOutputDataRate_When_Disabled(H3LIS331DL_Object_
   /* Store the new output data rate value */
   pObj->acc_odr = (Odr <=   0.5f) ? H3LIS331DL_ODR_Hz5
                   : (Odr <=   1.0f) ? H3LIS331DL_ODR_1Hz
-                  : (Odr <=   2.0f) ? H3LIS331DL_ODR_5Hz2
+                  : (Odr <=   2.0f) ? H3LIS331DL_ODR_2Hz
                   : (Odr <=   5.0f) ? H3LIS331DL_ODR_5Hz
                   : (Odr <=  10.0f) ? H3LIS331DL_ODR_10Hz
                   : (Odr <=  50.0f) ? H3LIS331DL_ODR_50Hz

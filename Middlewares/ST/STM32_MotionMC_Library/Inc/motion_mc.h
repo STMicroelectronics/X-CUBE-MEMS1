@@ -2,8 +2,6 @@
   ******************************************************************************
   * @file    motion_mc.h
   * @author  MEMS Application Team
-  * @version V2.6.1
-  * @date    03-March-2023
   * @brief   Header for motion_mc module
   ******************************************************************************
   * @attention

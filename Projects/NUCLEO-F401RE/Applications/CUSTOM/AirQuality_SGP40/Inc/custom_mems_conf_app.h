@@ -37,8 +37,8 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSL_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
     #ifndef CUSTOM_GYR_INSTANCE_0
       #define CUSTOM_GYR_INSTANCE_0 CUSTOM_LSM6DSL_0
       #define CUSTOM_GYR_INSTANCE_NAME_0 "LSM6DSL"
@@ -46,10 +46,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {5, 125, 250, 500, 1000, 2000} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSL_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSL_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSL_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LSM303AGR_ACC_0
   #if (USE_CUSTOM_MOTION_SENSOR_LSM303AGR_ACC_0 == 1)
@@ -60,10 +60,10 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM303AGR_UNICLEO_ID_ACC
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LSM303AGR_ACC_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LSM303AGR_ACC_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LSM303AGR_MAG_0
   #if (USE_CUSTOM_MOTION_SENSOR_LSM303AGR_MAG_0 == 1)
@@ -74,10 +74,10 @@ extern "C" {
       #define CUSTOM_MAG_INSTANCE_FS_0 {1, 50} /* Ga */
       #ifndef MAG_UNICLEO_ID
         #define MAG_UNICLEO_ID LSM303AGR_UNICLEO_ID_MAG
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* MAG_UNICLEO_ID */
+    #endif /* CUSTOM_MAG_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LSM303AGR_MAG_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LSM303AGR_MAG_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LIS3MDL_0
   #if (USE_CUSTOM_MOTION_SENSOR_LIS3MDL_0 == 1)
@@ -88,10 +88,10 @@ extern "C" {
       #define CUSTOM_MAG_INSTANCE_FS_0 {4, 4, 8, 12, 16} /* Ga */
       #ifndef MAG_UNICLEO_ID
         #define MAG_UNICLEO_ID LIS3MDL_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* MAG_UNICLEO_ID */
+    #endif /* CUSTOM_MAG_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LIS3MDL_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LIS3MDL_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LSM6DSO_0
   #if (USE_CUSTOM_MOTION_SENSOR_LSM6DSO_0 == 1)
@@ -102,8 +102,8 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSO_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
     #ifndef CUSTOM_GYR_INSTANCE_0
       #define CUSTOM_GYR_INSTANCE_0 CUSTOM_LSM6DSO_0
       #define CUSTOM_GYR_INSTANCE_NAME_0 "LSM6DSO"
@@ -111,10 +111,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {5, 125, 250, 500, 1000, 2000} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSO_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSO_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSO_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LIS2DW12_0
   #if (USE_CUSTOM_MOTION_SENSOR_LIS2DW12_0 == 1)
@@ -125,10 +125,10 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LIS2DW12_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LIS2DW12_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LIS2DW12_0 */
 
 #ifdef USE_CUSTOM_HYBRID_SENSOR_LIS2DTW12_0
   #if (USE_CUSTOM_HYBRID_SENSOR_LIS2DTW12_0 == 1)
@@ -139,10 +139,10 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LIS2DTW12_UNICLEO_ID_ACC
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
+  #endif /* USE_CUSTOM_HYBRID_SENSOR_LIS2DTW12_0 */
+#endif /* USE_CUSTOM_HYBRID_SENSOR_LIS2DTW12_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LIS2MDL_0
   #if (USE_CUSTOM_MOTION_SENSOR_LIS2MDL_0 == 1)
@@ -153,10 +153,10 @@ extern "C" {
       #define CUSTOM_MAG_INSTANCE_FS_0 {1, 50} /* Ga */
       #ifndef MAG_UNICLEO_ID
         #define MAG_UNICLEO_ID LIS2MDL_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* MAG_UNICLEO_ID */
+    #endif /* CUSTOM_MAG_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LIS2MDL_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LIS2MDL_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LSM6DSOX_0
   #if (USE_CUSTOM_MOTION_SENSOR_LSM6DSOX_0 == 1)
@@ -167,8 +167,8 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSOX_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
     #ifndef CUSTOM_GYR_INSTANCE_0
       #define CUSTOM_GYR_INSTANCE_0 CUSTOM_LSM6DSOX_0
       #define CUSTOM_GYR_INSTANCE_NAME_0 "LSM6DSOX"
@@ -176,10 +176,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {5, 125, 250, 500, 1000, 2000} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSOX_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSOX_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSOX_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LIS2DH12_0
   #if (USE_CUSTOM_MOTION_SENSOR_LIS2DH12_0 == 1)
@@ -190,10 +190,10 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LIS2DH12_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LIS2DH12_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LIS2DH12_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_ASM330LHH_0
   #if (USE_CUSTOM_MOTION_SENSOR_ASM330LHH_0 == 1)
@@ -204,8 +204,8 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID ASM330LHH_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
     #ifndef CUSTOM_GYR_INSTANCE_0
       #define CUSTOM_GYR_INSTANCE_0 CUSTOM_ASM330LHH_0
       #define CUSTOM_GYR_INSTANCE_NAME_0 "ASM330LHH"
@@ -213,10 +213,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {6, 125, 250, 500, 1000, 2000, 4000} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID ASM330LHH_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_ASM330LHH_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_ASM330LHH_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_ISM330DLC_0
   #if (USE_CUSTOM_MOTION_SENSOR_ISM330DLC_0 == 1)
@@ -227,8 +227,8 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID ISM330DLC_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
     #ifndef CUSTOM_GYR_INSTANCE_0
       #define CUSTOM_GYR_INSTANCE_0 CUSTOM_ISM330DLC_0
       #define CUSTOM_GYR_INSTANCE_NAME_0 "ISM330DLC"
@@ -236,10 +236,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {5, 125, 250, 500, 1000, 2000} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID ISM330DLC_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_ISM330DLC_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_ISM330DLC_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_ISM303DAC_ACC_0
   #if (USE_CUSTOM_MOTION_SENSOR_ISM303DAC_ACC_0 == 1)
@@ -250,10 +250,10 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID ISM303DAC_UNICLEO_ID_ACC
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_ISM303DAC_ACC_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_ISM303DAC_ACC_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_ISM303DAC_MAG_0
   #if (USE_CUSTOM_MOTION_SENSOR_ISM303DAC_MAG_0 == 1)
@@ -264,10 +264,10 @@ extern "C" {
       #define CUSTOM_MAG_INSTANCE_FS_0 {1, 50} /* Ga */
       #ifndef MAG_UNICLEO_ID
         #define MAG_UNICLEO_ID ISM303DAC_UNICLEO_ID_MAG
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* MAG_UNICLEO_ID */
+    #endif /* CUSTOM_MAG_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_ISM303DAC_MAG_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_ISM303DAC_MAG_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_IIS2DLPC_0
   #if (USE_CUSTOM_MOTION_SENSOR_IIS2DLPC_0 == 1)
@@ -278,10 +278,10 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID IIS2DLPC_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_IIS2DLPC_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_IIS2DLPC_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_IIS2MDC_0
   #if (USE_CUSTOM_MOTION_SENSOR_IIS2MDC_0 == 1)
@@ -292,10 +292,10 @@ extern "C" {
       #define CUSTOM_MAG_INSTANCE_FS_0 {1, 50} /* Ga */
       #ifndef MAG_UNICLEO_ID
         #define MAG_UNICLEO_ID IIS2MDC_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* MAG_UNICLEO_ID */
+    #endif /* CUSTOM_MAG_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_IIS2MDC_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_IIS2MDC_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_ISM330DHCX_0
   #if (USE_CUSTOM_MOTION_SENSOR_ISM330DHCX_0 == 1)
@@ -306,8 +306,8 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID ISM330DHCX_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
     #ifndef CUSTOM_GYR_INSTANCE_0
       #define CUSTOM_GYR_INSTANCE_0 CUSTOM_ISM330DHCX_0
       #define CUSTOM_GYR_INSTANCE_NAME_0 "ISM330DHCX"
@@ -315,10 +315,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {6, 125, 250, 500, 1000, 2000, 4000} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID ISM330DHCX_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_ISM330DHCX_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_ISM330DHCX_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LSM6DSR_0
   #if (USE_CUSTOM_MOTION_SENSOR_LSM6DSR_0 == 1)
@@ -329,8 +329,8 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSR_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
     #ifndef CUSTOM_GYR_INSTANCE_0
       #define CUSTOM_GYR_INSTANCE_0 CUSTOM_LSM6DSR_0
       #define CUSTOM_GYR_INSTANCE_NAME_0 "LSM6DSR"
@@ -338,10 +338,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {6, 125, 250, 500, 1000, 2000, 4000} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSR_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSR_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSR_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_AIS2DW12_0
   #if (USE_CUSTOM_MOTION_SENSOR_AIS2DW12_0 == 1)
@@ -352,10 +352,10 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {2, 2, 4} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID AIS2DW12_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_AIS2DW12_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_AIS2DW12_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_A3G4250D_0
   #if (USE_CUSTOM_MOTION_SENSOR_A3G4250D_0 == 1)
@@ -366,10 +366,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {1, 245} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID A3G4250D_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_A3G4250D_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_A3G4250D_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_AIS328DQ_0
   #if (USE_CUSTOM_MOTION_SENSOR_AIS328DQ_0 == 1)
@@ -380,10 +380,10 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {3, 2, 4, 8} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID AIS328DQ_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_AIS328DQ_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_AIS328DQ_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_AIS3624DQ_0
   #if (USE_CUSTOM_MOTION_SENSOR_AIS3624DQ_0 == 1)
@@ -394,10 +394,10 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {3, 6, 12, 24} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID AIS3624DQ_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_AIS3624DQ_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_AIS3624DQ_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_H3LIS331DL_0
   #if (USE_CUSTOM_MOTION_SENSOR_H3LIS331DL_0 == 1)
@@ -408,10 +408,10 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {3, 100, 200, 400} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID H3LIS331DL_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_H3LIS331DL_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_H3LIS331DL_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LSM6DSRX_0
   #if (USE_CUSTOM_MOTION_SENSOR_LSM6DSRX_0 == 1)
@@ -422,8 +422,8 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSRX_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
     #ifndef CUSTOM_GYR_INSTANCE_0
       #define CUSTOM_GYR_INSTANCE_0 CUSTOM_LSM6DSRX_0
       #define CUSTOM_GYR_INSTANCE_NAME_0 "LSM6DSRX"
@@ -431,10 +431,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {6, 125, 250, 500, 1000, 2000, 4000} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSRX_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSRX_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSRX_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LSM6DSO32_0
   #if (USE_CUSTOM_MOTION_SENSOR_LSM6DSO32_0 == 1)
@@ -445,8 +445,8 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 4, 8, 16, 32} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSO32_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
     #ifndef CUSTOM_GYR_INSTANCE_0
       #define CUSTOM_GYR_INSTANCE_0 CUSTOM_LSM6DSO32_0
       #define CUSTOM_GYR_INSTANCE_NAME_0 "LSM6DSO32"
@@ -454,10 +454,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {5, 125, 250, 500, 1000, 2000} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSO32_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSO32_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSO32_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0
   #if (USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0 == 1)
@@ -468,10 +468,10 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 500, 1000, 2000, 3000} /* mg */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID IIS2ICLX_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_AIS2IH_0
   #if (USE_CUSTOM_MOTION_SENSOR_AIS2IH_0 == 1)
@@ -482,10 +482,10 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID AIS2IH_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_AIS2IH_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_AIS2IH_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LSM6DSO32X_0
   #if (USE_CUSTOM_MOTION_SENSOR_LSM6DSO32X_0 == 1)
@@ -496,8 +496,8 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 4, 8, 16, 32} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSO32X_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
     #ifndef CUSTOM_GYR_INSTANCE_0
       #define CUSTOM_GYR_INSTANCE_0 CUSTOM_LSM6DSO32X_0
       #define CUSTOM_GYR_INSTANCE_NAME_0 "LSM6DSO32X"
@@ -505,10 +505,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {5, 125, 250, 500, 1000, 2000} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSO32X_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSO32X_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSO32X_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LIS2DU12_0
   #if (USE_CUSTOM_MOTION_SENSOR_LIS2DU12_0 == 1)
@@ -519,10 +519,10 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LIS2DU12_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LIS2DU12_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LIS2DU12_0 */
 
 #ifdef USE_CUSTOM_ENV_SENSOR_HTS221_0
   #if (USE_CUSTOM_ENV_SENSOR_HTS221_0 == 1)
@@ -533,8 +533,8 @@ extern "C" {
       #define CUSTOM_HUM_INSTANCE_FS_0 {0} /* % */
       #ifndef HUM_TEMP_UNICLEO_ID
         #define HUM_TEMP_UNICLEO_ID HTS221_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* HUM_TEMP_UNICLEO_ID */
+    #endif /* CUSTOM_HUM_INSTANCE_0 */
     #ifndef CUSTOM_TEMP_INSTANCE_0
       #define CUSTOM_TEMP_INSTANCE_0 CUSTOM_HTS221_0
       #define CUSTOM_TEMP_INSTANCE_NAME_0 "HTS221"
@@ -542,10 +542,10 @@ extern "C" {
       #define CUSTOM_TEMP_INSTANCE_FS_0 {0} /* C */
       #ifndef HUM_TEMP_UNICLEO_ID
         #define HUM_TEMP_UNICLEO_ID HTS221_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* HUM_TEMP_UNICLEO_ID */
+    #endif /* CUSTOM_TEMP_INSTANCE_0 */
+  #endif /* USE_CUSTOM_ENV_SENSOR_HTS221_0 */
+#endif /* USE_CUSTOM_ENV_SENSOR_HTS221_0 */
 
 #ifdef USE_CUSTOM_ENV_SENSOR_LPS22HB_0
   #if (USE_CUSTOM_ENV_SENSOR_LPS22HB_0 == 1)
@@ -556,10 +556,10 @@ extern "C" {
       #define CUSTOM_PRESS_INSTANCE_FS_0 {0} /* Pa */
       #ifndef PRESS_UNICLEO_ID
         #define PRESS_UNICLEO_ID LPS22HB_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* PRESS_UNICLEO_ID */
+    #endif /* CUSTOM_PRESS_INSTANCE_0 */
+  #endif /* USE_CUSTOM_ENV_SENSOR_LPS22HB_0 */
+#endif /* USE_CUSTOM_ENV_SENSOR_LPS22HB_0 */
 
 #ifdef USE_CUSTOM_ENV_SENSOR_LPS22HH_0
   #if (USE_CUSTOM_ENV_SENSOR_LPS22HH_0 == 1)
@@ -570,10 +570,10 @@ extern "C" {
       #define CUSTOM_PRESS_INSTANCE_FS_0 {0} /* Pa */
       #ifndef PRESS_UNICLEO_ID
         #define PRESS_UNICLEO_ID LPS22HH_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* PRESS_UNICLEO_ID */
+    #endif /* CUSTOM_PRESS_INSTANCE_0 */
+  #endif /* USE_CUSTOM_ENV_SENSOR_LPS22HH_0 */
+#endif /* USE_CUSTOM_ENV_SENSOR_LPS22HH_0 */
 
 #ifdef USE_CUSTOM_ENV_SENSOR_STTS751_0
   #if (USE_CUSTOM_ENV_SENSOR_STTS751_0 == 1)
@@ -584,10 +584,10 @@ extern "C" {
       #define CUSTOM_TEMP_INSTANCE_FS_0 {0} /* C */
       #ifndef HUM_TEMP_UNICLEO_ID
         #define HUM_TEMP_UNICLEO_ID STTS751_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* HUM_TEMP_UNICLEO_ID */
+    #endif /* CUSTOM_TEMP_INSTANCE_0 */
+  #endif /* USE_CUSTOM_ENV_SENSOR_STTS751_0 */
+#endif /* USE_CUSTOM_ENV_SENSOR_STTS751_0 */
 
 #ifdef USE_CUSTOM_ENV_SENSOR_LPS33HW_0
   #if (USE_CUSTOM_ENV_SENSOR_LPS33HW_0 == 1)
@@ -598,10 +598,10 @@ extern "C" {
       #define CUSTOM_PRESS_INSTANCE_FS_0 {0} /* Pa */
       #ifndef PRESS_UNICLEO_ID
         #define PRESS_UNICLEO_ID LPS33HW_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* PRESS_UNICLEO_ID */
+    #endif /* CUSTOM_PRESS_INSTANCE_0 */
+  #endif /* USE_CUSTOM_ENV_SENSOR_LPS33HW_0 */
+#endif /* USE_CUSTOM_ENV_SENSOR_LPS33HW_0 */
 
 #ifdef USE_CUSTOM_ENV_SENSOR_STTS22H_0
   #if (USE_CUSTOM_ENV_SENSOR_STTS22H_0 == 1)
@@ -612,10 +612,10 @@ extern "C" {
       #define CUSTOM_TEMP_INSTANCE_FS_0 {0} /* C */
       #ifndef HUM_TEMP_UNICLEO_ID
         #define HUM_TEMP_UNICLEO_ID STTS22H_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* HUM_TEMP_UNICLEO_ID */
+    #endif /* CUSTOM_TEMP_INSTANCE_0 */
+  #endif /* USE_CUSTOM_ENV_SENSOR_STTS22H_0 */
+#endif /* USE_CUSTOM_ENV_SENSOR_STTS22H_0 */
 
 #ifdef USE_CUSTOM_HYBRID_SENSOR_LIS2DTW12_0
   #if (USE_CUSTOM_HYBRID_SENSOR_LIS2DTW12_0 == 1)
@@ -626,10 +626,10 @@ extern "C" {
       #define CUSTOM_TEMP_INSTANCE_FS_0 {0} /* C */
       #ifndef HUM_TEMP_UNICLEO_ID
         #define HUM_TEMP_UNICLEO_ID LIS2DTW12_UNICLEO_ID_TEMP
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* HUM_TEMP_UNICLEO_ID */
+    #endif /* CUSTOM_TEMP_INSTANCE_0 */
+  #endif /* USE_CUSTOM_HYBRID_SENSOR_LIS2DTW12_0 */
+#endif /* USE_CUSTOM_HYBRID_SENSOR_LIS2DTW12_0 */
 
 #ifdef USE_CUSTOM_ENV_SENSOR_LPS33K_0
   #if (USE_CUSTOM_ENV_SENSOR_LPS33K_0 == 1)
@@ -640,10 +640,10 @@ extern "C" {
       #define CUSTOM_PRESS_INSTANCE_FS_0 {0} /* Pa */
       #ifndef PRESS_UNICLEO_ID
         #define PRESS_UNICLEO_ID LPS33K_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* PRESS_UNICLEO_ID */
+    #endif /* CUSTOM_PRESS_INSTANCE_0 */
+  #endif /* USE_CUSTOM_ENV_SENSOR_LPS33K_0 */
+#endif /* USE_CUSTOM_ENV_SENSOR_LPS33K_0 */
 
 #ifdef USE_CUSTOM_ENV_SENSOR_LPS22CH_0
   #if (USE_CUSTOM_ENV_SENSOR_LPS22CH_0 == 1)
@@ -654,10 +654,10 @@ extern "C" {
       #define CUSTOM_PRESS_INSTANCE_FS_0 {0} /* Pa */
       #ifndef PRESS_UNICLEO_ID
         #define PRESS_UNICLEO_ID LPS22CH_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* PRESS_UNICLEO_ID */
+    #endif /* CUSTOM_PRESS_INSTANCE_0 */
+  #endif /* USE_CUSTOM_ENV_SENSOR_LPS22CH_0 */
+#endif /* USE_CUSTOM_ENV_SENSOR_LPS22CH_0 */
 
 #ifdef USE_CUSTOM_ENV_SENSOR_LPS22DF_0
   #if (USE_CUSTOM_ENV_SENSOR_LPS22DF_0 == 1)
@@ -668,10 +668,10 @@ extern "C" {
       #define CUSTOM_PRESS_INSTANCE_FS_0 {0} /* Pa */
       #ifndef PRESS_UNICLEO_ID
         #define PRESS_UNICLEO_ID LPS22DF_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* PRESS_UNICLEO_ID */
+    #endif /* CUSTOM_PRESS_INSTANCE_0 */
+  #endif /* USE_CUSTOM_ENV_SENSOR_LPS22DF_0 */
+#endif /* USE_CUSTOM_ENV_SENSOR_LPS22DF_0 */
 
 #ifdef USE_CUSTOM_ENV_SENSOR_LPS27HHTW_0
   #if (USE_CUSTOM_ENV_SENSOR_LPS27HHTW_0 == 1)
@@ -682,10 +682,10 @@ extern "C" {
       #define CUSTOM_PRESS_INSTANCE_FS_0 {0} /* Pa */
       #ifndef PRESS_UNICLEO_ID
         #define PRESS_UNICLEO_ID LPS27HHTW_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* PRESS_UNICLEO_ID */
+    #endif /* CUSTOM_PRESS_INSTANCE_0 */
+  #endif /* USE_CUSTOM_ENV_SENSOR_LPS27HHTW_0 */
+#endif /* USE_CUSTOM_ENV_SENSOR_LPS27HHTW_0 */
 
 #ifdef USE_CUSTOM_ENV_SENSOR_ILPS22QS_0
   #if (USE_CUSTOM_ENV_SENSOR_ILPS22QS_0 == 1)
@@ -696,10 +696,10 @@ extern "C" {
       #define CUSTOM_PRESS_INSTANCE_FS_0 {0} /* Pa */
       #ifndef PRESS_UNICLEO_ID
         #define PRESS_UNICLEO_ID ILPS22QS_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* PRESS_UNICLEO_ID */
+    #endif /* CUSTOM_PRESS_INSTANCE_0 */
+  #endif /* USE_CUSTOM_ENV_SENSOR_ILPS22QS_0 */
+#endif /* USE_CUSTOM_ENV_SENSOR_ILPS22QS_0 */
 
 #ifdef USE_CUSTOM_ENV_SENSOR_ILPS28QSW_0
   #if (USE_CUSTOM_ENV_SENSOR_ILPS28QSW_0 == 1)
@@ -710,10 +710,10 @@ extern "C" {
       #define CUSTOM_PRESS_INSTANCE_FS_0 {0} /* Pa */
       #ifndef PRESS_UNICLEO_ID
         #define PRESS_UNICLEO_ID ILPS28QSW_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* PRESS_UNICLEO_ID */
+    #endif /* CUSTOM_PRESS_INSTANCE_0 */
+  #endif /* USE_CUSTOM_ENV_SENSOR_ILPS28QSW_0 */
+#endif /* USE_CUSTOM_ENV_SENSOR_ILPS28QSW_0 */
 
 #ifdef USE_CUSTOM_ENV_SENSOR_LPS28DFW_0
   #if (USE_CUSTOM_ENV_SENSOR_LPS28DFW_0 == 1)
@@ -724,10 +724,10 @@ extern "C" {
       #define CUSTOM_PRESS_INSTANCE_FS_0 {0} /* Pa */
       #ifndef PRESS_UNICLEO_ID
         #define PRESS_UNICLEO_ID LPS28DFW_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* PRESS_UNICLEO_ID */
+    #endif /* CUSTOM_PRESS_INSTANCE_0 */
+  #endif /* USE_CUSTOM_ENV_SENSOR_LPS28DFW_0 */
+#endif /* USE_CUSTOM_ENV_SENSOR_LPS28DFW_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_ASM330LHHX_0
   #if (USE_CUSTOM_MOTION_SENSOR_ASM330LHHX_0 == 1)
@@ -738,8 +738,8 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID ASM330LHHX_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
     #ifndef CUSTOM_GYR_INSTANCE_0
       #define CUSTOM_GYR_INSTANCE_0 CUSTOM_ASM330LHHX_0
       #define CUSTOM_GYR_INSTANCE_NAME_0 "ASM330LHHX"
@@ -747,10 +747,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {6, 125, 250, 500, 1000, 2000, 4000} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID ASM330LHHX_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_ASM330LHHX_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_ASM330LHHX_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_IIS3DWB_0
   #if (USE_CUSTOM_MOTION_SENSOR_IIS3DWB_0 == 1)
@@ -761,10 +761,10 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID IIS3DWB_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_IIS3DWB_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_IIS3DWB_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LSM6DSV16X_0
   #if (USE_CUSTOM_MOTION_SENSOR_LSM6DSV16X_0 == 1)
@@ -775,8 +775,8 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSV16X_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
     #ifndef CUSTOM_GYR_INSTANCE_0
       #define CUSTOM_GYR_INSTANCE_0 CUSTOM_LSM6DSV16X_0
       #define CUSTOM_GYR_INSTANCE_NAME_0 "LSM6DSV16X"
@@ -784,10 +784,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {6, 125, 250, 500, 1000, 2000, 4000} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSV16X_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSV16X_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSV16X_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LSM6DSV16BX_0
   #if (USE_CUSTOM_MOTION_SENSOR_LSM6DSV16BX_0 == 1)
@@ -798,8 +798,8 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSV16BX_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
     #ifndef CUSTOM_GYR_INSTANCE_0
       #define CUSTOM_GYR_INSTANCE_0 CUSTOM_LSM6DSV16BX_0
       #define CUSTOM_GYR_INSTANCE_NAME_0 "LSM6DSV16BX"
@@ -807,10 +807,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {6, 125, 250, 500, 1000, 2000, 4000} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSV16BX_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSV16BX_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSV16BX_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LSM6DSV_0
   #if (USE_CUSTOM_MOTION_SENSOR_LSM6DSV_0 == 1)
@@ -821,8 +821,8 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSV_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
     #ifndef CUSTOM_GYR_INSTANCE_0
       #define CUSTOM_GYR_INSTANCE_0 CUSTOM_LSM6DSV_0
       #define CUSTOM_GYR_INSTANCE_NAME_0 "LSM6DSV"
@@ -830,10 +830,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {6, 125, 250, 500, 1000, 2000, 4000} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSV_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSV_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSV_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LSM6DSV16B_0
   #if (USE_CUSTOM_MOTION_SENSOR_LSM6DSV16B_0 == 1)
@@ -844,8 +844,8 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSV16B_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
     #ifndef CUSTOM_GYR_INSTANCE_0
       #define CUSTOM_GYR_INSTANCE_0 CUSTOM_LSM6DSV16B_0
       #define CUSTOM_GYR_INSTANCE_NAME_0 "LSM6DSV16B"
@@ -853,10 +853,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {6, 125, 250, 500, 1000, 2000, 4000} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSV16B_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSV16B_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSV16B_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LIS2DUX12_0
   #if (USE_CUSTOM_MOTION_SENSOR_LIS2DUX12_0 == 1)
@@ -867,10 +867,10 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LIS2DUX12_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LIS2DUX12_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LIS2DUX12_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LIS2DUXS12_0
   #if (USE_CUSTOM_MOTION_SENSOR_LIS2DUXS12_0 == 1)
@@ -881,10 +881,10 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LIS2DUXS12_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LIS2DUXS12_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LIS2DUXS12_0 */
 
 #ifdef USE_CUSTOM_ENV_SENSOR_SHT40AD1B_0
   #if (USE_CUSTOM_ENV_SENSOR_SHT40AD1B_0 == 1)
@@ -895,8 +895,8 @@ extern "C" {
       #define CUSTOM_HUM_INSTANCE_FS_0 {0} /* % */
       #ifndef HUM_TEMP_UNICLEO_ID
         #define HUM_TEMP_UNICLEO_ID SHT40AD1B_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* HUM_TEMP_UNICLEO_ID */
+    #endif /* CUSTOM_HUM_INSTANCE_0 */
     #ifndef CUSTOM_TEMP_INSTANCE_0
       #define CUSTOM_TEMP_INSTANCE_0 CUSTOM_SHT40AD1B_0
       #define CUSTOM_TEMP_INSTANCE_NAME_0 "SHT40AD1B"
@@ -904,10 +904,10 @@ extern "C" {
       #define CUSTOM_TEMP_INSTANCE_FS_0 {0} /* C */
       #ifndef HUM_TEMP_UNICLEO_ID
         #define HUM_TEMP_UNICLEO_ID SHT40AD1B_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* HUM_TEMP_UNICLEO_ID */
+    #endif /* CUSTOM_TEMP_INSTANCE_0 */
+  #endif /* USE_CUSTOM_ENV_SENSOR_SHT40AD1B_0 */
+#endif /* USE_CUSTOM_ENV_SENSOR_SHT40AD1B_0 */
 
 #ifdef USE_CUSTOM_ENV_SENSOR_STHS34PF80_0
   #if (USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 == 1)
@@ -918,10 +918,10 @@ extern "C" {
       #define CUSTOM_TEMP_INSTANCE_FS_0 {0} /* C */
       #ifndef HUM_TEMP_UNICLEO_ID
         #define HUM_TEMP_UNICLEO_ID STHS34PF80_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* HUM_TEMP_UNICLEO_ID */
+    #endif /* CUSTOM_TEMP_INSTANCE_0 */
+  #endif /* USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 */
+#endif /* USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LSM6DSV32X_0
   #if (USE_CUSTOM_MOTION_SENSOR_LSM6DSV32X_0 == 1)
@@ -932,8 +932,8 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 4, 8, 16, 32} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSV32X_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
     #ifndef CUSTOM_GYR_INSTANCE_0
       #define CUSTOM_GYR_INSTANCE_0 CUSTOM_LSM6DSV32X_0
       #define CUSTOM_GYR_INSTANCE_NAME_0 "LSM6DSV32X"
@@ -941,10 +941,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {6, 125, 250, 500, 1000, 2000, 4000} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSV32X_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSV32X_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSV32X_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_LSM6DSO16IS_0
   #if (USE_CUSTOM_MOTION_SENSOR_LSM6DSO16IS_0 == 1)
@@ -955,8 +955,8 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSO16IS_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
     #ifndef CUSTOM_GYR_INSTANCE_0
       #define CUSTOM_GYR_INSTANCE_0 CUSTOM_LSM6DSO16IS_0
       #define CUSTOM_GYR_INSTANCE_NAME_0 "LSM6DSO16IS"
@@ -964,10 +964,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {5, 125, 250, 500, 1000, 2000} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID LSM6DSO16IS_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSO16IS_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_LSM6DSO16IS_0 */
 
 #ifdef USE_CUSTOM_MOTION_SENSOR_ISM330BX_0
   #if (USE_CUSTOM_MOTION_SENSOR_ISM330BX_0 == 1)
@@ -978,8 +978,8 @@ extern "C" {
       #define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID ISM330BX_UNICLEO_ID
-      #endif
-    #endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_ACC_INSTANCE_0 */
     #ifndef CUSTOM_GYR_INSTANCE_0
       #define CUSTOM_GYR_INSTANCE_0 CUSTOM_ISM330BX_0
       #define CUSTOM_GYR_INSTANCE_NAME_0 "ISM330BX"
@@ -987,10 +987,10 @@ extern "C" {
       #define CUSTOM_GYR_INSTANCE_FS_0 {6, 125, 250, 500, 1000, 2000, 4000} /* dps */
       #ifndef ACC_GYR_UNICLEO_ID
         #define ACC_GYR_UNICLEO_ID ISM330BX_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* ACC_GYR_UNICLEO_ID */
+    #endif /* CUSTOM_GYR_INSTANCE_0 */
+  #endif /* USE_CUSTOM_MOTION_SENSOR_ISM330BX_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_ISM330BX_0 */
 
 #ifdef USE_CUSTOM_ENV_SENSOR_SGP40_0
   #if (USE_CUSTOM_ENV_SENSOR_SGP40_0 == 1)
@@ -1001,10 +1001,10 @@ extern "C" {
       #define CUSTOM_GAS_INSTANCE_FS_0 {0} /* % */
       #ifndef GAS_UNICLEO_ID
         #define GAS_UNICLEO_ID SGP40_UNICLEO_ID
-      #endif
-    #endif
-  #endif
-#endif
+      #endif /* GAS_UNICLEO_ID */
+    #endif /* CUSTOM_GAS_INSTANCE_0 */
+  #endif /* USE_CUSTOM_ENV_SENSOR_SGP40_0 */
+#endif /* USE_CUSTOM_ENV_SENSOR_SGP40_0 */
 
 #ifdef __cplusplus
 }

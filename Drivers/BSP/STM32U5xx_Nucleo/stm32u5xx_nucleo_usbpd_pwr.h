@@ -44,6 +44,7 @@ extern "C" {
   * @{
   */
 
+#if defined(TCPP0203_SUPPORT)
 /**
   * @brief  Power role
   */
@@ -54,6 +55,7 @@ typedef enum
   POWER_ROLE_DUAL
 }
 USBPD_PWR_PowerRoleTypeDef;
+#endif /* TCPP0203_SUPPORT */
 
 /**
   * @brief  VBUS connection status

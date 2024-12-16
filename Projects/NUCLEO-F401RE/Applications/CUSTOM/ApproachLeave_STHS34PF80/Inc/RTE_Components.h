@@ -17,12 +17,12 @@
   ******************************************************************************
   */
 /* USER CODE END Header */
-/* Define to prevent recursive inclusion -------------------------------------*/
+  /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef  __RTE_COMPONENTS_H__
 #define  __RTE_COMPONENTS_H__
 
 /* Defines ------------------------------------------------------------------*/
-/* STMicroelectronics.X-CUBE-MEMS1.11.0.0 */
+/* STMicroelectronics.X-CUBE-MEMS1.11.1.0 */
 #define BSP_ENV_SENSORS
 #define STHS34PF80_TEMP_I2C
 #define APPROACHLEAVE_STHS34PF80_DEMO

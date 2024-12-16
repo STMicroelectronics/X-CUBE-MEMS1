@@ -394,8 +394,10 @@ int32_t LIS2MDL_MAG_Disable(LIS2MDL_Object_t *pObj)
   * @param  Sensitivity pointer
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LIS2MDL_MAG_GetSensitivity(LIS2MDL_Object_t *pObj, float *Sensitivity)
+int32_t LIS2MDL_MAG_GetSensitivity(LIS2MDL_Object_t *pObj, float_t *Sensitivity)
 {
+  (void)pObj;
+
   *Sensitivity = LIS2MDL_MAG_SENSITIVITY_FS_50GAUSS;
 
   return LIS2MDL_OK;
@@ -407,7 +409,7 @@ int32_t LIS2MDL_MAG_GetSensitivity(LIS2MDL_Object_t *pObj, float *Sensitivity)
   * @param  Odr pointer where the output data rate is written
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LIS2MDL_MAG_GetOutputDataRate(LIS2MDL_Object_t *pObj, float *Odr)
+int32_t LIS2MDL_MAG_GetOutputDataRate(LIS2MDL_Object_t *pObj, float_t *Odr)
 {
   int32_t ret = LIS2MDL_OK;
   lis2mdl_odr_t odr_low_level;
@@ -450,7 +452,7 @@ int32_t LIS2MDL_MAG_GetOutputDataRate(LIS2MDL_Object_t *pObj, float *Odr)
   * @param  Odr the output data rate value to be set
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LIS2MDL_MAG_SetOutputDataRate(LIS2MDL_Object_t *pObj, float Odr)
+int32_t LIS2MDL_MAG_SetOutputDataRate(LIS2MDL_Object_t *pObj, float_t Odr)
 {
   lis2mdl_odr_t new_odr;
   lis2mdl_cfg_reg_a_t reg_a;
@@ -497,6 +499,8 @@ int32_t LIS2MDL_MAG_SetOutputDataRate(LIS2MDL_Object_t *pObj, float Odr)
   */
 int32_t LIS2MDL_MAG_GetFullScale(LIS2MDL_Object_t *pObj, int32_t *FullScale)
 {
+  (void)pObj;
+
   *FullScale = 50;
 
   return LIS2MDL_OK;
@@ -510,6 +514,9 @@ int32_t LIS2MDL_MAG_GetFullScale(LIS2MDL_Object_t *pObj, int32_t *FullScale)
   */
 int32_t LIS2MDL_MAG_SetFullScale(LIS2MDL_Object_t *pObj, int32_t FullScale)
 {
+  (void)pObj;
+  (void)FullScale;
+
   return LIS2MDL_OK;
 }
 
@@ -547,7 +554,7 @@ int32_t LIS2MDL_MAG_GetAxes(LIS2MDL_Object_t *pObj, LIS2MDL_Axes_t *MagneticFiel
 {
   uint8_t buff[6];
   lis2mdl_axis3bit16_t data_raw;
-  float sensitivity = 0.0f;
+  float_t sensitivity = 0.0f;
 
   if (pObj->IO.BusType == LSM6DSOX_SENSORHUB_LIS2MDL_I2C_BUS) /* LSM6DSOX SensorHub with LIS2MDL example */
   {
@@ -576,9 +583,9 @@ int32_t LIS2MDL_MAG_GetAxes(LIS2MDL_Object_t *pObj, LIS2MDL_Axes_t *MagneticFiel
   (void)LIS2MDL_MAG_GetSensitivity(pObj, &sensitivity);
 
   /* Calculate the data. */
-  MagneticField->x = (int32_t)((float)((float)data_raw.i16bit[0] * sensitivity));
-  MagneticField->y = (int32_t)((float)((float)data_raw.i16bit[1] * sensitivity));
-  MagneticField->z = (int32_t)((float)((float)data_raw.i16bit[2] * sensitivity));
+  MagneticField->x = (int32_t)((float_t)((float_t)data_raw.i16bit[0] * sensitivity));
+  MagneticField->y = (int32_t)((float_t)((float_t)data_raw.i16bit[1] * sensitivity));
+  MagneticField->z = (int32_t)((float_t)((float_t)data_raw.i16bit[2] * sensitivity));
 
   return LIS2MDL_OK;
 }
@@ -940,6 +947,7 @@ static int32_t LSM6DSOX_SENSORHUB_LIS2MDL_ReadShData(LIS2MDL_Object_t *pObj, uin
 static int32_t LSM6DSOX_SENSORHUB_LIS2MDL_WriteShData(LIS2MDL_Object_t *pObj, uint8_t Reg, uint8_t *pData,
                                                       uint16_t Length)
 {
+  (void)Length;
   uint8_t lsm6dsox_func_cfg_access = 0x01U;
   uint8_t shub_reg_access_en = 0x40U;
   uint8_t shub_reg_access_dis = 0x00U;

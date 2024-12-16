@@ -17,12 +17,12 @@
   ******************************************************************************
   */
 /* USER CODE END Header */
-/* Define to prevent recursive inclusion -------------------------------------*/
+  /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef  __RTE_COMPONENTS_H__
 #define  __RTE_COMPONENTS_H__
 
 /* Defines ------------------------------------------------------------------*/
-/* STMicroelectronics.X-CUBE-MEMS1.11.0.0 */
+/* STMicroelectronics.X-CUBE-MEMS1.11.1.0 */
 #define BSP_MOTION_SENSORS
 #define IIS2ICLX_ACC_I2C
 #define TILTSENSING2_IIS2ICLX_DEMO

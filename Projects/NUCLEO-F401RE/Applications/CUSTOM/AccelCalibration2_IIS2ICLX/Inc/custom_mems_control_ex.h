@@ -75,19 +75,18 @@ void BSP_ACC_GYR_Read_FSM_Data(uint8_t *Data);
 void BSP_ACC_GYR_Read_MLC_Data(uint8_t *Data);
 #endif /* CUSTOM_ALGOBUILDER_FW_TEMPLATE */
 
+#if ((defined PRESENCEDETECTION_STHS34PF80_DEMO) || (defined APPROACHLEAVE_STHS34PF80_DEMO))
+void BSP_SENSOR_TEMP_GetTObjRaw(int16_t *Value);
+void BSP_SENSOR_TEMP_SetAvgTmos(uint16_t Value);
+#endif /* PRESENCEDETECTION_STHS34PF80_DEMO || APPROACHLEAVE_STHS34PF80_DEMO */
+
 #if (defined PRESENCEDETECTION_STHS34PF80_DEMO)
 void BSP_SENSOR_TEMP_GetTAmbRaw(int16_t *Value);
-void BSP_SENSOR_TEMP_GetTObjRaw(int16_t *Value);
 void BSP_SENSOR_TEMP_GetAvgTmos(uint16_t *Value);
-void BSP_SENSOR_TEMP_SetAvgTmos(uint16_t Value);
 void BSP_SENSOR_TEMP_GetAvgT(uint8_t *Value);
 void BSP_SENSOR_TEMP_GetGainFactor(uint8_t *Value);
 void BSP_SENSOR_TEMP_GetSensitivity(uint16_t *Value);
 #endif /* PRESENCEDETECTION_STHS34PF80_DEMO */
-
-#if (defined APPROACHLEAVE_STHS34PF80_DEMO)
-void BSP_SENSOR_TEMP_GetTObjRaw(int16_t *Value);
-#endif /* APPROACHLEAVE_STHS34PF80_DEMO */
 
 #if (defined AIRQUALITY_SGP40_DEMO)
 void BSP_SENSOR_Gas_Set_Humidity(float Value);

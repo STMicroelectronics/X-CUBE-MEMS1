@@ -2,13 +2,11 @@
   ******************************************************************************
   * @file    motion_tl2.h
   * @author  MEMS Application Team
-  * @version V1.3.1
-  * @date    24-August-2021
   * @brief   Header for motion_tl2 module
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2020 STMicroelectronics.
+  * Copyright (c) 2022 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -79,6 +77,7 @@ typedef enum
   MTL2_MCU_BLUE_NRG1,
   MTL2_MCU_BLUE_NRG2,
   MTL2_MCU_BLUE_NRG_LP,
+  MTL2_MCU_STM32WB0,
 } MTL2_mcu_type_t;
 
 /**
@@ -147,3 +146,5 @@ uint8_t MotionTL2_GetLibVersion(char *version);
 #endif
 
 #endif /* MOTION_TL2_H_ */
+
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

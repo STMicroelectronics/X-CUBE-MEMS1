@@ -1031,6 +1031,69 @@
   <group>
     <name>Drivers</name>
     <group>
+      <name>BSP</name>
+      <group>
+        <name>Components</name>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lsm6dsv16x/lsm6dsv16x_reg.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lsm6dsv16x/lsm6dsv16x.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lis2duxs12/lis2duxs12_reg.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lis2duxs12/lis2duxs12.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lis2mdl/lis2mdl_reg.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lis2mdl/lis2mdl.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lsm6dso16is/lsm6dso16is_reg.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lsm6dso16is/lsm6dso16is.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/sht40ad1b/sht40ad1b_reg.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/sht40ad1b/sht40ad1b.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lps22df/lps22df_reg.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lps22df/lps22df.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/stts22h/stts22h_reg.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/stts22h/stts22h.c</name>
+        </file>
+      </group>
+      <group>
+        <name>IKS4A1</name>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/IKS4A1/iks4a1_motion_sensors.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/IKS4A1/iks4a1_motion_sensors_ex.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/IKS4A1/iks4a1_env_sensors.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/IKS4A1/iks4a1_env_sensors_ex.c</name>
+        </file>
+      </group>
+    </group>
+    <group>
       <name>STM32L1xx_HAL_Driver</name>
       <file>
         <name>$PROJ_DIR$/../../../../../../Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_i2c.c</name>
@@ -1095,69 +1158,6 @@
       <file>
         <name>$PROJ_DIR$/../Src/system_stm32l1xx.c</name>
       </file>
-    </group>
-    <group>
-      <name>BSP</name>
-      <group>
-        <name>Components</name>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lsm6dsv16x/lsm6dsv16x_reg.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lsm6dsv16x/lsm6dsv16x.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lis2duxs12/lis2duxs12_reg.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lis2duxs12/lis2duxs12.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lis2mdl/lis2mdl_reg.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lis2mdl/lis2mdl.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lsm6dso16is/lsm6dso16is_reg.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lsm6dso16is/lsm6dso16is.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/sht40ad1b/sht40ad1b_reg.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/sht40ad1b/sht40ad1b.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lps22df/lps22df_reg.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/lps22df/lps22df.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/stts22h/stts22h_reg.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/stts22h/stts22h.c</name>
-        </file>
-      </group>
-      <group>
-        <name>IKS4A1</name>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/IKS4A1/iks4a1_motion_sensors.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/IKS4A1/iks4a1_motion_sensors_ex.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/IKS4A1/iks4a1_env_sensors.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/IKS4A1/iks4a1_env_sensors_ex.c</name>
-        </file>
-      </group>
     </group>
   </group>
   <group>

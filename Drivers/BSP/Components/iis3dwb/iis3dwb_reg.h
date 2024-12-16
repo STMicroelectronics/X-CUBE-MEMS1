@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2019 STMicroelectronics.
+  * Copyright (c) 2021 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -409,6 +409,19 @@ typedef struct
   uint8_t xl_axis_sel              : 2;
 #endif /* DRV_BYTE_ORDER */
 } iis3dwb_ctrl6_c_t;
+#define IIS3DWB_CTRL7_C                      0x16U
+typedef struct
+{
+#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
+  uint8_t not_used_01               : 1;
+  uint8_t usr_off_on_out            : 1;
+  uint8_t not_used_02               : 6;
+#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
+  uint8_t not_used_02               : 6;
+  uint8_t usr_off_on_out            : 1;
+  uint8_t not_used_01               : 1;
+#endif /* DRV_BYTE_ORDER */
+} iis3dwb_ctrl7_c_t;
 
 #define IIS3DWB_CTRL8_XL                     0x17U
 typedef struct
@@ -694,6 +707,7 @@ typedef union
   iis3dwb_ctrl4_c_t                       ctrl4_c;
   iis3dwb_ctrl5_c_t                       ctrl5_c;
   iis3dwb_ctrl6_c_t                       ctrl6_c;
+  iis3dwb_ctrl7_c_t                       ctrl7_c;
   iis3dwb_ctrl8_xl_t                      ctrl8_xl;
   iis3dwb_ctrl10_c_t                      ctrl10_c;
   iis3dwb_all_int_src_t                   all_int_src;
@@ -718,10 +732,23 @@ typedef union
   *
   */
 
-int32_t iis3dwb_read_reg(stmdev_ctx_t *ctx, uint8_t reg,
+#ifndef __weak
+#define __weak __attribute__((weak))
+#endif /* __weak */
+
+/*
+ * These are the basic platform dependent I/O routines to read
+ * and write device registers connected on a standard bus.
+ * The driver keeps offering a default implementation based on function
+ * pointers to read/write routines for backward compatibility.
+ * The __weak directive allows the final application to overwrite
+ * them with a custom implementation.
+ */
+
+int32_t iis3dwb_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                          uint8_t *data,
                          uint16_t len);
-int32_t iis3dwb_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
+int32_t iis3dwb_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                           uint8_t *data,
                           uint16_t len);
 
@@ -741,9 +768,9 @@ typedef enum
   IIS3DWB_4g   = 2,
   IIS3DWB_8g   = 3,
 } iis3dwb_fs_xl_t;
-int32_t iis3dwb_xl_full_scale_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_xl_full_scale_set(const stmdev_ctx_t *ctx,
                                   iis3dwb_fs_xl_t val);
-int32_t iis3dwb_xl_full_scale_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_xl_full_scale_get(const stmdev_ctx_t *ctx,
                                   iis3dwb_fs_xl_t *val);
 
 typedef enum
@@ -751,13 +778,13 @@ typedef enum
   IIS3DWB_XL_ODR_OFF    = 0,
   IIS3DWB_XL_ODR_26k7Hz = 5,
 } iis3dwb_odr_xl_t;
-int32_t iis3dwb_xl_data_rate_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_xl_data_rate_set(const stmdev_ctx_t *ctx,
                                  iis3dwb_odr_xl_t val);
-int32_t iis3dwb_xl_data_rate_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_xl_data_rate_get(const stmdev_ctx_t *ctx,
                                  iis3dwb_odr_xl_t *val);
 
-int32_t iis3dwb_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis3dwb_block_data_update_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis3dwb_block_data_update_get(const stmdev_ctx_t *ctx,
                                       uint8_t *val);
 
 typedef enum
@@ -765,9 +792,9 @@ typedef enum
   IIS3DWB_LSb_1mg  = 0,
   IIS3DWB_LSb_16mg = 1,
 } iis3dwb_usr_off_w_t;
-int32_t iis3dwb_xl_offset_weight_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_xl_offset_weight_set(const stmdev_ctx_t *ctx,
                                      iis3dwb_usr_off_w_t val);
-int32_t iis3dwb_xl_offset_weight_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_xl_offset_weight_get(const stmdev_ctx_t *ctx,
                                      iis3dwb_usr_off_w_t *val);
 
 typedef enum
@@ -780,9 +807,9 @@ typedef enum
   IIS3DWB_ONLY_Y_ON_ALL_OUT_REG      = 0x12,
   IIS3DWB_ONLY_Z_ON_ALL_OUT_REG      = 0x13,
 } iis3dwb_xl_axis_sel_t;
-int32_t iis3dwb_xl_axis_selection_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_xl_axis_selection_set(const stmdev_ctx_t *ctx,
                                       iis3dwb_xl_axis_sel_t val);
-int32_t iis3dwb_xl_axis_selection_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_xl_axis_selection_get(const stmdev_ctx_t *ctx,
                                       iis3dwb_xl_axis_sel_t *val);
 
 typedef struct
@@ -791,74 +818,77 @@ typedef struct
   iis3dwb_wake_up_src_t       wake_up_src;
   iis3dwb_status_reg_t        status_reg;
 } iis3dwb_all_sources_t;
-int32_t iis3dwb_all_sources_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_all_sources_get(const stmdev_ctx_t *ctx,
                                 iis3dwb_all_sources_t *val);
 
-int32_t iis3dwb_status_reg_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_status_reg_get(const stmdev_ctx_t *ctx,
                                iis3dwb_status_reg_t *val);
 
-int32_t iis3dwb_xl_flag_data_ready_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val);
 
-int32_t iis3dwb_temp_flag_data_ready_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val);
 
-int32_t iis3dwb_xl_usr_offset_x_set(stmdev_ctx_t *ctx, uint8_t *buff);
-int32_t iis3dwb_xl_usr_offset_x_get(stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t iis3dwb_usr_offset_block_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis3dwb_usr_offset_block_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t iis3dwb_xl_usr_offset_y_set(stmdev_ctx_t *ctx, uint8_t *buff);
-int32_t iis3dwb_xl_usr_offset_y_get(stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t iis3dwb_xl_usr_offset_x_set(const stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t iis3dwb_xl_usr_offset_x_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 
-int32_t iis3dwb_xl_usr_offset_z_set(stmdev_ctx_t *ctx, uint8_t *buff);
-int32_t iis3dwb_xl_usr_offset_z_get(stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t iis3dwb_xl_usr_offset_y_set(const stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t iis3dwb_xl_usr_offset_y_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 
-int32_t iis3dwb_xl_usr_offset_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis3dwb_xl_usr_offset_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t iis3dwb_xl_usr_offset_z_set(const stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t iis3dwb_xl_usr_offset_z_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 
-int32_t iis3dwb_timestamp_rst(stmdev_ctx_t *ctx);
+int32_t iis3dwb_xl_usr_offset_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis3dwb_xl_usr_offset_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t iis3dwb_timestamp_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis3dwb_timestamp_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t iis3dwb_timestamp_rst(const stmdev_ctx_t *ctx);
 
-int32_t iis3dwb_timestamp_raw_get(stmdev_ctx_t *ctx, uint32_t *val);
+int32_t iis3dwb_timestamp_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis3dwb_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val);
+
+int32_t iis3dwb_timestamp_raw_get(const stmdev_ctx_t *ctx, uint32_t *val);
 
 typedef enum
 {
   IIS3DWB_NO_ROUND      = 0,
   IIS3DWB_ROUND         = 1,
 } iis3dwb_rounding_t;
-int32_t iis3dwb_rounding_mode_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_rounding_mode_set(const stmdev_ctx_t *ctx,
                                   iis3dwb_rounding_t val);
-int32_t iis3dwb_rounding_mode_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_rounding_mode_get(const stmdev_ctx_t *ctx,
                                   iis3dwb_rounding_t *val);
 
-int32_t iis3dwb_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val);
+int32_t iis3dwb_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
 
-int32_t iis3dwb_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *val);
+int32_t iis3dwb_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
 
-int32_t iis3dwb_odr_cal_reg_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis3dwb_odr_cal_reg_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t iis3dwb_odr_cal_reg_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis3dwb_odr_cal_reg_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
   IIS3DWB_DRDY_LATCHED = 0,
   IIS3DWB_DRDY_PULSED  = 1,
 } iis3dwb_dataready_pulsed_t;
-int32_t iis3dwb_data_ready_mode_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_data_ready_mode_set(const stmdev_ctx_t *ctx,
                                     iis3dwb_dataready_pulsed_t val);
-int32_t iis3dwb_data_ready_mode_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_data_ready_mode_get(const stmdev_ctx_t *ctx,
                                     iis3dwb_dataready_pulsed_t *val);
 
-int32_t iis3dwb_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff);
+int32_t iis3dwb_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 
-int32_t iis3dwb_reset_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis3dwb_reset_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t iis3dwb_reset_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis3dwb_reset_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t iis3dwb_auto_increment_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis3dwb_auto_increment_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t iis3dwb_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis3dwb_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t iis3dwb_boot_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis3dwb_boot_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t iis3dwb_boot_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis3dwb_boot_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
@@ -866,14 +896,14 @@ typedef enum
   IIS3DWB_XL_ST_POSITIVE = 1,
   IIS3DWB_XL_ST_NEGATIVE = 2,
 } iis3dwb_st_xl_t;
-int32_t iis3dwb_xl_self_test_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_xl_self_test_set(const stmdev_ctx_t *ctx,
                                  iis3dwb_st_xl_t val);
-int32_t iis3dwb_xl_self_test_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_xl_self_test_get(const stmdev_ctx_t *ctx,
                                  iis3dwb_st_xl_t *val);
 
-int32_t iis3dwb_filter_settling_mask_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_filter_settling_mask_set(const stmdev_ctx_t *ctx,
                                          uint8_t val);
-int32_t iis3dwb_filter_settling_mask_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_filter_settling_mask_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val);
 
 typedef enum
@@ -897,22 +927,22 @@ typedef enum
   IIS3DWB_LP_ODR_DIV_400            = 0x86,
   IIS3DWB_LP_ODR_DIV_800            = 0x87,
 } iis3dwb_filt_xl_en_t;
-int32_t iis3dwb_xl_filt_path_on_out_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_xl_filt_path_on_out_set(const stmdev_ctx_t *ctx,
                                         iis3dwb_filt_xl_en_t val);
-int32_t iis3dwb_xl_filt_path_on_out_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_xl_filt_path_on_out_get(const stmdev_ctx_t *ctx,
                                         iis3dwb_filt_xl_en_t *val);
 
-int32_t iis3dwb_xl_fast_settling_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis3dwb_xl_fast_settling_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t iis3dwb_xl_fast_settling_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis3dwb_xl_fast_settling_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
   IIS3DWB_USE_SLOPE = 0,
   IIS3DWB_USE_HPF   = 1,
 } iis3dwb_slope_fds_t;
-int32_t iis3dwb_xl_hp_path_internal_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_xl_hp_path_internal_set(const stmdev_ctx_t *ctx,
                                         iis3dwb_slope_fds_t val);
-int32_t iis3dwb_xl_hp_path_internal_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_xl_hp_path_internal_get(const stmdev_ctx_t *ctx,
                                         iis3dwb_slope_fds_t *val);
 
 typedef enum
@@ -920,9 +950,9 @@ typedef enum
   IIS3DWB_PULL_UP_DISC       = 0,
   IIS3DWB_PULL_UP_CONNECT    = 1,
 } iis3dwb_sdo_pu_en_t;
-int32_t iis3dwb_sdo_sa0_mode_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_sdo_sa0_mode_set(const stmdev_ctx_t *ctx,
                                  iis3dwb_sdo_pu_en_t val);
-int32_t iis3dwb_sdo_sa0_mode_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_sdo_sa0_mode_get(const stmdev_ctx_t *ctx,
                                  iis3dwb_sdo_pu_en_t *val);
 
 typedef enum
@@ -930,17 +960,17 @@ typedef enum
   IIS3DWB_SPI_4_WIRE = 0,
   IIS3DWB_SPI_3_WIRE = 1,
 } iis3dwb_sim_t;
-int32_t iis3dwb_spi_mode_set(stmdev_ctx_t *ctx, iis3dwb_sim_t val);
-int32_t iis3dwb_spi_mode_get(stmdev_ctx_t *ctx, iis3dwb_sim_t *val);
+int32_t iis3dwb_spi_mode_set(const stmdev_ctx_t *ctx, iis3dwb_sim_t val);
+int32_t iis3dwb_spi_mode_get(const stmdev_ctx_t *ctx, iis3dwb_sim_t *val);
 
 typedef enum
 {
   IIS3DWB_I2C_ENABLE  = 0,
   IIS3DWB_I2C_DISABLE = 1,
 } iis3dwb_i2c_disable_t;
-int32_t iis3dwb_i2c_interface_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_i2c_interface_set(const stmdev_ctx_t *ctx,
                                   iis3dwb_i2c_disable_t val);
-int32_t iis3dwb_i2c_interface_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_i2c_interface_get(const stmdev_ctx_t *ctx,
                                   iis3dwb_i2c_disable_t *val);
 
 typedef struct
@@ -956,9 +986,9 @@ uint8_t sleep_change  :
   1; /* Act/Inact (or Vice-versa) status changed */
   uint8_t sleep_status  : 1; /* Act/Inact status */
 } iis3dwb_pin_int1_route_t;
-int32_t iis3dwb_pin_int1_route_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_pin_int1_route_set(const stmdev_ctx_t *ctx,
                                    iis3dwb_pin_int1_route_t *val);
-int32_t iis3dwb_pin_int1_route_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_pin_int1_route_get(const stmdev_ctx_t *ctx,
                                    iis3dwb_pin_int1_route_t *val);
 
 typedef struct
@@ -971,13 +1001,12 @@ typedef struct
   uint8_t fifo_bdr      : 1; /* FIFO Batch counter threshold reached */
   uint8_t timestamp     : 1; /* timestamp overflow */
   uint8_t wake_up       : 1; /* wake up event */
-uint8_t sleep_change  :
-  1; /* Act/Inact (or Vice-versa) status changed */
+  uint8_t sleep_change  : 1; /* Act/Inact (or Vice-versa) status changed */
   uint8_t sleep_status  : 1; /* Act/Inact status */
 } iis3dwb_pin_int2_route_t;
-int32_t iis3dwb_pin_int2_route_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_pin_int2_route_set(const stmdev_ctx_t *ctx,
                                    iis3dwb_pin_int2_route_t *val);
-int32_t iis3dwb_pin_int2_route_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_pin_int2_route_get(const stmdev_ctx_t *ctx,
                                    iis3dwb_pin_int2_route_t *val);
 
 typedef enum
@@ -985,30 +1014,30 @@ typedef enum
   IIS3DWB_PUSH_PULL   = 0,
   IIS3DWB_OPEN_DRAIN  = 1,
 } iis3dwb_pp_od_t;
-int32_t iis3dwb_pin_mode_set(stmdev_ctx_t *ctx, iis3dwb_pp_od_t val);
-int32_t iis3dwb_pin_mode_get(stmdev_ctx_t *ctx, iis3dwb_pp_od_t *val);
+int32_t iis3dwb_pin_mode_set(const stmdev_ctx_t *ctx, iis3dwb_pp_od_t val);
+int32_t iis3dwb_pin_mode_get(const stmdev_ctx_t *ctx, iis3dwb_pp_od_t *val);
 
 typedef enum
 {
   IIS3DWB_ACTIVE_HIGH = 0,
   IIS3DWB_ACTIVE_LOW  = 1,
 } iis3dwb_h_lactive_t;
-int32_t iis3dwb_pin_polarity_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_pin_polarity_set(const stmdev_ctx_t *ctx,
                                  iis3dwb_h_lactive_t val);
-int32_t iis3dwb_pin_polarity_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_pin_polarity_get(const stmdev_ctx_t *ctx,
                                  iis3dwb_h_lactive_t *val);
 
-int32_t iis3dwb_all_on_int1_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis3dwb_all_on_int1_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t iis3dwb_all_on_int1_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis3dwb_all_on_int1_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
   IIS3DWB_INT_PULSED            = 0,
   IIS3DWB_INT_LATCHED           = 1,
 } iis3dwb_lir_t;
-int32_t iis3dwb_int_notification_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_int_notification_set(const stmdev_ctx_t *ctx,
                                      iis3dwb_lir_t val);
-int32_t iis3dwb_int_notification_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_int_notification_get(const stmdev_ctx_t *ctx,
                                      iis3dwb_lir_t *val);
 
 typedef enum
@@ -1016,39 +1045,39 @@ typedef enum
   IIS3DWB_LSb_FS_DIV_64       = 0,
   IIS3DWB_LSb_FS_DIV_256      = 1,
 } iis3dwb_wake_ths_w_t;
-int32_t iis3dwb_wkup_ths_weight_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_wkup_ths_weight_set(const stmdev_ctx_t *ctx,
                                     iis3dwb_wake_ths_w_t val);
-int32_t iis3dwb_wkup_ths_weight_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_wkup_ths_weight_get(const stmdev_ctx_t *ctx,
                                     iis3dwb_wake_ths_w_t *val);
 
-int32_t iis3dwb_wkup_threshold_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis3dwb_wkup_threshold_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t iis3dwb_wkup_threshold_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis3dwb_wkup_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t iis3dwb_xl_usr_offset_on_wkup_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_xl_usr_offset_on_wkup_set(const stmdev_ctx_t *ctx,
                                           uint8_t val);
-int32_t iis3dwb_xl_usr_offset_on_wkup_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_xl_usr_offset_on_wkup_get(const stmdev_ctx_t *ctx,
                                           uint8_t *val);
 
-int32_t iis3dwb_wkup_dur_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis3dwb_wkup_dur_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t iis3dwb_wkup_dur_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis3dwb_wkup_dur_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t iis3dwb_act_sleep_dur_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis3dwb_act_sleep_dur_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t iis3dwb_act_sleep_dur_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis3dwb_act_sleep_dur_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t iis3dwb_fifo_watermark_set(stmdev_ctx_t *ctx, uint16_t val);
-int32_t iis3dwb_fifo_watermark_get(stmdev_ctx_t *ctx, uint16_t *val);
+int32_t iis3dwb_fifo_watermark_set(const stmdev_ctx_t *ctx, uint16_t val);
+int32_t iis3dwb_fifo_watermark_get(const stmdev_ctx_t *ctx, uint16_t *val);
 
-int32_t iis3dwb_fifo_stop_on_wtm_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis3dwb_fifo_stop_on_wtm_get(stmdev_ctx_t *ctx, uint8_t *val);
+int32_t iis3dwb_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis3dwb_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
   IIS3DWB_XL_NOT_BATCHED          =  0,
   IIS3DWB_XL_BATCHED_AT_26k7Hz    = 10,
 } iis3dwb_bdr_xl_t;
-int32_t iis3dwb_fifo_xl_batch_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_fifo_xl_batch_set(const stmdev_ctx_t *ctx,
                                   iis3dwb_bdr_xl_t val);
-int32_t iis3dwb_fifo_xl_batch_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_fifo_xl_batch_get(const stmdev_ctx_t *ctx,
                                   iis3dwb_bdr_xl_t *val);
 
 typedef enum
@@ -1060,9 +1089,9 @@ typedef enum
   IIS3DWB_STREAM_MODE             = 6,
   IIS3DWB_BYPASS_TO_FIFO_MODE     = 7,
 } iis3dwb_fifo_mode_t;
-int32_t iis3dwb_fifo_mode_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_fifo_mode_set(const stmdev_ctx_t *ctx,
                               iis3dwb_fifo_mode_t val);
-int32_t iis3dwb_fifo_mode_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_fifo_mode_get(const stmdev_ctx_t *ctx,
                               iis3dwb_fifo_mode_t *val);
 
 typedef enum
@@ -1070,9 +1099,9 @@ typedef enum
   IIS3DWB_TEMP_NOT_BATCHED        = 0,
   IIS3DWB_TEMP_BATCHED_AT_104Hz   = 3,
 } iis3dwb_odr_t_batch_t;
-int32_t iis3dwb_fifo_temp_batch_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_fifo_temp_batch_set(const stmdev_ctx_t *ctx,
                                     iis3dwb_odr_t_batch_t val);
-int32_t iis3dwb_fifo_temp_batch_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_fifo_temp_batch_get(const stmdev_ctx_t *ctx,
                                     iis3dwb_odr_t_batch_t *val);
 
 typedef enum
@@ -1082,21 +1111,21 @@ typedef enum
   IIS3DWB_DEC_8         = 2,
   IIS3DWB_DEC_32        = 3,
 } iis3dwb_fifo_timestamp_batch_t;
-int32_t iis3dwb_fifo_timestamp_batch_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_fifo_timestamp_batch_set(const stmdev_ctx_t *ctx,
                                               iis3dwb_fifo_timestamp_batch_t val);
-int32_t iis3dwb_fifo_timestamp_batch_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_fifo_timestamp_batch_get(const stmdev_ctx_t *ctx,
                                               iis3dwb_fifo_timestamp_batch_t *val);
 
-int32_t iis3dwb_rst_batch_counter_set(stmdev_ctx_t *ctx, uint8_t val);
-int32_t iis3dwb_rst_batch_counter_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_rst_batch_counter_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis3dwb_rst_batch_counter_get(const stmdev_ctx_t *ctx,
                                       uint8_t *val);
 
-int32_t iis3dwb_batch_counter_threshold_set(stmdev_ctx_t *ctx,
+int32_t iis3dwb_batch_counter_threshold_set(const stmdev_ctx_t *ctx,
                                             uint16_t val);
-int32_t iis3dwb_batch_counter_threshold_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_batch_counter_threshold_get(const stmdev_ctx_t *ctx,
                                             uint16_t *val);
 
-int32_t iis3dwb_fifo_data_level_get(stmdev_ctx_t *ctx, uint16_t *val);
+int32_t iis3dwb_fifo_data_level_get(const stmdev_ctx_t *ctx, uint16_t *val);
 
 typedef struct
 {
@@ -1106,7 +1135,7 @@ typedef struct
   uint8_t fifo_ovr : 1;
   uint8_t fifo_th : 1;
 } iis3dwb_fifo_status_t;
-int32_t iis3dwb_fifo_status_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_fifo_status_get(const stmdev_ctx_t *ctx,
                                 iis3dwb_fifo_status_t *val);
 
 typedef struct
@@ -1114,8 +1143,8 @@ typedef struct
   uint8_t tag;
   uint8_t data[6];
 } iis3dwb_fifo_out_raw_t;
-int32_t iis3dwb_fifo_out_raw_get(stmdev_ctx_t *ctx, iis3dwb_fifo_out_raw_t *val);
-int32_t iis3dwb_fifo_out_multi_raw_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_fifo_out_raw_get(const stmdev_ctx_t *ctx, iis3dwb_fifo_out_raw_t *val);
+int32_t iis3dwb_fifo_out_multi_raw_get(const stmdev_ctx_t *ctx,
                                        iis3dwb_fifo_out_raw_t *fdata,
                                        uint16_t num);
 
@@ -1125,7 +1154,7 @@ typedef enum
   IIS3DWB_TEMPERATURE_TAG,
   IIS3DWB_TIMESTAMP_TAG,
 } iis3dwb_fifo_tag_t;
-int32_t iis3dwb_fifo_sensor_tag_get(stmdev_ctx_t *ctx,
+int32_t iis3dwb_fifo_sensor_tag_get(const stmdev_ctx_t *ctx,
                                     iis3dwb_fifo_tag_t *val);
 
 /**

@@ -2,8 +2,6 @@
   ******************************************************************************
   * @file    motion_gt.h
   * @author  MEMS Application Team
-  * @version V1.0.0
-  * @date    08-April-2019
   * @brief   Header for motion_gt module
   ******************************************************************************
   * @attention
@@ -61,6 +59,15 @@ extern "C"
  * @{
  */
 
+typedef enum
+{
+  MGT_MCU_STM32 = 0,
+  MGT_MCU_BLUE_NRG1,
+  MGT_MCU_BLUE_NRG2,
+  MGT_MCU_BLUE_NRG_LP,
+  MGT_MCU_STM32WB0,
+} MGT_mcu_type_t;
+
 typedef struct
 {
   uint64_t TimeStamp;   /* Timestamp in [ms] */
@@ -102,10 +109,10 @@ typedef struct
 
 /**
   * @brief  Initialize the MotionGT engine
-  * @param  none
+  * @param  mcu_type  MCU type
   * @retval none
   */
-void MotionGT_Initialize(void);
+void MotionGT_Initialize(MGT_mcu_type_t mcu_type);
 
 /**
   * @brief  Run gyroscope tempeareture bias calibration algorithm

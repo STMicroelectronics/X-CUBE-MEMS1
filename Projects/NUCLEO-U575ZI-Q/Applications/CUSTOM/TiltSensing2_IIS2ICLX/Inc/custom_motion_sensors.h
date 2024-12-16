@@ -32,7 +32,7 @@ extern "C" {
 
 #if (USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0 == 1)
 #include "iis2iclx.h"
-#endif
+#endif /* USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0 */
 
 /** @addtogroup BSP BSP
   * @{
@@ -52,7 +52,7 @@ extern "C" {
 
 #if (USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0 == 1)
 #define CUSTOM_IIS2ICLX_0 (0)
-#endif
+#endif /* USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0 */
 
 typedef struct
 {
@@ -98,20 +98,20 @@ typedef struct
 
 #ifndef MOTION_GYRO
 #define MOTION_GYRO             1U
-#endif
+#endif /* MOTION_GYRO */
 #ifndef MOTION_ACCELERO
 #define MOTION_ACCELERO         2U
-#endif
+#endif /* MOTION_ACCELERO */
 #ifndef MOTION_MAGNETO
 #define MOTION_MAGNETO          4U
-#endif
+#endif /* MOTION_MAGNETO */
 
 #define CUSTOM_MOTION_FUNCTIONS_NBR    3U
 #define CUSTOM_MOTION_INSTANCES_NBR    (USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0)
 
 #if (CUSTOM_MOTION_INSTANCES_NBR == 0)
 #error "No motion sensor instance has been selected"
-#endif
+#endif /* CUSTOM_MOTION_INSTANCES_NBR */
 
 /**
   * @}

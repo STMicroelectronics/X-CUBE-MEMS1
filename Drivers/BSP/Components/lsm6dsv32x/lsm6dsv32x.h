@@ -122,8 +122,8 @@ typedef struct
   uint8_t                   is_initialized;
   uint8_t                   acc_is_enabled;
   uint8_t                   gyro_is_enabled;
-  lsm6dsv32x_xl_data_rate_t acc_odr;
-  lsm6dsv32x_gy_data_rate_t gyro_odr;
+  lsm6dsv32x_data_rate_t acc_odr;
+  lsm6dsv32x_data_rate_t gyro_odr;
 } LSM6DSV32X_Object_t;
 
 typedef struct

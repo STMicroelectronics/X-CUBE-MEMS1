@@ -1,177 +1,139 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" ""><HTML xmlns="http://www.w3.org/TR/REC-html40" 
-xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:o="urn:schemas-microsoft-com:office:office" 
-xmlns:v="urn:schemas-microsoft-com:vml"><HEAD><META content="IE=5.0000" 
-http-equiv="X-UA-Compatible">
- 
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"> <LINK 
-href="Library_files/filelist.xml" rel="File-List"> <LINK href="Library_files/editdata.mso" 
-rel="Edit-Time-Data"><!--[if !mso]> <style> v\:* {behavior:url(#default#VML);} o\:* {behavior:url(#default#VML);} w\:* {behavior:url(#default#VML);} .shape {behavior:url(#default#VML);} </style> <![endif]--><TITLE>Release Notes for MotionSP Signal Processing Library</TITLE><!--[if gte mso 9]><xml> <o:DocumentProperties> <o:Author>STMicroelectronics</o:Author> <o:LastAuthor>STMicroelectronics</o:LastAuthor> <o:Revision>37</o:Revision> <o:TotalTime>136</o:TotalTime> <o:Created>2009-02-27T19:26:00Z</o:Created> <o:LastSaved>2009-03-01T17:56:00Z</o:LastSaved> <o:Pages>1</o:Pages> <o:Words>522</o:Words> <o:Characters>2977</o:Characters> <o:Company>STMicroelectronics</o:Company> <o:Lines>24</o:Lines> <o:Paragraphs>6</o:Paragraphs> <o:CharactersWithSpaces>3493</o:CharactersWithSpaces> <o:Version>11.6568</o:Version> </o:DocumentProperties> </xml><![endif]--><!--[if gte mso 9]><xml> <w:WordDocument> <w:Zoom>110</w:Zoom> <w:ValidateAgainstSchemas/> <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid> <w:IgnoreMixedContent>false</w:IgnoreMixedContent> <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText> <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel> </w:WordDocument> </xml><![endif]--><!--[if gte mso 9]><xml> <w:LatentStyles DefLockedState="false" LatentStyleCount="156"> </w:LatentStyles> </xml><![endif]--> 
-<STYLE>
-<!--
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-{mso-style-parent:"";
-margin:0in;
-margin-bottom:.0001pt;
-mso-pagination:widow-orphan;
-font-size:12.0pt;
-font-family:"Times New Roman";
-mso-fareast-font-family:"Times New Roman";}
-h2
-{mso-style-next:Normal;
-margin-top:12.0pt;
-margin-right:0in;
-margin-bottom:3.0pt;
-margin-left:0in;
-mso-pagination:widow-orphan;
-page-break-after:avoid;
-mso-outline-level:2;
-font-size:14.0pt;
-font-family:Arial;
-font-weight:bold;
-font-style:italic;}
-a:link, span.MsoHyperlink
-{color:blue;
-text-decoration:underline;
-text-underline:single;}
-a:visited, span.MsoHyperlinkFollowed
-{color:blue;
-text-decoration:underline;
-text-underline:single;}
-p
-{mso-margin-top-alt:auto;
-margin-right:0in;
-mso-margin-bottom-alt:auto;
-margin-left:0in;
-mso-pagination:widow-orphan;
-font-size:12.0pt;
-font-family:"Times New Roman";
-mso-fareast-font-family:"Times New Roman";}
-@page Section1
-{size:8.5in 11.0in;
-margin:1.0in 1.25in 1.0in 1.25in;
-mso-header-margin:.5in;
-mso-footer-margin:.5in;
-mso-paper-source:0;}
-div.Section1
-{page:Section1;}
--->
-</STYLE>
-<!--[if gte mso 10]> <style> /* Style Definitions */ table.MsoNormalTable {mso-style-name:"Table Normal"; mso-tstyle-rowband-size:0; mso-tstyle-colband-size:0; mso-style-noshow:yes; mso-style-parent:""; mso-padding-alt:0in 5.4pt 0in 5.4pt; mso-para-margin:0in; mso-para-margin-bottom:.0001pt; mso-pagination:widow-orphan; font-size:10.0pt; font-family:"Times New Roman"; mso-ansi-language:#0400; mso-fareast-language:#0400; mso-bidi-language:#0400;} </style> <![endif]--><!--[if gte mso 9]><xml> <o:shapedefaults v:ext="edit" spidmax="5122"/> </xml><![endif]--><!--[if gte mso 9]><xml> <o:shapelayout v:ext="edit"> <o:idmap v:ext="edit" data="1"/> </o:shapelayout></xml><![endif]--> 
-<META name="author" content="MCD Application Team">
-<META name="GENERATOR" content="MSHTML 11.00.9600.19003"></HEAD>
-<BODY link="blue" vlink="blue"> 
-<DIV class="Section1">
-<P class="MsoNormal"><SPAN 
-style="font-family: Arial;"><o:p><BR></o:p></SPAN></P>
-<DIV align="center">
-<TABLE width="900" class="MsoNormalTable" style="width: 675pt;" border="0" 
-cellspacing="0" cellpadding="0">
-  <TBODY>
-  <TR>
-    <TD valign="top" style="padding: 0cm;">
-      <TABLE width="900" class="MsoNormalTable" style="width: 675pt;" border="0" 
-      cellspacing="0" cellpadding="0">
-        <TBODY>
-        <TR>
-          <TD style="padding: 1.5pt;">
-            <H1 align="center" 
-            style="text-align: center; margin-bottom: 18pt;"><SPAN style="color: rgb(51, 102, 255); font-family: Verdana; font-size: 20pt;">Release 
-            Notes for MotionSP Signal Processing Library</SPAN><SPAN 
-            style="font-family: Verdana; font-size: 20pt;"><o:p></o:p></SPAN></H1>
-            <P align="center" class="MsoNormal" 
-            style="text-align: center;"><SPAN style="color: black; font-family: Arial; font-size: 10pt;">Copyright 2019 STMicroelectronics</SPAN><SPAN 
-            style="color: black;"><u1:p></u1:p><o:p></o:p></SPAN></P>
-            <P align="center" class="MsoNormal" 
-            style="text-align: center;"><SPAN style="color: black; font-family: Arial; font-size: 10pt;"><IMG 
-            id="_x0000_i1025" style="border: 0px solid currentColor; border-image: none; width: 86px; height: 65px;" 
-            alt="" src="../../../_htmresc/st_logo.png"></SPAN><SPAN style="font-size: 10pt;"><o:p></o:p></SPAN></P></TD></TR></TBODY></TABLE>
-      <TABLE width="900" class="MsoNormalTable" style="width: 675pt;" border="0" 
-      cellpadding="0">
-        <TBODY>
-        <TR>
-          <TD valign="top" style="padding: 0cm;">
-            <H2 style="background: 0% 50% rgb(51, 102, 255); -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><A 
-            name="History"></A><SPAN style="color: white; font-size: 12pt;">     
-                   Update History</SPAN></H2>
-				   
-            <H3 style="background: 0% 50% rgb(51, 102, 255); width: 200px; margin-right: 500pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><SPAN 
-            style="color: white; font-family: Arial; font-size: 10pt;">          
-              V2.2.0 / 30-May-2019</SPAN></H3>
-            <P class="MsoNormal" 
-            style="margin: 4.5pt 0cm 4.5pt 18pt;"><B><U><SPAN style="color: black; font-family: Verdana; font-size: 10pt;"> 
-                       Main Changes<o:p></o:p></SPAN></U></B></P>
-            <UL type="square" style="margin-top: 0cm;">
-			        <LI class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><SPAN 
-              style="font: 13px/normal Verdana; text-align: left; color: rgb(0, 0, 0); text-transform: none; text-indent: 0px; letter-spacing: normal; word-spacing: 0px; float: none; display: inline !important; white-space: normal;"> 
-                           Added new APIs to get some variables related to MotionSP so the following ones will be deprecated<br>(AcceleroODR, AccMagResults, MotionSP_Parameters, TimeDomainData)</SPAN><SPAN style="font-family: Verdana; font-size: 10pt;"></SPAN>
-              </LI>
-			      </UL>
-			  
-            <H3 style="background: 0% 50% rgb(51, 102, 255); width: 200px; margin-right: 500pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><SPAN 
-            style="color: white; font-family: Arial; font-size: 10pt;">          
-              V2.1.0 / 09-May-2019</SPAN></H3>
-            <P class="MsoNormal" 
-            style="margin: 4.5pt 0cm 4.5pt 18pt;"><B><U><SPAN style="color: black; font-family: Verdana; font-size: 10pt;"> 
-                       Main Changes<o:p></o:p></SPAN></U></B></P>
-            <UL type="square" style="margin-top: 0cm;">
-			        <LI class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><SPAN 
-              style="font: 13px/normal Verdana; text-align: left; color: rgb(0, 0, 0); text-transform: none; text-indent: 0px; letter-spacing: normal; word-spacing: 0px; float: none; display: inline !important; white-space: normal;"> 
-                           Added new API for Time Domain and Frequency Domain Analysis </SPAN><SPAN style="font-family: Verdana; font-size: 10pt;"></SPAN></LI>
-			      </UL>
-			  
-            <H3 style="background: 0% 50% rgb(51, 102, 255); width: 200px; margin-right: 500pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><SPAN 
-            style="color: white; font-family: Arial; font-size: 10pt;">          
-              V2.0.0 / 08-February-2019</SPAN></H3>
-            <P class="MsoNormal" 
-            style="margin: 4.5pt 0cm 4.5pt 18pt;"><B><U><SPAN style="color: black; font-family: Verdana; font-size: 10pt;"> 
-                       Main Changes<o:p></o:p></SPAN></U></B></P>
-            <UL type="square" style="margin-top: 0cm;">
-			        <LI class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><SPAN 
-              style="font: 13px/normal Verdana; text-align: left; color: rgb(0, 0, 0); text-transform: none; text-indent: 0px; letter-spacing: normal; word-spacing: 0px; float: none; display: inline !important; white-space: normal;"> 
-                           New data acquisition method based on accelerometer FIFO in continuous mode </SPAN><SPAN style="font-family: Verdana; font-size: 10pt;"></SPAN></LI>
-              <LI class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><SPAN 
-              style="font: 13px/normal Verdana; text-align: left; color: rgb(0, 0, 0); text-transform: none; text-indent: 0px; letter-spacing: normal; word-spacing: 0px; float: none; display: inline !important; white-space: normal;"> 
-                           Added subrange for thresholds analysis</SPAN><SPAN style="font-family: Verdana; font-size: 10pt;"></SPAN></LI>
-              <LI class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><SPAN 
-              style="font: 13px/normal Verdana; text-align: left; color: rgb(0, 0, 0); text-transform: none; text-indent: 0px; letter-spacing: normal; word-spacing: 0px; float: none; display: inline !important; white-space: normal;"> 
-                           Added Overlapping </SPAN><SPAN style="font-family: Verdana; font-size: 10pt;"></SPAN></LI>
-              <LI class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><SPAN 
-              style="font: 13px/normal Verdana; text-align: left; color: rgb(0, 0, 0); text-transform: none; text-indent: 0px; letter-spacing: normal; word-spacing: 0px; float: none; display: inline !important; white-space: normal;"> 
-                           Added saving the Max FFT Number evaluated </SPAN><SPAN style="font-family: Verdana; font-size: 10pt;"></SPAN></LI>
-						   
-              <LI class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><SPAN 
-              style="font: 13px/normal Verdana; text-align: left; color: rgb(0, 0, 0); text-transform: none; text-indent: 0px; letter-spacing: normal; word-spacing: 0px; float: none; display: inline !important; white-space: normal;"> 
-                           Modified some API for optimizing and restyle the code </SPAN><SPAN style="font-family: Verdana; font-size: 10pt;"></SPAN></LI>
-			      </UL>
-			  
-            <H3 style="background: 0% 50% rgb(51, 102, 255); width: 200px; margin-right: 500pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><SPAN 
-            style="color: white; font-family: Arial; font-size: 10pt;">          
-              V1.0.0 / 01-September-2018</SPAN></H3>
-            <P class="MsoNormal" 
-            style="margin: 4.5pt 0cm 4.5pt 18pt;"><B><U><SPAN style="color: black; font-family: Verdana; font-size: 10pt;"> 
-                       Main Changes<o:p></o:p></SPAN></U></B></P>
-            <UL type="square" style="margin-top: 0cm;">
-              <LI class="MsoNormal" style="color: black; margin-top: 4.5pt; margin-bottom: 4.5pt;"><SPAN 
-              style="font: 13px/normal Verdana; text-align: left; color: rgb(0, 0, 0); text-transform: none; text-indent: 0px; letter-spacing: normal; word-spacing: 0px; float: none; display: inline !important; white-space: normal;"> 
-                           First version of the library published under the ODE 
-              initiative</SPAN><SPAN style="font-family: Verdana; font-size: 10pt;"></SPAN></LI>  
-              <DIV align="center" class="MsoNormal" 
-              style="text-align: center;"><SPAN style="color: black;">
-              <HR width="100%" size="2" align="center">
-              </SPAN></DIV></UL>
-			  
-              <H2 style="background: 0% 50% rgb(51, 102, 255); -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;"><SPAN 
-              style="color: white; font-size: 12pt;">            
-              License<o:p></o:p></SPAN></H2>
-              <P class="MsoNormal"><FONT size="-1"><SPAN style='color: black; font-family: "Verdana","sans-serif"; font-size: 10pt;'> 
-                         Licensed under Software License Agreement SLA0077, (the 
-              "License"). You may not use this package except in compliance with 
-              the License. You may obtain a copy of the License 
-              at:<BR><BR></SPAN></FONT></P>
-              <DIV style="text-align: center;"><FONT size="-1"><SPAN style='color: black; font-family: "Verdana","sans-serif"; font-size: 10pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                         <A href="http://www.st.com/content/st_com/en/search.html#q=SLA0077-t=keywords-page=1" 
-              target="_blank">SLA0077: SOFTWARE LICENSE AGREEMENT</A>            
-               </SPAN>             <BR><BR></FONT></DIV>
-			  </TR></TBODY></TR></TBODY></DIV></DIV></BODY></HTML>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Release Notes for MotionSP Library</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="_htmresc/mini-st_2020.css" />
+  <link rel="icon" type="image/x-icon" href="_htmresc/favicon.png" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div class="row">
+<div class="col-sm-12 col-lg-4">
+<center>
+<h1 id="release-notes-for-motionsp-signal-processing-library">Release
+Notes for MotionSP Signal Processing Library</h1>
+<p>Copyright © 2024 STMicroelectronics<br />
+</p>
+<a href="https://www.st.com" class="logo"><img
+src="_htmresc/st_logo_2020.png" alt="ST logo" /></a>
+</center>
+<h1 id="purpose">Purpose</h1>
+<p><strong>What is MotionSP?</strong></p>
+<ul>
+<li>The MotionSP provides real-time signal processing.</li>
+</ul>
+<p>Here is the list of references to the user documents:</p>
+<ul>
+<li><a
+href="https://www.st.com/resource/en/user_manual/dm00157069-getting-started-with-the-xcubemems1-motion-mems-and-environmental-sensor-software-expansion-for-stm32cube-stmicroelectronics.pdf">Getting
+started with the X-CUBE-MEMS1 motion MEMS and environmental sensor
+software expansion for STM32Cube</a></li>
+</ul>
+</div>
+<section id="update-history" class="col-sm-12 col-lg-8">
+<h1>Update history</h1>
+<div class="collapse">
+<input type="checkbox" id="collapse-section6" checked aria-hidden="true">
+<label for="collapse-section6" aria-hidden="true">V2.2.2 /
+20-November-2024</label>
+<h2 id="main-changes">Main changes</h2>
+<h3 id="patch-release">Patch release</h3>
+<ul>
+<li>Update headers to neutral license</li>
+<li>Add license files</li>
+<li>Update the RN format</li>
+</ul>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section5" aria-hidden="true">
+<label for="collapse-section5" aria-hidden="true">V2.2.1 /
+15-September-2021</label>
+<h2 id="main-changes-1">Main changes</h2>
+<h3 id="patch-release-1">Patch release</h3>
+<ul>
+<li>Release updated for X-CUBE-MEMS1 with SLA0077</li>
+</ul>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section4" aria-hidden="true">
+<label for="collapse-section4" aria-hidden="true">V2.2.0 /
+30-May-2019</label>
+<h2 id="main-changes-2">Main changes</h2>
+<h3 id="maintenance-release">Maintenance release</h3>
+<ul>
+<li>Added new APIs to get some variables related to MotionSP so the
+following ones will be deprecated (AcceleroODR, AccMagResults,
+MotionSP_Parameters, TimeDomainData)</li>
+</ul>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section3" aria-hidden="true">
+<label for="collapse-section3" aria-hidden="true">V2.1.0 /
+09-May-2019</label>
+<h2 id="main-changes-3">Main changes</h2>
+<h3 id="maintenance-release-1">Maintenance release</h3>
+<ul>
+<li>Added new API for Time Domain and Frequency Domain Analysis</li>
+</ul>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section2" aria-hidden="true">
+<label for="collapse-section2" aria-hidden="true">V2.0.0 /
+08-February-2019</label>
+<h2 id="main-changes-4">Main changes</h2>
+<h3 id="product-update">Product update</h3>
+<ul>
+<li>New data acquisition method based on accelerometer FIFO in
+continuous mode</li>
+<li>Added subrange for thresholds analysis</li>
+<li>Added Overlapping</li>
+<li>Added saving the Max FFT Number evaluated</li>
+<li>Modified some API for optimizing and restyle the code</li>
+</ul>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section1" aria-hidden="true">
+<label for="collapse-section1" aria-hidden="true">V1.0.0 /
+01-September-2018</label>
+<h2 id="main-changes-5">Main changes</h2>
+<h3 id="first-release">First release</h3>
+<ul>
+<li>First version of the library published under the ODE initiative</li>
+</ul>
+</div>
+</section>
+</div>
+<footer class="sticky">
+<div class="columns">
+<div class="column" style="width:95%;">
+<p>For complete documentation on <strong>MotionSP</strong> , visit: <a
+href="https://www.st.com/en/embedded-software/x-cube-mems1.html">X-CUBE-MEMS1</a></p>
+</div><div class="column" style="width:5%;">
+<p><abbr title="Based on template cx566953 version 2.0">Info</abbr></p>
+</div>
+</div>
+</footer>
+</body>
+</html>

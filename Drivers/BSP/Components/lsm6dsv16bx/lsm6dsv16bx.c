@@ -530,20 +530,6 @@ int32_t LSM6DSV16BX_ACC_SetOutputDataRate_With_Mode(LSM6DSV16BX_Object_t *pObj, 
     case LSM6DSV16BX_ACC_HIGH_ACCURACY_MODE:
       return LSM6DSV16BX_ERROR;
 
-    case LSM6DSV16BX_ACC_NORMAL_MODE:
-    {
-      if (lsm6dsv16bx_xl_mode_set(&(pObj->Ctx), LSM6DSV16BX_XL_NORMAL_MD) != LSM6DSV16BX_OK)
-      {
-        return LSM6DSV16BX_ERROR;
-      }
-
-      /* Valid ODR: 7.5Hz <= Odr <= 1.92kHz */
-      Odr = (Odr <    7.5f) ?    7.5f
-    	  : (Odr > 1920.0f) ? 1920.0f
-    	  :                       Odr;
-      break;
-    }
-
     case LSM6DSV16BX_ACC_LOW_POWER_MODE1:
     {
       if (lsm6dsv16bx_xl_mode_set(&(pObj->Ctx), LSM6DSV16BX_XL_LOW_POWER_2_AVG_MD) != LSM6DSV16BX_OK)

@@ -2,20 +2,18 @@
   ******************************************************************************
   * @file    motion_ac2.h
   * @author  MEMS Application Team
-  * @version V1.3.1
-  * @date    24-August-2021
   * @brief   Header for motion_ac2 module
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2020 STMicroelectronics.
+  * Copyright (c) 2022 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
   * in the root directory of this software component.
   * If no LICENSE file comes with this software, it is provided AS-IS.
   *
-  ******************************************************************************
+  ********************************************************************************
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -83,6 +81,7 @@ typedef enum
   MAC2_MCU_BLUE_NRG1,
   MAC2_MCU_BLUE_NRG2,
   MAC2_MCU_BLUE_NRG_LP,
+  MAC2_MCU_STM32WB0,
 } MAC2_mcu_type_t;
 
 /**

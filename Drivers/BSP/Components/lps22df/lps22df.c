@@ -296,7 +296,7 @@ int32_t LPS22DF_PRESS_Disable(LPS22DF_Object_t *pObj)
       return LPS22DF_ERROR;
     }
 
-    memcpy(&pObj->last_odr, &val, sizeof(lps22df_md_t));
+    (void)memcpy(&pObj->last_odr, &val, sizeof(lps22df_md_t));
 
     val.odr = LPS22DF_ONE_SHOT;
 
@@ -318,7 +318,7 @@ int32_t LPS22DF_PRESS_Disable(LPS22DF_Object_t *pObj)
   * @param  Odr pointer where the output data rate is written
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LPS22DF_PRESS_GetOutputDataRate(LPS22DF_Object_t *pObj, float *Odr)
+int32_t LPS22DF_PRESS_GetOutputDataRate(LPS22DF_Object_t *pObj, float_t *Odr)
 {
   return LPS22DF_GetOutputDataRate(pObj, Odr);
 }
@@ -329,7 +329,7 @@ int32_t LPS22DF_PRESS_GetOutputDataRate(LPS22DF_Object_t *pObj, float *Odr)
   * @param  Odr the output data rate value to be set
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LPS22DF_PRESS_SetOutputDataRate(LPS22DF_Object_t *pObj, float Odr)
+int32_t LPS22DF_PRESS_SetOutputDataRate(LPS22DF_Object_t *pObj, float_t Odr)
 {
   /* Check if the component is enabled */
   if (pObj->press_is_enabled == 1U)
@@ -348,16 +348,16 @@ int32_t LPS22DF_PRESS_SetOutputDataRate(LPS22DF_Object_t *pObj, float Odr)
   * @param  Value pointer where the pressure value is written
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LPS22DF_PRESS_GetPressure(LPS22DF_Object_t *pObj, float *Value)
+int32_t LPS22DF_PRESS_GetPressure(LPS22DF_Object_t *pObj, float_t *Value)
 {
-  lps22df_data_t data;
+  uint32_t pressure_raw;
 
-  if (lps22df_data_get(&(pObj->Ctx), &data) != LPS22DF_OK)
+  if (lps22df_pressure_raw_get(&(pObj->Ctx), &pressure_raw) != LPS22DF_OK)
   {
     return LPS22DF_ERROR;
   }
 
-  *Value = data.pressure.hpa;
+  *Value = lps22df_from_lsb_to_hPa((int32_t)pressure_raw);
 
   return LPS22DF_OK;
 }
@@ -431,7 +431,7 @@ int32_t LPS22DF_TEMP_Disable(LPS22DF_Object_t *pObj)
       return LPS22DF_ERROR;
     }
 
-    memcpy(&pObj->last_odr, &val, sizeof(lps22df_md_t));
+    (void)memcpy(&pObj->last_odr, &val, sizeof(lps22df_md_t));
 
     val.odr = LPS22DF_ONE_SHOT;
 
@@ -453,7 +453,7 @@ int32_t LPS22DF_TEMP_Disable(LPS22DF_Object_t *pObj)
   * @param  Odr pointer where the output data rate is written
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LPS22DF_TEMP_GetOutputDataRate(LPS22DF_Object_t *pObj, float *Odr)
+int32_t LPS22DF_TEMP_GetOutputDataRate(LPS22DF_Object_t *pObj, float_t *Odr)
 {
   return LPS22DF_GetOutputDataRate(pObj, Odr);
 }
@@ -464,7 +464,7 @@ int32_t LPS22DF_TEMP_GetOutputDataRate(LPS22DF_Object_t *pObj, float *Odr)
   * @param  Odr the output data rate value to be set
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LPS22DF_TEMP_SetOutputDataRate(LPS22DF_Object_t *pObj, float Odr)
+int32_t LPS22DF_TEMP_SetOutputDataRate(LPS22DF_Object_t *pObj, float_t Odr)
 {
   /* Check if the component is enabled */
   if (pObj->temp_is_enabled == 1U)
@@ -483,16 +483,16 @@ int32_t LPS22DF_TEMP_SetOutputDataRate(LPS22DF_Object_t *pObj, float Odr)
   * @param  Value pointer where the temperature value is written
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LPS22DF_TEMP_GetTemperature(LPS22DF_Object_t *pObj, float *Value)
+int32_t LPS22DF_TEMP_GetTemperature(LPS22DF_Object_t *pObj, float_t *Value)
 {
-  lps22df_data_t data;
+  int16_t temperature_raw;
 
-  if (lps22df_data_get(&(pObj->Ctx), &data) != LPS22DF_OK)
+  if (lps22df_temperature_raw_get(&(pObj->Ctx), &temperature_raw) != LPS22DF_OK)
   {
     return LPS22DF_ERROR;
   }
 
-  *Value = data.heat.deg_c;
+  *Value = lps22df_from_lsb_to_celsius(temperature_raw);
 
   return LPS22DF_OK;
 }
@@ -565,7 +565,7 @@ int32_t LPS22DF_Write_Reg(LPS22DF_Object_t *pObj, uint8_t Reg, uint8_t Data)
   * @param  Odr the output data rate value
   * @retval 0 in case of success, an error code otherwise
   */
-static int32_t LPS22DF_GetOutputDataRate(LPS22DF_Object_t *pObj, float *Odr)
+static int32_t LPS22DF_GetOutputDataRate(LPS22DF_Object_t *pObj, float_t *Odr)
 {
   int32_t ret = LPS22DF_OK;
   lps22df_md_t val;
@@ -627,7 +627,7 @@ static int32_t LPS22DF_GetOutputDataRate(LPS22DF_Object_t *pObj, float *Odr)
   * @param  Odr the output data rate value to be set
   * @retval 0 in case of success, an error code otherwise
   */
-static int32_t LPS22DF_SetOutputDataRate_When_Enabled(LPS22DF_Object_t *pObj, float Odr)
+static int32_t LPS22DF_SetOutputDataRate_When_Enabled(LPS22DF_Object_t *pObj, float_t Odr)
 {
   lps22df_md_t new_val;
 
@@ -664,7 +664,7 @@ static int32_t LPS22DF_SetOutputDataRate_When_Enabled(LPS22DF_Object_t *pObj, fl
   * @param  Odr the output data rate value to be set
   * @retval 0 in case of success, an error code otherwise
   */
-static int32_t LPS22DF_SetOutputDataRate_When_Disabled(LPS22DF_Object_t *pObj, float Odr)
+static int32_t LPS22DF_SetOutputDataRate_When_Disabled(LPS22DF_Object_t *pObj, float_t Odr)
 {
   pObj->last_odr.odr = (Odr <=   1.0f) ? LPS22DF_1Hz
                        : (Odr <=   4.0f) ? LPS22DF_4Hz
@@ -708,7 +708,7 @@ static int32_t LPS22DF_Initialize(LPS22DF_Object_t *pObj)
     bus_mode.interface = LPS22DF_SEL_BY_HW;
   }
 
-  bus_mode.filter = LPS22DF_AUTO;
+  bus_mode.filter = LPS22DF_FILTER_AUTO;
   if (lps22df_bus_mode_set(&(pObj->Ctx), &bus_mode) != LPS22DF_OK)
   {
     return LPS22DF_ERROR;
@@ -781,7 +781,7 @@ int32_t LPS22DF_Get_One_Shot_Status(LPS22DF_Object_t *pObj, uint8_t *Status)
     return LPS22DF_ERROR;
   }
 
-  if (p_da && t_da)
+  if ((p_da & t_da) != 0U)
   {
     *Status = 1;
   }
@@ -826,7 +826,7 @@ int32_t LPS22DF_Set_AVG(LPS22DF_Object_t *pObj, uint8_t avg)
 {
   lps22df_md_t md;
 
-  if (avg > 7)
+  if (avg > 7U)
   {
     return LPS22DF_ERROR;
   }
@@ -838,10 +838,6 @@ int32_t LPS22DF_Set_AVG(LPS22DF_Object_t *pObj, uint8_t avg)
 
   switch (avg)
   {
-    case 0:
-    default:
-      md.avg = LPS22DF_4_AVG;
-      break;
     case 1:
       md.avg = LPS22DF_8_AVG;
       break;
@@ -863,6 +859,10 @@ int32_t LPS22DF_Set_AVG(LPS22DF_Object_t *pObj, uint8_t avg)
     case 7:
       md.avg = LPS22DF_512_AVG;
       break;
+    case 0:
+    default:
+      md.avg = LPS22DF_4_AVG;
+      break;
   }
 
   if (lps22df_mode_set(&(pObj->Ctx), &md) != LPS22DF_OK)
@@ -883,7 +883,7 @@ int32_t LPS22DF_Set_LPF(LPS22DF_Object_t *pObj, uint8_t lpf)
 {
   lps22df_md_t md;
 
-  if (lpf != 0 && lpf != 1 && lpf != 3)
+  if ((lpf != 0U) && (lpf != 1U) && (lpf != 3U))
   {
     return LPS22DF_ERROR;
   }
@@ -895,15 +895,15 @@ int32_t LPS22DF_Set_LPF(LPS22DF_Object_t *pObj, uint8_t lpf)
 
   switch (lpf)
   {
-    case 0:
-    default:
-      md.lpf = LPS22DF_LPF_DISABLE;
-      break;
     case 1:
       md.lpf = LPS22DF_LPF_ODR_DIV_4;
       break;
     case 3:
       md.lpf = LPS22DF_LPF_ODR_DIV_9;
+      break;
+    case 0:
+    default:
+      md.lpf = LPS22DF_LPF_DISABLE;
       break;
   }
 

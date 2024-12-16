@@ -2,8 +2,6 @@
   ******************************************************************************
   * @file    infrared_pd.h
   * @author  MEMS Application Team
-  * @version V1.0.0
-  * @date    08-March-2023
   * @brief   Header for infrared_pd module
   ******************************************************************************
   * @attention
@@ -52,6 +50,7 @@ typedef enum
   IPD_MCU_BLUE_NRG1,
   IPD_MCU_BLUE_NRG2,
   IPD_MCU_BLUE_NRG_LP,
+  IPD_MCU_STM32WB0,
 } IPD_mcu_type_t;
 
 typedef enum

@@ -1023,6 +1023,39 @@
   <group>
     <name>Drivers</name>
     <group>
+      <name>BSP</name>
+      <group>
+        <name>Components</name>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/iis2dlpc/iis2dlpc_reg.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/iis2dlpc/iis2dlpc.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/iis2mdc/iis2mdc_reg.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/iis2mdc/iis2mdc.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/ism330dhcx/ism330dhcx_reg.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/ism330dhcx/ism330dhcx.c</name>
+        </file>
+      </group>
+      <group>
+        <name>IKS02A1</name>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/IKS02A1/iks02a1_motion_sensors.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/IKS02A1/iks02a1_motion_sensors_ex.c</name>
+        </file>
+      </group>
+    </group>
+    <group>
       <name>STM32L1xx_HAL_Driver</name>
       <file>
         <name>$PROJ_DIR$/../../../../../../Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_i2c.c</name>
@@ -1087,39 +1120,6 @@
       <file>
         <name>$PROJ_DIR$/../Src/system_stm32l1xx.c</name>
       </file>
-    </group>
-    <group>
-      <name>BSP</name>
-      <group>
-        <name>Components</name>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/iis2dlpc/iis2dlpc_reg.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/iis2dlpc/iis2dlpc.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/iis2mdc/iis2mdc_reg.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/iis2mdc/iis2mdc.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/ism330dhcx/ism330dhcx_reg.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/Components/ism330dhcx/ism330dhcx.c</name>
-        </file>
-      </group>
-      <group>
-        <name>IKS02A1</name>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/IKS02A1/iks02a1_motion_sensors.c</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$/../../../../../../Drivers/BSP/IKS02A1/iks02a1_motion_sensors_ex.c</name>
-        </file>
-      </group>
     </group>
   </group>
   <group>

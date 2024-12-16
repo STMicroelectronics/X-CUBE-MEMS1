@@ -45,10 +45,12 @@
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_read_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
-                        uint16_t len)
+int32_t __weak ais2ih_read_reg(const stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
+                               uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL) return -1;
 
   ret = ctx->read_reg(ctx->handle, reg, data, len);
 
@@ -65,11 +67,13 @@ int32_t ais2ih_read_reg(stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_write_reg(stmdev_ctx_t *ctx, uint8_t reg,
-                         uint8_t *data,
-                         uint16_t len)
+int32_t __weak ais2ih_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
+                                uint8_t *data,
+                                uint16_t len)
 {
   int32_t ret;
+
+  if (ctx == NULL) return -1;
 
   ret = ctx->write_reg(ctx->handle, reg, data, len);
 
@@ -155,7 +159,7 @@ float_t ais2ih_from_lsb_to_celsius(int16_t lsb)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_power_mode_set(stmdev_ctx_t *ctx, ais2ih_mode_t val)
+int32_t ais2ih_power_mode_set(const stmdev_ctx_t *ctx, ais2ih_mode_t val)
 {
   ais2ih_ctrl1_t ctrl1;
   ais2ih_ctrl6_t ctrl6;
@@ -193,7 +197,7 @@ int32_t ais2ih_power_mode_set(stmdev_ctx_t *ctx, ais2ih_mode_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_power_mode_get(stmdev_ctx_t *ctx, ais2ih_mode_t *val)
+int32_t ais2ih_power_mode_get(const stmdev_ctx_t *ctx, ais2ih_mode_t *val)
 {
   ais2ih_ctrl1_t ctrl1;
   ais2ih_ctrl6_t ctrl6;
@@ -297,7 +301,7 @@ int32_t ais2ih_power_mode_get(stmdev_ctx_t *ctx, ais2ih_mode_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_data_rate_set(stmdev_ctx_t *ctx, ais2ih_odr_t val)
+int32_t ais2ih_data_rate_set(const stmdev_ctx_t *ctx, ais2ih_odr_t val)
 {
   ais2ih_ctrl1_t ctrl1;
   ais2ih_ctrl3_t ctrl3;
@@ -333,7 +337,7 @@ int32_t ais2ih_data_rate_set(stmdev_ctx_t *ctx, ais2ih_odr_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_data_rate_get(stmdev_ctx_t *ctx, ais2ih_odr_t *val)
+int32_t ais2ih_data_rate_get(const stmdev_ctx_t *ctx, ais2ih_odr_t *val)
 {
   ais2ih_ctrl1_t ctrl1;
   ais2ih_ctrl3_t ctrl3;
@@ -412,7 +416,7 @@ int32_t ais2ih_data_rate_get(stmdev_ctx_t *ctx, ais2ih_odr_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_ctrl2_t reg;
   int32_t ret;
@@ -436,7 +440,7 @@ int32_t ais2ih_block_data_update_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_ctrl2_t reg;
   int32_t ret;
@@ -455,7 +459,7 @@ int32_t ais2ih_block_data_update_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_full_scale_set(stmdev_ctx_t *ctx, ais2ih_fs_t val)
+int32_t ais2ih_full_scale_set(const stmdev_ctx_t *ctx, ais2ih_fs_t val)
 {
   ais2ih_ctrl6_t reg;
   int32_t ret;
@@ -479,7 +483,7 @@ int32_t ais2ih_full_scale_set(stmdev_ctx_t *ctx, ais2ih_fs_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_full_scale_get(stmdev_ctx_t *ctx, ais2ih_fs_t *val)
+int32_t ais2ih_full_scale_get(const stmdev_ctx_t *ctx, ais2ih_fs_t *val)
 {
   ais2ih_ctrl6_t reg;
   int32_t ret;
@@ -520,7 +524,7 @@ int32_t ais2ih_full_scale_get(stmdev_ctx_t *ctx, ais2ih_fs_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_status_reg_get(stmdev_ctx_t *ctx, ais2ih_status_t *val)
+int32_t ais2ih_status_reg_get(const stmdev_ctx_t *ctx, ais2ih_status_t *val)
 {
   int32_t ret;
 
@@ -537,7 +541,7 @@ int32_t ais2ih_status_reg_get(stmdev_ctx_t *ctx, ais2ih_status_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_flag_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_flag_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_status_t reg;
   int32_t ret;
@@ -556,7 +560,7 @@ int32_t ais2ih_flag_data_ready_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_all_sources_get(stmdev_ctx_t *ctx,
+int32_t ais2ih_all_sources_get(const stmdev_ctx_t *ctx,
                                ais2ih_all_sources_t *val)
 {
   int32_t ret;
@@ -576,7 +580,7 @@ int32_t ais2ih_all_sources_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_usr_offset_x_set(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t ais2ih_usr_offset_x_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -595,7 +599,7 @@ int32_t ais2ih_usr_offset_x_set(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_usr_offset_x_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t ais2ih_usr_offset_x_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -614,7 +618,7 @@ int32_t ais2ih_usr_offset_x_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_usr_offset_y_set(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t ais2ih_usr_offset_y_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -633,7 +637,7 @@ int32_t ais2ih_usr_offset_y_set(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_usr_offset_y_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t ais2ih_usr_offset_y_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -652,7 +656,7 @@ int32_t ais2ih_usr_offset_y_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_usr_offset_z_set(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t ais2ih_usr_offset_z_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -671,7 +675,7 @@ int32_t ais2ih_usr_offset_z_set(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_usr_offset_z_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t ais2ih_usr_offset_z_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -690,7 +694,7 @@ int32_t ais2ih_usr_offset_z_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_offset_weight_set(stmdev_ctx_t *ctx,
+int32_t ais2ih_offset_weight_set(const stmdev_ctx_t *ctx,
                                  ais2ih_usr_off_w_t val)
 {
   ais2ih_ctrl_reg7_t reg;
@@ -716,7 +720,7 @@ int32_t ais2ih_offset_weight_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_offset_weight_get(stmdev_ctx_t *ctx,
+int32_t ais2ih_offset_weight_get(const stmdev_ctx_t *ctx,
                                  ais2ih_usr_off_w_t *val)
 {
   ais2ih_ctrl_reg7_t reg;
@@ -763,7 +767,7 @@ int32_t ais2ih_offset_weight_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t ais2ih_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[2];
   int32_t ret;
@@ -784,7 +788,7 @@ int32_t ais2ih_temperature_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *val)
+int32_t ais2ih_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
   int32_t ret;
@@ -820,7 +824,7 @@ int32_t ais2ih_acceleration_raw_get(stmdev_ctx_t *ctx, int16_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
+int32_t ais2ih_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
@@ -838,7 +842,7 @@ int32_t ais2ih_device_id_get(stmdev_ctx_t *ctx, uint8_t *buff)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_auto_increment_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_ctrl2_t reg;
   int32_t ret;
@@ -863,7 +867,7 @@ int32_t ais2ih_auto_increment_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_auto_increment_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_ctrl2_t reg;
   int32_t ret;
@@ -882,7 +886,7 @@ int32_t ais2ih_auto_increment_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_reset_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_ctrl2_t reg;
   int32_t ret;
@@ -906,7 +910,7 @@ int32_t ais2ih_reset_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_reset_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_ctrl2_t reg;
   int32_t ret;
@@ -925,7 +929,7 @@ int32_t ais2ih_reset_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_boot_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_ctrl2_t reg;
   int32_t ret;
@@ -949,7 +953,7 @@ int32_t ais2ih_boot_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_ctrl2_t reg;
   int32_t ret;
@@ -968,7 +972,7 @@ int32_t ais2ih_boot_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_self_test_set(stmdev_ctx_t *ctx, ais2ih_st_t val)
+int32_t ais2ih_self_test_set(const stmdev_ctx_t *ctx, ais2ih_st_t val)
 {
   ais2ih_ctrl3_t reg;
   int32_t ret;
@@ -992,7 +996,7 @@ int32_t ais2ih_self_test_set(stmdev_ctx_t *ctx, ais2ih_st_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_self_test_get(stmdev_ctx_t *ctx, ais2ih_st_t *val)
+int32_t ais2ih_self_test_get(const stmdev_ctx_t *ctx, ais2ih_st_t *val)
 {
   ais2ih_ctrl3_t reg;
   int32_t ret;
@@ -1029,7 +1033,7 @@ int32_t ais2ih_self_test_get(stmdev_ctx_t *ctx, ais2ih_st_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_data_ready_mode_set(stmdev_ctx_t *ctx,
+int32_t ais2ih_data_ready_mode_set(const stmdev_ctx_t *ctx,
                                    ais2ih_drdy_pulsed_t val)
 {
   ais2ih_ctrl_reg7_t reg;
@@ -1054,7 +1058,7 @@ int32_t ais2ih_data_ready_mode_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_data_ready_mode_get(stmdev_ctx_t *ctx,
+int32_t ais2ih_data_ready_mode_get(const stmdev_ctx_t *ctx,
                                    ais2ih_drdy_pulsed_t *val)
 {
   ais2ih_ctrl_reg7_t reg;
@@ -1101,7 +1105,7 @@ int32_t ais2ih_data_ready_mode_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_filter_path_set(stmdev_ctx_t *ctx, ais2ih_fds_t val)
+int32_t ais2ih_filter_path_set(const stmdev_ctx_t *ctx, ais2ih_fds_t val)
 {
   ais2ih_ctrl6_t ctrl6;
   ais2ih_ctrl_reg7_t ctrl_reg7;
@@ -1137,7 +1141,7 @@ int32_t ais2ih_filter_path_set(stmdev_ctx_t *ctx, ais2ih_fds_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_filter_path_get(stmdev_ctx_t *ctx, ais2ih_fds_t *val)
+int32_t ais2ih_filter_path_get(const stmdev_ctx_t *ctx, ais2ih_fds_t *val)
 {
   ais2ih_ctrl6_t ctrl6;
   ais2ih_ctrl_reg7_t ctrl_reg7;
@@ -1181,7 +1185,7 @@ int32_t ais2ih_filter_path_get(stmdev_ctx_t *ctx, ais2ih_fds_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_filter_bandwidth_set(stmdev_ctx_t *ctx,
+int32_t ais2ih_filter_bandwidth_set(const stmdev_ctx_t *ctx,
                                     ais2ih_bw_filt_t val)
 {
   ais2ih_ctrl6_t reg;
@@ -1207,7 +1211,7 @@ int32_t ais2ih_filter_bandwidth_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_filter_bandwidth_get(stmdev_ctx_t *ctx,
+int32_t ais2ih_filter_bandwidth_get(const stmdev_ctx_t *ctx,
                                     ais2ih_bw_filt_t *val)
 {
   ais2ih_ctrl6_t reg;
@@ -1249,7 +1253,7 @@ int32_t ais2ih_filter_bandwidth_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_reference_mode_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_reference_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_ctrl_reg7_t reg;
   int32_t ret;
@@ -1273,7 +1277,7 @@ int32_t ais2ih_reference_mode_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_reference_mode_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_reference_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_ctrl_reg7_t reg;
   int32_t ret;
@@ -1305,7 +1309,7 @@ int32_t ais2ih_reference_mode_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_spi_mode_set(stmdev_ctx_t *ctx, ais2ih_sim_t val)
+int32_t ais2ih_spi_mode_set(const stmdev_ctx_t *ctx, ais2ih_sim_t val)
 {
   ais2ih_ctrl2_t reg;
   int32_t ret;
@@ -1329,7 +1333,7 @@ int32_t ais2ih_spi_mode_set(stmdev_ctx_t *ctx, ais2ih_sim_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_spi_mode_get(stmdev_ctx_t *ctx, ais2ih_sim_t *val)
+int32_t ais2ih_spi_mode_get(const stmdev_ctx_t *ctx, ais2ih_sim_t *val)
 {
   ais2ih_ctrl2_t reg;
   int32_t ret;
@@ -1363,7 +1367,7 @@ int32_t ais2ih_spi_mode_get(stmdev_ctx_t *ctx, ais2ih_sim_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_i2c_interface_set(stmdev_ctx_t *ctx,
+int32_t ais2ih_i2c_interface_set(const stmdev_ctx_t *ctx,
                                  ais2ih_i2c_disable_t val)
 {
   ais2ih_ctrl2_t reg;
@@ -1388,7 +1392,7 @@ int32_t ais2ih_i2c_interface_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_i2c_interface_get(stmdev_ctx_t *ctx,
+int32_t ais2ih_i2c_interface_get(const stmdev_ctx_t *ctx,
                                  ais2ih_i2c_disable_t *val)
 {
   ais2ih_ctrl2_t reg;
@@ -1422,7 +1426,7 @@ int32_t ais2ih_i2c_interface_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_cs_mode_set(stmdev_ctx_t *ctx, ais2ih_cs_pu_disc_t val)
+int32_t ais2ih_cs_mode_set(const stmdev_ctx_t *ctx, ais2ih_cs_pu_disc_t val)
 {
   ais2ih_ctrl2_t reg;
   int32_t ret;
@@ -1446,7 +1450,7 @@ int32_t ais2ih_cs_mode_set(stmdev_ctx_t *ctx, ais2ih_cs_pu_disc_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_cs_mode_get(stmdev_ctx_t *ctx,
+int32_t ais2ih_cs_mode_get(const stmdev_ctx_t *ctx,
                            ais2ih_cs_pu_disc_t *val)
 {
   ais2ih_ctrl2_t reg;
@@ -1492,7 +1496,7 @@ int32_t ais2ih_cs_mode_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_pin_polarity_set(stmdev_ctx_t *ctx,
+int32_t ais2ih_pin_polarity_set(const stmdev_ctx_t *ctx,
                                 ais2ih_h_lactive_t val)
 {
   ais2ih_ctrl3_t reg;
@@ -1517,7 +1521,7 @@ int32_t ais2ih_pin_polarity_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_pin_polarity_get(stmdev_ctx_t *ctx,
+int32_t ais2ih_pin_polarity_get(const stmdev_ctx_t *ctx,
                                 ais2ih_h_lactive_t *val)
 {
   ais2ih_ctrl3_t reg;
@@ -1551,7 +1555,7 @@ int32_t ais2ih_pin_polarity_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_int_notification_set(stmdev_ctx_t *ctx,
+int32_t ais2ih_int_notification_set(const stmdev_ctx_t *ctx,
                                     ais2ih_lir_t val)
 {
   ais2ih_ctrl3_t reg;
@@ -1576,7 +1580,7 @@ int32_t ais2ih_int_notification_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_int_notification_get(stmdev_ctx_t *ctx,
+int32_t ais2ih_int_notification_get(const stmdev_ctx_t *ctx,
                                     ais2ih_lir_t *val)
 {
   ais2ih_ctrl3_t reg;
@@ -1610,7 +1614,7 @@ int32_t ais2ih_int_notification_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_pin_mode_set(stmdev_ctx_t *ctx, ais2ih_pp_od_t val)
+int32_t ais2ih_pin_mode_set(const stmdev_ctx_t *ctx, ais2ih_pp_od_t val)
 {
   ais2ih_ctrl3_t reg;
   int32_t ret;
@@ -1634,7 +1638,7 @@ int32_t ais2ih_pin_mode_set(stmdev_ctx_t *ctx, ais2ih_pp_od_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_pin_mode_get(stmdev_ctx_t *ctx, ais2ih_pp_od_t *val)
+int32_t ais2ih_pin_mode_get(const stmdev_ctx_t *ctx, ais2ih_pp_od_t *val)
 {
   ais2ih_ctrl3_t reg;
   int32_t ret;
@@ -1667,7 +1671,7 @@ int32_t ais2ih_pin_mode_get(stmdev_ctx_t *ctx, ais2ih_pp_od_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_pin_int1_route_set(stmdev_ctx_t *ctx,
+int32_t ais2ih_pin_int1_route_set(const stmdev_ctx_t *ctx,
                                   ais2ih_ctrl4_int1_pad_ctrl_t *val)
 {
   ais2ih_ctrl5_int2_pad_ctrl_t ctrl5_int2_pad_ctrl;
@@ -1720,7 +1724,7 @@ int32_t ais2ih_pin_int1_route_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_pin_int1_route_get(stmdev_ctx_t *ctx,
+int32_t ais2ih_pin_int1_route_get(const stmdev_ctx_t *ctx,
                                   ais2ih_ctrl4_int1_pad_ctrl_t *val)
 {
   int32_t ret;
@@ -1739,7 +1743,7 @@ int32_t ais2ih_pin_int1_route_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_pin_int2_route_set(stmdev_ctx_t *ctx,
+int32_t ais2ih_pin_int2_route_set(const stmdev_ctx_t *ctx,
                                   ais2ih_ctrl5_int2_pad_ctrl_t *val)
 {
   ais2ih_ctrl4_int1_pad_ctrl_t ctrl4_int1_pad_ctrl;
@@ -1791,7 +1795,7 @@ int32_t ais2ih_pin_int2_route_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_pin_int2_route_get(stmdev_ctx_t *ctx,
+int32_t ais2ih_pin_int2_route_get(const stmdev_ctx_t *ctx,
                                   ais2ih_ctrl5_int2_pad_ctrl_t *val)
 {
   int32_t ret;
@@ -1809,7 +1813,7 @@ int32_t ais2ih_pin_int2_route_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_all_on_int1_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_all_on_int1_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_ctrl_reg7_t reg;
   int32_t ret;
@@ -1833,7 +1837,7 @@ int32_t ais2ih_all_on_int1_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_all_on_int1_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_all_on_int1_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_ctrl_reg7_t reg;
   int32_t ret;
@@ -1865,7 +1869,7 @@ int32_t ais2ih_all_on_int1_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_wkup_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_wkup_threshold_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_wake_up_ths_t reg;
   int32_t ret;
@@ -1889,7 +1893,7 @@ int32_t ais2ih_wkup_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_wkup_threshold_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_wkup_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_wake_up_ths_t reg;
   int32_t ret;
@@ -1908,7 +1912,7 @@ int32_t ais2ih_wkup_threshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_wkup_dur_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_wkup_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_wake_up_dur_t reg;
   int32_t ret;
@@ -1932,7 +1936,7 @@ int32_t ais2ih_wkup_dur_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_wkup_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_wkup_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_wake_up_dur_t reg;
   int32_t ret;
@@ -1951,7 +1955,7 @@ int32_t ais2ih_wkup_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_wkup_feed_data_set(stmdev_ctx_t *ctx,
+int32_t ais2ih_wkup_feed_data_set(const stmdev_ctx_t *ctx,
                                   ais2ih_usr_off_on_wu_t val)
 {
   ais2ih_ctrl_reg7_t reg;
@@ -1976,7 +1980,7 @@ int32_t ais2ih_wkup_feed_data_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_wkup_feed_data_get(stmdev_ctx_t *ctx,
+int32_t ais2ih_wkup_feed_data_get(const stmdev_ctx_t *ctx,
                                   ais2ih_usr_off_on_wu_t *val)
 {
   ais2ih_ctrl_reg7_t reg;
@@ -2025,7 +2029,7 @@ int32_t ais2ih_wkup_feed_data_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_act_mode_set(stmdev_ctx_t *ctx, ais2ih_sleep_on_t val)
+int32_t ais2ih_act_mode_set(const stmdev_ctx_t *ctx, ais2ih_sleep_on_t val)
 {
   ais2ih_wake_up_ths_t wake_up_ths;
   ais2ih_wake_up_dur_t wake_up_dur;
@@ -2066,7 +2070,7 @@ int32_t ais2ih_act_mode_set(stmdev_ctx_t *ctx, ais2ih_sleep_on_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_act_mode_get(stmdev_ctx_t *ctx, ais2ih_sleep_on_t *val)
+int32_t ais2ih_act_mode_get(const stmdev_ctx_t *ctx, ais2ih_sleep_on_t *val)
 {
   ais2ih_wake_up_ths_t wake_up_ths;
   ais2ih_wake_up_dur_t wake_up_dur;;
@@ -2111,7 +2115,7 @@ int32_t ais2ih_act_mode_get(stmdev_ctx_t *ctx, ais2ih_sleep_on_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_act_sleep_dur_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_act_sleep_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_wake_up_dur_t reg;
   int32_t ret;
@@ -2135,7 +2139,7 @@ int32_t ais2ih_act_sleep_dur_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_act_sleep_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_act_sleep_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_wake_up_dur_t reg;
   int32_t ret;
@@ -2167,7 +2171,7 @@ int32_t ais2ih_act_sleep_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_threshold_x_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_tap_threshold_x_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_tap_ths_x_t reg;
   int32_t ret;
@@ -2191,7 +2195,7 @@ int32_t ais2ih_tap_threshold_x_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_threshold_x_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_tap_threshold_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_tap_ths_x_t reg;
   int32_t ret;
@@ -2210,7 +2214,7 @@ int32_t ais2ih_tap_threshold_x_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_threshold_y_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_tap_threshold_y_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_tap_ths_y_t reg;
   int32_t ret;
@@ -2234,7 +2238,7 @@ int32_t ais2ih_tap_threshold_y_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_threshold_y_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_tap_threshold_y_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_tap_ths_y_t reg;
   int32_t ret;
@@ -2253,7 +2257,7 @@ int32_t ais2ih_tap_threshold_y_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_axis_priority_set(stmdev_ctx_t *ctx,
+int32_t ais2ih_tap_axis_priority_set(const stmdev_ctx_t *ctx,
                                      ais2ih_tap_prior_t val)
 {
   ais2ih_tap_ths_y_t reg;
@@ -2278,7 +2282,7 @@ int32_t ais2ih_tap_axis_priority_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_axis_priority_get(stmdev_ctx_t *ctx,
+int32_t ais2ih_tap_axis_priority_get(const stmdev_ctx_t *ctx,
                                      ais2ih_tap_prior_t *val)
 {
   ais2ih_tap_ths_y_t reg;
@@ -2328,7 +2332,7 @@ int32_t ais2ih_tap_axis_priority_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_threshold_z_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_tap_threshold_z_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_tap_ths_z_t reg;
   int32_t ret;
@@ -2352,7 +2356,7 @@ int32_t ais2ih_tap_threshold_z_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_threshold_z_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_tap_threshold_z_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_tap_ths_z_t reg;
   int32_t ret;
@@ -2371,7 +2375,7 @@ int32_t ais2ih_tap_threshold_z_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_detection_on_z_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_tap_detection_on_z_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_tap_ths_z_t reg;
   int32_t ret;
@@ -2395,7 +2399,7 @@ int32_t ais2ih_tap_detection_on_z_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_detection_on_z_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_tap_detection_on_z_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_tap_ths_z_t reg;
   int32_t ret;
@@ -2414,7 +2418,7 @@ int32_t ais2ih_tap_detection_on_z_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_detection_on_y_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_tap_detection_on_y_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_tap_ths_z_t reg;
   int32_t ret;
@@ -2438,7 +2442,7 @@ int32_t ais2ih_tap_detection_on_y_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_detection_on_y_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_tap_detection_on_y_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_tap_ths_z_t reg;
   int32_t ret;
@@ -2457,7 +2461,7 @@ int32_t ais2ih_tap_detection_on_y_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_detection_on_x_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_tap_detection_on_x_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_tap_ths_z_t reg;
   int32_t ret;
@@ -2481,7 +2485,7 @@ int32_t ais2ih_tap_detection_on_x_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_detection_on_x_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_tap_detection_on_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_tap_ths_z_t reg;
   int32_t ret;
@@ -2504,7 +2508,7 @@ int32_t ais2ih_tap_detection_on_x_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_shock_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_tap_shock_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_int_dur_t reg;
   int32_t ret;
@@ -2532,7 +2536,7 @@ int32_t ais2ih_tap_shock_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_shock_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_tap_shock_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_int_dur_t reg;
   int32_t ret;
@@ -2555,7 +2559,7 @@ int32_t ais2ih_tap_shock_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_quiet_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_tap_quiet_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_int_dur_t reg;
   int32_t ret;
@@ -2583,7 +2587,7 @@ int32_t ais2ih_tap_quiet_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_quiet_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_tap_quiet_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_int_dur_t reg;
   int32_t ret;
@@ -2607,7 +2611,7 @@ int32_t ais2ih_tap_quiet_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_dur_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_tap_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_int_dur_t reg;
   int32_t ret;
@@ -2636,7 +2640,7 @@ int32_t ais2ih_tap_dur_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_tap_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_int_dur_t reg;
   int32_t ret;
@@ -2655,7 +2659,7 @@ int32_t ais2ih_tap_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_mode_set(stmdev_ctx_t *ctx,
+int32_t ais2ih_tap_mode_set(const stmdev_ctx_t *ctx,
                             ais2ih_single_double_tap_t val)
 {
   ais2ih_wake_up_ths_t reg;
@@ -2680,7 +2684,7 @@ int32_t ais2ih_tap_mode_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_mode_get(stmdev_ctx_t *ctx,
+int32_t ais2ih_tap_mode_get(const stmdev_ctx_t *ctx,
                             ais2ih_single_double_tap_t *val)
 {
   ais2ih_wake_up_ths_t reg;
@@ -2714,7 +2718,7 @@ int32_t ais2ih_tap_mode_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_tap_src_get(stmdev_ctx_t *ctx, ais2ih_tap_src_t *val)
+int32_t ais2ih_tap_src_get(const stmdev_ctx_t *ctx, ais2ih_tap_src_t *val)
 {
   int32_t ret;
 
@@ -2744,7 +2748,7 @@ int32_t ais2ih_tap_src_get(stmdev_ctx_t *ctx, ais2ih_tap_src_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_6d_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_6d_threshold_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_tap_ths_x_t reg;
   int32_t ret;
@@ -2768,7 +2772,7 @@ int32_t ais2ih_6d_threshold_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_6d_threshold_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_6d_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_tap_ths_x_t reg;
   int32_t ret;
@@ -2787,7 +2791,7 @@ int32_t ais2ih_6d_threshold_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_4d_mode_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_4d_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_tap_ths_x_t reg;
   int32_t ret;
@@ -2811,7 +2815,7 @@ int32_t ais2ih_4d_mode_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_4d_mode_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_4d_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_tap_ths_x_t reg;
   int32_t ret;
@@ -2830,7 +2834,7 @@ int32_t ais2ih_4d_mode_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_6d_src_get(stmdev_ctx_t *ctx, ais2ih_sixd_src_t *val)
+int32_t ais2ih_6d_src_get(const stmdev_ctx_t *ctx, ais2ih_sixd_src_t *val)
 {
   int32_t ret;
 
@@ -2846,7 +2850,7 @@ int32_t ais2ih_6d_src_get(stmdev_ctx_t *ctx, ais2ih_sixd_src_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_6d_feed_data_set(stmdev_ctx_t *ctx,
+int32_t ais2ih_6d_feed_data_set(const stmdev_ctx_t *ctx,
                                 ais2ih_lpass_on6d_t val)
 {
   ais2ih_ctrl_reg7_t reg;
@@ -2871,7 +2875,7 @@ int32_t ais2ih_6d_feed_data_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_6d_feed_data_get(stmdev_ctx_t *ctx,
+int32_t ais2ih_6d_feed_data_get(const stmdev_ctx_t *ctx,
                                 ais2ih_lpass_on6d_t *val)
 {
   ais2ih_ctrl_reg7_t reg;
@@ -2919,7 +2923,7 @@ int32_t ais2ih_6d_feed_data_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_ff_dur_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_ff_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_wake_up_dur_t wake_up_dur;
   ais2ih_free_fall_t free_fall;
@@ -2958,7 +2962,7 @@ int32_t ais2ih_ff_dur_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_ff_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_ff_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_wake_up_dur_t wake_up_dur;
   ais2ih_free_fall_t free_fall;
@@ -2984,7 +2988,7 @@ int32_t ais2ih_ff_dur_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_ff_threshold_set(stmdev_ctx_t *ctx,
+int32_t ais2ih_ff_threshold_set(const stmdev_ctx_t *ctx,
                                 ais2ih_ff_ths_t val)
 {
   ais2ih_free_fall_t reg;
@@ -3009,7 +3013,7 @@ int32_t ais2ih_ff_threshold_set(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_ff_threshold_get(stmdev_ctx_t *ctx,
+int32_t ais2ih_ff_threshold_get(const stmdev_ctx_t *ctx,
                                 ais2ih_ff_ths_t *val)
 {
   ais2ih_free_fall_t reg;
@@ -3079,7 +3083,7 @@ int32_t ais2ih_ff_threshold_get(stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val)
+int32_t ais2ih_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   ais2ih_fifo_ctrl_t reg;
   int32_t ret;
@@ -3103,7 +3107,7 @@ int32_t ais2ih_fifo_watermark_set(stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_fifo_ctrl_t reg;
   int32_t ret;
@@ -3122,7 +3126,7 @@ int32_t ais2ih_fifo_watermark_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_fifo_mode_set(stmdev_ctx_t *ctx, ais2ih_fmode_t val)
+int32_t ais2ih_fifo_mode_set(const stmdev_ctx_t *ctx, ais2ih_fmode_t val)
 {
   ais2ih_fifo_ctrl_t reg;
   int32_t ret;
@@ -3146,7 +3150,7 @@ int32_t ais2ih_fifo_mode_set(stmdev_ctx_t *ctx, ais2ih_fmode_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_fifo_mode_get(stmdev_ctx_t *ctx, ais2ih_fmode_t *val)
+int32_t ais2ih_fifo_mode_get(const stmdev_ctx_t *ctx, ais2ih_fmode_t *val)
 {
   ais2ih_fifo_ctrl_t reg;
   int32_t ret;
@@ -3191,7 +3195,7 @@ int32_t ais2ih_fifo_mode_get(stmdev_ctx_t *ctx, ais2ih_fmode_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_fifo_data_level_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_fifo_data_level_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_fifo_samples_t reg;
   int32_t ret;
@@ -3209,7 +3213,7 @@ int32_t ais2ih_fifo_data_level_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_fifo_samples_t reg;
   int32_t ret;
@@ -3227,7 +3231,7 @@ int32_t ais2ih_fifo_ovr_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t ais2ih_fifo_wtm_flag_get(stmdev_ctx_t *ctx, uint8_t *val)
+int32_t ais2ih_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   ais2ih_fifo_samples_t reg;
   int32_t ret;

@@ -28,15 +28,15 @@ extern "C" {
 
 #if (defined BSP_MOTION_SENSORS)
 #include "custom_motion_sensors.h"
-#endif
+#endif /* BSP_MOTION_SENSORS */
 
 #if (defined BSP_ENV_SENSORS)
 #include "custom_env_sensors.h"
-#endif
+#endif /* BSP_ENV_SENSORS */
 
 #if (defined BSP_HYBRID_SENSORS)
 #include "custom_hybrid_sensors.h"
-#endif
+#endif /* BSP_HYBRID_SENSORS */
 
 typedef struct
 {

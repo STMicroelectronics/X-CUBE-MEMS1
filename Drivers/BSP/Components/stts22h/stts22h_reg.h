@@ -232,24 +232,6 @@ typedef struct
 
 #define STTS22H_TEMP_L_OUT                   0x06U
 #define STTS22H_TEMP_H_OUT                   0x07U
-#define STTS22H_SOFTWARE_RESET               0x0CU
-typedef struct
-{
-#if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t not_used_01         : 1;
-  uint8_t sw_reset            : 1;
-  uint8_t not_used_02         : 4;
-  uint8_t low_odr_enable      : 1;
-  uint8_t not_used_03         : 1;
-#elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t not_used_03         : 1;
-  uint8_t low_odr_enable      : 1;
-  uint8_t not_used_02         : 4;
-  uint8_t sw_reset            : 1;
-  uint8_t not_used_01         : 1;
-#endif /* DRV_BYTE_ORDER */
-} stts22h_software_reset_t;
-
 
 /**
   * @defgroup STTS22H_Register_Union
@@ -269,7 +251,6 @@ typedef union
   stts22h_temp_l_limit_t      temp_l_limit;
   stts22h_ctrl_t              ctrl;
   stts22h_status_t            status;
-  stts22h_software_reset_t    software_reset;
   bitwise_t                   bitwise;
   uint8_t                     byte;
 } stts22h_reg_t;

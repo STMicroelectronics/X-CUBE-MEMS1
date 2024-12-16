@@ -2,8 +2,6 @@
   ******************************************************************************
   * @file    motion_gc.h
   * @author  MEMS Application Team
-  * @version V2.6.0
-  * @date    02-August-2022
   * @brief   Header for motion_gc module
   ******************************************************************************
   * @attention
@@ -50,6 +48,7 @@ typedef enum
   MGC_MCU_BLUE_NRG1,
   MGC_MCU_BLUE_NRG2,
   MGC_MCU_BLUE_NRG_LP,
+  MGC_MCU_STM32WB0,
 } MGC_mcu_type_t;
 
 typedef struct

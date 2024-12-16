@@ -5,7 +5,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2014-2023 STMicroelectronics.
+  * Copyright (c) 2014-2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -29,12 +29,12 @@
 #include "string.h"
 
 /** @addtogroup X_NUCLEO_IKS4A1_Examples X_NUCLEO_IKS4A1 Examples
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup DATALOG_EXTENDED DATALOG EXTENDED
- * @{
- */
+  * @{
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -320,7 +320,7 @@ static uint32_t PrsFsList[][1] = { /* Pa */
 static float AccOdrList[][13] = {                                     /* Hz */
   {12, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV16X */
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667},           /* LSM6DSO16IS */
-  {10, 1.6, 3, 6, 12.5, 25, 50, 100, 200, 400, 800},                  /* LIS2DUXS12 */
+  {8, 6, 12.5, 25, 50, 100, 200, 400, 800},                           /* LIS2DUXS12 */
   {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667},           /* LSM6DSO */
   {8, 12.5, 25, 50, 100, 200, 400, 800, 1600},                        /* LIS2DW12 */
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667},           /* ASM330LHH */
@@ -346,7 +346,7 @@ static float AccOdrList[][13] = {                                     /* Hz */
   {12, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV16BX */
   {12, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV */
   {12, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV16B */
-  {10, 1.6, 3, 6, 12.5, 25, 50, 100, 200, 400, 800},                  /* LIS2DUX12 */
+  {8, 6, 12.5, 25, 50, 100, 200, 400, 800},                           /* LIS2DUX12 */
   {12, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV32X */
   {11, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840},       /* ISM330BX */
 };
@@ -435,6 +435,9 @@ static int32_t SC_Set_ODR(Msg_t *Msg);
 static int32_t SC_Get_ODR(Msg_t *Msg);
 static int32_t SC_Get_Sensor_List(Msg_t *Msg);
 static int32_t SC_Set_Sensor_Index(Msg_t *Msg);
+static int32_t SC_Write_Multi_Register(Msg_t *Msg);
+static int32_t SC_Read_Multi_Register(Msg_t *Msg);
+static int32_t SC_Read_Modify_Write_Register(Msg_t *Msg);
 
 static void Send_Sensor_Name(Msg_t *Msg, uint8_t *SensorName);
 static void Send_Sensor_FS_List(Msg_t *Msg, uint32_t *FsList);
@@ -448,10 +451,10 @@ static void ArrayToFloat(uint8_t *Source, float *data);
 
 /* Public functions ----------------------------------------------------------*/
 /**
- * @brief  Handle Sensors command
- * @param  Msg the pointer to the message to be handled
- * @retval 1 if the message is correctly handled, 0 otherwise
- */
+  * @brief  Handle Sensors command
+  * @param  Msg the pointer to the message to be handled
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
 int32_t Handle_Sensor_command(Msg_t *Msg)
 {
   int32_t ret;
@@ -503,6 +506,18 @@ int32_t Handle_Sensor_command(Msg_t *Msg)
       ret = SC_Set_Sensor_Index(Msg);
       break;
 
+    case SC_WRITE_MULTI_REGISTER:
+      ret = SC_Write_Multi_Register(Msg);
+      break;
+
+    case SC_READ_MULTI_REGISTER:
+      ret = SC_Read_Multi_Register(Msg);
+      break;
+
+    case SC_READ_MODIFY_WRITE_REGISTER:
+      ret = SC_Read_Modify_Write_Register(Msg);
+      break;
+
     default:
       ret = 0;
       break;
@@ -513,10 +528,10 @@ int32_t Handle_Sensor_command(Msg_t *Msg)
 
 /* Private functions ---------------------------------------------------------*/
 /**
- * @brief  Get sensor name
- * @param  Msg the pointer to the message to be handled
- * @retval 1 if the message is correctly handled, 0 otherwise
- */
+  * @brief  Get sensor name
+  * @param  Msg the pointer to the message to be handled
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
 static int32_t SC_Get_Sensor_Name(Msg_t *Msg)
 {
   int32_t ret = 1;
@@ -557,13 +572,13 @@ static int32_t SC_Get_Sensor_Name(Msg_t *Msg)
 }
 
 /**
- * @brief  Read sensor register
- * @param  Msg the pointer to the message to be handled
- * @retval 1 if the message is correctly handled, 0 otherwise
- */
+  * @brief  Read sensor register
+  * @param  Msg the pointer to the message to be handled
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
 static int32_t SC_Read_Register(Msg_t *Msg)
 {
-  uint8_t reg_value = 0;
+  uint8_t reg_value = 0U;
   int32_t ret = 1;
 
   /* Sensor Type */
@@ -643,16 +658,16 @@ static int32_t SC_Read_Register(Msg_t *Msg)
 
   BUILD_REPLY_HEADER(Msg);
   Msg->Data[6] = reg_value;
-  Msg->Len = 7;
+  Msg->Len = 7U;
   UART_SendMsg(Msg);
   return ret;
 }
 
 /**
- * @brief  Write to sensor register
- * @param  Msg the pointer to the message to be handled
- * @retval 1 if the message is correctly handled, 0 otherwise
- */
+  * @brief  Write to sensor register
+  * @param  Msg the pointer to the message to be handled
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
 static int32_t SC_Write_Register(Msg_t *Msg)
 {
   int32_t ret = 1;
@@ -733,16 +748,16 @@ static int32_t SC_Write_Register(Msg_t *Msg)
   }
 
   BUILD_REPLY_HEADER(Msg);
-  Msg->Len = 7;
+  Msg->Len = 7U;
   UART_SendMsg(Msg);
   return ret;
 }
 
 /**
- * @brief  Get sensor full scale list
- * @param  Msg the pointer to the message to be handled
- * @retval 1 if the message is correctly handled, 0 otherwise
- */
+  * @brief  Get sensor full scale list
+  * @param  Msg the pointer to the message to be handled
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
 static int32_t SC_Get_Full_Scale_List(Msg_t *Msg)
 {
   int32_t ret = 1;
@@ -783,10 +798,10 @@ static int32_t SC_Get_Full_Scale_List(Msg_t *Msg)
 }
 
 /**
- * @brief  Set sensor full scale
- * @param  Msg the pointer to the message to be handled
- * @retval 1 if the message is correctly handled, 0 otherwise
- */
+  * @brief  Set sensor full scale
+  * @param  Msg the pointer to the message to be handled
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
 static int32_t SC_Set_Full_Scale(Msg_t *Msg)
 {
   uint32_t full_scale = Deserialize(&Msg->Data[5], 4);
@@ -842,16 +857,16 @@ static int32_t SC_Set_Full_Scale(Msg_t *Msg)
   }
 
   BUILD_REPLY_HEADER(Msg);
-  Msg->Len = 9;
+  Msg->Len = 9U;
   UART_SendMsg(Msg);
   return ret;
 }
 
 /**
- * @brief  Get sensor full scale
- * @param  Msg the pointer to the message to be handled
- * @retval 1 if the message is correctly handled, 0 otherwise
- */
+  * @brief  Get sensor full scale
+  * @param  Msg the pointer to the message to be handled
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
 static int32_t SC_Get_Full_Scale(Msg_t *Msg)
 {
   int32_t full_scale = 0;
@@ -908,16 +923,16 @@ static int32_t SC_Get_Full_Scale(Msg_t *Msg)
 
   BUILD_REPLY_HEADER(Msg);
   Serialize(&Msg->Data[5], full_scale, 4);
-  Msg->Len = 9;
+  Msg->Len = 9U;
   UART_SendMsg(Msg);
   return ret;
 }
 
 /**
- * @brief  Get sensor output data rate list
- * @param  Msg the pointer to the message to be handled
- * @retval 1 if the message is correctly handled, 0 otherwise
- */
+  * @brief  Get sensor output data rate list
+  * @param  Msg the pointer to the message to be handled
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
 static int32_t SC_Get_ODR_List(Msg_t *Msg)
 {
   int32_t ret = 1;
@@ -958,10 +973,10 @@ static int32_t SC_Get_ODR_List(Msg_t *Msg)
 }
 
 /**
- * @brief  Set sensor output data rate
- * @param  Msg the pointer to the message to be handled
- * @retval 1 if the message is correctly handled, 0 otherwise
- */
+  * @brief  Set sensor output data rate
+  * @param  Msg the pointer to the message to be handled
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
 static int32_t SC_Set_ODR(Msg_t *Msg)
 {
   float odr = 0.0f;
@@ -1045,16 +1060,16 @@ static int32_t SC_Set_ODR(Msg_t *Msg)
   }
 
   BUILD_REPLY_HEADER(Msg);
-  Msg->Len = 9;
+  Msg->Len = 9U;
   UART_SendMsg(Msg);
   return ret;
 }
 
 /**
- * @brief  Get sensor output data rate
- * @param  Msg the pointer to the message to be handled
- * @retval 1 if the message is correctly handled, 0 otherwise
- */
+  * @brief  Get sensor output data rate
+  * @param  Msg the pointer to the message to be handled
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
 static int32_t SC_Get_ODR(Msg_t *Msg)
 {
   float odr = 0.0f;
@@ -1137,16 +1152,16 @@ static int32_t SC_Get_ODR(Msg_t *Msg)
 
   BUILD_REPLY_HEADER(Msg);
   FloatToArray(&Msg->Data[5], odr);
-  Msg->Len = 9;
+  Msg->Len = 9U;
   UART_SendMsg(Msg);
   return ret;
 }
 
 /**
- * @brief  Get sensor list
- * @param  Msg the pointer to the message to be handled
- * @retval 1 if the message is correctly handled, 0 otherwise
- */
+  * @brief  Get sensor list
+  * @param  Msg the pointer to the message to be handled
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
 static int32_t SC_Get_Sensor_List(Msg_t *Msg)
 {
   int32_t ret = 1;
@@ -1254,10 +1269,10 @@ static int32_t SC_Get_Sensor_List(Msg_t *Msg)
 }
 
 /**
- * @brief  Set sensor index
- * @param  Msg the pointer to the message to be handled
- * @retval 1 if the message is correctly handled, 0 otherwise
- */
+  * @brief  Set sensor index
+  * @param  Msg the pointer to the message to be handled
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
 static int32_t SC_Set_Sensor_Index(Msg_t *Msg)
 {
   int32_t ret = 1;
@@ -1483,14 +1498,385 @@ static int32_t SC_Set_Sensor_Index(Msg_t *Msg)
 }
 
 /**
- * @brief  Send sensor name
- * @param  Msg the pointer to the message to be handled
- * @param  SensorName the sensor name
- * @retval 1 if the message is correctly handled, 0 otherwise
- */
+  * @brief  Write to sensor registers
+  * @param  Msg the pointer to the message to be handled
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
+static int32_t SC_Write_Multi_Register(Msg_t *Msg)
+{
+  int32_t ret = 1;
+  uint8_t i;
+
+  /* Sensor Type */
+  switch (Msg->Data[4])
+  {
+    case SC_ACCELEROMETER:
+      if (IsHybridAccSensor == HYBRID_SENSOR && AccInstance == IKS4A1_LIS2DTW12_0)
+      {
+        for (i = 0; i < Msg->Data[5]; i++)
+        {
+          if (IKS4A1_HYBRID_SENSOR_Write_Register(AccInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+          {
+            ret = 0;
+          }
+        }
+      }
+      else
+      {
+        for (i = 0; i < Msg->Data[5]; i++)
+        {
+          if (IKS4A1_MOTION_SENSOR_Write_Register(AccInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+          {
+            ret = 0;
+          }
+        }
+      }
+      break;
+
+    case SC_GYROSCOPE:
+      for (i = 0; i < Msg->Data[5]; i++)
+      {
+        if (IKS4A1_MOTION_SENSOR_Write_Register(GyrInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+      }
+      break;
+
+    case SC_MAGNETOMETER:
+      for (i = 0; i < Msg->Data[5]; i++)
+      {
+        if (IKS4A1_MOTION_SENSOR_Write_Register(MagInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+      }
+      break;
+
+    case SC_TEMPERATURE:
+      if (IsHybridTmpSensor == HYBRID_SENSOR && TmpInstance == IKS4A1_LIS2DTW12_0)
+      {
+        for (i = 0; i < Msg->Data[5]; i++)
+        {
+          if (IKS4A1_HYBRID_SENSOR_Write_Register(TmpInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+          {
+            ret = 0;
+          }
+        }
+      }
+      else
+      {
+        for (i = 0; i < Msg->Data[5]; i++)
+        {
+          if (IKS4A1_ENV_SENSOR_Write_Register(TmpInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+          {
+            ret = 0;
+          }
+        }
+      }
+      break;
+
+    case SC_HUMIDITY:
+      for (i = 0; i < Msg->Data[5]; i++)
+      {
+        if (IKS4A1_ENV_SENSOR_Write_Register(HumInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+      }
+      break;
+
+    case SC_PRESSURE:
+      for (i = 0; i < Msg->Data[5]; i++)
+      {
+        if (IKS4A1_ENV_SENSOR_Write_Register(PrsInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+      }
+      break;
+
+    default:
+      ret = 0;
+      break;
+  }
+
+  if (ret == 0)
+  {
+    Msg->Data[5] = 0U;
+  }
+
+  BUILD_REPLY_HEADER(Msg);
+  Msg->Len = 6U;
+  UART_SendMsg(Msg);
+  return ret;
+}
+
+/**
+  * @brief  Read sensor registers
+  * @param  Msg the pointer to the message to be handled
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
+static int32_t SC_Read_Multi_Register(Msg_t *Msg)
+{
+  int32_t ret = 1;
+  uint8_t i;
+
+  /* Sensor Type */
+  switch (Msg->Data[4])
+  {
+    case SC_ACCELEROMETER:
+      if (IsHybridAccSensor == HYBRID_SENSOR && AccInstance == IKS4A1_LIS2DTW12_0)
+      {
+        for (i = 0; i < Msg->Data[5]; i++)
+        {
+          if (IKS4A1_HYBRID_SENSOR_Read_Register(AccInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+          {
+            ret = 0;
+          }
+        }
+      }
+      else
+      {
+        for (i = 0; i < Msg->Data[5]; i++)
+        {
+          if (IKS4A1_MOTION_SENSOR_Read_Register(AccInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+          {
+            ret = 0;
+          }
+        }
+      }
+      break;
+
+    case SC_GYROSCOPE:
+      for (i = 0; i < Msg->Data[5]; i++)
+      {
+        if (IKS4A1_MOTION_SENSOR_Read_Register(GyrInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+      }
+      break;
+
+    case SC_MAGNETOMETER:
+      for (i = 0; i < Msg->Data[5]; i++)
+      {
+        if (IKS4A1_MOTION_SENSOR_Read_Register(MagInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+      }
+      break;
+
+    case SC_TEMPERATURE:
+      if (IsHybridTmpSensor == HYBRID_SENSOR && TmpInstance == IKS4A1_LIS2DTW12_0)
+      {
+        for (i = 0; i < Msg->Data[5]; i++)
+        {
+          if (IKS4A1_HYBRID_SENSOR_Read_Register(TmpInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+          {
+            ret = 0;
+          }
+        }
+      }
+      else
+      {
+        for (i = 0; i < Msg->Data[5]; i++)
+        {
+          if (IKS4A1_ENV_SENSOR_Read_Register(TmpInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+          {
+            ret = 0;
+          }
+        }
+      }
+      break;
+
+    case SC_HUMIDITY:
+      for (i = 0; i < Msg->Data[5]; i++)
+      {
+        if (IKS4A1_ENV_SENSOR_Read_Register(HumInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+      }
+      break;
+
+    case SC_PRESSURE:
+      for (i = 0; i < Msg->Data[5]; i++)
+      {
+        if (IKS4A1_ENV_SENSOR_Read_Register(PrsInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+      }
+      break;
+
+    default:
+      ret = 0;
+      break;
+  }
+
+  if (ret == 0)
+  {
+    Msg->Data[5] = 0U;
+    Msg->Len = 6U;
+  }
+  else
+  {
+    Msg->Len = 8U + (2U * i);
+  }
+
+  BUILD_REPLY_HEADER(Msg);
+  UART_SendMsg(Msg);
+  return ret;
+}
+
+/**
+  * @brief  Read-modify-write sensor register
+  * @param  Msg the pointer to the message to be handled
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
+static int32_t SC_Read_Modify_Write_Register(Msg_t *Msg)
+{
+  uint8_t reg_value = 0U;
+  int32_t ret = 1;
+
+  /* Sensor Type */
+  switch (Msg->Data[4])
+  {
+    case SC_ACCELEROMETER:
+      if (IsHybridAccSensor == HYBRID_SENSOR && AccInstance == IKS4A1_LIS2DTW12_0)
+      {
+        if (IKS4A1_HYBRID_SENSOR_Read_Register(AccInstance, Msg->Data[5], &reg_value) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+        reg_value = reg_value & Msg->Data[6];
+        reg_value = reg_value | Msg->Data[7];
+        if (IKS4A1_HYBRID_SENSOR_Write_Register(AccInstance, Msg->Data[5], reg_value) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+      }
+      else
+      {
+        if (IKS4A1_MOTION_SENSOR_Read_Register(AccInstance, Msg->Data[5], &reg_value) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+        reg_value = reg_value & Msg->Data[6];
+        reg_value = reg_value | Msg->Data[7];
+        if (IKS4A1_MOTION_SENSOR_Write_Register(AccInstance, Msg->Data[5], reg_value) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+      }
+      break;
+
+    case SC_GYROSCOPE:
+      if (IKS4A1_MOTION_SENSOR_Read_Register(GyrInstance, Msg->Data[5], &reg_value) != BSP_ERROR_NONE)
+      {
+        ret = 0;
+      }
+      reg_value = reg_value & Msg->Data[6];
+      reg_value = reg_value | Msg->Data[7];
+      if (IKS4A1_MOTION_SENSOR_Write_Register(GyrInstance, Msg->Data[5], reg_value) != BSP_ERROR_NONE)
+      {
+        ret = 0;
+      }
+      break;
+
+    case SC_MAGNETOMETER:
+      if (IKS4A1_MOTION_SENSOR_Read_Register(MagInstance, Msg->Data[5], &reg_value) != BSP_ERROR_NONE)
+      {
+        ret = 0;
+      }
+      reg_value = reg_value & Msg->Data[6];
+      reg_value = reg_value | Msg->Data[7];
+      if (IKS4A1_MOTION_SENSOR_Write_Register(MagInstance, Msg->Data[5], reg_value) != BSP_ERROR_NONE)
+      {
+        ret = 0;
+      }
+      break;
+
+    case SC_TEMPERATURE:
+      if (IsHybridTmpSensor == HYBRID_SENSOR && TmpInstance == IKS4A1_LIS2DTW12_0)
+      {
+        if (IKS4A1_HYBRID_SENSOR_Read_Register(TmpInstance, Msg->Data[5], &reg_value) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+        reg_value = reg_value & Msg->Data[6];
+        reg_value = reg_value | Msg->Data[7];
+        if (IKS4A1_HYBRID_SENSOR_Write_Register(TmpInstance, Msg->Data[5], reg_value) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+      }
+      else
+      {
+        if (IKS4A1_ENV_SENSOR_Read_Register(TmpInstance, Msg->Data[5], &reg_value) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+        reg_value = reg_value & Msg->Data[6];
+        reg_value = reg_value | Msg->Data[7];
+        if (IKS4A1_ENV_SENSOR_Write_Register(TmpInstance, Msg->Data[5], reg_value) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+      }
+      break;
+
+    case SC_HUMIDITY:
+      if (IKS4A1_ENV_SENSOR_Read_Register(HumInstance, Msg->Data[5], &reg_value) != BSP_ERROR_NONE)
+      {
+        ret = 0;
+      }
+      reg_value = reg_value & Msg->Data[6];
+      reg_value = reg_value | Msg->Data[7];
+      if (IKS4A1_ENV_SENSOR_Write_Register(HumInstance, Msg->Data[5], reg_value) != BSP_ERROR_NONE)
+      {
+        ret = 0;
+      }
+      break;
+
+    case SC_PRESSURE:
+      if (IKS4A1_ENV_SENSOR_Read_Register(PrsInstance, Msg->Data[5], &reg_value) != BSP_ERROR_NONE)
+      {
+        ret = 0;
+      }
+      reg_value = reg_value & Msg->Data[6];
+      reg_value = reg_value | Msg->Data[7];
+      if (IKS4A1_ENV_SENSOR_Write_Register(PrsInstance, Msg->Data[5], reg_value) != BSP_ERROR_NONE)
+      {
+        ret = 0;
+      }
+      break;
+
+    default:
+      ret = 0;
+      break;
+  }
+
+  Msg->Data[6] = reg_value;
+  Msg->Data[7] = ret;
+
+  BUILD_REPLY_HEADER(Msg);
+  Msg->Len = 8U;
+  UART_SendMsg(Msg);
+  return ret;
+}
+
+/**
+  * @brief  Send sensor name
+  * @param  Msg the pointer to the message to be handled
+  * @param  SensorName the sensor name
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
 static void Send_Sensor_Name(Msg_t *Msg, uint8_t *SensorName)
 {
-  uint32_t i = 0;
+  uint32_t i = 0U;
   BUILD_REPLY_HEADER(Msg);
 
   while (i < strlen((char const *)SensorName))
@@ -1504,11 +1890,11 @@ static void Send_Sensor_Name(Msg_t *Msg, uint8_t *SensorName)
 }
 
 /**
- * @brief  Send sensor full scale list
- * @param  Msg the pointer to the message to be handled
- * @param  FsList the sensor full scale list
- * @retval 1 if the message is correctly handled, 0 otherwise
- */
+  * @brief  Send sensor full scale list
+  * @param  Msg the pointer to the message to be handled
+  * @param  FsList the sensor full scale list
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
 static void Send_Sensor_FS_List(Msg_t *Msg, uint32_t *FsList)
 {
   uint32_t i;
@@ -1526,11 +1912,11 @@ static void Send_Sensor_FS_List(Msg_t *Msg, uint32_t *FsList)
 }
 
 /**
- * @brief  Send sensor output data rate list
- * @param  Msg the pointer to the message to be handled
- * @param  OdrList the sensor output data rate list
- * @retval 1 if the message is correctly handled, 0 otherwise
- */
+  * @brief  Send sensor output data rate list
+  * @param  Msg the pointer to the message to be handled
+  * @param  OdrList the sensor output data rate list
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
 static void Send_Sensor_ODR_List(Msg_t *Msg, float *OdrList)
 {
   uint32_t i;
@@ -1548,10 +1934,10 @@ static void Send_Sensor_ODR_List(Msg_t *Msg, float *OdrList)
 }
 
 /**
- * @brief  Check if sensor is a DIL24 sensor
- * @param  SensorName the pointer to sensor name string
- * @retval 1 if sensor is a DIL24 sensor, 0 otherwise
- */
+  * @brief  Check if sensor is a DIL24 sensor
+  * @param  SensorName the pointer to sensor name string
+  * @retval 1 if sensor is a DIL24 sensor, 0 otherwise
+  */
 static int32_t Is_DIL24_Sensor(uint8_t *SensorName)
 {
   uint8_t string[] = " (DIL24)";
@@ -1569,10 +1955,10 @@ static int32_t Is_DIL24_Sensor(uint8_t *SensorName)
 }
 
 /**
- * @brief  Configure DIL24 INT1 pin
- * @param  None
- * @retval None
- */
+  * @brief  Configure DIL24 INT1 pin
+  * @param  None
+  * @retval None
+  */
 static void DIL24_INT1_Init(void)
 {
   __HAL_RCC_GPIOF_CLK_ENABLE();
@@ -1590,31 +1976,31 @@ static void DIL24_INT1_Init(void)
 }
 
 /**
- * @brief  Copy float data to array
- * @param  Dest the pointer to the destination
- * @param  data the source data
- * @retval None
- */
+  * @brief  Copy float data to array
+  * @param  Dest the pointer to the destination
+  * @param  data the source data
+  * @retval None
+  */
 static void FloatToArray(uint8_t *Dest, float data)
 {
   (void)memcpy(Dest, (void *) &data, 4);
 }
 
 /**
- * @brief  Copy float data from array
- * @param  Source the pointer to the source data
- * @param  data the pointer to the destination
- * @retval None
- */
+  * @brief  Copy float data from array
+  * @param  Source the pointer to the source data
+  * @param  data the pointer to the destination
+  * @retval None
+  */
 static void ArrayToFloat(uint8_t *Source, float *data)
 {
   (void)memcpy((void *) data, Source, 4);
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
