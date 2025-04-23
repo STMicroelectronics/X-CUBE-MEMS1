@@ -52,6 +52,10 @@ extern "C" {
 #define USE_IKS02A1_MOTION_SENSOR_ISM330BX_0         0
 #endif
 
+#ifndef USE_IKS02A1_MOTION_SENSOR_IIS2DULPX_0
+#define USE_IKS02A1_MOTION_SENSOR_IIS2DULPX_0        0
+#endif
+
 #if (USE_IKS02A1_MOTION_SENSOR_ISM330DHCX_0 == 1)
 #include "ism330dhcx.h"
 #endif
@@ -74,6 +78,10 @@ extern "C" {
 
 #if (USE_IKS02A1_MOTION_SENSOR_ISM330BX_0 == 1)
 #include "ism330bx.h"
+#endif
+
+#if (USE_IKS02A1_MOTION_SENSOR_IIS2DULPX_0 == 1)
+#include "iis2dulpx.h"
 #endif
 
 /** @addtogroup BSP BSP
@@ -168,6 +176,15 @@ typedef struct
                              USE_IKS02A1_MOTION_SENSOR_ASM330LHHX_0)
 #endif
 
+#if (USE_IKS02A1_MOTION_SENSOR_IIS2DULPX_0 == 1)
+#define IKS02A1_IIS2DULPX_0  (USE_IKS02A1_MOTION_SENSOR_ISM330DHCX_0 + \
+                              USE_IKS02A1_MOTION_SENSOR_IIS2DLPC_0 + \
+                              USE_IKS02A1_MOTION_SENSOR_IIS2MDC_0 + \
+                              USE_IKS02A1_MOTION_SENSOR_IIS2ICLX_0 + \
+                              USE_IKS02A1_MOTION_SENSOR_ASM330LHHX_0 + \
+                              USE_IKS02A1_MOTION_SENSOR_ISM330BX_0)
+#endif
+
 #ifndef MOTION_GYRO
 #define MOTION_GYRO             1U
 #endif
@@ -184,7 +201,8 @@ typedef struct
                                          USE_IKS02A1_MOTION_SENSOR_IIS2MDC_0 + \
                                          USE_IKS02A1_MOTION_SENSOR_IIS2ICLX_0 + \
                                          USE_IKS02A1_MOTION_SENSOR_ASM330LHHX_0 + \
-                                         USE_IKS02A1_MOTION_SENSOR_ISM330BX_0)
+                                         USE_IKS02A1_MOTION_SENSOR_ISM330BX_0 + \
+                                         USE_IKS02A1_MOTION_SENSOR_IIS2DULPX_0)
 
 #if (IKS02A1_MOTION_INSTANCES_NBR == 0)
 #error "No motion sensor instance has been selected"

@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -20,21 +20,21 @@
 #include "motion_aw_manager.h"
 
 /** @addtogroup MOTION_APPLICATIONS MOTION APPLICATIONS
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup ACTIVITY_RECOGNITION_WRIST ACTIVITY RECOGNITION WRIST
- * @{
- */
+  * @{
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Exported function prototypes ----------------------------------------------*/
 /* Exported functions --------------------------------------------------------*/
 /**
- * @brief  Initialize the MotionAR engine
- * @param  None
- * @retval None
- */
+  * @brief  Initialize the MotionAR engine
+  * @param  None
+  * @retval None
+  */
 void MotionAW_manager_init(void)
 {
   char acc_orientation[4];
@@ -46,33 +46,33 @@ void MotionAW_manager_init(void)
 }
 
 /**
- * @brief  Run Activity Recognition Wrist algorithm
- * @param  data_in  Structure containing input data
- * @param  data_out Structure containing output data
- * @param  timestamp  Timestamp in [ms]
- * @retval None
- */
+  * @brief  Run Activity Recognition Wrist algorithm
+  * @param  data_in  Structure containing input data
+  * @param  data_out Structure containing output data
+  * @param  timestamp  Timestamp in [ms]
+  * @retval None
+  */
 void MotionAW_manager_run(MAW_input_t *data_in, MAW_output_t *data_out, int64_t timestamp)
 {
   MotionAW_Update(data_in, data_out, timestamp);
 }
 
 /**
- * @brief  Get the library version
- * @param  version Library version string (must be array of 35 char)
- * @param  length  Library version string length
- * @retval None
- */
+  * @brief  Get the library version
+  * @param  version Library version string (must be array of 35 char)
+  * @param  length  Library version string length
+  * @retval None
+  */
 void MotionAW_manager_get_version(char *version, int32_t *length)
 {
   *length = (int)MotionAW_GetLibVersion(version);
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 

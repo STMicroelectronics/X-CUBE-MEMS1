@@ -32,8 +32,8 @@
 
 /* Exported types ------------------------------------------------------------*/
 /**
- * @brief  Serial message structure definition
- */
+  * @brief  Serial message structure definition
+  */
 typedef struct
 {
   uint32_t Len;

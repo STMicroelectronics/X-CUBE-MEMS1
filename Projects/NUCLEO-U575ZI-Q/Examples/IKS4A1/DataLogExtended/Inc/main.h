@@ -41,17 +41,32 @@ extern "C" {
 /* Exported defines ----------------------------------------------------------*/
 
 /* Enable sensor masks */
-#define PRESSURE_SENSOR_ENABLED                 0x00000001U
-#define TEMPERATURE_SENSOR_ENABLED              0x00000002U
-#define HUMIDITY_SENSOR_ENABLED                 0x00000004U
-#define UV_SENSOR_ENABLED                       0x00000008U /* for future use */
-#define ACCELEROMETER_SENSOR_ENABLED            0x00000010U
-#define GYROSCOPE_SENSOR_ENABLED                0x00000020U
-#define MAGNETIC_SENSOR_ENABLED                 0x00000040U
-#define INTERRUPTS_ENABLED                      0x00000100U
-#define FSM_ENABLED                             0x00000200U
-#define MLC_ENABLED                             0x00000400U
-#define QVAR_ENABLED                            0x00001000U
+#define PRESSURE_SENSOR_ENABLED          0x00000001U
+#define TEMPERATURE_SENSOR_ENABLED       0x00000002U
+#define HUMIDITY_SENSOR_ENABLED          0x00000004U
+#define UV_SENSOR_ENABLED                0x00000008U
+#define ACCELEROMETER_SENSOR_ENABLED     0x00000010U
+#define GYROSCOPE_SENSOR_ENABLED         0x00000020U
+#define MAGNETIC_SENSOR_ENABLED          0x00000040U
+#define INTERRUPTS_ENABLED               0x00000100U
+#define FSM_ENABLED                      0x00000200U
+#define MLC_ENABLED                      0x00000400U
+#define QVAR_ENABLED                     0x00001000U
+#define ACCELEROMETER_HG_SENSOR_ENABLED  0x00002000U
+
+/* Sync sensor masks */
+#define PRESSURE_SENSOR_SYNC          0x00000001U
+#define TEMPERATURE_SENSOR_SYNC       0x00000002U
+#define HUMIDITY_SENSOR_SYNC          0x00000004U
+#define ACCELEROMETER_SENSOR_SYNC     0x00000008U
+#define GYROSCOPE_SENSOR_SYNC         0x00000010U
+#define MAGNETIC_SENSOR_SYNC          0x00000020U
+#define INTERRUPTS_SYNC               0x00000040U
+#define MLC_SYNC                      0x00000080U
+#define FSM_SYNC                      0x00000100U
+#define ISPU_SYNC                     0x00000200U
+#define QVAR_SYNC                     0x00000400U
+#define ACCELEROMETER_HG_SENSOR_SYNC  0x00000800U
 
 extern int32_t UseLSI;
 extern uint32_t SensorsEnabled;

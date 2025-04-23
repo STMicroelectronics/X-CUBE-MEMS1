@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -21,12 +21,12 @@
 #include "iks02a1_mems_control_ex.h"
 
 /** @addtogroup MOTION_APPLICATIONS MOTION APPLICATIONS
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup DYNAMIC_INCLINOMETER DYNAMIC INCLINOMETER
- * @{
- */
+  * @{
+  */
 
 /* Extern variables ----------------------------------------------------------*/
 extern MDI_cal_type_t AccCalMode;
@@ -50,10 +50,10 @@ static void float_array_set(float array[], float value, uint32_t count);
 /* Exported function prototypes ----------------------------------------------*/
 /* Exported functions --------------------------------------------------------*/
 /**
- * @brief  Initialize the MotionDI engine
- * @param  freq frequency of input data
- * @retval None
- */
+  * @brief  Initialize the MotionDI engine
+  * @param  freq frequency of input data
+  * @retval None
+  */
 void MotionDI_manager_init(float freq)
 {
   MotionDI_Initialize(&freq);
@@ -76,10 +76,10 @@ void MotionDI_manager_init(float freq)
 }
 
 /**
- * @brief  Get calibration mode for accelerometer
- * @param  mode Calibration mode
- * @retval None
- */
+  * @brief  Get calibration mode for accelerometer
+  * @param  mode Calibration mode
+  * @retval None
+  */
 void MotionDI_get_acc_calibration_mode(MDI_cal_type_t *mode)
 {
   MotionDI_getKnobs(ipKnobs);
@@ -87,10 +87,10 @@ void MotionDI_get_acc_calibration_mode(MDI_cal_type_t *mode)
 }
 
 /**
- * @brief  Set calibration mode for accelerometer
- * @param  mode Calibration mode
- * @retval None
- */
+  * @brief  Set calibration mode for accelerometer
+  * @param  mode Calibration mode
+  * @retval None
+  */
 void MotionDI_set_acc_calibration_mode(MDI_cal_type_t mode)
 {
   MotionDI_getKnobs(ipKnobs);
@@ -99,29 +99,29 @@ void MotionDI_set_acc_calibration_mode(MDI_cal_type_t mode)
 }
 
 /**
- * @brief  Get calibration parameters for accelerometer
- * @param  acc_cal Structure containing calibration data for accelerometer
- * @retval None
- */
+  * @brief  Get calibration parameters for accelerometer
+  * @param  acc_cal Structure containing calibration data for accelerometer
+  * @retval None
+  */
 void MotionDI_get_acc_calibration(MDI_cal_output_t *acc_cal)
 {
   MotionDI_AccCal_getParams(acc_cal);
 }
 
 /**
- * @brief  Reset calibration parameters for accelerometer
- * @retval None
- */
+  * @brief  Reset calibration parameters for accelerometer
+  * @retval None
+  */
 void MotionDI_reset_acc_calibration(void)
 {
   MotionDI_AccCal_reset();
 }
 
 /**
- * @brief  Get calibration mode for gyroscope
- * @param  mode Calibration mode
- * @retval None
- */
+  * @brief  Get calibration mode for gyroscope
+  * @param  mode Calibration mode
+  * @retval None
+  */
 void MotionDI_get_gyro_calibration_mode(MDI_cal_type_t *mode)
 {
   MotionDI_getKnobs(ipKnobs);
@@ -129,10 +129,10 @@ void MotionDI_get_gyro_calibration_mode(MDI_cal_type_t *mode)
 }
 
 /**
- * @brief  Set calibration mode for gyroscope
- * @param  mode Calibration mode
- * @retval None
- */
+  * @brief  Set calibration mode for gyroscope
+  * @param  mode Calibration mode
+  * @retval None
+  */
 void MotionDI_set_gyro_calibration_mode(MDI_cal_type_t mode)
 {
   MotionDI_getKnobs(ipKnobs);
@@ -141,30 +141,30 @@ void MotionDI_set_gyro_calibration_mode(MDI_cal_type_t mode)
 }
 
 /**
- * @brief  Get calibration parameters for gyroscope
- * @param  gyro_cal Structure containing calibration data for gyroscope
- * @retval None
- */
+  * @brief  Get calibration parameters for gyroscope
+  * @param  gyro_cal Structure containing calibration data for gyroscope
+  * @retval None
+  */
 void MotionDI_get_gyro_calibration(MDI_cal_output_t *gyro_cal)
 {
   MotionDI_GyrCal_getParams(gyro_cal);
 }
 
 /**
- * @brief  Reset calibration parameters for gyroscope
- * @retval None
- */
+  * @brief  Reset calibration parameters for gyroscope
+  * @retval None
+  */
 void MotionDI_reset_gyro_calibration(void)
 {
   MotionDI_GyrCal_reset();
 }
 
 /**
- * @brief  Run Motion Sensor Data Fusion algorithm
- * @param  data_in  Structure containing input data
- * @param  data_out Structure containing output data
- * @retval None
- */
+  * @brief  Run Motion Sensor Data Fusion algorithm
+  * @param  data_in  Structure containing input data
+  * @param  data_out Structure containing output data
+  * @retval None
+  */
 void MotionDI_manager_run(MDI_input_t *data_in, MDI_output_t *data_out)
 {
   if (discardedCount == sampleToDiscard)
@@ -182,11 +182,11 @@ void MotionDI_manager_run(MDI_input_t *data_in, MDI_output_t *data_out)
 }
 
 /**
- * @brief  Get the library version
- * @param  version  Library version string (must be array of 35 char)
- * @param  length  Library version string length
- * @retval None
- */
+  * @brief  Get the library version
+  * @param  version  Library version string (must be array of 35 char)
+  * @param  length  Library version string length
+  * @retval None
+  */
 void MotionDI_manager_get_version(char *version, int32_t *length)
 {
   *length = (int)MotionDI_GetLibVersion(version);
@@ -194,12 +194,12 @@ void MotionDI_manager_get_version(char *version, int32_t *length)
 
 /* Private functions ---------------------------------------------------------*/
 /**
- * @brief  Set float array items to value
- * @param  array Destination float array
- * @param  value Set to this value
- * @param  count Number of items to be set
- * @retval None
- */
+  * @brief  Set float array items to value
+  * @param  array Destination float array
+  * @param  value Set to this value
+  * @param  count Number of items to be set
+  * @retval None
+  */
 static void float_array_set(float array[], float value, uint32_t count)
 {
   for (uint32_t i = 0; i < count; i++)
@@ -209,9 +209,9 @@ static void float_array_set(float array[], float value, uint32_t count)
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */

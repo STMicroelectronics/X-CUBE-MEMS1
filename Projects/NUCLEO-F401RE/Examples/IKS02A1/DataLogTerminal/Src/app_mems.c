@@ -2,11 +2,11 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.1.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.2.0 instances.
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -30,7 +30,8 @@ extern "C" {
 #include "math.h"
 
 /* Private typedef -----------------------------------------------------------*/
-typedef struct displayFloatToInt_s {
+typedef struct displayFloatToInt_s
+{
   int8_t sign; /* 0 means positive, 1 means negative*/
   uint32_t  out_int;
   uint32_t  out_dec;
@@ -116,12 +117,13 @@ void MX_IKS02A1_DataLogTerminal_Init(void)
 
   IKS02A1_MOTION_SENSOR_Init(IKS02A1_IIS2MDC_0, MOTION_MAGNETO);
 
-  for(i = 0; i < IKS02A1_MOTION_INSTANCES_NBR; i++)
+  for (i = 0; i < IKS02A1_MOTION_INSTANCES_NBR; i++)
   {
     IKS02A1_MOTION_SENSOR_GetCapabilities(i, &MotionCapabilities[i]);
     snprintf(dataOut, MAX_BUF_SIZE,
              "\r\nMotion Sensor Instance %d capabilities: \r\n ACCELEROMETER: %d\r\n GYROSCOPE: %d\r\n MAGNETOMETER: %d\r\n LOW POWER: %d\r\n",
-             i, MotionCapabilities[i].Acc, MotionCapabilities[i].Gyro, MotionCapabilities[i].Magneto, MotionCapabilities[i].LowPower);
+             i, MotionCapabilities[i].Acc, MotionCapabilities[i].Gyro, MotionCapabilities[i].Magneto,
+             MotionCapabilities[i].LowPower);
     printf("%s", dataOut);
     floatToInt(MotionCapabilities[i].AccMaxOdr, &out_value_odr, 3);
     snprintf(dataOut, MAX_BUF_SIZE, " MAX ACC ODR: %d.%03d Hz, MAX ACC FS: %d\r\n", (int)out_value_odr.out_int,
@@ -173,23 +175,23 @@ void MX_IKS02A1_DataLogTerminal_Process(void)
     /* Do nothing */
   }
 
-  for(i = 0; i < IKS02A1_MOTION_INSTANCES_NBR; i++)
+  for (i = 0; i < IKS02A1_MOTION_INSTANCES_NBR; i++)
   {
-    if(MotionCapabilities[i].Acc)
+    if (MotionCapabilities[i].Acc)
     {
       Accelero_Sensor_Handler(i);
     }
-    if(MotionCapabilities[i].Gyro)
+    if (MotionCapabilities[i].Gyro)
     {
       Gyro_Sensor_Handler(i);
     }
-    if(MotionCapabilities[i].Magneto)
+    if (MotionCapabilities[i].Magneto)
     {
       Magneto_Sensor_Handler(i);
     }
   }
 
-  HAL_Delay( 1000 );
+  HAL_Delay(1000);
 }
 
 /**
@@ -201,10 +203,11 @@ void MX_IKS02A1_DataLogTerminal_Process(void)
   */
 static void floatToInt(float in, displayFloatToInt_t *out_value, int32_t dec_prec)
 {
-  if(in >= 0.0f)
+  if (in >= 0.0f)
   {
     out_value->sign = 0;
-  }else
+  }
+  else
   {
     out_value->sign = 1;
     in = -in;

@@ -87,6 +87,7 @@ static void Sensors_Interrupt_Handler(Msg_t *Msg);
 static void MLC_Handler(Msg_t *Msg);
 static void FSM_Handler(Msg_t *Msg);
 static void QVAR_Handler(Msg_t *Msg, uint32_t Instance);
+static void Accelero_HG_Sensor_Handler(Msg_t *Msg, uint32_t Instance);
 
 static void DIL24_INT1_Force_Low(void);
 static uint32_t DWT_Delay_Init(void);
@@ -245,6 +246,11 @@ int main(void)
         QVAR_Handler(&msg_dat, AccInstance);
       }
 
+      if ((SensorsEnabled & ACCELEROMETER_HG_SENSOR_ENABLED) == ACCELEROMETER_HG_SENSOR_ENABLED)
+      {
+        Accelero_HG_Sensor_Handler(&msg_dat, AccInstance);
+      }
+
       /* Send data stream in a new data are available */
       if (NewData != 0U)
       {
@@ -283,7 +289,7 @@ static void GPIO_Init(void)
   // LIS2DUXS12  INT1      CN8.4      A3  PB0
   // LIS2MDL     INT/DRDY  CN8.3      A2  PA4
   // LPS22DF     INT_DRDY  CN9.7  PWM/D6  PB10
-  // STTS22H     AL/int32_t   CN8.5      A4  PC1
+  // STTS22H     AL/INT1   CN8.5      A4  PC1
 
   // DIL24 INT1 (USER INT) CN9.3      D2  PA10 (initialized separately)
 
@@ -469,7 +475,7 @@ static void Press_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
   if (IKS4A1_ENV_SENSOR_Get_DRDY_Status(Instance, ENV_PRESSURE, &status) == BSP_ERROR_NONE && status == 1U)
   {
     NewData++;
-    NewDataFlags |= 1U;
+    NewDataFlags |= PRESSURE_SENSOR_SYNC;
 
     (void)IKS4A1_ENV_SENSOR_GetValue(Instance, ENV_PRESSURE, &pressure);
 
@@ -581,7 +587,7 @@ static void Temp_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
   if (drdy == 1)
   {
     NewData++;
-    NewDataFlags |= 2U;
+    NewDataFlags |= TEMPERATURE_SENSOR_SYNC;
 
     if (IsHybridTmpSensor == HYBRID_SENSOR && Instance == IKS4A1_LIS2DTW12_0)
     {
@@ -646,10 +652,10 @@ static void Hum_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
     }
   }
 
-  if (status == 1U)
+  if (status == 1)
   {
     NewData++;
-    NewDataFlags |= 4U;
+    NewDataFlags |= HUMIDITY_SENSOR_SYNC;
 
     (void)IKS4A1_ENV_SENSOR_GetValue(Instance, ENV_HUMIDITY, &humidity);
 
@@ -685,25 +691,30 @@ static void Accelero_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
   IKS4A1_HYBRID_MOTION_SENSOR_Axes_t hyb_acc;
   uint8_t status = 0;
 
-    if (IsHybridAccSensor == HYBRID_SENSOR && Instance == IKS4A1_LIS2DTW12_0)
+  if (IsHybridAccSensor == HYBRID_SENSOR && Instance == IKS4A1_LIS2DTW12_0)
+  {
+    if (IKS4A1_HYBRID_SENSOR_Get_DRDY_Status(Instance, HYBRID_ACCELERO, &status) != BSP_ERROR_NONE)
     {
-      if (IKS4A1_HYBRID_SENSOR_Get_DRDY_Status(Instance, HYBRID_ACCELERO, &status) != BSP_ERROR_NONE)
-      {
-        status = 0U;
-      }
+      status = 0;
     }
-    else
+  }
+  else
+  {
+    if (IKS4A1_MOTION_SENSOR_Get_DRDY_Status(Instance, MOTION_ACCELERO, &status) != BSP_ERROR_NONE)
     {
-      if (IKS4A1_MOTION_SENSOR_Get_DRDY_Status(Instance, MOTION_ACCELERO, &status) != BSP_ERROR_NONE)
-      {
-        status = 0U;
-      }
+      status = 0;
     }
+  }
 
-  if (status == 1U)
+  if (Instance == IKS4A1_LSM6DSV80X_0)
+  {
+    status &= 0x01;  /* Only low-g accelerometer data ready status */
+  }
+
+  if (status == 1)
   {
     NewData++;
-    NewDataFlags |= 8U;
+    NewDataFlags |= ACCELEROMETER_SENSOR_SYNC;
 
     if (IsHybridAccSensor == HYBRID_SENSOR && Instance == IKS4A1_LIS2DTW12_0)
     {
@@ -755,7 +766,7 @@ static void Gyro_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
   if (IKS4A1_MOTION_SENSOR_Get_DRDY_Status(Instance, MOTION_GYRO, &status) == BSP_ERROR_NONE && status == 1U)
   {
     NewData++;
-    NewDataFlags |= 16U;
+    NewDataFlags |= GYROSCOPE_SENSOR_SYNC;
 
     (void)IKS4A1_MOTION_SENSOR_GetAxes(Instance, MOTION_GYRO, &angular_velocity);
 
@@ -797,7 +808,7 @@ static void Magneto_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
   if (IKS4A1_MOTION_SENSOR_Get_DRDY_Status(Instance, MOTION_MAGNETO, &status) == BSP_ERROR_NONE && status == 1U)
   {
     NewData++;
-    NewDataFlags |= 32U;
+    NewDataFlags |= MAGNETIC_SENSOR_SYNC;
 
     (void)IKS4A1_MOTION_SENSOR_GetAxes(Instance, MOTION_MAGNETO, &magnetic_field);
 
@@ -857,7 +868,7 @@ static void Sensors_Interrupt_Handler(Msg_t *Msg)
   {
     UpdateInterrupt = 0;
     NewData++;
-    NewDataFlags |= 64U;
+    NewDataFlags |= INTERRUPTS_SYNC;
     Msg->Data[MsgIndex++] = (uint8_t)int_status;
     Msg->Data[MsgIndex++] = (uint8_t)(int_status >> 8);
 
@@ -1091,6 +1102,27 @@ static void MLC_Handler(Msg_t *Msg)
 
     (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV32X_0, LSM6DSV32X_FUNC_CFG_ACCESS, LSM6DSV32X_MAIN_MEM_BANK << 7);
   }
+  else if ((AccInstance == IKS4A1_LSM6DSV80X_0) && (GyrInstance == IKS4A1_LSM6DSV80X_0))
+  {
+    mlc_status_max = 8;
+
+#if (MLC_STATUS_MAX < 8)
+#error "ERROR: Array index out of bounds!"
+#endif
+
+    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FUNC_CFG_ACCESS, LSM6DSV80X_EMBED_FUNC_MEM_BANK << 7);
+
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_MLC1_SRC, &mlc_status[0]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_MLC2_SRC, &mlc_status[1]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_MLC3_SRC, &mlc_status[2]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_MLC4_SRC, &mlc_status[3]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_MLC5_SRC, &mlc_status[4]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_MLC6_SRC, &mlc_status[5]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_MLC7_SRC, &mlc_status[6]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_MLC8_SRC, &mlc_status[7]);
+
+    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FUNC_CFG_ACCESS, LSM6DSV80X_MAIN_MEM_BANK << 7);
+  }
   else
   {
     mlc_status_max = 8;
@@ -1125,7 +1157,7 @@ static void MLC_Handler(Msg_t *Msg)
     MsgIndex = MsgIndex + mlc_status_max;
 
     NewData++;
-    NewDataFlags |= 128U;
+    NewDataFlags |= MLC_SYNC;
   }
 }
 
@@ -1556,6 +1588,29 @@ static void FSM_Handler(Msg_t *Msg)
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV32X_0, LSM6DSV32X_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
+  else if ((AccInstance == IKS4A1_LSM6DSV80X_0) && (GyrInstance == IKS4A1_LSM6DSV80X_0))
+  {
+    fsm_status_max = 9;
+
+#if (FSM_STATUS_MAX < 9)
+#error "ERROR: Array index out of bounds!"
+#endif
+
+    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FUNC_CFG_ACCESS, LSM6DSV80X_EMBED_FUNC_MEM_BANK << 7);
+
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FSM_OUTS1, &fsm_status[0]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FSM_OUTS2, &fsm_status[1]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FSM_OUTS3, &fsm_status[2]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FSM_OUTS4, &fsm_status[3]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FSM_OUTS5, &fsm_status[4]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FSM_OUTS6, &fsm_status[5]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FSM_OUTS7, &fsm_status[6]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FSM_OUTS8, &fsm_status[7]);
+
+    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FUNC_CFG_ACCESS, LSM6DSV80X_MAIN_MEM_BANK << 7);
+
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FSM_STATUS_MAINPAGE, &fsm_status[8]);
+  }
   else
   {
     fsm_status_max = 18;
@@ -1600,7 +1655,7 @@ static void FSM_Handler(Msg_t *Msg)
     MsgIndex = MsgIndex + fsm_status_max;
 
     NewData++;
-    NewDataFlags |= 256U;
+    NewDataFlags |= FSM_SYNC;
   }
 }
 
@@ -1635,7 +1690,7 @@ static void QVAR_Handler(Msg_t *Msg, uint32_t Instance)
   {
     if((SensorsEnabled & ACCELEROMETER_SENSOR_ENABLED) == ACCELEROMETER_SENSOR_ENABLED)
     {
-      qvar_data_available = (NewDataFlags & 8U) >> 3;
+      qvar_data_available = ((NewDataFlags & ACCELEROMETER_SENSOR_SYNC) == ACCELEROMETER_SENSOR_SYNC) ? 1 : 0;
     }
     else
     {
@@ -1656,7 +1711,7 @@ static void QVAR_Handler(Msg_t *Msg, uint32_t Instance)
   if (qvar_data_available == 1)
   {
     NewData++;
-    NewDataFlags |= 0x400U;
+    NewDataFlags |= QVAR_SYNC;
 
     union {
       int16_t i16bit;
@@ -1737,6 +1792,58 @@ static void QVAR_Handler(Msg_t *Msg, uint32_t Instance)
       displayFloatToInt_t out_value;
       Float_To_Int(qvar_mv, &out_value, 2);
       (void)snprintf(DataOut, MAX_BUF_SIZE, "QVAR: %d.%02d\r\n", (int)out_value.out_int, (int)out_value.out_dec);
+      (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
+    }
+    else
+    {
+      /* Nothing to do */
+    }
+  }
+}
+
+/**
+ * @brief  Handles the ACCELERO High-G axes data getting/sending
+ * @param  Msg the ACCELERO High-G part of the stream
+ * @param  Instance the device instance
+ * @retval None
+ */
+static void Accelero_HG_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
+{
+  int32_t data[6];
+  IKS4A1_MOTION_SENSOR_Axes_t acceleration;
+  uint8_t status = 0;
+
+  if (Instance == IKS4A1_LSM6DSV80X_0)
+  {
+    if (IKS4A1_MOTION_SENSOR_Get_DRDY_Status(Instance, MOTION_ACCELERO, &status) != BSP_ERROR_NONE)
+    {
+      status = 0;
+    }
+
+    status = (status & 0x02) >> 1;  /* Only high-g accelerometer data ready status */
+  }
+
+  if (status == 1)
+  {
+    NewData++;
+    NewDataFlags |= ACCELEROMETER_HG_SENSOR_SYNC;
+
+    (void)IKS4A1_MOTION_SENSOR_ACC_HG_GetAxes(Instance, MOTION_ACCELERO, &acceleration);
+
+    if (DataLoggerActive != 0U)
+    {
+      Serialize_s32(&Msg->Data[MsgIndex + 0], acceleration.x, 4);
+      Serialize_s32(&Msg->Data[MsgIndex + 4], acceleration.y, 4);
+      Serialize_s32(&Msg->Data[MsgIndex + 8], acceleration.z, 4);
+      MsgIndex = MsgIndex + 12;
+    }
+    else if (AutoInit != 0U)
+    {
+      data[0] = acceleration.x;
+      data[1] = acceleration.y;
+      data[2] = acceleration.z;
+
+      (void)snprintf(DataOut, MAX_BUF_SIZE, "ACC_HG_X: %d, ACC_HG_Y: %d, ACC_HG_Z: %d\r\n", (int)data[0], (int)data[1], (int)data[2]);
       (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
     }
     else

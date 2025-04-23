@@ -21,18 +21,18 @@
 #include "com.h"
 
 /** @addtogroup MOTION_APPLICATIONS MOTION APPLICATIONS
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup VIBRATION_MONITORING VIBRATION MONITORING
- * @{
- */
+  * @{
+  */
 
 /**
- * @brief  System Clock Configuration
- * @param  None
- * @retval None
- */
+  * @brief  System Clock Configuration
+  * @param  None
+  * @retval None
+  */
 void SystemClock_Config(void)
 {
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
@@ -66,7 +66,7 @@ void SystemClock_Config(void)
   /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
      clocks dividers */
   RCC_ClkInitStruct.ClockType      = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1
-                                   |  RCC_CLOCKTYPE_PCLK2);
+                                      |  RCC_CLOCKTYPE_PCLK2);
 
   RCC_ClkInitStruct.SYSCLKSource   = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider  = RCC_SYSCLK_DIV1;
@@ -81,30 +81,30 @@ void SystemClock_Config(void)
 }
 
 /**
- * @brief  Get the DMA Stream pending flags
- * @param  handle_dma DMA handle
- * @retval The state of FLAG (SET or RESET)
- */
+  * @brief  Get the DMA Stream pending flags
+  * @param  handle_dma DMA handle
+  * @retval The state of FLAG (SET or RESET)
+  */
 uint32_t Get_DMA_Flag_Status(DMA_HandleTypeDef *handle_dma)
 {
   return (__HAL_DMA_GET_FLAG(handle_dma, __HAL_DMA_GET_FE_FLAG_INDEX(handle_dma)));
 }
 
 /**
- * @brief  Returns the number of remaining data units in the current DMAy Streamx transfer
- * @param  handle_dma DMA handle
- * @retval The number of remaining data units in the current DMA Stream transfer
- */
+  * @brief  Returns the number of remaining data units in the current DMAy Streamx transfer
+  * @param  handle_dma DMA handle
+  * @retval The number of remaining data units in the current DMA Stream transfer
+  */
 uint32_t Get_DMA_Counter(DMA_HandleTypeDef *handle_dma)
 {
   return (__HAL_DMA_GET_COUNTER(handle_dma));
 }
 
 /**
- * @brief  Configure the DMA handler for transmission process
- * @param  handle_dma DMA handle
- * @retval None
- */
+  * @brief  Configure the DMA handler for transmission process
+  * @param  handle_dma DMA handle
+  * @retval None
+  */
 void Config_DMA_Handler(DMA_HandleTypeDef *handle_dma)
 {
   handle_dma->Instance                 = DMA1_Stream5;
@@ -124,9 +124,9 @@ void Config_DMA_Handler(DMA_HandleTypeDef *handle_dma)
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */

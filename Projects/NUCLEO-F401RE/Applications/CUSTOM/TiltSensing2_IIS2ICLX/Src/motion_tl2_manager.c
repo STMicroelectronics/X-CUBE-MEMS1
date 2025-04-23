@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -24,7 +24,7 @@
   */
 
 /** @addtogroup TILT_SENSING2 TILT SENSING 2
- * @{
+  * @{
   */
 
 /* Extern variables ----------------------------------------------------------*/

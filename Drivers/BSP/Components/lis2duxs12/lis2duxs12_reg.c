@@ -2009,7 +2009,7 @@ int32_t lis2duxs12_fifo_mode_set(const stmdev_ctx_t *ctx, lis2duxs12_fifo_mode_t
     /* set watermark */
     if (val.watermark > 0U)
     {
-      fifo_ctrl.stop_on_fth = 1;
+      fifo_ctrl.stop_on_fth = (val.fifo_event == LIS2DUXS12_FIFO_EV_WTM) ? 1 : 0;
       fifo_wtm.fth = val.watermark;
     }
 
@@ -2139,8 +2139,8 @@ int32_t lis2duxs12_fifo_data_get(const stmdev_ctx_t *ctx, const lis2duxs12_md_t 
 
   switch (fifo_tag.tag_sensor)
   {
-    case 0x3:
-    case 0x1E:
+    case LIS2DUXS12_XL_ONLY_2X_TAG:
+    case LIS2DUXS12_XL_ONLY_2X_TAG_2ND:
       /* A FIFO sample consists of 2X 8-bits 3-axis XL at ODR/2 */
       ret = lis2duxs12_fifo_out_raw_get(ctx, fifo_raw);
       for (i = 0; i < 3; i++)
@@ -2149,8 +2149,8 @@ int32_t lis2duxs12_fifo_data_get(const stmdev_ctx_t *ctx, const lis2duxs12_md_t 
         data->xl[1].raw[i] = (int16_t)fifo_raw[3 + i] * 256;
       }
       break;
-    case 0x1F:
-    case 0x2:
+    case LIS2DUXS12_XL_AND_QVAR:
+    case LIS2DUXS12_XL_TEMP_TAG:
       ret = lis2duxs12_fifo_out_raw_get(ctx, fifo_raw);
       if (fmd->xl_only == 0x0U)
       {
@@ -2177,11 +2177,11 @@ int32_t lis2duxs12_fifo_data_get(const stmdev_ctx_t *ctx, const lis2duxs12_md_t 
       {
         /* A FIFO sample consists of 16-bits 3-axis XL at ODR  */
         data->xl[0].raw[0] = (int16_t)fifo_raw[0] + (int16_t)fifo_raw[1] * 256;
-        data->xl[0].raw[1] = (int16_t)fifo_raw[1] + (int16_t)fifo_raw[3] * 256;
-        data->xl[0].raw[2] = (int16_t)fifo_raw[2] + (int16_t)fifo_raw[5] * 256;
+        data->xl[0].raw[1] = (int16_t)fifo_raw[2] + (int16_t)fifo_raw[3] * 256;
+        data->xl[0].raw[2] = (int16_t)fifo_raw[4] + (int16_t)fifo_raw[5] * 256;
       }
       break;
-    case 0x4:
+    case LIS2DUXS12_TIMESTAMP_TAG:
       ret = lis2duxs12_fifo_out_raw_get(ctx, fifo_raw);
 
       data->cfg_chg.cfg_change = fifo_raw[0] >> 7;
@@ -2199,7 +2199,7 @@ int32_t lis2duxs12_fifo_data_get(const stmdev_ctx_t *ctx, const lis2duxs12_md_t 
       data->cfg_chg.timestamp = (data->cfg_chg.timestamp * 256U) +  fifo_raw[2];
       break;
 
-    case 0x12:
+    case LIS2DUXS12_STEP_COUNTER_TAG:
       ret = lis2duxs12_fifo_out_raw_get(ctx, fifo_raw);
 
       data->pedo.steps = fifo_raw[1];
@@ -2212,7 +2212,7 @@ int32_t lis2duxs12_fifo_data_get(const stmdev_ctx_t *ctx, const lis2duxs12_md_t 
 
       break;
 
-    case 0x0:
+    case LIS2DUXS12_FIFO_EMPTY:
     default:
       /* do nothing */
       break;
@@ -2557,6 +2557,61 @@ int32_t lis2duxs12_stpcnt_period_get(const stmdev_ctx_t *ctx, uint16_t *val)
                               (uint8_t *)buff, 2);
   *val = buff[1];
   *val = (*val * 256U) + buff[0];
+
+  return ret;
+}
+
+/**
+  * @brief  smart_power functionality configuration.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      lis2duxs12_smart_power_cfg_t structure.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  */
+int32_t lis2duxs12_smart_power_set(const stmdev_ctx_t *ctx, lis2duxs12_smart_power_cfg_t val)
+{
+  lis2duxs12_ctrl1_t ctrl1;
+  lis2duxs12_smart_power_ctrl_t smart_power_ctrl;
+  int32_t ret;
+
+  ret = lis2duxs12_read_reg(ctx, LIS2DUXS12_CTRL1, (uint8_t *)&ctrl1, 1);
+  ctrl1.smart_power_en = val.enable;
+  ret += lis2duxs12_write_reg(ctx, LIS2DUXS12_CTRL1, (uint8_t *)&ctrl1, 1);
+
+  if (val.enable == 0)
+  {
+    /* if disabling smart_power no need to set win/dur fields */
+    return ret;
+  }
+
+  smart_power_ctrl.smart_power_ctrl_win = val.window;
+  smart_power_ctrl.smart_power_ctrl_dur = val.duration;
+  ret += lis2duxs12_ln_pg_write(ctx, LIS2DUXS12_EMB_ADV_PG_0 + LIS2DUXS12_SMART_POWER_CTRL,
+                                (uint8_t *)&smart_power_ctrl, 1);
+
+  return ret;
+}
+
+/**
+  * @brief  smart_power functionality configuration.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      lis2duxs12_smart_power_cfg_t structure.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  */
+int32_t lis2duxs12_smart_power_get(const stmdev_ctx_t *ctx, lis2duxs12_smart_power_cfg_t *val)
+{
+  lis2duxs12_ctrl1_t ctrl1;
+  lis2duxs12_smart_power_ctrl_t smart_power_ctrl;
+  int32_t ret;
+
+  ret = lis2duxs12_read_reg(ctx, LIS2DUXS12_CTRL1, (uint8_t *)&ctrl1, 1);
+  val->enable = ctrl1.smart_power_en;
+
+  ret += lis2duxs12_ln_pg_read(ctx, LIS2DUXS12_EMB_ADV_PG_0 + LIS2DUXS12_SMART_POWER_CTRL,
+                               (uint8_t *)&smart_power_ctrl, 1);
+  val->window = smart_power_ctrl.smart_power_ctrl_win;
+  val->duration = smart_power_ctrl.smart_power_ctrl_dur;
 
   return ret;
 }

@@ -19,12 +19,12 @@
 #include "serial_protocol.h"
 
 /** @addtogroup X_NUCLEO_IKS01A3_Examples X_NUCLEO_IKS01A3 Examples
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup DATALOG_EXTENDED DATALOG EXTENDED
- * @{
- */
+  * @{
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -40,11 +40,11 @@
 
 /* Public functions ----------------------------------------------------------*/
 /**
- * @brief  Byte stuffing process for one byte
- * @param  Dest destination
- * @param  Source source
- * @retval Total number of bytes processed
- */
+  * @brief  Byte stuffing process for one byte
+  * @param  Dest destination
+  * @param  Source source
+  * @retval Total number of bytes processed
+  */
 int32_t ByteStuffCopyByte(uint8_t *Dest, uint8_t Source)
 {
   int32_t ret = 2;
@@ -71,11 +71,11 @@ int32_t ByteStuffCopyByte(uint8_t *Dest, uint8_t Source)
 }
 
 /**
- * @brief  Byte stuffing process for a Msg
- * @param  Dest destination
- * @param  Source source
- * @retval Total number of bytes processed
- */
+  * @brief  Byte stuffing process for a Msg
+  * @param  Dest destination
+  * @param  Source source
+  * @retval Total number of bytes processed
+  */
 int32_t ByteStuffCopy(uint8_t *Dest, Msg_t *Source)
 {
   uint32_t i;
@@ -92,11 +92,11 @@ int32_t ByteStuffCopy(uint8_t *Dest, Msg_t *Source)
 }
 
 /**
- * @brief  Reverse Byte stuffing process for one byte
- * @param  Source source
- * @param  Dest destination
- * @retval Number of input bytes processed (1 or 2) or 0 for invalid sequence
- */
+  * @brief  Reverse Byte stuffing process for one byte
+  * @param  Source source
+  * @param  Dest destination
+  * @retval Number of input bytes processed (1 or 2) or 0 for invalid sequence
+  */
 int32_t ReverseByteStuffCopyByte(uint8_t *Source, uint8_t *Dest)
 {
   if (Source[0] == (uint8_t)Msg_BS)
@@ -123,12 +123,12 @@ int32_t ReverseByteStuffCopyByte(uint8_t *Source, uint8_t *Dest)
 }
 
 /**
- * @brief  Reverse Byte stuffing process for two input data
- * @param  Source0 input data
- * @param  Source1 input data
- * @param  Dest the destination data
- * @retval Number of input bytes processed (1 or 2) or 0 for invalid sequence
- */
+  * @brief  Reverse Byte stuffing process for two input data
+  * @param  Source0 input data
+  * @param  Source1 input data
+  * @param  Dest the destination data
+  * @retval Number of input bytes processed (1 or 2) or 0 for invalid sequence
+  */
 int32_t ReverseByteStuffCopyByte2(uint8_t Source0, uint8_t Source1, uint8_t *Dest)
 {
   if (Source0 == (uint8_t)Msg_BS)
@@ -155,11 +155,11 @@ int32_t ReverseByteStuffCopyByte2(uint8_t Source0, uint8_t Source1, uint8_t *Des
 }
 
 /**
- * @brief  Reverse Byte stuffing process for a Msg
- * @param  Dest destination
- * @param  Source source
- * @retval 1 if the operation succeeds, 0 if an error occurs
- */
+  * @brief  Reverse Byte stuffing process for a Msg
+  * @param  Dest destination
+  * @param  Source source
+  * @retval 1 if the operation succeeds, 0 if an error occurs
+  */
 int32_t ReverseByteStuffCopy(Msg_t *Dest, uint8_t *Source)
 {
   uint32_t count = 0;
@@ -215,10 +215,10 @@ int32_t ReverseByteStuffCopy(Msg_t *Dest, uint8_t *Source)
 }
 
 /**
- * @brief  Compute and add checksum
- * @param  Msg pointer to the message
- * @retval None
- */
+  * @brief  Compute and add checksum
+  * @param  Msg pointer to the message
+  * @retval None
+  */
 void CHK_ComputeAndAdd(Msg_t *Msg)
 {
   uint8_t chk = 0;
@@ -234,10 +234,10 @@ void CHK_ComputeAndAdd(Msg_t *Msg)
 }
 
 /**
- * @brief  Compute and remove checksum
- * @param  Msg pointer to the message
- * @retval A number different from 0 if the operation succeeds, 0 if an error occurs
- */
+  * @brief  Compute and remove checksum
+  * @param  Msg pointer to the message
+  * @retval A number different from 0 if the operation succeeds, 0 if an error occurs
+  */
 int32_t CHK_CheckAndRemove(Msg_t *Msg)
 {
   uint8_t chk = 0;
@@ -253,12 +253,12 @@ int32_t CHK_CheckAndRemove(Msg_t *Msg)
 }
 
 /**
- * @brief  Build an array from the uint32_t (LSB first)
- * @param  Dest destination
- * @param  Source source
- * @param  Len number of bytes
- * @retval None
- */
+  * @brief  Build an array from the uint32_t (LSB first)
+  * @param  Dest destination
+  * @param  Source source
+  * @param  Len number of bytes
+  * @retval None
+  */
 void Serialize(uint8_t *Dest, uint32_t Source, uint32_t Len)
 {
   uint32_t i;
@@ -271,11 +271,11 @@ void Serialize(uint8_t *Dest, uint32_t Source, uint32_t Len)
 }
 
 /**
- * @brief  Unbuild a Number from an array (LSB first)
- * @param  Source source
- * @param  Len number of bytes
- * @retval Rebuild unsigned int variable
- */
+  * @brief  Unbuild a Number from an array (LSB first)
+  * @param  Source source
+  * @param  Len number of bytes
+  * @retval Rebuild unsigned int variable
+  */
 uint32_t Deserialize(uint8_t *Source, uint32_t Len)
 {
   uint32_t app;
@@ -291,12 +291,12 @@ uint32_t Deserialize(uint8_t *Source, uint32_t Len)
 }
 
 /**
- * @brief  Build an array from the uint32_t (LSB first)
- * @param  Dest destination
- * @param  Source source
- * @param  Len number of bytes
- * @retval None
- */
+  * @brief  Build an array from the uint32_t (LSB first)
+  * @param  Dest destination
+  * @param  Source source
+  * @param  Len number of bytes
+  * @retval None
+  */
 void Serialize_s32(uint8_t *Dest, int32_t Source, uint32_t Len)
 {
   uint32_t i;
@@ -312,11 +312,11 @@ void Serialize_s32(uint8_t *Dest, int32_t Source, uint32_t Len)
 }
 
 /**
- * @brief  Unbuild a Number from an array (LSB first)
- * @param  Source source
- * @param  Len number of bytes
- * @retval Rebuild signed int32_t variable
- */
+  * @brief  Unbuild a Number from an array (LSB first)
+  * @param  Source source
+  * @param  Len number of bytes
+  * @retval Rebuild signed int32_t variable
+  */
 int32_t Deserialize_s32(uint8_t *Source, uint32_t Len)
 {
   uint32_t app;
@@ -332,9 +332,9 @@ int32_t Deserialize_s32(uint8_t *Source, uint32_t Len)
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */

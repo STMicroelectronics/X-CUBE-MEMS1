@@ -2,11 +2,11 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.1.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.2.0 instances.
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -215,7 +215,8 @@ static int32_t LIS2MDL_SelfTest(void)
   uint8_t prev_reg_values[ST_REG_COUNT];
   int32_t ret;
 
-  (void)snprintf(dataOut, MAX_BUF_SIZE, "\r\nStarting LIS2MDL magnetometer self-test ...\r\nKeep the device still!!!\r\n");
+  (void)snprintf(dataOut, MAX_BUF_SIZE,
+                 "\r\nStarting LIS2MDL magnetometer self-test ...\r\nKeep the device still!!!\r\n");
   printf("%s", dataOut);
 
   HAL_Delay(INDICATION_DELAY);
@@ -356,11 +357,14 @@ static int32_t LIS2MDL_SelfTest(void)
   printf("%s", dataOut);
   (void)snprintf(dataOut, MAX_BUF_SIZE, "--------------|--------------|--------------\r\n");
   printf("%s", dataOut);
-  (void)snprintf(dataOut, MAX_BUF_SIZE, "%8d      | %8d     | %8d\r\n", LO_LIM, (int)abs(data_st.x - data_nost.x), HI_LIM);
+  (void)snprintf(dataOut, MAX_BUF_SIZE, "%8d      | %8d     | %8d\r\n", LO_LIM, (int)abs(data_st.x - data_nost.x),
+                 HI_LIM);
   printf("%s", dataOut);
-  (void)snprintf(dataOut, MAX_BUF_SIZE, "%8d      | %8d     | %8d\r\n", LO_LIM, (int)abs(data_st.y - data_nost.y), HI_LIM);
+  (void)snprintf(dataOut, MAX_BUF_SIZE, "%8d      | %8d     | %8d\r\n", LO_LIM, (int)abs(data_st.y - data_nost.y),
+                 HI_LIM);
   printf("%s", dataOut);
-  (void)snprintf(dataOut, MAX_BUF_SIZE, "%8d      | %8d     | %8d\r\n", LO_LIM, (int)abs(data_st.z - data_nost.z), HI_LIM);
+  (void)snprintf(dataOut, MAX_BUF_SIZE, "%8d      | %8d     | %8d\r\n", LO_LIM, (int)abs(data_st.z - data_nost.z),
+                 HI_LIM);
   printf("%s", dataOut);
 
   /* Print the test result */
@@ -396,8 +400,7 @@ static int32_t LIS2MDL_M_Get_Data(IKS01A3_MOTION_SENSOR_Axes_t *data)
     {
       return ret;
     }
-  }
-  while (status == 0U);
+  } while (status == 0U);
 
   /* Read accelero data */
   if ((ret = IKS01A3_MOTION_SENSOR_GetAxes(IKS01A3_LIS2MDL_0, MOTION_MAGNETO, data)) != BSP_ERROR_NONE)

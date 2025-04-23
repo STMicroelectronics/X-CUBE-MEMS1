@@ -2,11 +2,11 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.1.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.2.0 instances.
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -216,7 +216,8 @@ static int32_t LIS2DW12_X_SelfTest(void)
   uint8_t prev_reg_values[ST_REG_COUNT];
   int32_t ret;
 
-  (void)snprintf(dataOut, MAX_BUF_SIZE, "\r\nStarting LIS2DW12 accelerometer self-test ...\r\nKeep the device still!!!\r\n");
+  (void)snprintf(dataOut, MAX_BUF_SIZE,
+                 "\r\nStarting LIS2DW12 accelerometer self-test ...\r\nKeep the device still!!!\r\n");
   printf("%s", dataOut);
 
   HAL_Delay(INDICATION_DELAY);
@@ -269,7 +270,8 @@ static int32_t LIS2DW12_X_SelfTest(void)
   data_nost.z /= N_SAMPLES;
 
   /* Enable self-test */
-  if ((ret = IKS01A3_MOTION_SENSOR_Set_SelfTest(IKS01A3_LIS2DW12_0, MOTION_ACCELERO, (uint8_t)LIS2DW12_ST_POSITIVE)) != BSP_ERROR_NONE)
+  if ((ret = IKS01A3_MOTION_SENSOR_Set_SelfTest(IKS01A3_LIS2DW12_0, MOTION_ACCELERO,
+                                                (uint8_t)LIS2DW12_ST_POSITIVE)) != BSP_ERROR_NONE)
   {
     return ret;
   }
@@ -357,11 +359,14 @@ static int32_t LIS2DW12_X_SelfTest(void)
   printf("%s", dataOut);
   (void)snprintf(dataOut, MAX_BUF_SIZE, "--------------|--------------|--------------\r\n");
   printf("%s", dataOut);
-  (void)snprintf(dataOut, MAX_BUF_SIZE, "%8d      | %8d     | %8d\r\n", X_LO_LIM, (int)abs(data_st.x - data_nost.x), X_HI_LIM);
+  (void)snprintf(dataOut, MAX_BUF_SIZE, "%8d      | %8d     | %8d\r\n", X_LO_LIM, (int)abs(data_st.x - data_nost.x),
+                 X_HI_LIM);
   printf("%s", dataOut);
-  (void)snprintf(dataOut, MAX_BUF_SIZE, "%8d      | %8d     | %8d\r\n", X_LO_LIM, (int)abs(data_st.y - data_nost.y), X_HI_LIM);
+  (void)snprintf(dataOut, MAX_BUF_SIZE, "%8d      | %8d     | %8d\r\n", X_LO_LIM, (int)abs(data_st.y - data_nost.y),
+                 X_HI_LIM);
   printf("%s", dataOut);
-  (void)snprintf(dataOut, MAX_BUF_SIZE, "%8d      | %8d     | %8d\r\n", X_LO_LIM, (int)abs(data_st.z - data_nost.z), X_HI_LIM);
+  (void)snprintf(dataOut, MAX_BUF_SIZE, "%8d      | %8d     | %8d\r\n", X_LO_LIM, (int)abs(data_st.z - data_nost.z),
+                 X_HI_LIM);
   printf("%s", dataOut);
 
   /* Print the test result */
@@ -397,8 +402,7 @@ static int32_t LIS2DW12_X_Get_Data(IKS01A3_MOTION_SENSOR_Axes_t *data)
     {
       return ret;
     }
-  }
-  while (status == 0U);
+  } while (status == 0U);
 
   /* Read accelero data */
   if ((ret = IKS01A3_MOTION_SENSOR_GetAxes(IKS01A3_LIS2DW12_0, MOTION_ACCELERO, data)) != BSP_ERROR_NONE)

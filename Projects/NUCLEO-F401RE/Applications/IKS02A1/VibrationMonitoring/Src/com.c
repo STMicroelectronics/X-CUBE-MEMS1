@@ -21,12 +21,12 @@
 #include "com.h"
 
 /** @addtogroup MOTION_APPLICATIONS MOTION APPLICATIONS
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup VIBRATION_MONITORING VIBRATION MONITORING
- * @{
- */
+  * @{
+  */
 
 /* Private types -------------------------------------------------------------*/
 /* Private defines -----------------------------------------------------------*/
@@ -48,10 +48,10 @@ static volatile uint8_t UartTxBuffer[Msg_MaxLen * 2];
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /**
- * @brief  Check if a message is received via UART
- * @param  Msg the pointer to the message to be received
- * @retval 1 if a complete message is found, 0 otherwise
- */
+  * @brief  Check if a message is received via UART
+  * @param  Msg the pointer to the message to be received
+  * @retval 1 if a complete message is found, 0 otherwise
+  */
 int32_t UART_ReceivedMSG(Msg_t *Msg)
 {
   uint16_t i;
@@ -136,10 +136,10 @@ int32_t UART_ReceivedMSG(Msg_t *Msg)
 }
 
 /**
- * @brief  Send a message via UART
- * @param  Msg the pointer to the message to be sent
- * @retval None
- */
+  * @brief  Send a message via UART
+  * @param  Msg the pointer to the message to be sent
+  * @retval None
+  */
 void UART_SendMsg(Msg_t *Msg)
 {
   uint16_t count_out;
@@ -154,10 +154,10 @@ void UART_SendMsg(Msg_t *Msg)
 }
 
 /**
- * @brief  Configure DMA for the reception via USART
- * @param  None
- * @retval None
- */
+  * @brief  Configure DMA for the reception via USART
+  * @param  None
+  * @retval None
+  */
 void USART_DMA_Configuration(void)
 {
   /* Configure the DMA handler for Transmission process */
@@ -169,10 +169,10 @@ void USART_DMA_Configuration(void)
 }
 
 /**
- * @brief  Configure the USART
- * @param  None
- * @retval None
- */
+  * @brief  Configure the USART
+  * @param  None
+  * @retval None
+  */
 void USARTConfig(void)
 {
   GPIO_InitTypeDef gpio_init_struct;
@@ -233,9 +233,9 @@ void USARTConfig(void)
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */

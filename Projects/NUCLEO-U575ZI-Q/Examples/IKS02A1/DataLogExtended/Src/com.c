@@ -21,12 +21,12 @@
 #include "com.h"
 
 /** @addtogroup X_NUCLEO_IKS02A1_Examples X_NUCLEO_IKS02A1 Examples
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup DATALOG_EXTENDED DATALOG EXTENDED
- * @{
- */
+  * @{
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -50,10 +50,10 @@ static volatile uint8_t UartTxBuffer[UART_TX_BUFFER_SIZE];
 /* Private function prototypes -----------------------------------------------*/
 /* Public functions ----------------------------------------------------------*/
 /**
- * @brief  Check if a message is received via UART
- * @param  Msg the pointer to the message to be received
- * @retval 1 if a complete message is found, 0 otherwise
- */
+  * @brief  Check if a message is received via UART
+  * @param  Msg the pointer to the message to be received
+  * @retval 1 if a complete message is found, 0 otherwise
+  */
 int32_t UART_ReceivedMSG(Msg_t *Msg)
 {
   uint16_t i;
@@ -144,10 +144,10 @@ int32_t UART_ReceivedMSG(Msg_t *Msg)
 }
 
 /**
- * @brief  Send a message via UART
- * @param  Msg the pointer to the message to be sent
- * @retval None
- */
+  * @brief  Send a message via UART
+  * @param  Msg the pointer to the message to be sent
+  * @retval None
+  */
 void UART_SendMsg(Msg_t *Msg)
 {
   uint16_t count_out;
@@ -162,10 +162,10 @@ void UART_SendMsg(Msg_t *Msg)
 }
 
 /**
- * @brief  Start receiving messages via DMA
- * @param  None
- * @retval None
- */
+  * @brief  Start receiving messages via DMA
+  * @param  None
+  * @retval None
+  */
 void UART_StartReceiveMsg(void)
 {
   hcom_uart[COM1].pRxBuffPtr = (uint8_t *)UartRxBuffer; /* MISRA C-2012 rule 11.8 violation for purpose */
@@ -195,9 +195,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 /* Private functions ---------------------------------------------------------*/
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */

@@ -72,8 +72,8 @@ extern "C" {
 #define G_CONV                (float)(G_CONST/1000.0f) //!< CONSTANT for conversion from mm/s^2 to m/s^2
 
 #ifdef USE_SUBRANGE
-  #define SUBRANGE_DEFAULT    8             //!< Default value for FFT output subranges
-  #define SUBRANGE_MAX        64            //!< Default value for MAX Subranges to analyze
+#define SUBRANGE_DEFAULT    8             //!< Default value for FFT output subranges
+#define SUBRANGE_MAX        64            //!< Default value for MAX Subranges to analyze
 #endif /* USE_SUBRANGE */
 
 /**

@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -648,7 +648,7 @@ static int32_t IIS2ICLX_0_Probe(uint32_t Functions)
     {
       /* The second cast (void *) is added to bypass Misra R11.3 rule */
       MotionFuncDrv[CUSTOM_IIS2ICLX_0][FunctionIndex[MOTION_ACCELERO]] = (MOTION_SENSOR_FuncDrv_t *)(
-                                                                          void *)&IIS2ICLX_ACC_Driver;
+                                                                           void *)&IIS2ICLX_ACC_Driver;
 
       if (MotionDrv[CUSTOM_IIS2ICLX_0]->Init(MotionCompObj[CUSTOM_IIS2ICLX_0]) != IIS2ICLX_OK)
       {

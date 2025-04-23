@@ -66,26 +66,32 @@ static uint8_t AccNameList[][SENSOR_NAME_MAX_LENGTH] = {"LSM6DSO", "LIS2DW12", "
                                                         "LIS2DTW12 (DIL24)", "LIS2DU12 (DIL24)", "ASM330LHHX (DIL24)",
                                                         "LSM6DSV16X (DIL24)", "LSM6DSV16BX (DIL24)", "LSM6DSV (DIL24)",
                                                         "LSM6DSV16B (DIL24)", "LIS2DUX12 (DIL24)", "LIS2DUXS12 (DIL24)",
-                                                        "LSM6DSV32X (DIL24)", "ISM330BX (DIL24)"};
+                                                        "LSM6DSV32X (DIL24)", "ISM330BX (DIL24)", "LSM6DSV80X (DIL24)"
+                                                       };
 static uint8_t GyrNameList[][SENSOR_NAME_MAX_LENGTH] = {"LSM6DSO", "ASM330LHH (DIL24)", "ISM330DLC (DIL24)",
                                                         "LSM6DSOX (DIL24)", "LSM6DSR (DIL24)", "A3G4250D (DIL24)",
                                                         "LSM6DSRX (DIL24)", "ISM330DHCX (DIL24)", "LSM6DSO32 (DIL24)",
                                                         "LSM6DSO32X (DIL24)", "ASM330LHHX (DIL24)", "LSM6DSV16X (DIL24)",
                                                         "LSM6DSV16BX (DIL24)", "LSM6DSV (DIL24)", "LSM6DSV16B (DIL24)",
-                                                        "LSM6DSV32X (DIL24)", "ISM330BX (DIL24)"};
+                                                        "LSM6DSV32X (DIL24)", "ISM330BX (DIL24)", "LSM6DSV80X (DIL24)"
+                                                       };
 static uint8_t MagNameList[][SENSOR_NAME_MAX_LENGTH] = {"LIS2MDL", "IIS2MDC (DIL24)", "ISM303DAC (DIL24)", "LIS3MDL (DIL24)",
-                                                        "LIS2MDL SH (DIL24)"};
+                                                        "LIS2MDL SH (DIL24)"
+                                                       };
 static uint8_t HumNameList[][SENSOR_NAME_MAX_LENGTH] = {"HTS221", "SHT40AD1B (DIL24)"};
 static uint8_t TmpNameList[][SENSOR_NAME_MAX_LENGTH] = {"HTS221", "STTS751", "LPS22HH", "LPS33HW (DIL24)", "STTS22H (DIL24)",
                                                         "LPS33K (DIL24)", "LPS22CH (DIL24)", "LPS27HHTW (DIL24)", "LPS22DF (DIL24)",
                                                         "LIS2DTW12 (DIL24)", "ILPS22QS (DIL24)", "ILPS28QSW (DIL24)",
-                                                        "LPS28DFW (DIL24)", "SHT40AD1B (DIL24)"};
+                                                        "LPS28DFW (DIL24)", "SHT40AD1B (DIL24)"
+                                                       };
 static uint8_t PrsNameList[][SENSOR_NAME_MAX_LENGTH] = {"LPS22HH", "LPS33HW (DIL24)", "LPS33K (DIL24)", "LPS22CH (DIL24)",
                                                         "LPS27HHTW (DIL24)", "LPS22DF (DIL24)", "ILPS22QS (DIL24)",
-                                                        "ILPS28QSW (DIL24)", "LPS28DFW (DIL24)"};
+                                                        "ILPS28QSW (DIL24)", "LPS28DFW (DIL24)"
+                                                       };
 
 /* Supported sensor instances (have to correspond with supported sensor names above) */
-static uint32_t AccInstanceList[] = {
+static uint32_t AccInstanceList[] =
+{
   IKS01A3_LSM6DSO_0,
   IKS01A3_LIS2DW12_0,
   IKS01A3_ASM330LHH_0,
@@ -116,8 +122,10 @@ static uint32_t AccInstanceList[] = {
   IKS01A3_LIS2DUXS12_0,
   IKS01A3_LSM6DSV32X_0,
   IKS01A3_ISM330BX_0,
+  IKS01A3_LSM6DSV80X_0,
 };
-static uint32_t GyrInstanceList[] = {
+static uint32_t GyrInstanceList[] =
+{
   IKS01A3_LSM6DSO_0,
   IKS01A3_ASM330LHH_0,
   IKS01A3_ISM330DLC_0,
@@ -135,19 +143,23 @@ static uint32_t GyrInstanceList[] = {
   IKS01A3_LSM6DSV16B_0,
   IKS01A3_LSM6DSV32X_0,
   IKS01A3_ISM330BX_0,
+  IKS01A3_LSM6DSV80X_0,
 };
-static uint32_t MagInstanceList[] = {
+static uint32_t MagInstanceList[] =
+{
   IKS01A3_LIS2MDL_0,
   IKS01A3_IIS2MDC_0,
   IKS01A3_ISM303DAC_MAG_0,
   IKS01A3_LIS3MDL_0,
   IKS01A3_LSM6DSOX_SENSORHUB_LIS2MDL_0,
 };
-static uint32_t HumInstanceList[] = {
+static uint32_t HumInstanceList[] =
+{
   IKS01A3_HTS221_0,
   IKS01A3_SHT40AD1B_0,
 };
-static uint32_t TmpInstanceList[] = {
+static uint32_t TmpInstanceList[] =
+{
   IKS01A3_HTS221_0,
   IKS01A3_STTS751_0,
   IKS01A3_LPS22HH_0,
@@ -163,7 +175,8 @@ static uint32_t TmpInstanceList[] = {
   IKS01A3_LPS28DFW_0,
   IKS01A3_SHT40AD1B_0,
 };
-static uint32_t PrsInstanceList[] = {
+static uint32_t PrsInstanceList[] =
+{
   IKS01A3_LPS22HH_0,
   IKS01A3_LPS33HW_0,
   IKS01A3_LPS33K_0,
@@ -174,7 +187,8 @@ static uint32_t PrsInstanceList[] = {
   IKS01A3_ILPS28QSW_0,
   IKS01A3_LPS28DFW_0,
 };
-static uint32_t HybridAccInstanceList[] = {
+static uint32_t HybridAccInstanceList[] =
+{
   NOT_HYBRID_SENSOR, /* LSM6DSO */
   NOT_HYBRID_SENSOR, /* LIS2DW12 */
   NOT_HYBRID_SENSOR, /* ASM330LHH */
@@ -205,8 +219,10 @@ static uint32_t HybridAccInstanceList[] = {
   NOT_HYBRID_SENSOR, /* LIS2DUXS12 */
   NOT_HYBRID_SENSOR, /* LSM6DSV32X */
   NOT_HYBRID_SENSOR, /* ISM330BX */
+  NOT_HYBRID_SENSOR, /* LSM6DSV80X */
 };
-static uint32_t HybridTmpInstanceList[] = {
+static uint32_t HybridTmpInstanceList[] =
+{
   NOT_HYBRID_SENSOR, /* HTS221 */
   NOT_HYBRID_SENSOR, /* STTS751 */
   NOT_HYBRID_SENSOR, /* LPS22HH */
@@ -225,7 +241,8 @@ static uint32_t HybridTmpInstanceList[] = {
 
 /* Sensor fullscale lists (have to correspond with supported sensor names above)
  * Please verify that second index of array is equal to or higher than count of longest sub-array items */
-static uint32_t AccFsList[][5] = { /* g */
+static uint32_t AccFsList[][5] =   /* g */
+{
   {4, 2, 4, 8, 16},                /* LSM6DSO */
   {4, 2, 4, 8, 16},                /* LIS2DW12 */
   {4, 2, 4, 8, 16},                /* ASM330LHH */
@@ -256,8 +273,10 @@ static uint32_t AccFsList[][5] = { /* g */
   {4, 2, 4, 8, 16},                /* LIS2DUXS12 */
   {4, 4, 8, 16, 32},               /* LSM6DSV32X */
   {4, 2, 4, 8, 16},                /* ISM330BX */
+  {4, 2, 4, 8, 16},                /* LSM6DSV80X */
 };
-static uint32_t GyrFsList[][7] = {      /* dps */
+static uint32_t GyrFsList[][7] =        /* dps */
+{
   {5, 125, 250, 500, 1000, 2000},       /* LSM6DSO */
   {6, 125, 250, 500, 1000, 2000, 4000}, /* ASM330LHH */
   {5, 125, 250, 500, 1000, 2000},       /* ISM330DLC */
@@ -275,19 +294,23 @@ static uint32_t GyrFsList[][7] = {      /* dps */
   {6, 125, 250, 500, 1000, 2000, 4000}, /* LSM6DSV16B */
   {6, 125, 250, 500, 1000, 2000, 4000}, /* LSM6DSV32X */
   {6, 125, 250, 500, 1000, 2000, 4000}, /* ISM330BX */
+  {5, 250, 500, 1000, 2000, 4000},      /* LSM6DSV80X */
 };
-static uint32_t MagFsList[][5] = { /* Ga */
+static uint32_t MagFsList[][5] =   /* Ga */
+{
   {1, 50},                         /* LIS2MDL */
   {1, 50},                         /* IIS2MDC */
   {1, 50},                         /* ISM303DAC */
   {4, 4, 8, 12, 16},               /* LIS3MDL */
   {1, 50},                         /* LSM6DSOX SENSORHUB LIS2MDL */
 };
-static uint32_t HumFsList[][1] = { /* % */
+static uint32_t HumFsList[][1] =   /* % */
+{
   {0},                             /* HTS221 */
   {0},                             /* SHT40AD1B */
 };
-static uint32_t TmpFsList[][1] = { /* C */
+static uint32_t TmpFsList[][1] =   /* C */
+{
   {0},                             /* HTS221 */
   {0},                             /* STTS751 */
   {0},                             /* LPS22HH */
@@ -303,7 +326,8 @@ static uint32_t TmpFsList[][1] = { /* C */
   {0},                             /* LPS28DFW */
   {0},                             /* SHT40AD1B */
 };
-static uint32_t PrsFsList[][1] = { /* Pa */
+static uint32_t PrsFsList[][1] =   /* Pa */
+{
   {0},                             /* LPS22HH */
   {0},                             /* LPS33HW */
   {0},                             /* LPS33K */
@@ -317,7 +341,8 @@ static uint32_t PrsFsList[][1] = { /* Pa */
 
 /* Sensor output data rate lists (have to correspond with supported sensor names above)
  * Please verify that second index of array is equal to or higher than count of longest sub-array items */
-static float AccOdrList[][13] = {                                     /* Hz */
+static float AccOdrList[][13] =                                       /* Hz */
+{
   {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667},           /* LSM6DSO */
   {8, 12.5, 25, 50, 100, 200, 400, 800, 1600},                        /* LIS2DW12 */
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667},           /* ASM330LHH */
@@ -348,8 +373,10 @@ static float AccOdrList[][13] = {                                     /* Hz */
   {8, 6, 12.5, 25, 50, 100, 200, 400, 800},                           /* LIS2DUXS12 */
   {12, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV32X */
   {11, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840},       /* ISM330BX */
+  {12, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV80X */
 };
-static float GyrOdrList[][12] = {                              /* Hz */
+static float GyrOdrList[][12] =                                /* Hz */
+{
   {10, 12.5, 26, 52, 104, 208, 417, 833, 1667, 3333, 6667},    /* LSM6DSO */
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667},    /* ASM330LHH */
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1660, 3330, 6660},    /* ISM330DLC */
@@ -367,19 +394,23 @@ static float GyrOdrList[][12] = {                              /* Hz */
   {11, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV16B */
   {11, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV32X */
   {10, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840},       /* ISM330BX */
+  {11, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV80X */
 };
-static float MagOdrList[][9] = {            /* Hz */
+static float MagOdrList[][9] =              /* Hz */
+{
   {4, 10, 20, 50, 100},                     /* LIS2MDL */
   {4, 10, 20, 50, 100},                     /* IIS2MDC */
   {4, 10, 20, 50, 100},                     /* ISM303DAC */
   {8, 0.625, 1.25, 2.5, 5, 10, 20, 40, 80}, /* LIS3MDL */
   {4, 10, 20, 50, 100},                     /* LSM6DSOX SENSORHUB LIS2MDL */
 };
-static float HumOdrList[][4] = { /* Hz */
+static float HumOdrList[][4] =   /* Hz */
+{
   {3, 1, 7, 12.5},               /* HTS221 */
   {0},                           /* SHT40AD1B */
 };
-static float TmpOdrList[][11] = {                     /* Hz */
+static float TmpOdrList[][11] =                       /* Hz */
+{
   {3, 1, 7, 12.5},                                    /* HTS221 */
   {10, 0.0625, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16, 32}, /* STTS751 */
   {7, 1, 10, 25, 50, 75, 100, 200},                   /* LPS22HH */
@@ -395,7 +426,8 @@ static float TmpOdrList[][11] = {                     /* Hz */
   {8, 1, 4, 10, 25, 50, 75, 100, 200},                /* LPS28DFW */
   {0},                                                /* SHT40AD1B */
 };
-static float PrsOdrList[][9] = {       /* Hz */
+static float PrsOdrList[][9] =         /* Hz */
+{
   {7, 1, 10, 25, 50, 75, 100, 200},    /* LPS22HH */
   {5, 1, 10, 25, 50, 75},              /* LPS33HW */
   {5, 1, 10, 25, 50, 75},              /* LPS33K */
@@ -563,6 +595,7 @@ static int32_t SC_Get_Sensor_Name(Msg_t *Msg)
       Send_Sensor_Name(Msg, PrsNameList[PrsIndex]);
       break;
 
+    case SC_ACCELEROMETER_HG:
     default:
       ret = 0;
       break;
@@ -641,6 +674,13 @@ static int32_t SC_Read_Register(Msg_t *Msg)
 
     case SC_PRESSURE:
       if (IKS01A3_ENV_SENSOR_Read_Register(PrsInstance, Msg->Data[5], &reg_value) != BSP_ERROR_NONE)
+      {
+        return 0;
+      }
+      break;
+
+    case SC_ACCELEROMETER_HG:
+      if (IKS01A3_MOTION_SENSOR_Read_Register(AccInstance, Msg->Data[5], &reg_value) != BSP_ERROR_NONE)
       {
         return 0;
       }
@@ -737,6 +777,13 @@ static int32_t SC_Write_Register(Msg_t *Msg)
       }
       break;
 
+    case SC_ACCELEROMETER_HG:
+      if (IKS01A3_MOTION_SENSOR_Write_Register(AccInstance, Msg->Data[5], Msg->Data[6]) != BSP_ERROR_NONE)
+      {
+        return 0;
+      }
+      break;
+
     default:
       ret = 0;
       break;
@@ -789,6 +836,7 @@ static int32_t SC_Get_Full_Scale_List(Msg_t *Msg)
       Send_Sensor_FS_List(Msg, PrsFsList[PrsIndex]);
       break;
 
+    case SC_ACCELEROMETER_HG:
     default:
       ret = 0;
       break;
@@ -846,6 +894,7 @@ static int32_t SC_Set_Full_Scale(Msg_t *Msg)
     case SC_PRESSURE:
       break;
 
+    case SC_ACCELEROMETER_HG:
     default:
       ret = 0;
       break;
@@ -911,6 +960,7 @@ static int32_t SC_Get_Full_Scale(Msg_t *Msg)
     case SC_PRESSURE:
       break;
 
+    case SC_ACCELEROMETER_HG:
     default:
       ret = 0;
       break;
@@ -964,6 +1014,7 @@ static int32_t SC_Get_ODR_List(Msg_t *Msg)
       Send_Sensor_ODR_List(Msg, PrsOdrList[PrsIndex]);
       break;
 
+    case SC_ACCELEROMETER_HG:
     default:
       ret = 0;
       break;
@@ -1049,6 +1100,7 @@ static int32_t SC_Set_ODR(Msg_t *Msg)
       }
       break;
 
+    case SC_ACCELEROMETER_HG:
     default:
       ret = 0;
       break;
@@ -1140,6 +1192,7 @@ static int32_t SC_Get_ODR(Msg_t *Msg)
       }
       break;
 
+    case SC_ACCELEROMETER_HG:
     default:
       ret = 0;
       break;
@@ -1260,6 +1313,7 @@ static int32_t SC_Get_Sensor_List(Msg_t *Msg)
       Send_Sensor_Name(Msg, PrsNamesString);
       break;
 
+    case SC_ACCELEROMETER_HG:
     default:
       ret = 0;
       break;
@@ -1484,6 +1538,7 @@ static int32_t SC_Set_Sensor_Index(Msg_t *Msg)
       }
       break;
 
+    case SC_ACCELEROMETER_HG:
     default:
       ret = 0;
       break;
@@ -1515,7 +1570,8 @@ static int32_t SC_Write_Multi_Register(Msg_t *Msg)
       {
         for (i = 0; i < Msg->Data[5]; i++)
         {
-          if (IKS01A3_HYBRID_SENSOR_Write_Register(AccInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+          if (IKS01A3_HYBRID_SENSOR_Write_Register(AccInstance, Msg->Data[6U + (2U * i)],
+                                                   Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
           {
             ret = 0;
           }
@@ -1525,7 +1581,8 @@ static int32_t SC_Write_Multi_Register(Msg_t *Msg)
       {
         for (i = 0; i < Msg->Data[5]; i++)
         {
-          if (IKS01A3_MOTION_SENSOR_Write_Register(AccInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+          if (IKS01A3_MOTION_SENSOR_Write_Register(AccInstance, Msg->Data[6U + (2U * i)],
+                                                   Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
           {
             ret = 0;
           }
@@ -1536,7 +1593,8 @@ static int32_t SC_Write_Multi_Register(Msg_t *Msg)
     case SC_GYROSCOPE:
       for (i = 0; i < Msg->Data[5]; i++)
       {
-        if (IKS01A3_MOTION_SENSOR_Write_Register(GyrInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+        if (IKS01A3_MOTION_SENSOR_Write_Register(GyrInstance, Msg->Data[6U + (2U * i)],
+                                                 Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
         {
           ret = 0;
         }
@@ -1546,7 +1604,8 @@ static int32_t SC_Write_Multi_Register(Msg_t *Msg)
     case SC_MAGNETOMETER:
       for (i = 0; i < Msg->Data[5]; i++)
       {
-        if (IKS01A3_MOTION_SENSOR_Write_Register(MagInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+        if (IKS01A3_MOTION_SENSOR_Write_Register(MagInstance, Msg->Data[6U + (2U * i)],
+                                                 Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
         {
           ret = 0;
         }
@@ -1558,7 +1617,8 @@ static int32_t SC_Write_Multi_Register(Msg_t *Msg)
       {
         for (i = 0; i < Msg->Data[5]; i++)
         {
-          if (IKS01A3_HYBRID_SENSOR_Write_Register(TmpInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+          if (IKS01A3_HYBRID_SENSOR_Write_Register(TmpInstance, Msg->Data[6U + (2U * i)],
+                                                   Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
           {
             ret = 0;
           }
@@ -1568,7 +1628,8 @@ static int32_t SC_Write_Multi_Register(Msg_t *Msg)
       {
         for (i = 0; i < Msg->Data[5]; i++)
         {
-          if (IKS01A3_ENV_SENSOR_Write_Register(TmpInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+          if (IKS01A3_ENV_SENSOR_Write_Register(TmpInstance, Msg->Data[6U + (2U * i)],
+                                                Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
           {
             ret = 0;
           }
@@ -1579,7 +1640,8 @@ static int32_t SC_Write_Multi_Register(Msg_t *Msg)
     case SC_HUMIDITY:
       for (i = 0; i < Msg->Data[5]; i++)
       {
-        if (IKS01A3_ENV_SENSOR_Write_Register(HumInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+        if (IKS01A3_ENV_SENSOR_Write_Register(HumInstance, Msg->Data[6U + (2U * i)],
+                                              Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
         {
           ret = 0;
         }
@@ -1589,7 +1651,19 @@ static int32_t SC_Write_Multi_Register(Msg_t *Msg)
     case SC_PRESSURE:
       for (i = 0; i < Msg->Data[5]; i++)
       {
-        if (IKS01A3_ENV_SENSOR_Write_Register(PrsInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+        if (IKS01A3_ENV_SENSOR_Write_Register(PrsInstance, Msg->Data[6U + (2U * i)],
+                                              Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+      }
+      break;
+
+    case SC_ACCELEROMETER_HG:
+      for (i = 0; i < Msg->Data[5]; i++)
+      {
+        if (IKS01A3_MOTION_SENSOR_Write_Register(AccInstance, Msg->Data[6U + (2U * i)],
+                                                 Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
         {
           ret = 0;
         }
@@ -1630,7 +1704,8 @@ static int32_t SC_Read_Multi_Register(Msg_t *Msg)
       {
         for (i = 0; i < Msg->Data[5]; i++)
         {
-          if (IKS01A3_HYBRID_SENSOR_Read_Register(AccInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+          if (IKS01A3_HYBRID_SENSOR_Read_Register(AccInstance, Msg->Data[6U + (2U * i)],
+                                                  &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
           {
             ret = 0;
           }
@@ -1640,7 +1715,8 @@ static int32_t SC_Read_Multi_Register(Msg_t *Msg)
       {
         for (i = 0; i < Msg->Data[5]; i++)
         {
-          if (IKS01A3_MOTION_SENSOR_Read_Register(AccInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+          if (IKS01A3_MOTION_SENSOR_Read_Register(AccInstance, Msg->Data[6U + (2U * i)],
+                                                  &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
           {
             ret = 0;
           }
@@ -1651,7 +1727,8 @@ static int32_t SC_Read_Multi_Register(Msg_t *Msg)
     case SC_GYROSCOPE:
       for (i = 0; i < Msg->Data[5]; i++)
       {
-        if (IKS01A3_MOTION_SENSOR_Read_Register(GyrInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+        if (IKS01A3_MOTION_SENSOR_Read_Register(GyrInstance, Msg->Data[6U + (2U * i)],
+                                                &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
         {
           ret = 0;
         }
@@ -1661,7 +1738,8 @@ static int32_t SC_Read_Multi_Register(Msg_t *Msg)
     case SC_MAGNETOMETER:
       for (i = 0; i < Msg->Data[5]; i++)
       {
-        if (IKS01A3_MOTION_SENSOR_Read_Register(MagInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+        if (IKS01A3_MOTION_SENSOR_Read_Register(MagInstance, Msg->Data[6U + (2U * i)],
+                                                &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
         {
           ret = 0;
         }
@@ -1673,7 +1751,8 @@ static int32_t SC_Read_Multi_Register(Msg_t *Msg)
       {
         for (i = 0; i < Msg->Data[5]; i++)
         {
-          if (IKS01A3_HYBRID_SENSOR_Read_Register(TmpInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+          if (IKS01A3_HYBRID_SENSOR_Read_Register(TmpInstance, Msg->Data[6U + (2U * i)],
+                                                  &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
           {
             ret = 0;
           }
@@ -1683,7 +1762,8 @@ static int32_t SC_Read_Multi_Register(Msg_t *Msg)
       {
         for (i = 0; i < Msg->Data[5]; i++)
         {
-          if (IKS01A3_ENV_SENSOR_Read_Register(TmpInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+          if (IKS01A3_ENV_SENSOR_Read_Register(TmpInstance, Msg->Data[6U + (2U * i)],
+                                               &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
           {
             ret = 0;
           }
@@ -1694,7 +1774,8 @@ static int32_t SC_Read_Multi_Register(Msg_t *Msg)
     case SC_HUMIDITY:
       for (i = 0; i < Msg->Data[5]; i++)
       {
-        if (IKS01A3_ENV_SENSOR_Read_Register(HumInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+        if (IKS01A3_ENV_SENSOR_Read_Register(HumInstance, Msg->Data[6U + (2U * i)],
+                                             &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
         {
           ret = 0;
         }
@@ -1704,7 +1785,19 @@ static int32_t SC_Read_Multi_Register(Msg_t *Msg)
     case SC_PRESSURE:
       for (i = 0; i < Msg->Data[5]; i++)
       {
-        if (IKS01A3_ENV_SENSOR_Read_Register(PrsInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+        if (IKS01A3_ENV_SENSOR_Read_Register(PrsInstance, Msg->Data[6U + (2U * i)],
+                                             &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+        {
+          ret = 0;
+        }
+      }
+      break;
+
+    case SC_ACCELEROMETER_HG:
+      for (i = 0; i < Msg->Data[5]; i++)
+      {
+        if (IKS01A3_MOTION_SENSOR_Read_Register(AccInstance, Msg->Data[6U + (2U * i)],
+                                                &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
         {
           ret = 0;
         }
@@ -1849,6 +1942,19 @@ static int32_t SC_Read_Modify_Write_Register(Msg_t *Msg)
       reg_value = reg_value & Msg->Data[6];
       reg_value = reg_value | Msg->Data[7];
       if (IKS01A3_ENV_SENSOR_Write_Register(PrsInstance, Msg->Data[5], reg_value) != BSP_ERROR_NONE)
+      {
+        ret = 0;
+      }
+      break;
+
+    case SC_ACCELEROMETER_HG:
+      if (IKS01A3_MOTION_SENSOR_Read_Register(AccInstance, Msg->Data[5], &reg_value) != BSP_ERROR_NONE)
+      {
+        ret = 0;
+      }
+      reg_value = reg_value & Msg->Data[6];
+      reg_value = reg_value | Msg->Data[7];
+      if (IKS01A3_MOTION_SENSOR_Write_Register(AccInstance, Msg->Data[5], reg_value) != BSP_ERROR_NONE)
       {
         ret = 0;
       }

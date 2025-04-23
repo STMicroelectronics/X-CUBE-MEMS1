@@ -20,12 +20,12 @@
 #include "com.h"
 
 /** @addtogroup X_NUCLEO_IKS01A3_Examples X_NUCLEO_IKS01A3 Examples
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup DATALOG_EXTENDED DATALOG EXTENDED
- * @{
- */
+  * @{
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -43,10 +43,10 @@
 
 /* Private functions ---------------------------------------------------------*/
 /**
- * @brief  System Clock Configuration
- * @param  None
- * @retval None
- */
+  * @brief  System Clock Configuration
+  * @param  None
+  * @retval None
+  */
 void SystemClock_Config(void)
 {
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
@@ -92,30 +92,30 @@ void SystemClock_Config(void)
 }
 
 /**
- * @brief  Get the DMA Stream pending flags
- * @param  handle_dma DMA handle
- * @retval The state of FLAG (SET or RESET)
- */
+  * @brief  Get the DMA Stream pending flags
+  * @param  handle_dma DMA handle
+  * @retval The state of FLAG (SET or RESET)
+  */
 uint32_t Get_DMA_Flag_Status(DMA_HandleTypeDef *handle_dma)
 {
   return (__HAL_DMA_GET_FLAG(handle_dma, __HAL_DMA_GET_FE_FLAG_INDEX(handle_dma)));
 }
 
 /**
- * @brief  Returns the number of remaining data units in the current DMAy Streamx transfer
- * @param  handle_dma DMA handle
- * @retval The number of remaining data units in the current DMA Stream transfer
- */
+  * @brief  Returns the number of remaining data units in the current DMAy Streamx transfer
+  * @param  handle_dma DMA handle
+  * @retval The number of remaining data units in the current DMA Stream transfer
+  */
 uint32_t Get_DMA_Counter(DMA_HandleTypeDef *handle_dma)
 {
   return (__HAL_DMA_GET_COUNTER(handle_dma));
 }
 
 /**
- * @brief  Configure the DMA handler for reception process
- * @param  handle_dma DMA handle
- * @retval None
- */
+  * @brief  Configure the DMA handler for reception process
+  * @param  handle_dma DMA handle
+  * @retval None
+  */
 void Config_DMA_RxHandler(DMA_HandleTypeDef *handle_dma)
 {
   /* USART2 DMA Init */
@@ -133,10 +133,10 @@ void Config_DMA_RxHandler(DMA_HandleTypeDef *handle_dma)
 }
 
 /**
- * @brief  Configure the DMA handler for transmission process
- * @param  handle_dma DMA handle
- * @retval None
- */
+  * @brief  Configure the DMA handler for transmission process
+  * @param  handle_dma DMA handle
+  * @retval None
+  */
 void Config_DMA_TxHandler(DMA_HandleTypeDef *handle_dma)
 {
   /* USART2 DMA Init */
@@ -154,9 +154,9 @@ void Config_DMA_TxHandler(DMA_HandleTypeDef *handle_dma)
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */

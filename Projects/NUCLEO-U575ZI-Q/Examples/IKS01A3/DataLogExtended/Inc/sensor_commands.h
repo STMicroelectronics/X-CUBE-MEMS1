@@ -31,7 +31,7 @@
 #define SC_TEMPERATURE                                                  0x04
 #define SC_HUMIDITY                                                     0x05
 #define SC_PRESSURE                                                     0x06
-#define SC_UV                                                           0x07
+#define SC_ACCELEROMETER_HG                                             0x07
 
 #define SC_GET_SENSOR_NAME                                              0x01
 #define SC_READ_REGISTER                                                0x02

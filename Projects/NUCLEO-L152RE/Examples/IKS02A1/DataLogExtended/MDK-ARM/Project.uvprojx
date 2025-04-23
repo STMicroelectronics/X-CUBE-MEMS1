@@ -341,7 +341,7 @@
               <MiscControls></MiscControls>
               <Define>STM32L152xE,USE_HAL_DRIVER,USE_STM32L1XX_NUCLEO</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Inc;..\..\..\..\..\..\Drivers\BSP\Components\Common;..\..\..\..\..\..\Drivers\BSP\Components\ism330dhcx;..\..\..\..\..\..\Drivers\BSP\STM32L1xx_Nucleo;..\..\..\..\..\..\Drivers\BSP\IKS02A1;..\..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32L1xx\Include;..\..\..\..\..\..\Drivers\CMSIS\Include;..\..\..\..\..\..\Drivers\STM32L1xx_HAL_Driver\Inc;..\..\..\..\..\..\Drivers\BSP\Components\iis2dlpc;..\..\..\..\..\..\Drivers\BSP\Components\iis2iclx;..\..\..\..\..\..\Drivers\BSP\Components\iis2mdc;..\..\..\..\..\..\Drivers\BSP\Components\asm330lhhx;..\..\..\..\..\..\Drivers\BSP\Components\sht40ad1b;..\..\..\..\..\..\Drivers\BSP\Components\ism330bx</IncludePath>
+              <IncludePath>..\Inc;..\..\..\..\..\..\Drivers\BSP\Components\Common;..\..\..\..\..\..\Drivers\BSP\Components\ism330dhcx;..\..\..\..\..\..\Drivers\BSP\STM32L1xx_Nucleo;..\..\..\..\..\..\Drivers\BSP\IKS02A1;..\..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32L1xx\Include;..\..\..\..\..\..\Drivers\CMSIS\Include;..\..\..\..\..\..\Drivers\STM32L1xx_HAL_Driver\Inc;..\..\..\..\..\..\Drivers\BSP\Components\iis2dlpc;../../../../../../Drivers/BSP/Components/iis2dulpx;..\..\..\..\..\..\Drivers\BSP\Components\iis2iclx;..\..\..\..\..\..\Drivers\BSP\Components\iis2mdc;..\..\..\..\..\..\Drivers\BSP\Components\asm330lhhx;..\..\..\..\..\..\Drivers\BSP\Components\sht40ad1b;..\..\..\..\..\..\Drivers\BSP\Components\ism330bx</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -404,6 +404,16 @@
               <FileName>iis2dlpc_reg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\iis2dlpc\iis2dlpc_reg.c</FilePath>
+            </File>
+            <File>
+              <FileName>iis2dulpx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\iis2dulpx\iis2dulpx.c</FilePath>
+            </File>
+            <File>
+              <FileName>iis2dulpx_reg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Drivers\BSP\Components\iis2dulpx\iis2dulpx_reg.c</FilePath>
             </File>
             <File>
               <FileName>iis2mdc.c</FileName>

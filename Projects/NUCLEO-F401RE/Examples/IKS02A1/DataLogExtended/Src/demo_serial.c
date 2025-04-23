@@ -22,12 +22,12 @@
 #include "sensor_commands.h"
 
 /** @addtogroup X_NUCLEO_IKS02A1_Examples X_NUCLEO_IKS02A1 Examples
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup DATALOG_EXTENDED DATALOG EXTENDED
- * @{
- */
+  * @{
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -39,7 +39,7 @@
 volatile uint8_t DataLoggerActive;
 
 /* Private variables ---------------------------------------------------------*/
-static uint8_t PresentationString[] = {"MEMS shield demo,101,11.1.0,0.0.0,IKS02A1"};
+static uint8_t PresentationString[] = {"MEMS shield demo,101,11.2.0,0.0.0,IKS02A1"};
 static volatile uint8_t DataStreamingDest = 1;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -48,10 +48,10 @@ static volatile uint8_t DataStreamingDest = 1;
 
 /* Public functions ----------------------------------------------------------*/
 /**
- * @brief  Build the reply header
- * @param  Msg the pointer to the message to be built
- * @retval None
- */
+  * @brief  Build the reply header
+  * @param  Msg the pointer to the message to be built
+  * @retval None
+  */
 void BUILD_REPLY_HEADER(Msg_t *Msg)
 {
   Msg->Data[0] = Msg->Data[1];
@@ -60,10 +60,10 @@ void BUILD_REPLY_HEADER(Msg_t *Msg)
 }
 
 /**
- * @brief  Build the nack header
- * @param  Msg the pointer to the message to be built
- * @retval None
- */
+  * @brief  Build the nack header
+  * @param  Msg the pointer to the message to be built
+  * @retval None
+  */
 void BUILD_NACK_HEADER(Msg_t *Msg)
 {
   Msg->Data[0] = Msg->Data[1];
@@ -72,10 +72,10 @@ void BUILD_NACK_HEADER(Msg_t *Msg)
 }
 
 /**
- * @brief  Initialize the streaming header
- * @param  Msg the pointer to the header to be initialized
- * @retval None
- */
+  * @brief  Initialize the streaming header
+  * @param  Msg the pointer to the header to be initialized
+  * @retval None
+  */
 void INIT_STREAMING_HEADER(Msg_t *Msg)
 {
   Msg->Data[0] = DataStreamingDest;
@@ -85,10 +85,10 @@ void INIT_STREAMING_HEADER(Msg_t *Msg)
 }
 
 /**
- * @brief  Initialize the streaming message
- * @param  Msg the pointer to the message to be initialized
- * @retval None
- */
+  * @brief  Initialize the streaming message
+  * @param  Msg the pointer to the message to be initialized
+  * @retval None
+  */
 void INIT_STREAMING_MSG(Msg_t *Msg)
 {
   uint32_t i;
@@ -104,10 +104,10 @@ void INIT_STREAMING_MSG(Msg_t *Msg)
 }
 
 /**
- * @brief  Handle a message
- * @param  Msg the pointer to the message to be handled
- * @retval 1 if the message is correctly handled, 0 otherwise
- */
+  * @brief  Handle a message
+  * @param  Msg the pointer to the message to be handled
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
 int32_t HandleMSG(Msg_t *Msg)
 /*  DestAddr | SourceAddr | CMD | SUBCMD | PAYLOAD
         1           1        1       1        N    */
@@ -237,9 +237,9 @@ int32_t HandleMSG(Msg_t *Msg)
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */

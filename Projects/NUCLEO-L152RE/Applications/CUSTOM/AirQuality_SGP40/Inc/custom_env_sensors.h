@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -122,7 +122,8 @@ typedef struct
 #endif
 
 #define CUSTOM_ENV_FUNCTIONS_NBR    4U
-#define CUSTOM_ENV_INSTANCES_NBR    (USE_CUSTOM_ENV_SENSOR_LPS22DF_0 + USE_CUSTOM_ENV_SENSOR_SHT40AD1B_0 + USE_CUSTOM_ENV_SENSOR_SGP40_0)
+#define CUSTOM_ENV_INSTANCES_NBR    (USE_CUSTOM_ENV_SENSOR_LPS22DF_0\
+                                     + USE_CUSTOM_ENV_SENSOR_SHT40AD1B_0 + USE_CUSTOM_ENV_SENSOR_SGP40_0)
 
 #if (CUSTOM_ENV_INSTANCES_NBR == 0)
 #error "No environmental sensor instance has been selected"

@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -46,7 +46,6 @@ void InfraredAL_manager_init(void)
   InfraredAL_Initialize(IAL_MCU_STM32);
 
   device_conf.odr = Odr;
-  device_conf.tau = 1.0f; /* 1.0f if no optical system is used */
 
   IAL_Instance = InfraredAL_CreateInstance(&algo_conf);
 

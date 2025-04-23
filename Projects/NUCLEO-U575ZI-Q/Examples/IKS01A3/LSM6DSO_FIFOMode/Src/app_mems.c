@@ -2,11 +2,11 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.1.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.2.0 instances.
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -34,8 +34,8 @@ extern "C" {
 
 /* Private typedef -----------------------------------------------------------*/
 /**
- * @brief  Handle DEMO State Machine
- */
+  * @brief  Handle DEMO State Machine
+  */
 typedef enum
 {
   STATUS_IDLE,
@@ -259,7 +259,8 @@ static int32_t LSM6DSO_FIFO_Demo_Config(void)
 {
   int32_t ret;
 
-  if ((ret = IKS01A3_MOTION_SENSOR_SetOutputDataRate(IKS01A3_LSM6DSO_0, MOTION_GYRO, LSM6DSO_SAMPLE_ODR)) != BSP_ERROR_NONE)
+  if ((ret = IKS01A3_MOTION_SENSOR_SetOutputDataRate(IKS01A3_LSM6DSO_0, MOTION_GYRO,
+                                                     LSM6DSO_SAMPLE_ODR)) != BSP_ERROR_NONE)
   {
     return ret;
   }
@@ -283,7 +284,8 @@ static int32_t LSM6DSO_FIFO_Demo_Config(void)
   }
 
   /* Set FIFO gyro batch data rate to equal or higher value than gyro ODR */
-  if ((ret = IKS01A3_MOTION_SENSOR_FIFO_Set_BDR(IKS01A3_LSM6DSO_0, MOTION_GYRO, LSM6DSO_XL_BATCHED_AT_6667Hz)) != BSP_ERROR_NONE)
+  if ((ret = IKS01A3_MOTION_SENSOR_FIFO_Set_BDR(IKS01A3_LSM6DSO_0, MOTION_GYRO,
+                                                LSM6DSO_XL_BATCHED_AT_6667Hz)) != BSP_ERROR_NONE)
   {
     return ret;
   }
@@ -348,7 +350,8 @@ static int32_t LSM6DSO_Read_All_FIFO_Data(void)
     return ret;
   }
 
-  (void)snprintf(dataOut, MAX_BUF_SIZE, "\r\n\r\n%d samples in FIFO.\r\n\r\nStarted downloading data from FIFO...\r\n\r\n", samples_to_read);
+  (void)snprintf(dataOut, MAX_BUF_SIZE,
+                 "\r\n\r\n%d samples in FIFO.\r\n\r\nStarted downloading data from FIFO...\r\n\r\n", samples_to_read);
   printf("%s", dataOut);
 
   HAL_Delay(1000);
@@ -391,7 +394,8 @@ static int32_t LSM6DSO_Read_Single_FIFO_Data(uint16_t SampleIndex)
     return ret;
   }
 
-  (void)snprintf(dataOut, MAX_BUF_SIZE, "[DATA %02d]  %8ld  %8ld  %8ld\r\n", SampleIndex + 1U, (long)angular_velocity.x, (long)angular_velocity.y, (long)angular_velocity.z);
+  (void)snprintf(dataOut, MAX_BUF_SIZE, "[DATA %02d]  %8ld  %8ld  %8ld\r\n", SampleIndex + 1U, (long)angular_velocity.x,
+                 (long)angular_velocity.y, (long)angular_velocity.z);
   printf("%s", dataOut);
 
   return ret;

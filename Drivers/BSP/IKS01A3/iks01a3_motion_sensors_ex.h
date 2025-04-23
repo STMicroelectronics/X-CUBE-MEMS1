@@ -69,9 +69,18 @@ typedef struct
   * @{
   */
 
-int32_t IKS01A3_MOTION_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Function, uint8_t *Status);
 int32_t IKS01A3_MOTION_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint8_t *Data);
 int32_t IKS01A3_MOTION_SENSOR_Write_Register(uint32_t Instance, uint8_t Reg, uint8_t Data);
+int32_t IKS01A3_MOTION_SENSOR_ACC_HG_Enable(uint32_t Instance, uint32_t Function);
+int32_t IKS01A3_MOTION_SENSOR_ACC_HG_Disable(uint32_t Instance, uint32_t Function);
+int32_t IKS01A3_MOTION_SENSOR_ACC_HG_GetSensitivity(uint32_t Instance, uint32_t Function, float_t *Sensitivity);
+int32_t IKS01A3_MOTION_SENSOR_ACC_HG_GetOutputDataRate(uint32_t Instance, uint32_t Function, float_t *Odr);
+int32_t IKS01A3_MOTION_SENSOR_ACC_HG_SetOutputDataRate(uint32_t Instance, uint32_t Function, float_t Odr);
+int32_t IKS01A3_MOTION_SENSOR_ACC_HG_GetFullScale(uint32_t Instance, uint32_t Function, int32_t *FullScale);
+int32_t IKS01A3_MOTION_SENSOR_ACC_HG_SetFullScale(uint32_t Instance, uint32_t Function, int32_t FullScale);
+int32_t IKS01A3_MOTION_SENSOR_ACC_HG_GetAxesRaw(uint32_t Instance, uint32_t Function, IKS01A3_MOTION_SENSOR_AxesRaw_t *AxesRaw);
+int32_t IKS01A3_MOTION_SENSOR_ACC_HG_GetAxes(uint32_t Instance, uint32_t Function, IKS01A3_MOTION_SENSOR_Axes_t *Axes);
+int32_t IKS01A3_MOTION_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Function, uint8_t *Status);
 int32_t IKS01A3_MOTION_SENSOR_Get_Event_Status(uint32_t Instance, IKS01A3_MOTION_SENSOR_Event_Status_t *Status);
 int32_t IKS01A3_MOTION_SENSOR_Enable_Free_Fall_Detection(uint32_t Instance, IKS01A3_MOTION_SENSOR_IntPin_t IntPin);
 int32_t IKS01A3_MOTION_SENSOR_Disable_Free_Fall_Detection(uint32_t Instance);

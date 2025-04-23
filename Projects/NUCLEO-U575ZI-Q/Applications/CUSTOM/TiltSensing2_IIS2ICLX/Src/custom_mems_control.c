@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -359,7 +359,8 @@ void BSP_SENSOR_ACC_GetAxes(MOTION_SENSOR_Axes_t *Axes)
 {
 #if (defined BSP_HYBRID_SENSORS)
 #ifdef CUSTOM_ACC_INSTANCE_0
-  (void)CUSTOM_HYBRID_MOTION_SENSOR_GetAxes(CUSTOM_ACC_INSTANCE_0, HYBRID_ACCELERO, (CUSTOM_HYBRID_MOTION_SENSOR_Axes_t *)Axes);
+  (void)CUSTOM_HYBRID_MOTION_SENSOR_GetAxes(CUSTOM_ACC_INSTANCE_0, HYBRID_ACCELERO,
+                                            (CUSTOM_HYBRID_MOTION_SENSOR_Axes_t *)Axes);
 #else
   Axes->x = 0;
   Axes->y = 0;

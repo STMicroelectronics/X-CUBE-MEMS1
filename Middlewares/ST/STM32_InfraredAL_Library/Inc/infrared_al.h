@@ -27,6 +27,8 @@ extern "C"
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
+#include <stdbool.h>
+
 
 /** @addtogroup MIDDLEWARES
   * @{
@@ -68,21 +70,15 @@ typedef enum {
 	IAL_RUN_ERR_RES, 		/* Reserved error code */
 } IAL_run_err_t;
 
-typedef enum {
-	IAL_PRES_STATE_UNKNOWN = 0,     /* Unknown presence state */
-	IAL_PRES_STATE_PRESENCE,        /* Presence state: presence */
-	IAL_PRES_STATE_ABSENCE,         /* Presence state: absence */
-} IAL_pres_state_t;
-
 typedef struct {
 	uint8_t odr;                /* ODR [Hz] */
-	uint8_t tau;                /* Transmittance of the optical sistem [%] */
 } IAL_device_conf_t;
 
 typedef struct {
-	uint16_t ths;                  /* Threshold for presence detection [LSB] */
-	uint16_t abs_lat;			   /* Latency for absence trigger [ms] */
-	IAL_pres_state_t pres_init;    /* Initial presence state */
+	uint16_t mot_ths;    /* Threshold for motion detection [LSB] */
+	uint16_t pres_ths;   /* Threshold for presence detection [LSB] */
+	uint16_t abs_timer;  /* Timer to trigger absence in motionless conditions [ms] */
+	bool empty_fov_init; /* Flag reporting whether algorithm is confidently started with an empty field of view */
 } IAL_algo_conf_t;
 
 typedef struct
@@ -149,15 +145,6 @@ IAL_init_err_t InfraredAL_Start(IAL_Instance_t instance, IAL_device_conf_t *devi
   * @retval None
   */
 IAL_run_err_t InfraredAL_Update(IAL_Instance_t instance, IAL_input_t *data_in, IAL_output_t *data_out);
-
-/**
-  * @brief Force a presence state value.
-  *
-  * @param instance Pointer to the algorithm instance
-  * @param pres_state Presence state value to be forced
-  * @retval None
-  */
-void InfraredAL_ForcePresState(IAL_Instance_t instance, IAL_pres_state_t pres_state);
 
 /**
   * @brief  Get the library version

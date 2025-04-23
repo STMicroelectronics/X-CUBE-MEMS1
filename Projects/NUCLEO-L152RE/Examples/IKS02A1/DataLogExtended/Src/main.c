@@ -272,9 +272,9 @@ static void GPIO_Init(void)
   // ISM330DHCX INT2                     PB4
   // IIS2DLPC INT2                       PC1
   // DIL24 INT1                          PC0 (initialized separately)
-  // IIS2MDC DRDY/IIS2DLPC int32_t          PA4
+  // IIS2MDC DRDY/IIS2DLPC INT1          PA4
   // IIS2DLPC INT/IIS2MDC DRDY           PB0
-  // USER int32_t                           PA10
+  // USER INT1                           PA10
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
@@ -676,7 +676,7 @@ static void Sensors_Interrupt_Handler(Msg_t *Msg)
   }
   else
   {
-    int_status &= ~(1 << 4);
+    if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_0) == GPIO_PIN_SET) int_status |= (1 << 4); else int_status &= ~(1 << 4);
   }
 
   if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4) == GPIO_PIN_SET) int_status |= (1 << 5); else int_status &= ~(1 << 5);
@@ -767,6 +767,23 @@ static void MLC_Handler(Msg_t *Msg)
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330BX_0, ISM330BX_MLC4_SRC, &mlc_status[3]);
 
     (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_ISM330BX_0, ISM330BX_FUNC_CFG_ACCESS, ISM330BX_MAIN_MEM_BANK << 7);
+  }
+  else if (AccInstance == IKS02A1_IIS2DULPX_0)
+  {
+    mlc_status_max = 4;
+
+#if (MLC_STATUS_MAX < 4)
+#error "ERROR: Array index out of bounds!"
+#endif
+
+    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FUNC_CFG_ACCESS, IIS2DULPX_EMBED_FUNC_MEM_BANK << 7);
+
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_MLC1_SRC, &mlc_status[0]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_MLC2_SRC, &mlc_status[1]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_MLC3_SRC, &mlc_status[2]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_MLC4_SRC, &mlc_status[3]);
+
+    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FUNC_CFG_ACCESS, IIS2DULPX_MAIN_MEM_BANK << 7);
   }
   else
   {
@@ -905,6 +922,29 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_ISM330BX_0, ISM330BX_FUNC_CFG_ACCESS, ISM330BX_MAIN_MEM_BANK << 7);
 
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330BX_0, ISM330BX_FSM_STATUS_MAINPAGE, &fsm_status[8]);
+  }
+  else if (AccInstance == IKS02A1_IIS2DULPX_0)
+  {
+    fsm_status_max = 9;
+
+#if (FSM_STATUS_MAX < 9)
+#error "ERROR: Array index out of bounds!"
+#endif
+
+    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FUNC_CFG_ACCESS, IIS2DULPX_EMBED_FUNC_MEM_BANK << 7);
+
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS1, &fsm_status[0]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS2, &fsm_status[1]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS3, &fsm_status[2]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS4, &fsm_status[3]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS5, &fsm_status[4]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS6, &fsm_status[5]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS7, &fsm_status[6]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS8, &fsm_status[7]);
+
+    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FUNC_CFG_ACCESS, IIS2DULPX_MAIN_MEM_BANK << 7);
+
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
   else
   {

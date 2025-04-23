@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -20,21 +20,21 @@
 #include "motion_pe_manager.h"
 
 /** @addtogroup MOTION_APPLICATIONS MOTION APPLICATIONS
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup POSE_ESTIMATION POSE ESTIMATION
- * @{
- */
+  * @{
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Exported function prototypes ----------------------------------------------*/
 /* Exported functions --------------------------------------------------------*/
 /**
- * @brief  Initialize the MotionPE engine
- * @param  None
- * @retval None
- */
+  * @brief  Initialize the MotionPE engine
+  * @param  None
+  * @retval None
+  */
 void MotionPE_manager_init(void)
 {
   char acc_orientation[4];
@@ -46,32 +46,32 @@ void MotionPE_manager_init(void)
 }
 
 /**
- * @brief  Run Pose Estimation algorithm
- * @param  data_in  Structure containing input data
- * @param  data_out Structure containing output data
- * @retval None
- */
+  * @brief  Run Pose Estimation algorithm
+  * @param  data_in  Structure containing input data
+  * @param  data_out Structure containing output data
+  * @retval None
+  */
 void MotionPE_manager_run(MPE_input_t *data_in, MPE_output_t *data_out)
 {
   MotionPE_Update(data_in, data_out);
 }
 
 /**
- * @brief  Get the library version
- * @param  version Library version string (must be array of 35 char)
- * @param  length  Library version string length
- * @retval None
- */
+  * @brief  Get the library version
+  * @param  version Library version string (must be array of 35 char)
+  * @param  length  Library version string length
+  * @retval None
+  */
 void MotionPE_manager_get_version(char *version, int32_t *length)
 {
   *length = (int)MotionPE_GetLibVersion(version);
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 

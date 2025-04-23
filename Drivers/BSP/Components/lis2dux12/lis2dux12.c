@@ -126,7 +126,8 @@ int32_t LIS2DUX12_RegisterBusIO(LIS2DUX12_Object_t *pObj, LIS2DUX12_IO_t *pIO)
           /* Exit from deep power down only the first time in SPI mode */
           if (LIS2DUX12_ExitDeepPowerDownSPI(pObj) != LIS2DUX12_OK)
           {
-            ret = LIS2DUX12_ERROR;
+            /* Forced OK because of an expected failure during the wake-up sequence */
+            ret = LIS2DUX12_OK;
           }
           /* Enable SPI 3-Wires on the component */
           uint8_t data = 0x50;
@@ -144,7 +145,8 @@ int32_t LIS2DUX12_RegisterBusIO(LIS2DUX12_Object_t *pObj, LIS2DUX12_IO_t *pIO)
         {
           if (LIS2DUX12_ExitDeepPowerDownSPI(pObj) != LIS2DUX12_OK)
           {
-            ret = LIS2DUX12_ERROR;
+            /* Forced OK because of an expected failure during the wake-up sequence */
+            ret = LIS2DUX12_OK;
           }
         }
       }
@@ -155,7 +157,10 @@ int32_t LIS2DUX12_RegisterBusIO(LIS2DUX12_Object_t *pObj, LIS2DUX12_IO_t *pIO)
         {
           if (LIS2DUX12_ExitDeepPowerDownI2C(pObj) != LIS2DUX12_OK)
           {
-            ret = LIS2DUX12_ERROR;
+            pObj->Ctx.mdelay(100);
+
+            /* Forced OK because of an expected failure during the wake-up sequence */
+            ret = LIS2DUX12_OK;
           }
         }
       }

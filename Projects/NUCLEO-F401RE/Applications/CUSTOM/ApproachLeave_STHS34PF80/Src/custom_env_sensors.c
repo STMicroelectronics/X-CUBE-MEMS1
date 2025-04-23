@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -481,9 +481,9 @@ static int32_t STHS34PF80_0_Probe(uint32_t Functions)
     (void)STHS34PF80_GetCapabilities(&sths34pf80_obj_0, &cap);
 
     EnvCtx[CUSTOM_STHS34PF80_0].Functions = ((uint32_t)cap.Temperature)
-                                          | ((uint32_t)cap.Pressure << 1)
-                                          | ((uint32_t)cap.Humidity << 2)
-                                          | ((uint32_t)cap.Gas      << 3);
+                                            | ((uint32_t)cap.Pressure << 1)
+                                            | ((uint32_t)cap.Humidity << 2)
+                                            | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[CUSTOM_STHS34PF80_0] = &sths34pf80_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */

@@ -206,6 +206,10 @@ static int32_t LSM6DSO16IS_0_Probe(uint32_t Functions);
 static int32_t ISM330BX_0_Probe(uint32_t Functions);
 #endif
 
+#if (USE_IKS4A1_MOTION_SENSOR_LSM6DSV80X_0 == 1)
+static int32_t LSM6DSV80X_0_Probe(uint32_t Functions);
+#endif
+
 /**
   * @}
   */
@@ -1111,6 +1115,31 @@ int32_t IKS4A1_MOTION_SENSOR_Init(uint32_t Instance, uint32_t Functions)
 #if (USE_IKS4A1_MOTION_SENSOR_ISM330BX_0 == 1)
     case IKS4A1_ISM330BX_0:
       if (ISM330BX_0_Probe(Functions) != BSP_ERROR_NONE)
+      {
+        return BSP_ERROR_NO_INIT;
+      }
+      if (MotionDrv[Instance]->GetCapabilities(MotionCompObj[Instance], (void *)&cap) != BSP_ERROR_NONE)
+      {
+        return BSP_ERROR_UNKNOWN_COMPONENT;
+      }
+      if (cap.Acc == 1U)
+      {
+        component_functions |= MOTION_ACCELERO;
+      }
+      if (cap.Gyro == 1U)
+      {
+        component_functions |= MOTION_GYRO;
+      }
+      if (cap.Magneto == 1U)
+      {
+        component_functions |= MOTION_MAGNETO;
+      }
+      break;
+#endif
+
+#if (USE_IKS4A1_MOTION_SENSOR_LSM6DSV80X_0 == 1)
+    case IKS4A1_LSM6DSV80X_0:
+      if (LSM6DSV80X_0_Probe(Functions) != BSP_ERROR_NONE)
       {
         return BSP_ERROR_NO_INIT;
       }
@@ -4614,6 +4643,97 @@ static int32_t ISM330BX_0_Probe(uint32_t Functions)
       ret = BSP_ERROR_COMPONENT_FAILURE;
     }
   }
+  return ret;
+}
+#endif
+
+#if (USE_IKS4A1_MOTION_SENSOR_LSM6DSV80X_0 == 1)
+/**
+  * @brief  Register Bus IOs for LSM6DSV80X instance
+  * @param  Functions Motion sensor functions. Could be :
+  *         - MOTION_GYRO and/or MOTION_ACCELERO
+  * @retval BSP status
+  */
+static int32_t LSM6DSV80X_0_Probe(uint32_t Functions)
+{
+  LSM6DSV80X_IO_t            io_ctx;
+  uint8_t                    id;
+  static LSM6DSV80X_Object_t lsm6dsv80x_obj_0;
+  LSM6DSV80X_Capabilities_t  cap;
+  int32_t                    ret = BSP_ERROR_NONE;
+
+  /* Configure the driver */
+  io_ctx.BusType     = LSM6DSV80X_I2C_BUS; /* I2C */
+  io_ctx.Address     = LSM6DSV80X_I2C_ADD_L;
+  io_ctx.Init        = IKS4A1_I2C_INIT;
+  io_ctx.DeInit      = IKS4A1_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS4A1_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS4A1_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS4A1_GET_TICK;
+  io_ctx.Delay       = IKS4A1_DELAY;
+
+  if (LSM6DSV80X_RegisterBusIO(&lsm6dsv80x_obj_0, &io_ctx) != LSM6DSV80X_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (LSM6DSV80X_Set_Mem_Bank(&lsm6dsv80x_obj_0, LSM6DSV80X_MAIN_MEM_BANK) != LSM6DSV80X_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (LSM6DSV80X_ReadID(&lsm6dsv80x_obj_0, &id) != LSM6DSV80X_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (id != LSM6DSV80X_ID)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else
+  {
+    (void)LSM6DSV80X_GetCapabilities(&lsm6dsv80x_obj_0, &cap);
+    MotionCtx[IKS4A1_LSM6DSV80X_0].Functions = ((uint32_t)cap.Gyro) | ((uint32_t)cap.Acc << 1) | ((uint32_t)cap.Magneto << 2);
+
+    MotionCompObj[IKS4A1_LSM6DSV80X_0] = &lsm6dsv80x_obj_0;
+    /* The second cast (void *) is added to bypass Misra R11.3 rule */
+    MotionDrv[IKS4A1_LSM6DSV80X_0] = (MOTION_SENSOR_CommonDrv_t *)(void *)&LSM6DSV80X_COMMON_Driver;
+
+    if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_GYRO) == MOTION_GYRO) && (cap.Gyro == 1U))
+    {
+      /* The second cast (void *) is added to bypass Misra R11.3 rule */
+      MotionFuncDrv[IKS4A1_LSM6DSV80X_0][FunctionIndex[MOTION_GYRO]] = (MOTION_SENSOR_FuncDrv_t *)(
+                                                                        void *)&LSM6DSV80X_GYRO_Driver;
+
+      if (MotionDrv[IKS4A1_LSM6DSV80X_0]->Init(MotionCompObj[IKS4A1_LSM6DSV80X_0]) != LSM6DSV80X_OK)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_ACCELERO) == MOTION_ACCELERO) && (cap.Acc == 1U))
+    {
+      /* The second cast (void *) is added to bypass Misra R11.3 rule */
+      MotionFuncDrv[IKS4A1_LSM6DSV80X_0][FunctionIndex[MOTION_ACCELERO]] = (MOTION_SENSOR_FuncDrv_t *)(
+                                                                            void *)&LSM6DSV80X_ACC_Driver;
+
+      if (MotionDrv[IKS4A1_LSM6DSV80X_0]->Init(MotionCompObj[IKS4A1_LSM6DSV80X_0]) != LSM6DSV80X_OK)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_MAGNETO) == MOTION_MAGNETO))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+  }
+
   return ret;
 }
 #endif

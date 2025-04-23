@@ -278,17 +278,18 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* Interrupt pins X-NUCLEO-IKS02A1 */
-  // ISM330DHCX INT1                     PF14
+  // ISM330DHCX INT1                     PE9
   // ISM330DHCX INT2                     PE11
-  // IIS2DLPC   INT2                     PE9
+  // IIS2DLPC   INT2                     PD15
   // DIL24 INT1                          PC0 (initialized separately)
-  // IIS2MDC DRDY/IIS2DLPC int32_t          PC3
+  // IIS2MDC DRDY/IIS2DLPC INT1          PC3
   // IIS2DLPC INT/IIS2MDC DRDY           PB0
-  // USER int32_t                           PF15
+  // USER INT1                           PF15
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOF_CLK_ENABLE();
 
@@ -305,6 +306,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+  
+  /* Configure GPIO pin : PD15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_15;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /* Configure GPIO pin : PE9 PE11 */
   GPIO_InitStruct.Pin = GPIO_PIN_9|GPIO_PIN_11;
@@ -313,7 +321,7 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  /* Configure GPIO pin : PF14 PF15 */
+  /* Configure GPIO pin : PF14 */
   GPIO_InitStruct.Pin = GPIO_PIN_14|GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -759,10 +767,18 @@ static void Sensors_Interrupt_Handler(Msg_t *Msg)
   uint8_t int_status = 0;
   static uint8_t mem_int_status = 0;
 
-  if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == GPIO_PIN_SET) int_status |= (1 << 0); else int_status &= ~(1 << 0);
-  if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == GPIO_PIN_SET) int_status |= (1 << 1); else int_status &= ~(1 << 1);
-  if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_10) == GPIO_PIN_SET) int_status |= (1 << 2); else int_status &= ~(1 << 2);
-  if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_1) == GPIO_PIN_SET) int_status |= (1 << 3); else int_status &= ~(1 << 3);
+  /* Interrupt pins X-NUCLEO-IKS02A1 */
+  // ISM330DHCX INT1                     PE9
+  // ISM330DHCX INT2                     PE11
+  // IIS2DLPC   INT2                     PD15
+  // DIL24 INT1                          PC0 (initialized separately)
+  // IIS2MDC DRDY/IIS2DLPC INT1          PC3
+  // IIS2DLPC INT/IIS2MDC DRDY           PB0
+  // USER INT1                           PF15
+
+  if (HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_11) == GPIO_PIN_SET) int_status |= (1 << 1); else int_status &= ~(1 << 1);
+  if (HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_9) == GPIO_PIN_SET) int_status |= (1 << 2); else int_status &= ~(1 << 2);
+  if (HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_15) == GPIO_PIN_SET) int_status |= (1 << 3); else int_status &= ~(1 << 3);
 
   if (DIL24_INT1_Event == 1)
   {
@@ -771,12 +787,12 @@ static void Sensors_Interrupt_Handler(Msg_t *Msg)
   }
   else
   {
-    int_status &= ~(1 << 4);
+    if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_0) == GPIO_PIN_SET) int_status |= (1 << 4); else int_status &= ~(1 << 4);
   }
 
-  if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4) == GPIO_PIN_SET) int_status |= (1 << 5); else int_status &= ~(1 << 5);
+  if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_3) == GPIO_PIN_SET) int_status |= (1 << 5); else int_status &= ~(1 << 5);
   if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0) == GPIO_PIN_SET) int_status |= (1 << 6); else int_status &= ~(1 << 6);
-  if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == GPIO_PIN_SET) int_status |= (1 << 7); else int_status &= ~(1 << 7);
+  if (HAL_GPIO_ReadPin(GPIOF, GPIO_PIN_15) == GPIO_PIN_SET) int_status |= (1 << 7); else int_status &= ~(1 << 7); 
 
   if ((mem_int_status != int_status) || (UpdateInterrupt == 1) || ((HAL_GetTick() - LastUpdate) > 100))
   {
@@ -862,6 +878,23 @@ static void MLC_Handler(Msg_t *Msg)
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330BX_0, ISM330BX_MLC4_SRC, &mlc_status[3]);
 
     (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_ISM330BX_0, ISM330BX_FUNC_CFG_ACCESS, ISM330BX_MAIN_MEM_BANK << 7);
+  }
+  else if (AccInstance == IKS02A1_IIS2DULPX_0)
+  {
+    mlc_status_max = 4;
+
+#if (MLC_STATUS_MAX < 4)
+#error "ERROR: Array index out of bounds!"
+#endif
+
+    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FUNC_CFG_ACCESS, IIS2DULPX_EMBED_FUNC_MEM_BANK << 7);
+
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_MLC1_SRC, &mlc_status[0]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_MLC2_SRC, &mlc_status[1]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_MLC3_SRC, &mlc_status[2]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_MLC4_SRC, &mlc_status[3]);
+
+    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FUNC_CFG_ACCESS, IIS2DULPX_MAIN_MEM_BANK << 7);
   }
   else
   {
@@ -1000,6 +1033,29 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_ISM330BX_0, ISM330BX_FUNC_CFG_ACCESS, ISM330BX_MAIN_MEM_BANK << 7);
 
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330BX_0, ISM330BX_FSM_STATUS_MAINPAGE, &fsm_status[8]);
+  }
+  else if (AccInstance == IKS02A1_IIS2DULPX_0)
+  {
+    fsm_status_max = 9;
+
+#if (FSM_STATUS_MAX < 9)
+#error "ERROR: Array index out of bounds!"
+#endif
+
+    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FUNC_CFG_ACCESS, IIS2DULPX_EMBED_FUNC_MEM_BANK << 7);
+
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS1, &fsm_status[0]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS2, &fsm_status[1]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS3, &fsm_status[2]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS4, &fsm_status[3]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS5, &fsm_status[4]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS6, &fsm_status[5]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS7, &fsm_status[6]);
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS8, &fsm_status[7]);
+
+    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FUNC_CFG_ACCESS, IIS2DULPX_MAIN_MEM_BANK << 7);
+
+    (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
   else
   {

@@ -52,80 +52,99 @@ uint32_t TmpInstance = 0xFFFFFFFF;
 /* Private variables ---------------------------------------------------------*/
 /* Supported sensor names. Please verify that second index of array is HIGHER than longest string in array!!! */
 static uint8_t AccNameList[][SENSOR_NAME_MAX_LENGTH] = {"ISM330DHCX", "IIS2DLPC", "IIS2ICLX (DIL24)",
-                                                        "ASM330LHHX (DIL24)", "ISM330BX (DIL24)"};
+                                                        "ASM330LHHX (DIL24)", "ISM330BX (DIL24)", "IIS2DULPX (DIL24)"
+                                                       };
 static uint8_t GyrNameList[][SENSOR_NAME_MAX_LENGTH] = {"ISM330DHCX", "ASM330LHHX (DIL24)", "ISM330BX (DIL24)"};
 static uint8_t MagNameList[][SENSOR_NAME_MAX_LENGTH] = {"IIS2MDC"};
 static uint8_t HumNameList[][SENSOR_NAME_MAX_LENGTH] = {"SHT40AD1B (DIL24)"};
 static uint8_t TmpNameList[][SENSOR_NAME_MAX_LENGTH] = {"SHT40AD1B (DIL24)"};
 
 /* Supported sensor instances (have to correspond with supported sensor names above) */
-static uint32_t AccInstanceList[] = {
+static uint32_t AccInstanceList[] =
+{
   IKS02A1_ISM330DHCX_0,
   IKS02A1_IIS2DLPC_0,
   IKS02A1_IIS2ICLX_0,
   IKS02A1_ASM330LHHX_0,
   IKS02A1_ISM330BX_0,
+  IKS02A1_IIS2DULPX_0,
 };
-static uint32_t GyrInstanceList[] = {
+static uint32_t GyrInstanceList[] =
+{
   IKS02A1_ISM330DHCX_0,
   IKS02A1_ASM330LHHX_0,
   IKS02A1_ISM330BX_0,
 };
-static uint32_t MagInstanceList[] = {
+static uint32_t MagInstanceList[] =
+{
   IKS02A1_IIS2MDC_0,
 };
-static uint32_t HumInstanceList[] = {
+static uint32_t HumInstanceList[] =
+{
   IKS02A1_SHT40AD1B_0,
 };
-static uint32_t TmpInstanceList[] = {
+static uint32_t TmpInstanceList[] =
+{
   IKS02A1_SHT40AD1B_0,
 };
 
 /* Sensor fullscale lists (have to correspond with supported sensor names above)
  * Please verify that second index of array is equal to or higher than count of longest sub-array items */
-static uint32_t AccFsList[][5] = { /* g */
+static uint32_t AccFsList[][5] =   /* g */
+{
   {4, 2, 4, 8, 16},                /* ISM330DHCX */
   {4, 2, 4, 8, 16},                /* IIS2DLPC */
   {4, 500, 1000, 2000, 3000},      /* IIS2ICLX [mg] */
   {4, 2, 4, 8, 16},                /* ASM330LHHX */
   {4, 2, 4, 8, 16},                /* ISM330BX */
+  {4, 2, 4, 8, 16},                /* IIS2DULPX */
 };
-static uint32_t GyrFsList[][7] = {      /* dps */
+static uint32_t GyrFsList[][7] =        /* dps */
+{
   {6, 125, 250, 500, 1000, 2000, 4000}, /* ISM330DHCX */
   {6, 125, 250, 500, 1000, 2000, 4000}, /* ASM330LHHX */
   {6, 125, 250, 500, 1000, 2000, 4000}, /* ISM330BX */
 };
-static uint32_t MagFsList[][2] = { /* Ga */
+static uint32_t MagFsList[][2] =   /* Ga */
+{
   {1, 50},                         /* IIS2MDC */
 };
-static uint32_t HumFsList[][1] = { /* % */
+static uint32_t HumFsList[][1] =   /* % */
+{
   {0},                             /* SHT40AD1B */
 };
-static uint32_t TmpFsList[][1] = { /* C */
+static uint32_t TmpFsList[][1] =   /* C */
+{
   {0},                             /* SHT40AD1B */
 };
 
 /* Sensor output data rate lists (have to correspond with supported sensor names above)
  * Please verify that second index of array is equal to or higher than count of longest sub-array items */
-static float AccOdrList[][12] = {                                /* Hz */
+static float AccOdrList[][12] =                                  /* Hz */
+{
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1666, 3332, 6667},      /* ISM330DHCX */
   {8, 12.5, 25, 50, 100, 200, 400, 800, 1600},                   /* IIS2DLPC */
   {7, 12.5, 26, 52, 104, 208, 416, 833},                         /* IIS2ICLX */
   {11, 1.6, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667}, /* ASM330LHHX */
   {11, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840},  /* ISM330BX */
+  {10, 1.6, 3, 6, 12.5, 25, 50, 100, 200, 400, 800},             /* IIS2DULPX */
 };
-static float GyrOdrList[][11] = {                           /* Hz */
+static float GyrOdrList[][11] =                             /* Hz */
+{
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1666, 3332, 6667}, /* ISM330DHCX */
   {10, 12.5, 26, 52, 104, 208, 416, 833, 1667, 3333, 6667}, /* ASM330LHHX */
   {10, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840},    /* ISM330BX */
 };
-static float MagOdrList[][5] = { /* Hz */
+static float MagOdrList[][5] =   /* Hz */
+{
   {4, 10, 20, 50, 100},          /* IIS2MDC */
 };
-static float HumOdrList[][2] = { /* Hz */
+static float HumOdrList[][2] =   /* Hz */
+{
   {0},                           /* SHT40AD1B */
 };
-static float TmpOdrList[][2] = { /* Hz */
+static float TmpOdrList[][2] =   /* Hz */
+{
   {0},                           /* SHT40AD1B */
 };
 
@@ -1002,7 +1021,8 @@ static int32_t SC_Write_Multi_Register(Msg_t *Msg)
     case SC_ACCELEROMETER:
       for (i = 0; i < Msg->Data[5]; i++)
       {
-        if (IKS02A1_MOTION_SENSOR_Write_Register(AccInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+        if (IKS02A1_MOTION_SENSOR_Write_Register(AccInstance, Msg->Data[6U + (2U * i)],
+                                                 Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
         {
           ret = 0;
         }
@@ -1012,7 +1032,8 @@ static int32_t SC_Write_Multi_Register(Msg_t *Msg)
     case SC_GYROSCOPE:
       for (i = 0; i < Msg->Data[5]; i++)
       {
-        if (IKS02A1_MOTION_SENSOR_Write_Register(GyrInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+        if (IKS02A1_MOTION_SENSOR_Write_Register(GyrInstance, Msg->Data[6U + (2U * i)],
+                                                 Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
         {
           ret = 0;
         }
@@ -1022,7 +1043,8 @@ static int32_t SC_Write_Multi_Register(Msg_t *Msg)
     case SC_MAGNETOMETER:
       for (i = 0; i < Msg->Data[5]; i++)
       {
-        if (IKS02A1_MOTION_SENSOR_Write_Register(MagInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+        if (IKS02A1_MOTION_SENSOR_Write_Register(MagInstance, Msg->Data[6U + (2U * i)],
+                                                 Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
         {
           ret = 0;
         }
@@ -1032,7 +1054,8 @@ static int32_t SC_Write_Multi_Register(Msg_t *Msg)
     case SC_TEMPERATURE:
       for (i = 0; i < Msg->Data[5]; i++)
       {
-        if (IKS02A1_ENV_SENSOR_Write_Register(TmpInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+        if (IKS02A1_ENV_SENSOR_Write_Register(TmpInstance, Msg->Data[6U + (2U * i)],
+                                              Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
         {
           ret = 0;
         }
@@ -1042,7 +1065,8 @@ static int32_t SC_Write_Multi_Register(Msg_t *Msg)
     case SC_HUMIDITY:
       for (i = 0; i < Msg->Data[5]; i++)
       {
-        if (IKS02A1_ENV_SENSOR_Write_Register(HumInstance, Msg->Data[6U + (2U * i)], Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
+        if (IKS02A1_ENV_SENSOR_Write_Register(HumInstance, Msg->Data[6U + (2U * i)],
+                                              Msg->Data[7U + (2U * i)]) != BSP_ERROR_NONE)
         {
           ret = 0;
         }
@@ -1081,7 +1105,8 @@ static int32_t SC_Read_Multi_Register(Msg_t *Msg)
     case SC_ACCELEROMETER:
       for (i = 0; i < Msg->Data[5]; i++)
       {
-        if (IKS02A1_MOTION_SENSOR_Read_Register(AccInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+        if (IKS02A1_MOTION_SENSOR_Read_Register(AccInstance, Msg->Data[6U + (2U * i)],
+                                                &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
         {
           ret = 0;
         }
@@ -1091,7 +1116,8 @@ static int32_t SC_Read_Multi_Register(Msg_t *Msg)
     case SC_GYROSCOPE:
       for (i = 0; i < Msg->Data[5]; i++)
       {
-        if (IKS02A1_MOTION_SENSOR_Read_Register(GyrInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+        if (IKS02A1_MOTION_SENSOR_Read_Register(GyrInstance, Msg->Data[6U + (2U * i)],
+                                                &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
         {
           ret = 0;
         }
@@ -1101,7 +1127,8 @@ static int32_t SC_Read_Multi_Register(Msg_t *Msg)
     case SC_MAGNETOMETER:
       for (i = 0; i < Msg->Data[5]; i++)
       {
-        if (IKS02A1_MOTION_SENSOR_Read_Register(MagInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+        if (IKS02A1_MOTION_SENSOR_Read_Register(MagInstance, Msg->Data[6U + (2U * i)],
+                                                &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
         {
           ret = 0;
         }
@@ -1111,7 +1138,8 @@ static int32_t SC_Read_Multi_Register(Msg_t *Msg)
     case SC_TEMPERATURE:
       for (i = 0; i < Msg->Data[5]; i++)
       {
-        if (IKS02A1_ENV_SENSOR_Read_Register(TmpInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+        if (IKS02A1_ENV_SENSOR_Read_Register(TmpInstance, Msg->Data[6U + (2U * i)],
+                                             &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
         {
           ret = 0;
         }
@@ -1121,7 +1149,8 @@ static int32_t SC_Read_Multi_Register(Msg_t *Msg)
     case SC_HUMIDITY:
       for (i = 0; i < Msg->Data[5]; i++)
       {
-        if (IKS02A1_ENV_SENSOR_Read_Register(HumInstance, Msg->Data[6U + (2U * i)], &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
+        if (IKS02A1_ENV_SENSOR_Read_Register(HumInstance, Msg->Data[6U + (2U * i)],
+                                             &(Msg->Data[7U + (2U * i)])) != BSP_ERROR_NONE)
         {
           ret = 0;
         }

@@ -20,12 +20,12 @@
 #include "com.h"
 
 /** @addtogroup X_NUCLEO_IKS01A3_Examples X_NUCLEO_IKS01A3 Examples
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup DATALOG_EXTENDED DATALOG EXTENDED
- * @{
- */
+  * @{
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -43,10 +43,10 @@
 
 /* Private functions ---------------------------------------------------------*/
 /**
- * @brief  System Clock Configuration
- * @param  None
- * @retval None
- */
+  * @brief  System Clock Configuration
+  * @param  None
+  * @retval None
+  */
 void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
@@ -61,7 +61,7 @@ void SystemClock_Config(void)
 
   /** Initializes the CPU, AHB and APB busses clocks
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_MSI;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI | RCC_OSCILLATORTYPE_MSI;
   RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.MSIState = RCC_MSI_ON;
   RCC_OscInitStruct.MSICalibrationValue = RCC_MSICALIBRATION_DEFAULT;
@@ -84,9 +84,9 @@ void SystemClock_Config(void)
 
   /** Initializes the CPU, AHB and APB busses clocks
   */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2
-                              |RCC_CLOCKTYPE_PCLK3;
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
+                                | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2
+                                | RCC_CLOCKTYPE_PCLK3;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
@@ -101,29 +101,29 @@ void SystemClock_Config(void)
 
 
 /**
- * @brief  Get the DMA Stream pending flags
- * @param  handle_dma DMA handle
- * @retval The state of FLAG (SET or RESET)
- */
+  * @brief  Get the DMA Stream pending flags
+  * @param  handle_dma DMA handle
+  * @retval The state of FLAG (SET or RESET)
+  */
 uint32_t Get_DMA_Flag_Status(DMA_HandleTypeDef *handle_dma)
 {
   return (__HAL_DMA_GET_FLAG(handle_dma, DMA_FLAG_DTE));
 }
 
 /**
- * @brief  Returns the number of remaining data units in the current DMAy Streamx transfer
- * @param  handle_dma DMA handle
- * @retval The number of remaining data units in the current DMA Stream transfer
- */
+  * @brief  Returns the number of remaining data units in the current DMAy Streamx transfer
+  * @param  handle_dma DMA handle
+  * @retval The number of remaining data units in the current DMA Stream transfer
+  */
 uint32_t Get_DMA_Counter(DMA_HandleTypeDef *handle_dma)
 {
   return (__HAL_DMA_GET_COUNTER(handle_dma));
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */

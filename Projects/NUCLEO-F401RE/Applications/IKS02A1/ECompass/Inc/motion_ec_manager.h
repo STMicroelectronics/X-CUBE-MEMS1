@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -36,7 +36,8 @@ extern "C" {
 /* Imported Variables --------------------------------------------------------*/
 /* Exported Functions Prototypes ---------------------------------------------*/
 void MotionEC_manager_init(float freq);
-void MotionEC_manager_transform_orientation(MOTION_SENSOR_Axes_t *acc_in, MOTION_SENSOR_Axes_t *mag_in, float acc_out[], float mag_out[]);
+void MotionEC_manager_transform_orientation(MOTION_SENSOR_Axes_t *acc_in, MOTION_SENSOR_Axes_t *mag_in, float acc_out[],
+                                            float mag_out[]);
 void MotionEC_manager_run(MEC_input_t *data_in, MEC_output_t *data_out);
 void MotionEC_manager_calc_heading(float quaternion[], float *heading, int32_t *heading_valid);
 void MotionEC_manager_get_version(char *version, int32_t *length);

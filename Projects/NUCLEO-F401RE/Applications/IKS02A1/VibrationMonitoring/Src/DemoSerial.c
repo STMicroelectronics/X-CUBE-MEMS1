@@ -26,12 +26,12 @@
 #include "MotionSP.h"
 
 /** @addtogroup MOTION_APPLICATIONS MOTION APPLICATIONS
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup VIBRATION_MONITORING VIBRATION MONITORING
- * @{
- */
+  * @{
+  */
 
 /* Private defines -----------------------------------------------------------*/
 #define ISM330DHCX_UNICLEO_ID       11
@@ -74,10 +74,10 @@ static uint8_t Get_Actual_Sensor_Index(uint8_t *Value);
 
 /* Public functions ---------------------------------------------------------*/
 /**
- * @brief  Build the reply header
- * @param  Msg the pointer to the message to be built
- * @retval None
- */
+  * @brief  Build the reply header
+  * @param  Msg the pointer to the message to be built
+  * @retval None
+  */
 void BUILD_REPLY_HEADER(Msg_t *Msg)
 {
   Msg->Data[0] = Msg->Data[1];
@@ -86,10 +86,10 @@ void BUILD_REPLY_HEADER(Msg_t *Msg)
 }
 
 /**
- * @brief  Initialize the streaming header
- * @param  Msg the pointer to the header to be initialized
- * @retval None
- */
+  * @brief  Initialize the streaming header
+  * @param  Msg the pointer to the header to be initialized
+  * @retval None
+  */
 void INIT_STREAMING_HEADER(Msg_t *Msg)
 {
   Msg->Data[0] = DataStreamingDest;
@@ -99,10 +99,10 @@ void INIT_STREAMING_HEADER(Msg_t *Msg)
 }
 
 /**
- * @brief  Initialize the streaming message
- * @param  Msg the pointer to the message to be initialized
- * @retval None
- */
+  * @brief  Initialize the streaming message
+  * @param  Msg the pointer to the message to be initialized
+  * @retval None
+  */
 void INIT_STREAMING_MSG(Msg_t *Msg)
 {
   uint32_t i;
@@ -119,10 +119,10 @@ void INIT_STREAMING_MSG(Msg_t *Msg)
 }
 
 /**
- * @brief  Handle a message
- * @param  Msg the pointer to the message to be handled
- * @retval 1 if the message is correctly handled, 0 otherwise
- */
+  * @brief  Handle a message
+  * @param  Msg the pointer to the message to be handled
+  * @retval 1 if the message is correctly handled, 0 otherwise
+  */
 int32_t HandleMSG(Msg_t *Msg)
 /*  DestAddr | SouceAddr | CMD | PAYLOAD
  *      1          1        1       N
@@ -685,9 +685,9 @@ static void Send_ErrorMsg(Msg_t *Msg)
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */

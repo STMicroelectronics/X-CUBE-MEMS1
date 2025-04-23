@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -541,9 +541,9 @@ static int32_t LPS22DF_0_Probe(uint32_t Functions)
     (void)LPS22DF_GetCapabilities(&lps22df_obj_0, &cap);
 
     EnvCtx[CUSTOM_LPS22DF_0].Functions = ((uint32_t)cap.Temperature)
-                                       | ((uint32_t)cap.Pressure << 1)
-                                       | ((uint32_t)cap.Humidity << 2)
-                                       | ((uint32_t)cap.Gas      << 3);
+                                         | ((uint32_t)cap.Pressure << 1)
+                                         | ((uint32_t)cap.Humidity << 2)
+                                         | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[CUSTOM_LPS22DF_0] = &lps22df_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */
@@ -635,9 +635,9 @@ static int32_t SHT40AD1B_0_Probe(uint32_t Functions)
     (void)SHT40AD1B_GetCapabilities(&sht40ad1b_obj_0, &cap);
 
     EnvCtx[CUSTOM_SHT40AD1B_0].Functions = ((uint32_t)cap.Temperature)
-                                         | ((uint32_t)cap.Pressure << 1)
-                                         | ((uint32_t)cap.Humidity << 2)
-                                         | ((uint32_t)cap.Gas      << 3);
+                                           | ((uint32_t)cap.Pressure << 1)
+                                           | ((uint32_t)cap.Humidity << 2)
+                                           | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[CUSTOM_SHT40AD1B_0] = &sht40ad1b_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */
@@ -729,9 +729,9 @@ static int32_t SGP40_0_Probe(uint32_t Functions)
     (void)SGP40_GetCapabilities(&sgp40_obj_0, &cap);
 
     EnvCtx[CUSTOM_SGP40_0].Functions = ((uint32_t)cap.Temperature)
-                                     | ((uint32_t)cap.Pressure << 1)
-                                     | ((uint32_t)cap.Humidity << 2)
-                                     | ((uint32_t)cap.Gas      << 3);
+                                       | ((uint32_t)cap.Pressure << 1)
+                                       | ((uint32_t)cap.Humidity << 2)
+                                       | ((uint32_t)cap.Gas      << 3);
 
     EnvCompObj[CUSTOM_SGP40_0] = &sgp40_obj_0;
     /* The second cast (void *) is added to bypass Misra R11.3 rule */

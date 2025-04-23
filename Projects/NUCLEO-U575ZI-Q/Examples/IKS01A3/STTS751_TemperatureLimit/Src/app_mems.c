@@ -2,11 +2,11 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.1.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.2.0 instances.
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -35,8 +35,8 @@ extern "C" {
 
 /* Private typedef -----------------------------------------------------------*/
 /**
- * @brief  Float to Integer type
- */
+  * @brief  Float to Integer type
+  */
 typedef struct displayFloatToInt_s
 {
   int8_t sign; /* 0 means positive, 1 means negative*/
@@ -242,10 +242,11 @@ static uint32_t user_currentTimeGetElapsedMS(uint32_t Tick1)
   */
 static void floatToInt(float in, displayFloatToInt_t *out_value, int32_t dec_prec)
 {
-  if(in >= 0.0f)
+  if (in >= 0.0f)
   {
     out_value->sign = 0;
-  }else
+  }
+  else
   {
     out_value->sign = 1;
     in = -in;
@@ -273,18 +274,21 @@ static void Send_Temperature(void)
 
   /* Print temperature */
   floatToInt(Temperature, &out_value, 2);
-  (void)snprintf(dataOut1, MAX_BUF_SIZE, "Temperature: %c%d.%02d degC ", ((out_value.sign > 0) ? '-' : '+'), (int)out_value.out_int, (int)out_value.out_dec);
+  (void)snprintf(dataOut1, MAX_BUF_SIZE, "Temperature: %c%d.%02d degC ", ((out_value.sign > 0) ? '-' : '+'),
+                 (int)out_value.out_int, (int)out_value.out_dec);
 
   if (HighTemp != 0U)
   {
     floatToInt(HIGH_TEMPERATURE_THRESHOLD, &out_value, 2);
-    (void)snprintf(dataOut2, MAX_BUF_SIZE, "- High Temperature Limit! [%c%d.%02d degC]\r\n", ((out_value.sign > 0) ? '-' : '+'), (int)out_value.out_int, (int)out_value.out_dec);
+    (void)snprintf(dataOut2, MAX_BUF_SIZE, "- High Temperature Limit! [%c%d.%02d degC]\r\n",
+                   ((out_value.sign > 0) ? '-' : '+'), (int)out_value.out_int, (int)out_value.out_dec);
     HighTemp = 0;
   }
   else if (LowTemp != 0U)
   {
     floatToInt(LOW_TEMPERATURE_THRESHOLD, &out_value, 2);
-    (void)snprintf(dataOut2, MAX_BUF_SIZE, "- Low Temperature Limit! [%c%d.%02d degC]\r\n", ((out_value.sign > 0) ? '-' : '+'), (int)out_value.out_int, (int)out_value.out_dec);
+    (void)snprintf(dataOut2, MAX_BUF_SIZE, "- Low Temperature Limit! [%c%d.%02d degC]\r\n",
+                   ((out_value.sign > 0) ? '-' : '+'), (int)out_value.out_int, (int)out_value.out_dec);
     LowTemp = 0;
   }
   else

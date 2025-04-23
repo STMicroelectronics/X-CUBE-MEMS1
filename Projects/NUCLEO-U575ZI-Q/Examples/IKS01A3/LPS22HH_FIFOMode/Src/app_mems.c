@@ -2,11 +2,11 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.1.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.2.0 instances.
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -35,8 +35,8 @@ extern "C" {
 
 /* Private typedef -----------------------------------------------------------*/
 /**
- * @brief  Handle DEMO State Machine
- */
+  * @brief  Handle DEMO State Machine
+  */
 typedef enum
 {
   STATUS_IDLE,
@@ -47,8 +47,8 @@ typedef enum
 } DEMO_FIFO_STATUS_t;
 
 /**
- * @brief  FIFO Interrupt type
- */
+  * @brief  FIFO Interrupt type
+  */
 typedef enum
 {
   FIFO_INTERRUPT_THRESHOLD,
@@ -56,8 +56,8 @@ typedef enum
 } FIFO_INTERRUPT_t;
 
 /**
- * @brief  Float to Integer type
- */
+  * @brief  Float to Integer type
+  */
 typedef struct displayFloatToInt_s
 {
   int8_t sign; /* 0 means positive, 1 means negative*/
@@ -242,13 +242,13 @@ void MX_IKS01A3_LPS22HH_FIFOMode_Process(void)
     case STATUS_FIFO_DOWNLOAD:
       /* Go to Error Handler if INT1 and FIFO STATUS Register aren't coherent */
 
-     /* Read FIFO_STATUS1 to update FIFO_STATUS2 */
-     if (IKS01A3_ENV_SENSOR_FIFO_Get_Num_Samples(IKS01A3_LPS22HH_0, &num_samples) != BSP_ERROR_NONE)
-     {
-       Error_Handler();
-     }
+      /* Read FIFO_STATUS1 to update FIFO_STATUS2 */
+      if (IKS01A3_ENV_SENSOR_FIFO_Get_Num_Samples(IKS01A3_LPS22HH_0, &num_samples) != BSP_ERROR_NONE)
+      {
+        Error_Handler();
+      }
 
-     if (((FIFO_INTERRUPT == FIFO_INTERRUPT_FULL)
+      if (((FIFO_INTERRUPT == FIFO_INTERRUPT_FULL)
            && (IKS01A3_ENV_SENSOR_FIFO_Get_Full_Status(IKS01A3_LPS22HH_0, &fifo_flag) != BSP_ERROR_NONE)) ||
           ((FIFO_INTERRUPT == FIFO_INTERRUPT_THRESHOLD)
            && (IKS01A3_ENV_SENSOR_FIFO_Get_Fth_Status(IKS01A3_LPS22HH_0, &fifo_flag) != BSP_ERROR_NONE)))
@@ -302,7 +302,8 @@ static int32_t LPS22HH_FIFO_Demo_Config(void)
   }
 
   /* Reset FIFO MODE register (in order to avoid multiple event interrupt configured) */
-  if ((ret = IKS01A3_ENV_SENSOR_FIFO_Reset_Interrupt(IKS01A3_LPS22HH_0, (uint8_t)FIFO_INTERRUPT_THRESHOLD)) != BSP_ERROR_NONE)
+  if ((ret = IKS01A3_ENV_SENSOR_FIFO_Reset_Interrupt(IKS01A3_LPS22HH_0,
+                                                     (uint8_t)FIFO_INTERRUPT_THRESHOLD)) != BSP_ERROR_NONE)
   {
     return ret;
   }
@@ -409,12 +410,13 @@ static int32_t LPS22HH_Read_All_FIFO_Data(void)
     return ret;
   }
 
-  (void)snprintf(dataOut, MAX_BUF_SIZE, "\r\n\r\n%d samples in FIFO.\r\n\r\nStarted downloading data from FIFO...\r\n\r\n", samples_to_read);
+  (void)snprintf(dataOut, MAX_BUF_SIZE,
+                 "\r\n\r\n%d samples in FIFO.\r\n\r\nStarted downloading data from FIFO...\r\n\r\n", samples_to_read);
   printf("%s", dataOut);
 
   HAL_Delay(1000);
 
-   (void)snprintf(dataOut, MAX_BUF_SIZE, "\r\n[DATA ###]  PRESS    TEMP\r\n");
+  (void)snprintf(dataOut, MAX_BUF_SIZE, "\r\n[DATA ###]  PRESS    TEMP\r\n");
   printf("%s", dataOut);
 
   for (i = 0; i < samples_to_read; i++)
@@ -431,7 +433,8 @@ static int32_t LPS22HH_Read_All_FIFO_Data(void)
     fflush(stdout);
 
     floatToInt(temperature, &out_value, 2);
-    (void)snprintf(dataOut, MAX_BUF_SIZE, "  %c%d.%02d\r\n", ((out_value.sign > 0) ? '-' : '+'), (int)out_value.out_int, (int)out_value.out_dec);
+    (void)snprintf(dataOut, MAX_BUF_SIZE, "  %c%d.%02d\r\n", ((out_value.sign > 0) ? '-' : '+'), (int)out_value.out_int,
+                   (int)out_value.out_dec);
     printf("%s", dataOut);
   }
 
@@ -474,10 +477,11 @@ static void Print_Configuration(void)
   */
 static void floatToInt(float in, displayFloatToInt_t *out_value, int32_t dec_prec)
 {
-  if(in >= 0.0f)
+  if (in >= 0.0f)
   {
     out_value->sign = 0;
-  }else
+  }
+  else
   {
     out_value->sign = 1;
     in = -in;

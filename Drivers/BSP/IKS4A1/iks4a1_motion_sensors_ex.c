@@ -513,6 +513,19 @@ int32_t IKS4A1_MOTION_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint8
       break;
 #endif
 
+#if (USE_IKS4A1_MOTION_SENSOR_LSM6DSV80X_0 == 1)
+    case IKS4A1_LSM6DSV80X_0:
+      if (LSM6DSV80X_Read_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -985,6 +998,395 @@ int32_t IKS4A1_MOTION_SENSOR_Write_Register(uint32_t Instance, uint8_t Reg, uint
       else
       {
         ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+#if (USE_IKS4A1_MOTION_SENSOR_LSM6DSV80X_0 == 1)
+    case IKS4A1_LSM6DSV80X_0:
+      if (LSM6DSV80X_Write_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+    default:
+      ret = BSP_ERROR_WRONG_PARAM;
+      break;
+  }
+
+  return ret;
+}
+
+/**
+  * @brief  Enable motion sensor high-g accelerometer
+  * @param  Instance Motion sensor instance
+  * @param  Function Motion sensor function. Could be:
+  *         - MOTION_ACCELERO
+  * @retval BSP status
+  */
+int32_t IKS4A1_MOTION_SENSOR_ACC_HG_Enable(uint32_t Instance, uint32_t Function)
+{
+  int32_t ret;
+
+  switch (Instance)
+  {
+#if (USE_IKS4A1_MOTION_SENSOR_LSM6DSV80X_0 == 1)
+    case IKS4A1_LSM6DSV80X_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (LSM6DSV80X_ACC_HG_Enable(MotionCompObj[Instance]) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
+    default:
+      ret = BSP_ERROR_WRONG_PARAM;
+      break;
+  }
+
+  return ret;
+}
+
+/**
+  * @brief  Disable motion sensor high-g accelerometer
+  * @param  Instance Motion sensor instance
+  * @param  Function Motion sensor function. Could be:
+  *         - MOTION_ACCELERO
+  * @retval BSP status
+  */
+int32_t IKS4A1_MOTION_SENSOR_ACC_HG_Disable(uint32_t Instance, uint32_t Function)
+{
+  int32_t ret;
+
+  switch (Instance)
+  {
+#if (USE_IKS4A1_MOTION_SENSOR_LSM6DSV80X_0 == 1)
+    case IKS4A1_LSM6DSV80X_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (LSM6DSV80X_ACC_HG_Disable(MotionCompObj[Instance]) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
+    default:
+      ret = BSP_ERROR_WRONG_PARAM;
+      break;
+  }
+
+  return ret;
+}
+
+/**
+  * @brief  Get motion sensor high-g accelerometer sensitivity
+  * @param  Instance Motion sensor instance
+  * @param  Function Motion sensor function. Could be:
+  *         - MOTION_ACCELERO
+  * @param  Sensitivity pointer
+  * @retval BSP status
+  */
+int32_t IKS4A1_MOTION_SENSOR_ACC_HG_GetSensitivity(uint32_t Instance, uint32_t Function, float_t *Sensitivity)
+{
+  int32_t ret;
+
+  switch (Instance)
+  {
+#if (USE_IKS4A1_MOTION_SENSOR_LSM6DSV80X_0 == 1)
+    case IKS4A1_LSM6DSV80X_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (LSM6DSV80X_ACC_HG_GetSensitivity(MotionCompObj[Instance], Sensitivity) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
+    default:
+      ret = BSP_ERROR_WRONG_PARAM;
+      break;
+  }
+
+  return ret;
+}
+
+/**
+  * @brief  Get motion sensor high-g accelerometer output data rate
+  * @param  Instance Motion sensor instance
+  * @param  Function Motion sensor function. Could be:
+  *         - MOTION_ACCELERO
+  * @param  Odr pointer where the output data rate is written
+  * @retval BSP status
+  */
+int32_t IKS4A1_MOTION_SENSOR_ACC_HG_GetOutputDataRate(uint32_t Instance, uint32_t Function, float_t *Odr)
+{
+  int32_t ret;
+
+  switch (Instance)
+  {
+#if (USE_IKS4A1_MOTION_SENSOR_LSM6DSV80X_0 == 1)
+    case IKS4A1_LSM6DSV80X_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (LSM6DSV80X_ACC_HG_GetOutputDataRate(MotionCompObj[Instance], Odr) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
+    default:
+      ret = BSP_ERROR_WRONG_PARAM;
+      break;
+  }
+
+  return ret;
+}
+
+/**
+  * @brief  Set motion sensor high-g accelerometer output data rate
+  * @param  Instance Motion sensor instance
+  * @param  Function Motion sensor function. Could be:
+  *         - MOTION_ACCELERO
+  * @param  Odr the output data rate value to be set
+  * @retval BSP status
+  */
+int32_t IKS4A1_MOTION_SENSOR_ACC_HG_SetOutputDataRate(uint32_t Instance, uint32_t Function, float_t Odr)
+{
+  int32_t ret;
+
+  switch (Instance)
+  {
+#if (USE_IKS4A1_MOTION_SENSOR_LSM6DSV80X_0 == 1)
+    case IKS4A1_LSM6DSV80X_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (LSM6DSV80X_ACC_HG_SetOutputDataRate(MotionCompObj[Instance], Odr) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
+    default:
+      ret = BSP_ERROR_WRONG_PARAM;
+      break;
+  }
+
+  return ret;
+}
+
+/**
+  * @brief  Get motion sensor high-g accelerometer full scale
+  * @param  Instance Motion sensor instance
+  * @param  Function Motion sensor function. Could be:
+  *         - MOTION_ACCELERO
+  * @param  FullScale pointer where the full scale is written
+  * @retval BSP status
+  */
+int32_t IKS4A1_MOTION_SENSOR_ACC_HG_GetFullScale(uint32_t Instance, uint32_t Function, int32_t *FullScale)
+{
+  int32_t ret;
+
+  switch (Instance)
+  {
+#if (USE_IKS4A1_MOTION_SENSOR_LSM6DSV80X_0 == 1)
+    case IKS4A1_LSM6DSV80X_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (LSM6DSV80X_ACC_HG_GetFullScale(MotionCompObj[Instance], FullScale) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
+    default:
+      ret = BSP_ERROR_WRONG_PARAM;
+      break;
+  }
+
+  return ret;
+}
+
+/**
+  * @brief  Set motion sensor high-g accelerometer full scale
+  * @param  Instance Motion sensor instance
+  * @param  Function Motion sensor function. Could be:
+  *         - MOTION_ACCELERO
+  * @param  FullScale the functional full scale to be set
+  * @retval BSP status
+  */
+int32_t IKS4A1_MOTION_SENSOR_ACC_HG_SetFullScale(uint32_t Instance, uint32_t Function, int32_t FullScale)
+{
+  int32_t ret;
+
+  switch (Instance)
+  {
+#if (USE_IKS4A1_MOTION_SENSOR_LSM6DSV80X_0 == 1)
+    case IKS4A1_LSM6DSV80X_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (LSM6DSV80X_ACC_HG_SetFullScale(MotionCompObj[Instance], FullScale) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
+    default:
+      ret = BSP_ERROR_WRONG_PARAM;
+      break;
+  }
+
+  return ret;
+}
+
+/**
+  * @brief  Get motion sensor high-g accelerometer raw axes data
+  * @param  Instance Motion sensor instance
+  * @param  Function Motion sensor function. Could be:
+  *         - MOTION_ACCELERO
+  * @param  AxesRaw pointer to raw axes data structure
+  * @retval BSP status
+  */
+int32_t IKS4A1_MOTION_SENSOR_ACC_HG_GetAxesRaw(uint32_t Instance, uint32_t Function, IKS4A1_MOTION_SENSOR_AxesRaw_t *AxesRaw)
+{
+  int32_t ret;
+
+  switch (Instance)
+  {
+#if (USE_IKS4A1_MOTION_SENSOR_LSM6DSV80X_0 == 1)
+    case IKS4A1_LSM6DSV80X_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (LSM6DSV80X_ACC_HG_GetAxesRaw(MotionCompObj[Instance], (LSM6DSV80X_AxesRaw_t *)AxesRaw) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
+    default:
+      ret = BSP_ERROR_WRONG_PARAM;
+      break;
+  }
+
+  return ret;
+}
+
+/**
+  * @brief  Get motion sensor high-g accelerometer axes data
+  * @param  Instance Motion sensor instance
+  * @param  Function Motion sensor function. Could be:
+  *         - MOTION_ACCELERO
+  * @param  Axes pointer to axes data structure
+  * @retval BSP status
+  */
+int32_t IKS4A1_MOTION_SENSOR_ACC_HG_GetAxes(uint32_t Instance, uint32_t Function, IKS4A1_MOTION_SENSOR_Axes_t *Axes)
+{
+  int32_t ret;
+
+  switch (Instance)
+  {
+#if (USE_IKS4A1_MOTION_SENSOR_LSM6DSV80X_0 == 1)
+    case IKS4A1_LSM6DSV80X_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (LSM6DSV80X_ACC_HG_GetAxes(MotionCompObj[Instance], (LSM6DSV80X_Axes_t *)Axes) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
       }
       break;
 #endif
@@ -1905,6 +2307,52 @@ int32_t IKS4A1_MOTION_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Functio
       else if ((Function & MOTION_GYRO) == MOTION_GYRO)
       {
         if (ISM330BX_GYRO_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
+#if (USE_IKS4A1_MOTION_SENSOR_LSM6DSV80X_0 == 1)
+    case IKS4A1_LSM6DSV80X_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        uint8_t status_acc = 0;
+        uint8_t status_acc_hg = 0;
+
+        ret = BSP_ERROR_NONE;
+
+        if (LSM6DSV80X_ACC_Get_DRDY_Status(MotionCompObj[Instance], &status_acc) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+
+        if (LSM6DSV80X_ACC_HG_Get_DRDY_Status(MotionCompObj[Instance], &status_acc_hg) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+
+        if (ret == BSP_ERROR_NONE)
+        {
+          *Status = (status_acc_hg << 1) + status_acc;
+        }
+        else
+        {
+          *Status = 0;
+        }
+      }
+      else if ((Function & MOTION_GYRO) == MOTION_GYRO)
+      {
+        if (LSM6DSV80X_GYRO_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
         {
           ret = BSP_ERROR_COMPONENT_FAILURE;
         }

@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -21,12 +21,12 @@
 #include "iks4a1_mems_control_ex.h"
 
 /** @addtogroup MOTION_APPLICATIONS MOTION APPLICATIONS
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup DATALOG_FUSION DATALOG FUSION
- * @{
- */
+  * @{
+  */
 
 /* Extern variables ----------------------------------------------------------*/
 /* Private defines -----------------------------------------------------------*/
@@ -43,10 +43,10 @@
 /* Exported function prototypes ----------------------------------------------*/
 /* Exported functions --------------------------------------------------------*/
 /**
- * @brief  Initialize the MotionFX engine
- * @param  None
- * @retval None
- */
+  * @brief  Initialize the MotionFX engine
+  * @param  None
+  * @retval None
+  */
 void MotionFX_manager_init(void)
 {
   char acc_orientation[4];
@@ -68,73 +68,73 @@ void MotionFX_manager_init(void)
 }
 
 /**
- * @brief  Run Motion Sensor Data Fusion algorithm
- * @param  data_in  Structure containing input data
- * @param  data_out Structure containing output data
- * @param  delta_time Delta time
- * @retval None
- */
+  * @brief  Run Motion Sensor Data Fusion algorithm
+  * @param  data_in  Structure containing input data
+  * @param  data_out Structure containing output data
+  * @param  delta_time Delta time
+  * @retval None
+  */
 void MotionFX_manager_run(MFX_CM0P_input_t *data_in, MFX_CM0P_output_t *data_out, float delta_time)
 {
   MotionFX_CM0P_update(data_out, data_in, delta_time);
 }
 
 /**
- * @brief  Start 6 axes MotionFX engine
- * @param  None
- * @retval None
- */
+  * @brief  Start 6 axes MotionFX engine
+  * @param  None
+  * @retval None
+  */
 void MotionFX_manager_start_6X(void)
 {
   MotionFX_CM0P_enable_6X(MFX_CM0P_ENGINE_ENABLE);
 }
 
 /**
- * @brief  Stop 6 axes MotionFX engine
- * @param  None
- * @retval None
- */
+  * @brief  Stop 6 axes MotionFX engine
+  * @param  None
+  * @retval None
+  */
 void MotionFX_manager_stop_6X(void)
 {
   MotionFX_CM0P_enable_6X(MFX_CM0P_ENGINE_DISABLE);
 }
 
 /**
- * @brief  Start 9 axes MotionFX engine
- * @param  None
- * @retval None
- */
+  * @brief  Start 9 axes MotionFX engine
+  * @param  None
+  * @retval None
+  */
 void MotionFX_manager_start_9X(void)
 {
   MotionFX_CM0P_enable_9X(MFX_CM0P_ENGINE_ENABLE);
 }
 
 /**
- * @brief  Stop 9 axes MotionFX engine
- * @param  None
- * @retval None
- */
+  * @brief  Stop 9 axes MotionFX engine
+  * @param  None
+  * @retval None
+  */
 void MotionFX_manager_stop_9X(void)
 {
   MotionFX_CM0P_enable_9X(MFX_CM0P_ENGINE_DISABLE);
 }
 
 /**
- * @brief  Get the library version
- * @param  version  Library version string (must be array of 35 char)
- * @param  length  Library version string length
- * @retval None
- */
+  * @brief  Get the library version
+  * @param  version  Library version string (must be array of 35 char)
+  * @param  length  Library version string length
+  * @retval None
+  */
 void MotionFX_manager_get_version(char *version, int32_t *length)
 {
   *length = (int)MotionFX_CM0P_GetLibVersion(version);
 }
 
 /**
- * @brief  Run magnetometer calibration algorithm
- * @param  None
- * @retval None
- */
+  * @brief  Run magnetometer calibration algorithm
+  * @param  None
+  * @retval None
+  */
 void MotionFX_manager_MagCal_run(MFX_CM0P_MagCal_input_t *data_in, MFX_CM0P_MagCal_output_t *data_out)
 {
   MotionFX_CM0P_MagCal_run(data_in);
@@ -142,51 +142,51 @@ void MotionFX_manager_MagCal_run(MFX_CM0P_MagCal_input_t *data_in, MFX_CM0P_MagC
 }
 
 /**
- * @brief  Start magnetometer calibration
- * @param  None
- * @retval None
- */
+  * @brief  Start magnetometer calibration
+  * @param  None
+  * @retval None
+  */
 void MotionFX_manager_MagCal_start(int32_t sampletime)
 {
   MotionFX_CM0P_MagCal_init(sampletime, 1);
 }
 
 /**
- * @brief  Stop magnetometer calibration
- * @param  None
- * @retval None
- */
+  * @brief  Stop magnetometer calibration
+  * @param  None
+  * @retval None
+  */
 void MotionFX_manager_MagCal_stop(int32_t sampletime)
 {
   MotionFX_CM0P_MagCal_init(sampletime, 0);
 }
 
 /**
- * @brief  Load calibration parameter from memory
- * @param  dataSize length of the data
- * @param  data pointer to the data
- * @retval (1) fail, (0) success
- */
+  * @brief  Load calibration parameter from memory
+  * @param  dataSize length of the data
+  * @param  data pointer to the data
+  * @retval (1) fail, (0) success
+  */
 char MotionFX_LoadMagCalFromNVM(unsigned short int dataSize, unsigned int *data)
 {
   return (char)1;
 }
 
 /**
- * @brief  Save calibration parameter to memory
- * @param  dataSize length of the data
- * @param  data pointer to the data
- * @retval (1) fail, (0) success
- */
+  * @brief  Save calibration parameter to memory
+  * @param  dataSize length of the data
+  * @param  data pointer to the data
+  * @retval (1) fail, (0) success
+  */
 char MotionFX_SaveMagCalInNVM(unsigned short int dataSize, unsigned int *data)
 {
   return (char)1;
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */

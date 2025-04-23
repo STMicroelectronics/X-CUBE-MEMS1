@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -20,53 +20,53 @@
 #include "motion_pm_manager.h"
 
 /** @addtogroup MOTION_APPLICATIONS MOTION APPLICATIONS
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup PEDOMETER PEDOMETER
- * @{
- */
+  * @{
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Exported function prototypes ----------------------------------------------*/
 /* Exported functions --------------------------------------------------------*/
 /**
- * @brief  Initialize the MotionPM engine
- * @param  None
- * @retval None
- */
+  * @brief  Initialize the MotionPM engine
+  * @param  None
+  * @retval None
+  */
 void MotionPM_manager_init(void)
 {
   MotionPM_Initialize();
 }
 
 /**
- * @brief  Run Pedometer algorithm
- * @param  data_in  Structure containing input data
- * @param  data_out Structure containing output data
- * @retval None
- */
+  * @brief  Run Pedometer algorithm
+  * @param  data_in  Structure containing input data
+  * @param  data_out Structure containing output data
+  * @retval None
+  */
 void MotionPM_manager_run(MPM_input_t *data_in, MPM_output_t *data_out)
 {
   MotionPM_Update(data_in, data_out);
 }
 
 /**
- * @brief  Get the library version
- * @param  version Library version string (must be array of 35 char)
- * @param  length  Library version string length
- * @retval None
- */
+  * @brief  Get the library version
+  * @param  version Library version string (must be array of 35 char)
+  * @param  length  Library version string length
+  * @retval None
+  */
 void MotionPM_manager_get_version(char *version, int32_t *length)
 {
   *length = (int)MotionPM_GetLibVersion(version);
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 

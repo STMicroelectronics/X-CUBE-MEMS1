@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -20,12 +20,12 @@
 #include "motion_mc_manager.h"
 
 /** @addtogroup MOTION_APPLICATIONS MOTION APPLICATIONS
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup E_COMPASS E_COMPASS
- * @{
- */
+  * @{
+  */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Exported functions prototypes ---------------------------------------------*/
@@ -41,53 +41,53 @@ char MotionMC_SaveCalInNVM(unsigned short int datasize, unsigned int *data);
 
 /* Exported functions --------------------------------------------------------*/
 /**
- * @brief  Initialize the MotionMC engine
- * @param  sampletime period in milliseconds [ms] between the update function call
- * @param  enable enable (1) or disable (0) library
- * @retval None
- */
+  * @brief  Initialize the MotionMC engine
+  * @param  sampletime period in milliseconds [ms] between the update function call
+  * @param  enable enable (1) or disable (0) library
+  * @retval None
+  */
 void MotionMC_manager_init(int32_t sampletime, unsigned short int enable)
 {
   MotionMC_Initialize(sampletime, enable);
 }
 
 /**
- * @brief  Run Magnetometer Calibration algorithm
- * @param  data_in  Structure containing input data
- * @retval None
- */
+  * @brief  Run Magnetometer Calibration algorithm
+  * @param  data_in  Structure containing input data
+  * @retval None
+  */
 void MotionMC_manager_update(MMC_Input_t *data_in)
 {
   MotionMC_Update(data_in);
 }
 
 /**
- * @brief  Get the magnetometer calibration values for hard/soft iron
- * @param  data_out  Structure containing output data
- * @retval None
- */
+  * @brief  Get the magnetometer calibration values for hard/soft iron
+  * @param  data_out  Structure containing output data
+  * @retval None
+  */
 void MotionMC_manager_get_params(MMC_Output_t *data_out)
 {
   MotionMC_GetCalParams(data_out);
 }
 
 /**
- * @brief  Get the library version
- * @param  version  Library version string (must be array of 35 char)
- * @param  length  Library version string length
- * @retval None
- */
+  * @brief  Get the library version
+  * @param  version  Library version string (must be array of 35 char)
+  * @param  length  Library version string length
+  * @retval None
+  */
 void MotionMC_manager_get_version(char *version, int32_t *length)
 {
   *length = (int)MotionMC_GetLibVersion(version);
 }
 
 /**
- * @brief  Do hard & soft iron calibration
- * @param  data_raw  Raw magnetometer data [mGauss]
- * @param  data_comp  Calibrated (compensated) data (hard & soft iron calibration) [mGauss]
- * @retval None
- */
+  * @brief  Do hard & soft iron calibration
+  * @param  data_raw  Raw magnetometer data [mGauss]
+  * @param  data_comp  Calibrated (compensated) data (hard & soft iron calibration) [mGauss]
+  * @retval None
+  */
 void MotionMC_manager_compensate(MOTION_SENSOR_Axes_t *data_raw, MOTION_SENSOR_Axes_t *data_comp)
 {
   MMC_Output_t data_out;
@@ -119,10 +119,10 @@ void MotionMC_manager_compensate(MOTION_SENSOR_Axes_t *data_raw, MOTION_SENSOR_A
 }
 
 /**
- * @brief  Convert magnetometer data value from [uT] to [mGauss]
- * @param  mag_val_uT  magnetometer data value [uT]
- * @retval magnetometer data value [mGauss]
- */
+  * @brief  Convert magnetometer data value from [uT] to [mGauss]
+  * @param  mag_val_uT  magnetometer data value [uT]
+  * @retval magnetometer data value [mGauss]
+  */
 int32_t mag_val_to_mGauss(float mag_val_uT)
 {
   float mGauss_float;
@@ -143,11 +143,11 @@ int32_t mag_val_to_mGauss(float mag_val_uT)
 //       is platform dependent. No need to call this function, library call this
 //       function automatically.
 /**
- * @brief  Load the calibration parameters from storage
- * @param  dataSize  size of data
- * @param  data  pointer to data
- * @retval Will return 0 the if it is success and 1 if it is failure
- */
+  * @brief  Load the calibration parameters from storage
+  * @param  dataSize  size of data
+  * @param  data  pointer to data
+  * @retval Will return 0 the if it is success and 1 if it is failure
+  */
 char MotionMC_LoadCalFromNVM(unsigned short int datasize, unsigned int *data)
 {
   return 1; /* FAILURE: Read from NVM not implemented. */
@@ -157,20 +157,20 @@ char MotionMC_LoadCalFromNVM(unsigned short int datasize, unsigned int *data)
 //       is platform dependent. No need to call this function, library call this
 //       function automatically.
 /**
- * @brief  Save the calibration parameters in storage
- * @param  dataSize  size of data
- * @param  data  pointer to data
- * @retval Will return 0 the if it is success and 1 if it is failure
- */
+  * @brief  Save the calibration parameters in storage
+  * @param  dataSize  size of data
+  * @param  data  pointer to data
+  * @retval Will return 0 the if it is success and 1 if it is failure
+  */
 char MotionMC_SaveCalInNVM(unsigned short int datasize, unsigned int *data)
 {
   return 1; /* FAILURE: Write to NVM not implemented. */
 }
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */

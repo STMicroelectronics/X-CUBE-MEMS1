@@ -2,11 +2,11 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.1.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.2.0 instances.
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -170,7 +170,8 @@ void MX_IKS01A3_LSM6DSO_FreeFall_Process(void)
 
   if (FreeFallEnableRequest != 0U)
   {
-    if (IKS01A3_MOTION_SENSOR_Enable_Free_Fall_Detection(IKS01A3_LSM6DSO_0, IKS01A3_MOTION_SENSOR_INT1_PIN) != BSP_ERROR_NONE)
+    if (IKS01A3_MOTION_SENSOR_Enable_Free_Fall_Detection(IKS01A3_LSM6DSO_0,
+                                                         IKS01A3_MOTION_SENSOR_INT1_PIN) != BSP_ERROR_NONE)
     {
       Error_Handler();
     }

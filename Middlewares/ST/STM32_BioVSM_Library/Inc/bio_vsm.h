@@ -100,7 +100,7 @@ typedef struct
     float cutoff_low;  /* ECG band-pass filter low cut-off frequencies */
     float cutoff_high; /* ECG band-pass filter high cut-off frequencies */
     bool lead_off_en;  /* Lead-off detection enabling flag (performances are reduced when disabled) */
-    bool res;          /* Reserved */
+    uint8_t peak_lat;  /* Latency in showing N-peak detection output expressed in number of consecutive valid peaks */
 } VSM_algo_config_t;
 
 typedef struct
