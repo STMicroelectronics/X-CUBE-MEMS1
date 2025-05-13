@@ -2153,7 +2153,55 @@ int32_t lsm6dsv80x_hg_wu_interrupt_cfg_get(const stmdev_ctx_t *ctx,
 }
 
 /**
- * @brief   Emable/disable user offset data correction to hg wake-up[set]
+ * @brief   Emable/disable user offset data correction driving to hg embedded functions[set]
+ *
+ * @param  ctx    Read / write interface definitions.(ptr)
+ * @param  val    0: disable, 1: enable
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
+int32_t lsm6dsv80x_hg_emb_usr_off_correction_set(const stmdev_ctx_t *ctx, uint8_t val)
+{
+  lsm6dsv80x_emb_func_cfg_t emb_func_cfg;
+  int32_t ret;
+
+  ret = lsm6dsv80x_read_reg(ctx, LSM6DSV80X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
+
+  if (ret == 0)
+  {
+    emb_func_cfg.hg_usr_off_on_emb_func = (uint8_t)val & 0x1U;
+    ret = lsm6dsv80x_write_reg(ctx, LSM6DSV80X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
+  }
+
+  return ret;
+}
+
+/**
+ * @brief   Emable/disable user offset data correction driving to hg embedded functions[get]
+ *
+ * @param  ctx    Read / write interface definitions.(ptr)
+ * @param  val    0: disable, 1: enable
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
+int32_t lsm6dsv80x_hg_emb_usr_off_correction_get(const stmdev_ctx_t *ctx, uint8_t *val)
+{
+  lsm6dsv80x_emb_func_cfg_t emb_func_cfg;
+  int32_t ret;
+
+  ret = lsm6dsv80x_read_reg(ctx, LSM6DSV80X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
+  *val = emb_func_cfg.hg_usr_off_on_emb_func;
+
+  return ret;
+}
+
+/**
+ * @brief   Emable/disable user offset data correction driving to hg wake-up[set]
  *
  * @param  ctx    Read / write interface definitions.(ptr)
  * @param  val    0: disable, 1: enable
@@ -2177,7 +2225,7 @@ int32_t lsm6dsv80x_hg_wu_usr_off_correction_set(const stmdev_ctx_t *ctx, uint8_t
 }
 
 /**
- * @brief   Emable/disable user offset data correction to hg wake-up[get]
+ * @brief   Emable/disable user offset data correction driving to hg wake-up[get]
  *
  * @param  ctx    Read / write interface definitions.(ptr)
  * @param  val    0: disable, 1: enable
@@ -4747,16 +4795,20 @@ int32_t lsm6dsv80x_fifo_batch_cnt_event_get(const stmdev_ctx_t *ctx,
 
   switch (counter_bdr_reg1.trig_counter_bdr)
   {
-    case LSM6DSV80X_XL_BATCH_EVENT:
-      *val = LSM6DSV80X_XL_BATCH_EVENT;
+    case 0:
+      *val = LSM6DSV80X_XL_LG_BATCH_EVENT;
       break;
 
-    case LSM6DSV80X_GY_BATCH_EVENT:
+    case 1:
       *val = LSM6DSV80X_GY_BATCH_EVENT;
       break;
 
+    case 3:
+      *val = LSM6DSV80X_XL_HG_BATCH_EVENT;
+      break;
+
     default:
-      *val = LSM6DSV80X_XL_BATCH_EVENT;
+      *val = LSM6DSV80X_XL_LG_BATCH_EVENT;
       break;
   }
 
@@ -4815,116 +4867,120 @@ int32_t lsm6dsv80x_fifo_out_raw_get(const stmdev_ctx_t *ctx,
 
   switch (fifo_data_out_tag.tag_sensor)
   {
-    case LSM6DSV80X_FIFO_EMPTY:
+    case 0:
       val->tag = LSM6DSV80X_FIFO_EMPTY;
       break;
 
-    case LSM6DSV80X_GY_NC_TAG:
+    case 1:
       val->tag = LSM6DSV80X_GY_NC_TAG;
       break;
 
-    case LSM6DSV80X_XL_NC_TAG:
+    case 2:
       val->tag = LSM6DSV80X_XL_NC_TAG;
       break;
 
-    case LSM6DSV80X_TIMESTAMP_TAG:
+    case 3:
       val->tag = LSM6DSV80X_TIMESTAMP_TAG;
       break;
 
-    case LSM6DSV80X_TEMPERATURE_TAG:
+    case 4:
       val->tag = LSM6DSV80X_TEMPERATURE_TAG;
       break;
 
-    case LSM6DSV80X_CFG_CHANGE_TAG:
+    case 5:
       val->tag = LSM6DSV80X_CFG_CHANGE_TAG;
       break;
 
-    case LSM6DSV80X_XL_NC_T_2_TAG:
+    case 6:
       val->tag = LSM6DSV80X_XL_NC_T_2_TAG;
       break;
 
-    case LSM6DSV80X_XL_NC_T_1_TAG:
+    case 7:
       val->tag = LSM6DSV80X_XL_NC_T_1_TAG;
       break;
 
-    case LSM6DSV80X_XL_2XC_TAG:
+    case 8:
       val->tag = LSM6DSV80X_XL_2XC_TAG;
       break;
 
-    case LSM6DSV80X_XL_3XC_TAG:
+    case 9:
       val->tag = LSM6DSV80X_XL_3XC_TAG;
       break;
 
-    case LSM6DSV80X_GY_NC_T_2_TAG:
+    case 0xA:
       val->tag = LSM6DSV80X_GY_NC_T_2_TAG;
       break;
 
-    case LSM6DSV80X_GY_NC_T_1_TAG:
+    case 0xB:
       val->tag = LSM6DSV80X_GY_NC_T_1_TAG;
       break;
 
-    case LSM6DSV80X_GY_2XC_TAG:
+    case 0xC:
       val->tag = LSM6DSV80X_GY_2XC_TAG;
       break;
 
-    case LSM6DSV80X_GY_3XC_TAG:
+    case 0xD:
       val->tag = LSM6DSV80X_GY_3XC_TAG;
       break;
 
-    case LSM6DSV80X_SENSORHUB_TARGET0_TAG:
+    case 0xE:
       val->tag = LSM6DSV80X_SENSORHUB_TARGET0_TAG;
       break;
 
-    case LSM6DSV80X_SENSORHUB_TARGET1_TAG:
+    case 0xF:
       val->tag = LSM6DSV80X_SENSORHUB_TARGET1_TAG;
       break;
 
-    case LSM6DSV80X_SENSORHUB_TARGET2_TAG:
+    case 0x10:
       val->tag = LSM6DSV80X_SENSORHUB_TARGET2_TAG;
       break;
 
-    case LSM6DSV80X_SENSORHUB_TARGET3_TAG:
+    case 0x11:
       val->tag = LSM6DSV80X_SENSORHUB_TARGET3_TAG;
       break;
 
-    case LSM6DSV80X_STEP_COUNTER_TAG:
+    case 0x12:
       val->tag = LSM6DSV80X_STEP_COUNTER_TAG;
       break;
 
-    case LSM6DSV80X_SFLP_GAME_ROTATION_VECTOR_TAG:
+    case 0x13:
       val->tag = LSM6DSV80X_SFLP_GAME_ROTATION_VECTOR_TAG;
       break;
 
-    case LSM6DSV80X_SFLP_GYROSCOPE_BIAS_TAG:
+    case 0x16:
       val->tag = LSM6DSV80X_SFLP_GYROSCOPE_BIAS_TAG;
       break;
 
-    case LSM6DSV80X_SFLP_GRAVITY_VECTOR_TAG:
+    case 0x17:
       val->tag = LSM6DSV80X_SFLP_GRAVITY_VECTOR_TAG;
       break;
 
-    case LSM6DSV80X_HG_XL_PEAK_TAG:
+    case 0x18:
       val->tag = LSM6DSV80X_HG_XL_PEAK_TAG;
       break;
 
-    case LSM6DSV80X_SENSORHUB_NACK_TAG:
+    case 0x19:
       val->tag = LSM6DSV80X_SENSORHUB_NACK_TAG;
       break;
 
-    case LSM6DSV80X_MLC_RESULT_TAG:
+    case 0x1A:
       val->tag = LSM6DSV80X_MLC_RESULT_TAG;
       break;
 
-    case LSM6DSV80X_MLC_FILTER:
+    case 0x1B:
       val->tag = LSM6DSV80X_MLC_FILTER;
       break;
 
-    case LSM6DSV80X_MLC_FEATURE:
+    case 0x1C:
       val->tag = LSM6DSV80X_MLC_FEATURE;
       break;
 
-    case LSM6DSV80X_XL_HG_TAG:
+    case 0x1D:
       val->tag = LSM6DSV80X_XL_HG_TAG;
+      break;
+
+    case 0x1F:
+      val->tag = LSM6DSV80X_FSM_RESULT_TAG;
       break;
 
     default:
@@ -4993,6 +5049,61 @@ int32_t lsm6dsv80x_fifo_stpcnt_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret += lsm6dsv80x_read_reg(ctx, LSM6DSV80X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_a, 1);
   *val = emb_func_fifo_en_a.step_counter_fifo_en;
+
+  ret += lsm6dsv80x_mem_bank_set(ctx, LSM6DSV80X_MAIN_MEM_BANK);
+
+  return ret;
+}
+
+/**
+  * @brief  Batching in FIFO buffer of finite state machine results.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Batching in FIFO buffer of finite state machine results.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lsm6dsv80x_fifo_fsm_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
+{
+  lsm6dsv80x_emb_func_fifo_en_b_t emb_func_fifo_en_b;
+  int32_t ret;
+
+  ret = lsm6dsv80x_mem_bank_set(ctx, LSM6DSV80X_EMBED_FUNC_MEM_BANK);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
+  ret = lsm6dsv80x_read_reg(ctx, LSM6DSV80X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_b, 1);
+  emb_func_fifo_en_b.fsm_fifo_en = val;
+  ret += lsm6dsv80x_write_reg(ctx, LSM6DSV80X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_b, 1);
+
+  ret += lsm6dsv80x_mem_bank_set(ctx, LSM6DSV80X_MAIN_MEM_BANK);
+
+  return ret;
+}
+
+/**
+  * @brief  Batching in FIFO buffer of finite state machine results.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      Batching in FIFO buffer of finite state machine results.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lsm6dsv80x_fifo_fsm_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
+{
+  lsm6dsv80x_emb_func_fifo_en_b_t emb_func_fifo_en_b;
+  int32_t ret;
+
+  ret = lsm6dsv80x_mem_bank_set(ctx, LSM6DSV80X_EMBED_FUNC_MEM_BANK);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
+  ret = lsm6dsv80x_read_reg(ctx, LSM6DSV80X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_b, 1);
+  *val = emb_func_fifo_en_b.fsm_fifo_en;
 
   ret += lsm6dsv80x_mem_bank_set(ctx, LSM6DSV80X_MAIN_MEM_BANK);
 
@@ -6956,6 +7067,61 @@ int32_t lsm6dsv80x_fsm_ext_sens_x_orient_get(const stmdev_ctx_t *ctx,
 }
 
 /**
+  * @brief  High-g accelerometer peak tracking enable.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      0: disable, 1: enable
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lsm6dsv80x_xl_hg_peak_tracking_set(const stmdev_ctx_t *ctx, uint8_t val)
+{
+  lsm6dsv80x_emb_func_init_b_t emb_func_init_b;
+  int32_t ret;
+
+  ret = lsm6dsv80x_mem_bank_set(ctx, LSM6DSV80X_EMBED_FUNC_MEM_BANK);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
+  ret = lsm6dsv80x_read_reg(ctx, LSM6DSV80X_EMB_FUNC_INIT_B, (uint8_t *)&emb_func_init_b, 1);
+  emb_func_init_b.pt_init = val;
+  ret += lsm6dsv80x_write_reg(ctx, LSM6DSV80X_EMB_FUNC_INIT_B, (uint8_t *)&emb_func_init_b, 1);
+
+  ret += lsm6dsv80x_mem_bank_set(ctx, LSM6DSV80X_MAIN_MEM_BANK);
+
+  return ret;
+}
+
+/**
+  * @brief  High-g accelerometer peak tracking enable.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      0: disable, 1: enable
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lsm6dsv80x_xl_hg_peak_tracking_get(const stmdev_ctx_t *ctx, uint8_t *val)
+{
+  lsm6dsv80x_emb_func_init_b_t emb_func_init_b;
+  int32_t ret;
+
+  ret = lsm6dsv80x_mem_bank_set(ctx, LSM6DSV80X_EMBED_FUNC_MEM_BANK);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
+  ret = lsm6dsv80x_read_reg(ctx, LSM6DSV80X_EMB_FUNC_INIT_B, (uint8_t *)&emb_func_init_b, 1);
+  *val = emb_func_init_b.pt_init;
+
+  ret += lsm6dsv80x_mem_bank_set(ctx, LSM6DSV80X_MAIN_MEM_BANK);
+
+  return ret;
+}
+
+/**
   * @brief  Hihg-g accelerometer sensitivity value register for FSM and MLC.[set]
   *
   * @param  ctx      read / write interface definitions
@@ -7451,31 +7617,31 @@ int32_t lsm6dsv80x_mlc_data_rate_get(const stmdev_ctx_t *ctx,
 
   switch (mlc_odr.mlc_odr)
   {
-    case LSM6DSV80X_MLC_15Hz:
+    case 0:
       *val = LSM6DSV80X_MLC_15Hz;
       break;
 
-    case LSM6DSV80X_MLC_30Hz:
+    case 1:
       *val = LSM6DSV80X_MLC_30Hz;
       break;
 
-    case LSM6DSV80X_MLC_60Hz:
+    case 2:
       *val = LSM6DSV80X_MLC_60Hz;
       break;
 
-    case LSM6DSV80X_MLC_120Hz:
+    case 3:
       *val = LSM6DSV80X_MLC_120Hz;
       break;
 
-    case LSM6DSV80X_MLC_240Hz:
+    case 4:
       *val = LSM6DSV80X_MLC_240Hz;
       break;
 
-    case LSM6DSV80X_MLC_480Hz:
+    case 5:
       *val = LSM6DSV80X_MLC_480Hz;
       break;
 
-    case LSM6DSV80X_MLC_960Hz:
+    case 6:
       *val = LSM6DSV80X_MLC_960Hz;
       break;
 
@@ -7700,7 +7866,7 @@ int32_t lsm6dsv80x_4d_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @brief  I3C configuration.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      rst_mode, ibi_time, aux_ta0_pid
+  * @param  val      rst_mode, ibi_time, if2_ta0_pid
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -7717,7 +7883,6 @@ int32_t lsm6dsv80x_i3c_config_set(const stmdev_ctx_t *ctx,
   {
     pin_ctrl.ibhr_por_en = (uint8_t)val.rst_mode & 0x01U;
     ctrl5.bus_act_sel = (uint8_t)val.ibi_time & 0x03U;
-    ctrl5.aux_ta0_pid = (uint8_t)val.aux_ta0_pid & 0x01U;
 
     ret = lsm6dsv80x_write_reg(ctx, LSM6DSV80X_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
     ret += lsm6dsv80x_write_reg(ctx, LSM6DSV80X_CTRL5, (uint8_t *)&ctrl5, 1);
@@ -7730,7 +7895,7 @@ int32_t lsm6dsv80x_i3c_config_set(const stmdev_ctx_t *ctx,
   * @brief  I3C configuration.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      rst_mode, ibi_time, aux_ta0_pid
+  * @param  val      rst_mode, ibi_time, if2_ta0_pid
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -7790,8 +7955,6 @@ int32_t lsm6dsv80x_i3c_config_get(const stmdev_ctx_t *ctx,
       val->ibi_time = LSM6DSV80X_IBI_50us;
       break;
   }
-
-  val->aux_ta0_pid = ctrl5.aux_ta0_pid;
 
   return ret;
 }

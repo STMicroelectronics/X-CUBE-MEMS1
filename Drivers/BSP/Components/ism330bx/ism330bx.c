@@ -1128,9 +1128,9 @@ int32_t ISM330BX_Write_Reg(ISM330BX_Object_t *pObj, uint8_t Reg, uint8_t Data)
  */
 int32_t ISM330BX_ACC_Get_DRDY_Status(ISM330BX_Object_t *pObj, uint8_t *Status)
 {
-  ism330bx_all_sources_t val;
+  ism330bx_data_ready_t val;
 
-  if (ism330bx_all_sources_get(&(pObj->Ctx), &val) != ISM330BX_OK)
+  if (ism330bx_flag_data_ready_get(&(pObj->Ctx), &val) != ISM330BX_OK)
   {
     return ISM330BX_ERROR;
   }
@@ -1147,9 +1147,9 @@ int32_t ISM330BX_ACC_Get_DRDY_Status(ISM330BX_Object_t *pObj, uint8_t *Status)
  */
 int32_t ISM330BX_GYRO_Get_DRDY_Status(ISM330BX_Object_t *pObj, uint8_t *Status)
 {
-  ism330bx_all_sources_t val;
+  ism330bx_data_ready_t val;
 
-  if (ism330bx_all_sources_get(&(pObj->Ctx), &val) != ISM330BX_OK)
+  if (ism330bx_flag_data_ready_get(&(pObj->Ctx), &val) != ISM330BX_OK)
   {
     return ISM330BX_ERROR;
   }

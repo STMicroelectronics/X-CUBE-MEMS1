@@ -379,7 +379,6 @@ int32_t LSM6DSV16X_ACC_Set_Filter_Mode(LSM6DSV16X_Object_t *pObj, uint8_t LowHig
 int32_t LSM6DSV16X_GYRO_Set_Filter_Mode(LSM6DSV16X_Object_t *pObj, uint8_t LowHighPassFlag, uint8_t FilterMode);
 
 int32_t LSM6DSV16X_QVAR_GetData(LSM6DSV16X_Object_t *pObj, int16_t *Data);
-int32_t LSM6DSV16X_QVAR_GetDRDY(LSM6DSV16X_Object_t *pObj, uint8_t *Status);
 int32_t LSM6DSV16X_QVAR_GetZIn(LSM6DSV16X_Object_t *pObj, uint16_t *ZInMOhm);
 int32_t LSM6DSV16X_QVAR_SetZIn(LSM6DSV16X_Object_t *pObj, uint16_t ZInMOhm);
 

@@ -126,8 +126,7 @@ int32_t IIS2DULPX_RegisterBusIO(IIS2DULPX_Object_t *pObj, IIS2DULPX_IO_t *pIO)
           /* Exit from deep power down only the first time in SPI mode */
           if (IIS2DULPX_ExitDeepPowerDownSPI(pObj) != IIS2DULPX_OK)
           {
-            /* Forced OK because of an expected failure during the wake-up sequence */
-            ret = IIS2DULPX_OK;
+            ret = IIS2DULPX_ERROR;
           }
           /* Enable SPI 3-Wires on the component */
           uint8_t data = 0x50;
@@ -145,8 +144,7 @@ int32_t IIS2DULPX_RegisterBusIO(IIS2DULPX_Object_t *pObj, IIS2DULPX_IO_t *pIO)
         {
           if (IIS2DULPX_ExitDeepPowerDownSPI(pObj) != IIS2DULPX_OK)
           {
-            /* Forced OK because of an expected failure during the wake-up sequence */
-            ret = IIS2DULPX_OK;
+            ret = IIS2DULPX_ERROR;
           }
         }
       }
@@ -157,16 +155,13 @@ int32_t IIS2DULPX_RegisterBusIO(IIS2DULPX_Object_t *pObj, IIS2DULPX_IO_t *pIO)
         {
           if (IIS2DULPX_ExitDeepPowerDownI2C(pObj) != IIS2DULPX_OK)
           {
-            pObj->Ctx.mdelay(100);
-            
-            /* Forced OK because of an expected failure during the wake-up sequence */
-            ret = IIS2DULPX_OK;
+            ret = IIS2DULPX_ERROR;
           }
         }
       }
       else
       {
-        /* Do nothing */
+        ret = IIS2DULPX_ERROR;
       }
     }
   }
@@ -279,11 +274,9 @@ int32_t IIS2DULPX_ExitDeepPowerDownI2C(IIS2DULPX_Object_t *pObj)
 {
   uint8_t val;
 
-  /* Perform dummy read in order to exit from deep power down in I2C mode*/
-  if (iis2dulpx_device_id_get(&(pObj->Ctx), &val) != IIS2DULPX_OK)
-  {
-    return IIS2DULPX_ERROR;
-  }
+  /* Perform dummy read in order to exit from deep power down in I2C mode.
+   * NOTE: No return value check - expected first read fail. */
+  (void)iis2dulpx_device_id_get(&(pObj->Ctx), &val);
 
   /* Wait for 25 ms based on datasheet */
   pObj->Ctx.mdelay(25);

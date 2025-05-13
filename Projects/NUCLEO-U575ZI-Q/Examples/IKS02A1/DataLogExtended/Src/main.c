@@ -306,7 +306,7 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-  
+
   /* Configure GPIO pin : PD15 */
   GPIO_InitStruct.Pin = GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -480,7 +480,7 @@ static void Float_To_Int(float In, displayFloatToInt_t *OutValue, int32_t DecPre
 
   OutValue->out_int = (uint32_t)In;
   In = In - (float)(OutValue->out_int);
-  OutValue->out_dec = (uint32_t)trunc(In * pow(10.0f, (float)DecPrec));
+  OutValue->out_dec = (uint32_t)trunc((double)In * pow(10.0, (double)DecPrec));
 }
 
 /**
@@ -792,7 +792,7 @@ static void Sensors_Interrupt_Handler(Msg_t *Msg)
 
   if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_3) == GPIO_PIN_SET) int_status |= (1 << 5); else int_status &= ~(1 << 5);
   if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0) == GPIO_PIN_SET) int_status |= (1 << 6); else int_status &= ~(1 << 6);
-  if (HAL_GPIO_ReadPin(GPIOF, GPIO_PIN_15) == GPIO_PIN_SET) int_status |= (1 << 7); else int_status &= ~(1 << 7); 
+  if (HAL_GPIO_ReadPin(GPIOF, GPIO_PIN_15) == GPIO_PIN_SET) int_status |= (1 << 7); else int_status &= ~(1 << 7);
 
   if ((mem_int_status != int_status) || (UpdateInterrupt == 1) || ((HAL_GetTick() - LastUpdate) > 100))
   {

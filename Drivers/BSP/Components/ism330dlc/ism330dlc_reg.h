@@ -227,11 +227,11 @@ typedef struct
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t fth                      : 3;  /* + FIFO_CTRL1(fth) */
   uint8_t fifo_temp_en             : 1;
-  uint8_t not_used_01              : 4;
+  uint8_t not_used_01              : 3;
   uint8_t fifo_timer_en            : 1;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
   uint8_t fifo_timer_en            : 1;
-  uint8_t not_used_01              : 4;
+  uint8_t not_used_01              : 3;
   uint8_t fifo_temp_en             : 1;
   uint8_t fth                      : 3;  /* + FIFO_CTRL1(fth) */
 #endif /* DRV_BYTE_ORDER */

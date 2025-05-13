@@ -67,14 +67,16 @@ static uint8_t AccNameList[][SENSOR_NAME_MAX_LENGTH] = {"LSM6DSV16X", "LSM6DSO16
                                                         "LIS2DTW12 (DIL24)", "LIS2DU12 (DIL24)", "ASM330LHHX (DIL24)",
                                                         "LSM6DSV16BX (DIL24)", "LSM6DSV (DIL24)", "LSM6DSV16B (DIL24)",
                                                         "LIS2DUX12 (DIL24)", "LSM6DSV32X (DIL24)", "ISM330BX (DIL24)",
-                                                        "LSM6DSV80X (DIL24)"
+                                                        "LSM6DSV80X (DIL24)", "LSM6DSV320X (DIL24)", "ST1VAFE3BX (DIL24)",
+                                                        "ST1VAFE6AX (DIL24)"
                                                        };
 static uint8_t GyrNameList[][SENSOR_NAME_MAX_LENGTH] = {"LSM6DSV16X", "LSM6DSO16IS", "LSM6DSO (DIL24)", "ASM330LHH (DIL24)",
                                                         "ISM330DLC (DIL24)", "LSM6DSOX (DIL24)", "LSM6DSR (DIL24)",
                                                         "A3G4250D (DIL24)", "LSM6DSRX (DIL24)", "ISM330DHCX (DIL24)",
                                                         "LSM6DSO32 (DIL24)", "LSM6DSO32X (DIL24)", "ASM330LHHX (DIL24)",
                                                         "LSM6DSV16BX (DIL24)", "LSM6DSV (DIL24)", "LSM6DSV16B (DIL24)",
-                                                        "LSM6DSV32X (DIL24)", "ISM330BX (DIL24)", "LSM6DSV80X (DIL24)"
+                                                        "LSM6DSV32X (DIL24)", "ISM330BX (DIL24)", "LSM6DSV80X (DIL24)",
+                                                        "LSM6DSV320X (DIL24)", "ST1VAFE6AX (DIL24)"
                                                        };
 static uint8_t MagNameList[][SENSOR_NAME_MAX_LENGTH] = {"LIS2MDL", "IIS2MDC (DIL24)", "ISM303DAC (DIL24)", "LIS3MDL (DIL24)",
                                                         "LIS2MDL SH (DIL24)"
@@ -125,6 +127,9 @@ static uint32_t AccInstanceList[] =
   IKS4A1_LSM6DSV32X_0,
   IKS4A1_ISM330BX_0,
   IKS4A1_LSM6DSV80X_0,
+  IKS4A1_LSM6DSV320X_0,
+  IKS4A1_ST1VAFE3BX_0,
+  IKS4A1_ST1VAFE6AX_0,
 };
 static uint32_t GyrInstanceList[] =
 {
@@ -147,6 +152,8 @@ static uint32_t GyrInstanceList[] =
   IKS4A1_LSM6DSV32X_0,
   IKS4A1_ISM330BX_0,
   IKS4A1_LSM6DSV80X_0,
+  IKS4A1_LSM6DSV320X_0,
+  IKS4A1_ST1VAFE6AX_0,
 };
 static uint32_t MagInstanceList[] =
 {
@@ -222,6 +229,9 @@ static uint32_t HybridAccInstanceList[] =
   NOT_HYBRID_SENSOR, /* LSM6DSV32X */
   NOT_HYBRID_SENSOR, /* ISM330BX */
   NOT_HYBRID_SENSOR, /* LSM6DSV80X */
+  NOT_HYBRID_SENSOR, /* LSM6DSV320X */
+  NOT_HYBRID_SENSOR, /* ST1VAFE3BX */
+  NOT_HYBRID_SENSOR, /* ST1VAFE6AX */
 };
 static uint32_t HybridTmpInstanceList[] =
 {
@@ -276,6 +286,9 @@ static uint32_t AccFsList[][5] =   /* g */
   {4, 4, 8, 16, 32},               /* LSM6DSV32X */
   {4, 2, 4, 8, 16},                /* ISM330BX */
   {4, 2, 4, 8, 16},                /* LSM6DSV80X */
+  {4, 2, 4, 8, 16},                /* LSM6DSV320X */
+  {4, 2, 4, 8, 16},                /* ST1VAFE3BX */
+  {4, 2, 4, 8, 16},                /* ST1VAFE6AX */
 };
 static uint32_t GyrFsList[][7] =        /* dps */
 {
@@ -298,6 +311,8 @@ static uint32_t GyrFsList[][7] =        /* dps */
   {6, 125, 250, 500, 1000, 2000, 4000}, /* LSM6DSV32X */
   {6, 125, 250, 500, 1000, 2000, 4000}, /* ISM330BX */
   {5, 250, 500, 1000, 2000, 4000},      /* LSM6DSV80X */
+  {5, 250, 500, 1000, 2000, 4000},      /* LSM6DSV320X */
+  {6, 125, 250, 500, 1000, 2000, 4000}, /* ST1VAFE6AX */
 };
 static uint32_t MagFsList[][5] =   /* Ga */
 {
@@ -376,6 +391,9 @@ static float AccOdrList[][13] =                                       /* Hz */
   {12, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV32X */
   {11, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840},       /* ISM330BX */
   {12, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV80X */
+  {12, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV320X */
+  {11, 1.6, 3, 6, 12.5, 25, 50, 100, 200, 400, 800, 3200},            /* ST1VAFE3BX */
+  {12, 1.875, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* ST1VAFE6AX */
 };
 static float GyrOdrList[][12] =                                /* Hz */
 {
@@ -398,6 +416,8 @@ static float GyrOdrList[][12] =                                /* Hz */
   {11, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV32X */
   {10, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840},       /* ISM330BX */
   {11, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV80X */
+  {11, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* LSM6DSV320X */
+  {11, 7.5, 15, 30, 60, 120, 240, 480, 960, 1920, 3840, 7680}, /* ST1VAFE6AX */
 };
 static float MagOdrList[][9] =              /* Hz */
 {
@@ -1980,16 +2000,16 @@ static int32_t SC_Read_Modify_Write_Register(Msg_t *Msg)
   */
 static void Send_Sensor_Name(Msg_t *Msg, uint8_t *SensorName)
 {
-  uint32_t i = 0U;
   BUILD_REPLY_HEADER(Msg);
 
-  while (i < strlen((char const *)SensorName))
+  uint32_t i = 5U;
+  uint32_t j = 0U;
+  while (i < Msg_MaxLen && j < strlen((char const *)SensorName))
   {
-    Msg->Data[5U + i] = SensorName[i];
-    i++;
+    Msg->Data[i++] = SensorName[j++];
   }
 
-  Msg->Len = 5U + i;
+  Msg->Len = i;
   UART_SendMsg(Msg);
 }
 

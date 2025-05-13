@@ -3735,28 +3735,6 @@ int32_t LSM6DSV16X_QVAR_GetData(LSM6DSV16X_Object_t *pObj, int16_t *Data)
 }
 
 /**
-  * @brief  Get the LSM6DSV16X QVAR DRDY status
-  * @param  pObj the device pObj
-  * @param  Status pointer where the DRDY status is written
-  * @retval 0 in case of success, an error code otherwise
-  */
-int32_t LSM6DSV16X_QVAR_GetDRDY(LSM6DSV16X_Object_t *pObj, uint8_t *Status)
-{
-  lsm6dsv16x_all_sources_t val;
-
-  /* Read all statuses */
-  if (lsm6dsv16x_all_sources_get(&(pObj->Ctx), &val) != LSM6DSV16X_OK)
-  {
-    return LSM6DSV16X_ERROR;
-  }
-
-  /* Store QVAR DRDY status */
-  *Status = val.drdy_ah_qvar;
-
-  return LSM6DSV16X_OK;
-}
-
-/**
   * @brief  Get the LSM6DSV16X equivalent input impedance of the AH_QVAR buffers in [MOhm]
   * @param  pObj the device pObj
   * @param  ZInMOhm pointer where the equivalent input impedance of the AH_QVAR buffers in [MOhm] is written to

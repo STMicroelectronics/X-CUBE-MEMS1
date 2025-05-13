@@ -1982,16 +1982,16 @@ static int32_t SC_Read_Modify_Write_Register(Msg_t *Msg)
   */
 static void Send_Sensor_Name(Msg_t *Msg, uint8_t *SensorName)
 {
-  uint32_t i = 0U;
   BUILD_REPLY_HEADER(Msg);
 
-  while (i < strlen((char const *)SensorName))
+  uint32_t i = 5U;
+  uint32_t j = 0U;
+  while (i < Msg_MaxLen && j < strlen((char const *)SensorName))
   {
-    Msg->Data[5U + i] = SensorName[i];
-    i++;
+    Msg->Data[i++] = SensorName[j++];
   }
 
-  Msg->Len = 5U + i;
+  Msg->Len = i;
   UART_SendMsg(Msg);
 }
 

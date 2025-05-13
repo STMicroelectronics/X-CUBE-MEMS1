@@ -22,7 +22,7 @@
 #define  __RTE_COMPONENTS_H__
 
 /* Defines ------------------------------------------------------------------*/
-/* STMicroelectronics.X-CUBE-MEMS1.11.2.0 */
+/* STMicroelectronics.X-CUBE-MEMS1.11.3.0 */
 #define IKS4A1
 #define IKS4A1_TILTSENSING_DEMO
 

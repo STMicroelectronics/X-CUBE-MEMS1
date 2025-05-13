@@ -779,7 +779,7 @@ static uint8_t Meas_Odr(void)
     AcceleroODR.Period = 1 / AcceleroODR.Frequency;
   }
 
-  AcceleroODR.Tau = exp(-(float)(1000 * AcceleroODR.Period) / MotionSP_Parameters.tau);
+  AcceleroODR.Tau = (float)exp(-(double)(1000.0f * AcceleroODR.Period) / MotionSP_Parameters.tau);
 
   /* Disable accelerometer to avoid interrupt conflicts on highest ODRs */
   if (IKS02A1_MOTION_SENSOR_Disable(IKS02A1_ISM330DHCX_0, MOTION_ACCELERO) != BSP_ERROR_NONE)

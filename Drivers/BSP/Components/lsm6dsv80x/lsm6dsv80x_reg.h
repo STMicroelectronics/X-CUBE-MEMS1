@@ -478,10 +478,9 @@ typedef struct
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t int_en_i3c                   : 1;
   uint8_t bus_act_sel                  : 2;
-  uint8_t not_used0                    : 4;
-  uint8_t aux_ta0_pid                  : 1;
+  uint8_t not_used0                    : 5;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t aux_ta0_pid                  : 1;
+  uint8_t not_used0                    : 5;
   uint8_t not_used0                    : 4;
   uint8_t bus_act_sel                  : 2;
   uint8_t int_en_i3c                   : 1;
@@ -1413,9 +1412,9 @@ typedef struct
   uint8_t emb_func_irq_mask_xl_settl   : 1;
   uint8_t emb_func_irq_mask_g_settl    : 1;
   uint8_t emb_func_irq_mask_xl_hg_settl: 1;
-  uint8_t not_used1                    : 1;
+  uint8_t hg_usr_off_on_emb_func       : 1;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t not_used1                    : 1;
+  uint8_t hg_usr_off_on_emb_func       : 1;
   uint8_t emb_func_irq_mask_xl_hg_settl: 1;
   uint8_t emb_func_irq_mask_g_settl    : 1;
   uint8_t emb_func_irq_mask_xl_settl   : 1;
@@ -2164,9 +2163,11 @@ typedef struct
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t not_used0                    : 1;
   uint8_t mlc_filter_feature_fifo_en   : 1;
-  uint8_t not_used1                    : 6;
+  uint8_t fsm_fifo_en                  : 1;
+  uint8_t not_used1                    : 5;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t not_used1                    : 6;
+  uint8_t not_used1                    : 5;
+  uint8_t fsm_fifo_en                  : 1;
   uint8_t mlc_filter_feature_fifo_en   : 1;
   uint8_t not_used0                    : 1;
 #endif /* DRV_BYTE_ORDER */
@@ -2531,7 +2532,8 @@ typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t fsm_init                     : 1;
-  uint8_t not_used0                    : 2;
+  uint8_t not_used0                    : 1;
+  uint8_t pt_init                      : 1;
   uint8_t fifo_compr_init              : 1;
   uint8_t mlc_init                     : 1;
   uint8_t not_used1                    : 3;
@@ -2539,7 +2541,8 @@ typedef struct
   uint8_t not_used1                    : 3;
   uint8_t mlc_init                     : 1;
   uint8_t fifo_compr_init              : 1;
-  uint8_t not_used0                    : 2;
+  uint8_t pt_init                      : 1;
+  uint8_t not_used0                    : 1;
   uint8_t fsm_init                     : 1;
 #endif /* DRV_BYTE_ORDER */
 } lsm6dsv80x_emb_func_init_b_t;
@@ -3981,6 +3984,9 @@ int32_t lsm6dsv80x_hg_wu_interrupt_cfg_set(const stmdev_ctx_t *ctx,
 int32_t lsm6dsv80x_hg_wu_interrupt_cfg_get(const stmdev_ctx_t *ctx,
                                            lsm6dsv80x_hg_wu_interrupt_cfg_t *val);
 
+int32_t lsm6dsv80x_hg_emb_usr_off_correction_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lsm6dsv80x_hg_emb_usr_off_correction_get(const stmdev_ctx_t *ctx, uint8_t *val);
+
 int32_t lsm6dsv80x_hg_wu_usr_off_correction_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsv80x_hg_wu_usr_off_correction_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
@@ -4350,8 +4356,9 @@ int32_t lsm6dsv80x_fifo_batch_counter_threshold_get(const stmdev_ctx_t *ctx,
 
 typedef enum
 {
-  LSM6DSV80X_XL_BATCH_EVENT     = 0x0,
+  LSM6DSV80X_XL_LG_BATCH_EVENT  = 0x0,
   LSM6DSV80X_GY_BATCH_EVENT     = 0x1,
+  LSM6DSV80X_XL_HG_BATCH_EVENT  = 0x3,
 } lsm6dsv80x_fifo_batch_cnt_event_t;
 int32_t lsm6dsv80x_fifo_batch_cnt_event_set(const stmdev_ctx_t *ctx,
                                             lsm6dsv80x_fifo_batch_cnt_event_t val);
@@ -4402,6 +4409,7 @@ typedef struct
     LSM6DSV80X_MLC_FILTER                    = 0x1B,
     LSM6DSV80X_MLC_FEATURE                   = 0x1C,
     LSM6DSV80X_XL_HG_TAG                     = 0x1D,
+    LSM6DSV80X_FSM_RESULT_TAG                = 0x1F,
   } tag;
   uint8_t cnt;
   uint8_t data[6];
@@ -4411,6 +4419,9 @@ int32_t lsm6dsv80x_fifo_out_raw_get(const stmdev_ctx_t *ctx,
 
 int32_t lsm6dsv80x_fifo_stpcnt_batch_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsv80x_fifo_stpcnt_batch_get(const stmdev_ctx_t *ctx, uint8_t *val);
+
+int32_t lsm6dsv80x_fifo_fsm_batch_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lsm6dsv80x_fifo_fsm_batch_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t lsm6dsv80x_fifo_mlc_batch_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsv80x_fifo_mlc_batch_get(const stmdev_ctx_t *ctx, uint8_t *val);
@@ -4661,6 +4672,9 @@ int32_t lsm6dsv80x_fsm_ext_sens_x_orient_set(const stmdev_ctx_t *ctx,
 int32_t lsm6dsv80x_fsm_ext_sens_x_orient_get(const stmdev_ctx_t *ctx,
                                              lsm6dsv80x_fsm_ext_sens_x_orient_t *val);
 
+int32_t lsm6dsv80x_xl_hg_peak_tracking_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lsm6dsv80x_xl_hg_peak_tracking_get(const stmdev_ctx_t *ctx, uint8_t *val);
+
 int32_t lsm6dsv80x_xl_hg_sensitivity_set(const stmdev_ctx_t *ctx, uint16_t val);
 int32_t lsm6dsv80x_xl_hg_sensitivity_get(const stmdev_ctx_t *ctx, uint16_t *val);
 
@@ -4761,7 +4775,6 @@ int32_t lsm6dsv80x_ui_i2c_i3c_mode_get(const stmdev_ctx_t *ctx,
 
 typedef struct
 {
-  uint8_t aux_ta0_pid                  : 1;
   enum
   {
     LSM6DSV80X_SW_RST_DYN_ADDRESS_RST = 0x0,
@@ -4887,8 +4900,8 @@ int32_t lsm6dsv80x_spi_mode_get(const stmdev_ctx_t *ctx, lsm6dsv80x_spi_mode_t *
 int32_t lsm6dsv80x_ui_sda_pull_up_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsv80x_ui_sda_pull_up_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t lsm6dsv80x_aux_spi_mode_set(const stmdev_ctx_t *ctx, lsm6dsv80x_spi_mode_t val);
-int32_t lsm6dsv80x_aux_spi_mode_get(const stmdev_ctx_t *ctx,
+int32_t lsm6dsv80x_if2_spi_mode_set(const stmdev_ctx_t *ctx, lsm6dsv80x_spi_mode_t val);
+int32_t lsm6dsv80x_if2_spi_mode_get(const stmdev_ctx_t *ctx,
                                     lsm6dsv80x_spi_mode_t *val);
 
 int32_t lsm6dsv80x_sigmot_mode_set(const stmdev_ctx_t *ctx, uint8_t val);

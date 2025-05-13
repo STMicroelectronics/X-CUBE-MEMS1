@@ -22,7 +22,7 @@
 #define  __RTE_COMPONENTS_H__
 
 /* Defines ------------------------------------------------------------------*/
-/* STMicroelectronics.X-CUBE-MEMS1.11.2.0 */
+/* STMicroelectronics.X-CUBE-MEMS1.11.3.0 */
 #define SGP40_GAS_I2C
 #define BSP_ENV_SENSORS
 #define LPS22DF_PRESSTEMP_I2C

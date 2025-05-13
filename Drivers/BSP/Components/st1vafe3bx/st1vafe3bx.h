@@ -194,6 +194,13 @@ typedef union
 #define ST1VAFE3BX_ACC_SENSITIVITY_FOR_FS_8G   0.244f  /**< Sensitivity value for 8g full scale, Low-power1 mode [mg/LSB] */
 #define ST1VAFE3BX_ACC_SENSITIVITY_FOR_FS_16G  0.488f  /**< Sensitivity value for 16g full scale, Low-power1 mode [mg/LSB] */
 
+#define ST1VAFE3BX_AH_BIO_GAIN              1311.0f  /**< Gain value, 16 bits [LSB/mV] */
+
+#define ST1VAFE3BX_AH_BIO_GAIN_MULTIPL_2X      2.0f  /**< Gain multiplier for bits AH_BIO_GAIN_[1:0] == 00 in AH_BIO_CFG2 register [-] */
+#define ST1VAFE3BX_AH_BIO_GAIN_MULTIPL_4X      4.0f  /**< Gain multiplier for bits AH_BIO_GAIN_[1:0] == 01 in AH_BIO_CFG2 register [-] */
+#define ST1VAFE3BX_AH_BIO_GAIN_MULTIPL_8X      8.0f  /**< Gain multiplier for bits AH_BIO_GAIN_[1:0] == 10 in AH_BIO_CFG2 register [-] */
+#define ST1VAFE3BX_AH_BIO_GAIN_MULTIPL_16X    16.0f  /**< Gain multiplier for bits AH_BIO_GAIN_[1:0] == 11 in AH_BIO_CFG2 register [-] */
+
 /**
   * @}
   */

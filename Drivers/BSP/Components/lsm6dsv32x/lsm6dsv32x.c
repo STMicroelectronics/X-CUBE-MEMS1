@@ -3432,9 +3432,9 @@ int32_t LSM6DSV32X_Write_Reg(LSM6DSV32X_Object_t *pObj, uint8_t Reg, uint8_t Dat
   */
 int32_t LSM6DSV32X_ACC_Get_DRDY_Status(LSM6DSV32X_Object_t *pObj, uint8_t *Status)
 {
-  lsm6dsv32x_all_sources_t val;
+  lsm6dsv32x_data_ready_t val;
 
-  if (lsm6dsv32x_all_sources_get(&(pObj->Ctx), &val) != LSM6DSV32X_OK)
+  if (lsm6dsv32x_flag_data_ready_get(&(pObj->Ctx), &val) != LSM6DSV32X_OK)
   {
     return LSM6DSV32X_ERROR;
   }
@@ -3451,9 +3451,9 @@ int32_t LSM6DSV32X_ACC_Get_DRDY_Status(LSM6DSV32X_Object_t *pObj, uint8_t *Statu
   */
 int32_t LSM6DSV32X_GYRO_Get_DRDY_Status(LSM6DSV32X_Object_t *pObj, uint8_t *Status)
 {
-  lsm6dsv32x_all_sources_t val;
+  lsm6dsv32x_data_ready_t val;
 
-  if (lsm6dsv32x_all_sources_get(&(pObj->Ctx), &val) != LSM6DSV32X_OK)
+  if (lsm6dsv32x_flag_data_ready_get(&(pObj->Ctx), &val) != LSM6DSV32X_OK)
   {
     return LSM6DSV32X_ERROR;
   }

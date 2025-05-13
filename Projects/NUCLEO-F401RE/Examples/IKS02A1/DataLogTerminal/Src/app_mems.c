@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.2.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.3.0 instances.
   ******************************************************************************
   * @attention
   *
@@ -213,10 +213,10 @@ static void floatToInt(float in, displayFloatToInt_t *out_value, int32_t dec_pre
     in = -in;
   }
 
-  in = in + (0.5f / pow(10, dec_prec));
+  in = in + (0.5f / (float)pow(10, (double)dec_prec));
   out_value->out_int = (int32_t)in;
   in = in - (float)(out_value->out_int);
-  out_value->out_dec = (int32_t)trunc(in * pow(10, dec_prec));
+  out_value->out_dec = (int32_t)trunc((double)in * pow(10, (double)dec_prec));
 }
 
 /**

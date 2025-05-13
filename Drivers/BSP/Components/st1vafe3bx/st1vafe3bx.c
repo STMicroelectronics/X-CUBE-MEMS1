@@ -273,11 +273,9 @@ int32_t ST1VAFE3BX_ExitDeepPowerDownI2C(ST1VAFE3BX_Object_t *pObj)
 {
   uint8_t val;
 
-  /* Perform dummy read in order to exit from deep power down in I2C mode*/
-  if (st1vafe3bx_device_id_get(&(pObj->Ctx), &val) != ST1VAFE3BX_OK)
-  {
-    return ST1VAFE3BX_ERROR;
-  }
+  /* Perform dummy read in order to exit from deep power down in I2C mode.
+   * NOTE: No return value check - expected first read fail. */
+  (void)st1vafe3bx_device_id_get(&(pObj->Ctx), &val);
 
   /* Wait for 25 ms based on datasheet */
   pObj->Ctx.mdelay(25);

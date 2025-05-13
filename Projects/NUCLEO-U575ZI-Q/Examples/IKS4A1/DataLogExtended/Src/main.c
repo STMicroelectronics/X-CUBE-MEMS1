@@ -526,7 +526,7 @@ static void Float_To_Int(float In, displayFloatToInt_t *OutValue, int32_t DecPre
 
   OutValue->out_int = (uint32_t)In;
   In = In - (float)(OutValue->out_int);
-  OutValue->out_dec = (uint32_t)trunc(In * pow(10.0f, (float)DecPrec));
+  OutValue->out_dec = (uint32_t)trunc((double)In * pow(10.0, (double)DecPrec));
 }
 
 /**
@@ -802,6 +802,11 @@ static void Accelero_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
   }
 
   if (Instance == IKS4A1_LSM6DSV80X_0)
+  {
+    status &= 0x01;  /* Only low-g accelerometer data ready status */
+  }
+
+  if (Instance == IKS4A1_LSM6DSV320X_0)
   {
     status &= 0x01;  /* Only low-g accelerometer data ready status */
   }
@@ -1230,6 +1235,63 @@ static void MLC_Handler(Msg_t *Msg)
 
     (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FUNC_CFG_ACCESS, LSM6DSV80X_MAIN_MEM_BANK << 7);
   }
+  else if ((AccInstance == IKS4A1_LSM6DSV320X_0) && (GyrInstance == IKS4A1_LSM6DSV320X_0))
+  {
+    mlc_status_max = 8;
+
+#if (MLC_STATUS_MAX < 8)
+#error "ERROR: Array index out of bounds!"
+#endif
+
+    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FUNC_CFG_ACCESS, LSM6DSV320X_EMBED_FUNC_MEM_BANK << 7);
+
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_MLC1_SRC, &mlc_status[0]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_MLC2_SRC, &mlc_status[1]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_MLC3_SRC, &mlc_status[2]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_MLC4_SRC, &mlc_status[3]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_MLC5_SRC, &mlc_status[4]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_MLC6_SRC, &mlc_status[5]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_MLC7_SRC, &mlc_status[6]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_MLC8_SRC, &mlc_status[7]);
+
+    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FUNC_CFG_ACCESS, LSM6DSV320X_MAIN_MEM_BANK << 7);
+  }
+  else if (AccInstance == IKS4A1_ST1VAFE3BX_0)
+  {
+    mlc_status_max = 4;
+    uint8_t func_cfg_reg;
+
+#if (MLC_STATUS_MAX < 4)
+#error "ERROR: Array index out of bounds!"
+#endif
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FUNC_CFG_ACCESS, &func_cfg_reg);
+
+    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FUNC_CFG_ACCESS, func_cfg_reg | (ST1VAFE3BX_EMBED_FUNC_MEM_BANK << 7));
+
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_MLC1_SRC, &mlc_status[0]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_MLC2_SRC, &mlc_status[1]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_MLC3_SRC, &mlc_status[2]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_MLC4_SRC, &mlc_status[3]);
+
+    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FUNC_CFG_ACCESS, func_cfg_reg | (ST1VAFE3BX_MAIN_MEM_BANK << 7));
+  }
+  else if ((AccInstance == IKS4A1_ST1VAFE6AX_0) && (GyrInstance == IKS4A1_ST1VAFE6AX_0))
+  {
+    mlc_status_max = 4;
+
+#if (MLC_STATUS_MAX < 4)
+#error "ERROR: Array index out of bounds!"
+#endif
+
+    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FUNC_CFG_ACCESS, ST1VAFE6AX_EMBED_FUNC_MEM_BANK << 7);
+
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_MLC1_SRC, &mlc_status[0]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_MLC2_SRC, &mlc_status[1]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_MLC3_SRC, &mlc_status[2]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_MLC4_SRC, &mlc_status[3]);
+
+    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FUNC_CFG_ACCESS, ST1VAFE6AX_MAIN_MEM_BANK << 7);
+  }
   else
   {
     mlc_status_max = 8;
@@ -1611,7 +1673,7 @@ static void FSM_Handler(Msg_t *Msg)
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_FUNC_CFG_ACCESS, &func_cfg_reg);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_FUNC_CFG_ACCESS, func_cfg_reg | (LIS2DUX12_EMBED_FUNC_MEM_BANK << 7));
+    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_FUNC_CFG_ACCESS, func_cfg_reg | (LIS2DUXS12_EMBED_FUNC_MEM_BANK << 7));
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_FSM_OUTS2, &fsm_status[1]);
@@ -1718,6 +1780,78 @@ static void FSM_Handler(Msg_t *Msg)
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
+  else if ((AccInstance == IKS4A1_LSM6DSV320X_0) && (GyrInstance == IKS4A1_LSM6DSV320X_0))
+  {
+    fsm_status_max = 9;
+
+#if (FSM_STATUS_MAX < 9)
+#error "ERROR: Array index out of bounds!"
+#endif
+
+    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FUNC_CFG_ACCESS, LSM6DSV320X_EMBED_FUNC_MEM_BANK << 7);
+
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FSM_OUTS1, &fsm_status[0]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FSM_OUTS2, &fsm_status[1]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FSM_OUTS3, &fsm_status[2]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FSM_OUTS4, &fsm_status[3]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FSM_OUTS5, &fsm_status[4]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FSM_OUTS6, &fsm_status[5]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FSM_OUTS7, &fsm_status[6]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FSM_OUTS8, &fsm_status[7]);
+
+    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FUNC_CFG_ACCESS, LSM6DSV320X_MAIN_MEM_BANK << 7);
+
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FSM_STATUS_MAINPAGE, &fsm_status[8]);
+  }
+  else if (AccInstance == IKS4A1_ST1VAFE3BX_0)
+  {
+    fsm_status_max = 9;
+    uint8_t func_cfg_reg;
+
+#if (FSM_STATUS_MAX < 9)
+#error "ERROR: Array index out of bounds!"
+#endif
+
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FUNC_CFG_ACCESS, &func_cfg_reg);
+
+    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FUNC_CFG_ACCESS, func_cfg_reg | (ST1VAFE3BX_EMBED_FUNC_MEM_BANK << 7));
+
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FSM_OUTS1, &fsm_status[0]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FSM_OUTS2, &fsm_status[1]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FSM_OUTS3, &fsm_status[2]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FSM_OUTS4, &fsm_status[3]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FSM_OUTS5, &fsm_status[4]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FSM_OUTS6, &fsm_status[5]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FSM_OUTS7, &fsm_status[6]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FSM_OUTS8, &fsm_status[7]);
+
+    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FUNC_CFG_ACCESS, func_cfg_reg | (ST1VAFE3BX_MAIN_MEM_BANK << 7));
+
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FSM_STATUS_MAINPAGE, &fsm_status[8]);
+  }
+  else if ((AccInstance == IKS4A1_ST1VAFE6AX_0) && (GyrInstance == IKS4A1_ST1VAFE6AX_0))
+  {
+    fsm_status_max = 9;
+
+#if (FSM_STATUS_MAX < 9)
+#error "ERROR: Array index out of bounds!"
+#endif
+
+    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FUNC_CFG_ACCESS, ST1VAFE6AX_EMBED_FUNC_MEM_BANK << 7);
+
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FSM_OUTS1, &fsm_status[0]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FSM_OUTS2, &fsm_status[1]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FSM_OUTS3, &fsm_status[2]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FSM_OUTS4, &fsm_status[3]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FSM_OUTS5, &fsm_status[4]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FSM_OUTS6, &fsm_status[5]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FSM_OUTS7, &fsm_status[6]);
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FSM_OUTS8, &fsm_status[7]);
+
+    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FUNC_CFG_ACCESS, ST1VAFE6AX_MAIN_MEM_BANK << 7);
+
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FSM_STATUS_MAINPAGE, &fsm_status[8]);
+  }
   else
   {
     fsm_status_max = 18;
@@ -1810,6 +1944,23 @@ static void QVAR_Handler(Msg_t *Msg, uint32_t Instance)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV32X_0, LSM6DSV32X_STATUS_REG, (uint8_t *)&status);
     qvar_data_available = status.ah_qvarda;
   }
+  else if (AccInstance == IKS4A1_ST1VAFE3BX_0)
+  {
+    if((SensorsEnabled & ACCELEROMETER_SENSOR_ENABLED) == ACCELEROMETER_SENSOR_ENABLED)
+    {
+      qvar_data_available = ((NewDataFlags & ACCELEROMETER_SENSOR_SYNC) == ACCELEROMETER_SENSOR_SYNC) ? 1 : 0;
+    }
+    else
+    {
+      IKS4A1_MOTION_SENSOR_Get_DRDY_Status(Instance, MOTION_ACCELERO, &qvar_data_available);
+    }
+  }
+  else if ((AccInstance == IKS4A1_ST1VAFE6AX_0) && (GyrInstance == IKS4A1_ST1VAFE6AX_0))
+  {
+    st1vafe6ax_status_reg_t status;
+    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_STATUS_REG, (uint8_t *)&status);
+    qvar_data_available = status.ah_bioda;
+  }
   else
   {
     qvar_data_available = 0;
@@ -1884,6 +2035,45 @@ static void QVAR_Handler(Msg_t *Msg, uint32_t Instance)
       (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV32X_0, LSM6DSV32X_AH_QVAR_OUT_H, &value.u8bit[1]);
       qvar_mv = value.i16bit / LSM6DSV32X_QVAR_GAIN;
     }
+    else if (AccInstance == IKS4A1_ST1VAFE3BX_0)
+    {
+      st1vafe3bx_ah_bio_cfg2_t cfg;
+      float multiplier;
+
+      (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_OUT_AH_BIO_L, &value.u8bit[0]);
+      (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_OUT_AH_BIO_H, &value.u8bit[1]);
+      (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&cfg);
+
+      switch (cfg.ah_bio_gain)
+      {
+      case ST1VAFE3BX_GAIN_2:
+        multiplier = ST1VAFE3BX_AH_BIO_GAIN_MULTIPL_2X;
+        break;
+
+      case ST1VAFE3BX_GAIN_4:
+        multiplier = ST1VAFE3BX_AH_BIO_GAIN_MULTIPL_4X;
+        break;
+
+      case ST1VAFE3BX_GAIN_8:
+        multiplier = ST1VAFE3BX_AH_BIO_GAIN_MULTIPL_8X;
+        break;
+
+      case ST1VAFE3BX_GAIN_16:
+        multiplier = ST1VAFE3BX_AH_BIO_GAIN_MULTIPL_16X;
+        break;
+
+      default:
+        multiplier = -1.0f;
+      }
+
+      qvar_mv = value.i16bit / (ST1VAFE3BX_AH_BIO_GAIN * multiplier);
+    }
+    else if ((AccInstance == IKS4A1_ST1VAFE6AX_0) && (GyrInstance == IKS4A1_ST1VAFE6AX_0))
+    {
+      (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_AH_BIO_OUT_L, &value.u8bit[0]);
+      (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_AH_BIO_OUT_H, &value.u8bit[1]);
+      qvar_mv = value.i16bit / ST1VAFE6AX_BIO_GAIN;
+    }
     else
     {
       qvar_mv = 0.0f;
@@ -1921,6 +2111,16 @@ static void Accelero_HG_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
   uint8_t status = 0;
 
   if (Instance == IKS4A1_LSM6DSV80X_0)
+  {
+    if (IKS4A1_MOTION_SENSOR_Get_DRDY_Status(Instance, MOTION_ACCELERO, &status) != BSP_ERROR_NONE)
+    {
+      status = 0;
+    }
+
+    status = (status & 0x02) >> 1;  /* Only high-g accelerometer data ready status */
+  }
+
+  if (Instance == IKS4A1_LSM6DSV320X_0)
   {
     if (IKS4A1_MOTION_SENSOR_Get_DRDY_Status(Instance, MOTION_ACCELERO, &status) != BSP_ERROR_NONE)
     {

@@ -524,7 +524,7 @@ static void Float_To_Int(float In, displayFloatToInt_t *OutValue, int32_t DecPre
 
   OutValue->out_int = (uint32_t)In;
   In = In - (float)(OutValue->out_int);
-  OutValue->out_dec = (uint32_t)trunc(In * pow(10.0f, (float)DecPrec));
+  OutValue->out_dec = (uint32_t)trunc((double)In * pow(10.0, (double)DecPrec));
 }
 
 /**

@@ -3718,9 +3718,9 @@ int32_t LSM6DSV80X_Write_Reg(LSM6DSV80X_Object_t *pObj, uint8_t Reg, uint8_t Dat
   */
 int32_t LSM6DSV80X_ACC_Get_DRDY_Status(LSM6DSV80X_Object_t *pObj, uint8_t *Status)
 {
-  lsm6dsv80x_all_sources_t val;
+  lsm6dsv80x_data_ready_t val;
 
-  if (lsm6dsv80x_all_sources_get(&(pObj->Ctx), &val) != LSM6DSV80X_OK)
+  if (lsm6dsv80x_flag_data_ready_get(&(pObj->Ctx), &val) != LSM6DSV80X_OK)  // TODO: Check this
   {
     return LSM6DSV80X_ERROR;
   }
@@ -3737,14 +3737,14 @@ int32_t LSM6DSV80X_ACC_Get_DRDY_Status(LSM6DSV80X_Object_t *pObj, uint8_t *Statu
   */
 int32_t LSM6DSV80X_ACC_HG_Get_DRDY_Status(LSM6DSV80X_Object_t *pObj, uint8_t *Status)
 {
-  lsm6dsv80x_all_sources_t val;
+  lsm6dsv80x_data_ready_t val;
 
-  if (lsm6dsv80x_all_sources_get(&(pObj->Ctx), &val) != LSM6DSV80X_OK)
+  if (lsm6dsv80x_flag_data_ready_get(&(pObj->Ctx), &val) != LSM6DSV80X_OK)  // TODO: Check this
   {
     return LSM6DSV80X_ERROR;
   }
 
-  *Status = val.drdy_xlhgda;
+  *Status = val.drdy_hgxl;
   return LSM6DSV80X_OK;
 }
 
@@ -3756,9 +3756,9 @@ int32_t LSM6DSV80X_ACC_HG_Get_DRDY_Status(LSM6DSV80X_Object_t *pObj, uint8_t *St
   */
 int32_t LSM6DSV80X_GYRO_Get_DRDY_Status(LSM6DSV80X_Object_t *pObj, uint8_t *Status)
 {
-  lsm6dsv80x_all_sources_t val;
+  lsm6dsv80x_data_ready_t val;
 
-  if (lsm6dsv80x_all_sources_get(&(pObj->Ctx), &val) != LSM6DSV80X_OK)
+  if (lsm6dsv80x_flag_data_ready_get(&(pObj->Ctx), &val) != LSM6DSV80X_OK)  // TODO: Check this
   {
     return LSM6DSV80X_ERROR;
   }
