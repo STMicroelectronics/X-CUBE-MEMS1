@@ -988,7 +988,7 @@ int32_t iis2iclx_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
 /**
   * @brief  Timestamp first data output register (r).
   *         The value is expressed as a 32-bit word and the bit resolution
-  *         is 25 us.[get]
+  *         is 25 μs.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores data read
@@ -4338,7 +4338,7 @@ int32_t iis2iclx_fifo_timestamp_decimation_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  Resets the internal counter of batching events for a single sensor.
-  *         This bit is automatically reset to zero if it was set to '1'.[set]
+  *         This bit is automatically reset to zero if it was set to ‘1’.[set]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  val    Change the values of rst_counter_bdr in reg COUNTER_BDR_REG1
@@ -4365,7 +4365,7 @@ int32_t iis2iclx_rst_batch_counter_set(const stmdev_ctx_t *ctx, uint8_t val)
 
 /**
   * @brief  Resets the internal counter of batching events for a single sensor.
-  *         This bit is automatically reset to zero if it was set to '1'.[get]
+  *         This bit is automatically reset to zero if it was set to ‘1’.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  val    Change the values of rst_counter_bdr in reg COUNTER_BDR_REG1

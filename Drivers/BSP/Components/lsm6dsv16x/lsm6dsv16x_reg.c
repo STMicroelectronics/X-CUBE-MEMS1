@@ -16,6 +16,7 @@
   ******************************************************************************
   */
 
+#include <string.h>
 #include "lsm6dsv16x_reg.h"
 
 /**
@@ -186,6 +187,60 @@ float_t lsm6dsv16x_from_lsb_to_nsec(uint32_t lsb)
 float_t lsm6dsv16x_from_lsb_to_mv(int16_t lsb)
 {
   return ((float_t)lsb) / 78.0f;
+}
+
+/*
+ * Original conversion routines taken from: https://github.com/numpy/numpy
+ *
+ * Converts from half-precision (16-bit) float number to single precision (32-bit).
+ *
+ * uint32_t  static uint32_t ToFloatBits(uint16_t h);
+ * Released under BSD-3-Clause License
+ */
+static uint32_t ToFloatBits(uint16_t h)
+{
+  uint16_t h_exp = (h & 0x7c00u);
+  uint32_t f_sgn = ((uint32_t)h & 0x8000u) << 16;
+  switch (h_exp)
+  {
+    case 0x0000u:   // 0 or subnormal
+    {
+      uint16_t h_sig = (h & 0x03ffu);
+      // Signed zero
+      if (h_sig == 0)
+      {
+        return f_sgn;
+      }
+      // Subnormal
+      h_sig <<= 1;
+      while ((h_sig & 0x0400u) == 0)
+      {
+        h_sig <<= 1;
+        h_exp++;
+      }
+      uint32_t f_exp = ((uint32_t)(127 - 15 - h_exp)) << 23;
+      uint32_t f_sig = ((uint32_t)(h_sig & 0x03ffu)) << 13;
+      return f_sgn + f_exp + f_sig;
+    }
+    case 0x7c00u: // inf or NaN
+      // All-ones exponent and a copy of the significand
+      return f_sgn + 0x7f800000u + (((uint32_t)(h & 0x03ffu)) << 13);
+    default: // normalized
+      // Just need to adjust the exponent and shift
+      return f_sgn + (((uint32_t)(h & 0x7fffu) + 0x1c000u) << 13);
+  }
+}
+
+/**
+  * @brief  Convert from 16-bit to 32-bit float number
+  *
+  * @param  val      Batching in FIFO buffer of SFLP values.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+uint32_t lsm6dsv16x_from_f16_to_f32(uint16_t val)
+{
+  return ToFloatBits(val);
 }
 
 /**
@@ -384,9 +439,9 @@ int32_t lsm6dsv16x_reset_set(const stmdev_ctx_t *ctx, lsm6dsv16x_reset_t val)
     return ret;
   }
 
-  ctrl3.boot = ((uint8_t)val & 0x04U) >> 2;
-  ctrl3.sw_reset = ((uint8_t)val & 0x02U) >> 1;
-  func_cfg_access.sw_por = (uint8_t)val & 0x01U;
+  ctrl3.boot = (val == LSM6DSV16X_RESTORE_CAL_PARAM) ? 1 : 0;
+  ctrl3.sw_reset = (val == LSM6DSV16X_RESTORE_CTRL_REGS) ? 1 : 0;
+  func_cfg_access.sw_por = (val == LSM6DSV16X_GLOBAL_RST) ? 1 : 0;
 
   ret = lsm6dsv16x_write_reg(ctx, LSM6DSV16X_CTRL3, (uint8_t *)&ctrl3, 1);
   ret += lsm6dsv16x_write_reg(ctx, LSM6DSV16X_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
@@ -1902,12 +1957,6 @@ int32_t lsm6dsv16x_pin_int1_route_set(const stmdev_ctx_t *ctx,
   lsm6dsv16x_md1_cfg_t            md1_cfg;
   int32_t ret;
 
-  /* not available on INT1 */
-  if (val->drdy_temp == 1)
-  {
-    return -1;
-  }
-
   ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_INT1_CTRL, (uint8_t *)&int1_ctrl, 1);
   if (ret != 0)
   {
@@ -1962,6 +2011,8 @@ int32_t lsm6dsv16x_pin_int1_route_get(const stmdev_ctx_t *ctx,
   lsm6dsv16x_md1_cfg_t            md1_cfg;
   int32_t ret;
 
+  memset(val, 0x0, sizeof(lsm6dsv16x_pin_int_route_t));
+
   ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_INT1_CTRL, (uint8_t *)&int1_ctrl, 1);
   if (ret != 0)
   {
@@ -1997,7 +2048,7 @@ int32_t lsm6dsv16x_pin_int1_route_get(const stmdev_ctx_t *ctx,
   * @brief   Select the signal that need to route on int2 pad[set]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    the signals to route on int1 pin.
+  * @param  val    the signals to route on int2 pin.
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
@@ -2006,8 +2057,11 @@ int32_t lsm6dsv16x_pin_int2_route_set(const stmdev_ctx_t *ctx,
 {
   lsm6dsv16x_int2_ctrl_t          int2_ctrl;
   lsm6dsv16x_ctrl4_t              ctrl4;
+  lsm6dsv16x_ctrl7_t              ctrl7;
   lsm6dsv16x_md2_cfg_t            md2_cfg;
   int32_t ret;
+
+  memset(val, 0x0, sizeof(lsm6dsv16x_pin_int_route_t));
 
   ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_INT2_CTRL, (uint8_t *)&int2_ctrl, 1);
   if (ret != 0)
@@ -2038,6 +2092,14 @@ int32_t lsm6dsv16x_pin_int2_route_set(const stmdev_ctx_t *ctx,
     return ret;
   }
 
+  ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_CTRL7, (uint8_t *)&ctrl7, 1);
+  ctrl7.int2_drdy_ah_qvar         = val->drdy_ah_qvar;
+  ret += lsm6dsv16x_write_reg(ctx, LSM6DSV16X_CTRL7, (uint8_t *)&ctrl7, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_MD2_CFG, (uint8_t *)&md2_cfg, 1);
   if (ret != 0)
   {
@@ -2062,7 +2124,7 @@ int32_t lsm6dsv16x_pin_int2_route_set(const stmdev_ctx_t *ctx,
   * @brief  Select the signal that need to route on int2 pad.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    the signals that are routed on int1 pin.(ptr)
+  * @param  val    the signals that are routed on int2 pin.(ptr)
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
@@ -2071,6 +2133,7 @@ int32_t lsm6dsv16x_pin_int2_route_get(const stmdev_ctx_t *ctx,
 {
   lsm6dsv16x_int2_ctrl_t          int2_ctrl;
   lsm6dsv16x_ctrl4_t              ctrl4;
+  lsm6dsv16x_ctrl7_t              ctrl7;
   lsm6dsv16x_md2_cfg_t            md2_cfg;
   int32_t ret;
 
@@ -2097,6 +2160,14 @@ int32_t lsm6dsv16x_pin_int2_route_get(const stmdev_ctx_t *ctx,
 
   val->drdy_temp      = ctrl4.int2_drdy_temp;
 
+  ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_CTRL7, (uint8_t *)&ctrl7, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
+  val->drdy_ah_qvar = ctrl7.int2_drdy_ah_qvar;
+
   ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_MD2_CFG, (uint8_t *)&md2_cfg, 1);
   if (ret != 0)
   {
@@ -2111,6 +2182,270 @@ int32_t lsm6dsv16x_pin_int2_route_get(const stmdev_ctx_t *ctx,
   val->wakeup         = md2_cfg.int2_wu;
   val->freefall       = md2_cfg.int2_ff;
   val->sleep_change   = md2_cfg.int2_sleep_change;
+
+  return ret;
+}
+
+/**
+  * @brief  routes embedded func interrupt signals on INT 1 pin.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      routes embedded func interrupt signals on INT 1 pin.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lsm6dsv16x_emb_pin_int1_route_set(const stmdev_ctx_t *ctx,
+                                          const lsm6dsv16x_emb_pin_int_route_t *val)
+{
+  lsm6dsv16x_emb_func_int1_t emb_func_int1;
+  lsm6dsv16x_md1_cfg_t md1_cfg;
+  int32_t ret;
+
+  ret = lsm6dsv16x_mem_bank_set(ctx, LSM6DSV16X_EMBED_FUNC_MEM_BANK);
+  if (ret == 0)
+  {
+    ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_EMB_FUNC_INT1, (uint8_t *)&emb_func_int1, 1);
+  }
+
+  if (ret == 0)
+  {
+    emb_func_int1.int1_tilt = val->tilt;
+    emb_func_int1.int1_sig_mot = val->sig_mot;
+    emb_func_int1.int1_step_detector = val->step_det;
+    emb_func_int1.int1_fsm_lc = val->fsm_lc;
+
+    ret = lsm6dsv16x_write_reg(ctx, LSM6DSV16X_EMB_FUNC_INT1, (uint8_t *)&emb_func_int1, 1);
+  }
+  ret += lsm6dsv16x_mem_bank_set(ctx, LSM6DSV16X_MAIN_MEM_BANK);
+
+  ret += lsm6dsv16x_read_reg(ctx, LSM6DSV16X_MD1_CFG, (uint8_t *)&md1_cfg, 1);
+  if (ret == 0)
+  {
+    md1_cfg.int1_emb_func = 1;
+    ret = lsm6dsv16x_write_reg(ctx, LSM6DSV16X_MD1_CFG, (uint8_t *)&md1_cfg, 1);
+  }
+
+  return ret;
+}
+
+/**
+  * @brief  routes embedded func interrupt signals on INT 1 pin.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      routes embedded func interrupt signals on INT 1 pin.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lsm6dsv16x_emb_pin_int1_route_get(const stmdev_ctx_t *ctx,
+                                          lsm6dsv16x_emb_pin_int_route_t *val)
+{
+  lsm6dsv16x_emb_func_int1_t emb_func_int1;
+  int32_t ret;
+
+  ret = lsm6dsv16x_mem_bank_set(ctx, LSM6DSV16X_EMBED_FUNC_MEM_BANK);
+  if (ret == 0)
+  {
+    ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_EMB_FUNC_INT1, (uint8_t *)&emb_func_int1, 1);
+  }
+
+  if (ret == 0)
+  {
+    val->tilt = emb_func_int1.int1_tilt;
+    val->sig_mot = emb_func_int1.int1_sig_mot;
+    val->step_det = emb_func_int1.int1_step_detector;
+    val->fsm_lc = emb_func_int1.int1_fsm_lc;
+  }
+  ret = lsm6dsv16x_mem_bank_set(ctx, LSM6DSV16X_MAIN_MEM_BANK);
+
+  return ret;
+}
+
+/**
+  * @brief  routes embedded func interrupt signals on INT 2 pin.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      routes embedded func interrupt signals on INT 2 pin.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lsm6dsv16x_emb_pin_int2_route_set(const stmdev_ctx_t *ctx,
+                                          const lsm6dsv16x_emb_pin_int_route_t *val)
+{
+  lsm6dsv16x_emb_func_int2_t emb_func_int2;
+  lsm6dsv16x_md2_cfg_t md2_cfg;
+  int32_t ret;
+
+  ret = lsm6dsv16x_mem_bank_set(ctx, LSM6DSV16X_EMBED_FUNC_MEM_BANK);
+  if (ret == 0)
+  {
+    ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_EMB_FUNC_INT2, (uint8_t *)&emb_func_int2, 1);
+  }
+
+  if (ret == 0)
+  {
+    emb_func_int2.int2_tilt = val->tilt;
+    emb_func_int2.int2_sig_mot = val->sig_mot;
+    emb_func_int2.int2_step_detector = val->step_det;
+    emb_func_int2.int2_fsm_lc = val->fsm_lc;
+
+    ret = lsm6dsv16x_write_reg(ctx, LSM6DSV16X_EMB_FUNC_INT2, (uint8_t *)&emb_func_int2, 1);
+  }
+  ret += lsm6dsv16x_mem_bank_set(ctx, LSM6DSV16X_MAIN_MEM_BANK);
+
+  ret += lsm6dsv16x_read_reg(ctx, LSM6DSV16X_MD2_CFG, (uint8_t *)&md2_cfg, 1);
+  if (ret == 0)
+  {
+    md2_cfg.int2_emb_func = 1;
+    ret = lsm6dsv16x_write_reg(ctx, LSM6DSV16X_MD2_CFG, (uint8_t *)&md2_cfg, 1);
+  }
+
+  return ret;
+}
+
+/**
+  * @brief  routes embedded func interrupt signals on INT 2 pin.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      routes embedded func interrupt signals on INT 2 pin.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lsm6dsv16x_emb_pin_int2_route_get(const stmdev_ctx_t *ctx,
+                                          lsm6dsv16x_emb_pin_int_route_t *val)
+{
+  lsm6dsv16x_emb_func_int2_t emb_func_int2;
+  int32_t ret;
+
+  ret = lsm6dsv16x_mem_bank_set(ctx, LSM6DSV16X_EMBED_FUNC_MEM_BANK);
+  if (ret == 0)
+  {
+    ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_EMB_FUNC_INT2, (uint8_t *)&emb_func_int2, 1);
+  }
+
+  if (ret == 0)
+  {
+    val->tilt = emb_func_int2.int2_tilt;
+    val->sig_mot = emb_func_int2.int2_sig_mot;
+    val->step_det = emb_func_int2.int2_step_detector;
+    val->fsm_lc = emb_func_int2.int2_fsm_lc;
+  }
+  ret = lsm6dsv16x_mem_bank_set(ctx, LSM6DSV16X_MAIN_MEM_BANK);
+
+  return ret;
+}
+
+/**
+  * @brief  Embedded Interrupt configuration mode.[set]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      INT_PULSED, INT_LATCHED
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lsm6dsv16x_embedded_int_cfg_set(const stmdev_ctx_t *ctx,
+                                        lsm6dsv16x_embedded_int_config_t val)
+{
+  lsm6dsv16x_page_rw_t page_rw;
+  int32_t ret;
+
+  ret = lsm6dsv16x_mem_bank_set(ctx, LSM6DSV16X_EMBED_FUNC_MEM_BANK);
+  if (ret == 0)
+  {
+    ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_PAGE_RW, (uint8_t *)&page_rw, 1);
+
+    switch (val)
+    {
+      case LSM6DSV16X_INT_LATCH_DISABLE:
+        page_rw.emb_func_lir = 0;
+        break;
+
+      case LSM6DSV16X_INT_LATCH_ENABLE:
+      default:
+        page_rw.emb_func_lir = 1;
+        break;
+    }
+
+    ret += lsm6dsv16x_write_reg(ctx, LSM6DSV16X_PAGE_RW, (uint8_t *)&page_rw, 1);
+  }
+
+  ret += lsm6dsv16x_mem_bank_set(ctx, LSM6DSV16X_MAIN_MEM_BANK);
+
+  return ret;
+}
+
+/**
+  * @brief  Interrupt configuration mode.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      INT_DISABLED, INT_PULSED, INT_LATCHED
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lsm6dsv16x_embedded_int_cfg_get(const stmdev_ctx_t *ctx,
+                                        lsm6dsv16x_embedded_int_config_t *val)
+{
+  lsm6dsv16x_page_rw_t page_rw;
+  int32_t ret;
+
+  ret = lsm6dsv16x_mem_bank_set(ctx, LSM6DSV16X_EMBED_FUNC_MEM_BANK);
+  if (ret == 0)
+  {
+    ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_PAGE_RW, (uint8_t *)&page_rw, 1);
+
+    if (page_rw.emb_func_lir == 0U)
+    {
+      *val = LSM6DSV16X_INT_LATCH_DISABLE;
+    }
+    else
+    {
+      *val = LSM6DSV16X_INT_LATCH_ENABLE;
+    }
+  }
+
+  ret += lsm6dsv16x_mem_bank_set(ctx, LSM6DSV16X_MAIN_MEM_BANK);
+
+  return ret;
+}
+
+/**
+  * @brief  Get the status of embedded functions.[get]
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  val      lsm6dsv16x_embedded_status_t ptr
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lsm6dsv16x_embedded_status_get(const stmdev_ctx_t *ctx,
+                                       lsm6dsv16x_embedded_status_t *val)
+{
+  lsm6dsv16x_emb_func_status_mainpage_t emb_func_status;
+  lsm6dsv16x_emb_func_src_t emb_func_src;
+  int32_t ret;
+
+  ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_EMB_FUNC_STATUS_MAINPAGE, (uint8_t *)&emb_func_status, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
+  val->step_detector = emb_func_status.is_step_det;
+  val->tilt = emb_func_status.is_tilt;
+  val->sig_mot = emb_func_status.is_sigmot;
+  val->fsm_lc = emb_func_status.is_fsm_lc;
+
+  /* embedded func */
+  ret = lsm6dsv16x_mem_bank_set(ctx, LSM6DSV16X_EMBED_FUNC_MEM_BANK);
+  ret += lsm6dsv16x_read_reg(ctx, LSM6DSV16X_EMB_FUNC_SRC, (uint8_t *)&emb_func_src, 1);
+  ret += lsm6dsv16x_mem_bank_set(ctx, LSM6DSV16X_MAIN_MEM_BANK);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
+  val->step_count_inc = emb_func_src.stepcounter_bit_set;
+  val->step_count_overflow = emb_func_src.step_overflow;
+  val->step_on_delta_time = emb_func_src.step_count_delta_ia;
+  val->step_detector = emb_func_src.step_detected;
 
   return ret;
 }
@@ -3237,13 +3572,8 @@ int32_t lsm6dsv16x_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val)
   lsm6dsv16x_fifo_ctrl1_t fifo_ctrl1;
   int32_t ret;
 
-  ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_FIFO_CTRL1, (uint8_t *)&fifo_ctrl1, 1);
-
-  if (ret == 0)
-  {
-    fifo_ctrl1.wtm = val;
-    ret = lsm6dsv16x_write_reg(ctx, LSM6DSV16X_FIFO_CTRL1, (uint8_t *)&fifo_ctrl1, 1);
-  }
+  fifo_ctrl1.wtm = val;
+  ret = lsm6dsv16x_write_reg(ctx, LSM6DSV16X_FIFO_CTRL1, (uint8_t *)&fifo_ctrl1, 1);
 
   return ret;
 }
@@ -3488,7 +3818,7 @@ int32_t lsm6dsv16x_fifo_compress_algo_real_time_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv16x_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t lsm6dsv16x_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, lsm6dsv16x_fifo_event_t val)
 {
   lsm6dsv16x_fifo_ctrl2_t fifo_ctrl2;
   int32_t ret;
@@ -3496,7 +3826,7 @@ int32_t lsm6dsv16x_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val)
   ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
   if (ret == 0)
   {
-    fifo_ctrl2.stop_on_wtm = val;
+    fifo_ctrl2.stop_on_wtm = (val == LSM6DSV16X_FIFO_EV_WTM) ? 1 : 0;
     ret = lsm6dsv16x_write_reg(ctx, LSM6DSV16X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
   }
 
@@ -3511,13 +3841,16 @@ int32_t lsm6dsv16x_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lsm6dsv16x_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val)
+int32_t lsm6dsv16x_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, lsm6dsv16x_fifo_event_t *val)
 {
   lsm6dsv16x_fifo_ctrl2_t fifo_ctrl2;
   int32_t ret;
 
   ret = lsm6dsv16x_read_reg(ctx, LSM6DSV16X_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
-  *val = fifo_ctrl2.stop_on_wtm;
+  if (ret == 0)
+  {
+    *val = (fifo_ctrl2.stop_on_wtm == 1) ? LSM6DSV16X_FIFO_EV_WTM : LSM6DSV16X_FIFO_EV_FULL;
+  }
 
   return ret;
 }

@@ -1,21 +1,21 @@
 /*
- ******************************************************************************
- * @file    ilps28qsw_reg.h
- * @author  Sensors Software Solution Team
- * @brief   This file contains all the functions prototypes for the
- *          ilps28qsw_reg.c driver.
- ******************************************************************************
- * @attention
- *
-  * Copyright (c) 2023 STMicroelectronics.
+  ******************************************************************************
+  * @file    ilps28qsw_reg.h
+  * @author  Sensors Software Solution Team
+  * @brief   This file contains all the functions prototypes for the
+  *          ilps28qsw_reg.c driver.
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
   * in the root directory of this software component.
   * If no LICENSE file comes with this software, it is provided AS-IS.
- *
- ******************************************************************************
- */
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef ILPS28QSW_REGS_H
@@ -121,6 +121,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 /**
@@ -337,13 +340,15 @@ typedef struct
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t not_used_02      : 5;
+  uint8_t I3C_Bus_Avb_Sel  : 2;
+  uint8_t not_used_02      : 3;
   uint8_t asf_on           : 1;
   uint8_t not_used_01      : 2;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
   uint8_t not_used_01      : 2;
   uint8_t asf_on           : 1;
-  uint8_t not_used_02      : 5;
+  uint8_t not_used_02      : 3;
+  uint8_t I3C_Bus_Avb_Sel  : 2;
 #endif /* DRV_BYTE_ORDER */
 } ilps28qsw_i3c_if_ctrl_t;
 
@@ -414,7 +419,7 @@ typedef struct
 #define ILPS28QSW_PRESS_OUT_H             0x2AU
 #define ILPS28QSW_TEMP_OUT_L              0x2BU
 #define ILPS28QSW_TEMP_OUT_H              0x2CU
-#define ILPS28QSW_ANALOGIC_HUB_DISABLE    0x5FU
+
 #define ILPS28QSW_FIFO_DATA_OUT_PRESS_XL  0x78U
 #define ILPS28QSW_FIFO_DATA_OUT_PRESS_L   0x79U
 #define ILPS28QSW_FIFO_DATA_OUT_PRESS_H   0x7AU
@@ -473,7 +478,7 @@ int32_t ilps28qsw_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                             uint8_t *data, uint16_t len);
 
 extern float_t ilps28qsw_from_fs1260_to_hPa(int32_t lsb);
-extern float_t ilps28qsw_from_fs4000_to_hPa(int32_t lsb);
+extern float_t ilps28qsw_from_fs4060_to_hPa(int32_t lsb);
 
 extern float_t ilps28qsw_from_lsb_to_celsius(int16_t lsb);
 
@@ -491,9 +496,18 @@ typedef enum
   ILPS28QSW_ALWAYS_ON = 0x01, /* anti-spike filters always on */
 } ilps28qsw_filter_t;
 
+typedef enum
+{
+  ILPS28QSW_BUS_AVB_TIME_50us      = 0x00, /* bus available time equal to 50 us */
+  ILPS28QSW_BUS_AVB_TIME_2us       = 0x01, /* bus available time equal to 2 us */
+  ILPS28QSW_BUS_AVB_TIME_1ms       = 0x02, /* bus available time equal to 1 ms */
+  ILPS28QSW_BUS_AVB_TIME_25ms      = 0x03, /* bus available time equal to 25 ms */
+} ilps28qsw_bus_avb_time_t;
+
 typedef struct
 {
   ilps28qsw_filter_t filter;
+  ilps28qsw_bus_avb_time_t bus_avb_time;
 } ilps28qsw_bus_mode_t;
 int32_t ilps28qsw_bus_mode_set(const stmdev_ctx_t *ctx, ilps28qsw_bus_mode_t *val);
 int32_t ilps28qsw_bus_mode_get(const stmdev_ctx_t *ctx, ilps28qsw_bus_mode_t *val);
@@ -522,7 +536,6 @@ int32_t ilps28qsw_status_get(const stmdev_ctx_t *ctx, ilps28qsw_stat_t *val);
 typedef struct
 {
   uint8_t sda_pull_up : 1; /* 1 = pull-up always disabled */
-  uint8_t cs_pull_up  : 1; /* 1 = pull-up always disabled */
 } ilps28qsw_pin_conf_t;
 int32_t ilps28qsw_pin_conf_set(const stmdev_ctx_t *ctx, ilps28qsw_pin_conf_t *val);
 int32_t ilps28qsw_pin_conf_get(const stmdev_ctx_t *ctx, ilps28qsw_pin_conf_t *val);
@@ -695,6 +708,8 @@ int32_t ilps28qsw_reference_mode_set(const stmdev_ctx_t *ctx,
                                      ilps28qsw_ref_md_t *val);
 int32_t ilps28qsw_reference_mode_get(const stmdev_ctx_t *ctx,
                                      ilps28qsw_ref_md_t *val);
+
+int32_t ilps28qsw_refp_get(const stmdev_ctx_t *ctx, int16_t *val);
 
 int32_t ilps28qsw_opc_set(const stmdev_ctx_t *ctx, int16_t val);
 int32_t ilps28qsw_opc_get(const stmdev_ctx_t *ctx, int16_t *val);

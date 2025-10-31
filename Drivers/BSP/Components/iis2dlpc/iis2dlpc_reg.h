@@ -121,6 +121,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 /**
@@ -789,10 +792,10 @@ int32_t iis2dlpc_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 int32_t iis2dlpc_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t iis2dlpc_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t iis2dlpc_reset_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis2dlpc_reset_set(const stmdev_ctx_t *ctx);
 int32_t iis2dlpc_reset_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-int32_t iis2dlpc_boot_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis2dlpc_boot_set(const stmdev_ctx_t *ctx);
 int32_t iis2dlpc_boot_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum

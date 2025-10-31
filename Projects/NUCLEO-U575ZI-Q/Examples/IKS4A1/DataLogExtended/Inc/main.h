@@ -51,6 +51,7 @@ extern "C" {
 #define INTERRUPTS_ENABLED               0x00000100U
 #define FSM_ENABLED                      0x00000200U
 #define MLC_ENABLED                      0x00000400U
+#define ISPU_ENABLED                     0x00000800U
 #define QVAR_ENABLED                     0x00001000U
 #define ACCELEROMETER_HG_SENSOR_ENABLED  0x00002000U
 
@@ -78,7 +79,7 @@ void Error_Handler(void);
 void RTC_DateRegulate(uint8_t y, uint8_t m, uint8_t d, uint8_t dw);
 void RTC_TimeRegulate(uint8_t hh, uint8_t mm, uint8_t ss);
 void MX_TIM3_Init(void);
-uint32_t DWT_GetTickUS(void);
+uint64_t DWT_GetTickUS(void);
 
 #ifdef __cplusplus
 }

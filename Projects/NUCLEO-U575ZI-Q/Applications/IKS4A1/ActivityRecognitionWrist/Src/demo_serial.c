@@ -28,7 +28,7 @@
 
 #ifdef USE_CUSTOM_BOARD
 #include "custom_mems_conf_app.h"
-#endif
+#endif /* USE_CUSTOM_BOARD */
 
 /** @addtogroup MOTION_APPLICATIONS MOTION APPLICATIONS
   * @{
@@ -37,19 +37,19 @@
 /* Private defines -----------------------------------------------------------*/
 #ifndef ACC_GYR_UNICLEO_ID
 #define ACC_GYR_UNICLEO_ID UNKNOWN_UNICLEO_ID
-#endif
+#endif /* ACC_GYR_UNICLEO_ID */
 
 #ifndef MAG_UNICLEO_ID
 #define MAG_UNICLEO_ID UNKNOWN_UNICLEO_ID
-#endif
+#endif /* MAG_UNICLEO_ID */
 
 #ifndef HUM_TEMP_UNICLEO_ID
 #define HUM_TEMP_UNICLEO_ID UNKNOWN_UNICLEO_ID
-#endif
+#endif /* HUM_TEMP_UNICLEO_ID */
 
 #ifndef PRESS_UNICLEO_ID
 #define PRESS_UNICLEO_ID UNKNOWN_UNICLEO_ID
-#endif
+#endif /* PRESS_UNICLEO_ID */
 
 /* Private variables ---------------------------------------------------------*/
 static volatile uint8_t DataStreamingDest = 1;
@@ -471,7 +471,8 @@ void Get_PresentationString(char *PresentationString, uint32_t *Length)
 
   MotionAW_manager_get_version(lib_version_string, &lib_version_len);
 
-  /* Shorten library version string (e.g.: ST MotionXX v1.0.0 resp. ST MotionXXX v1.0.0 resp. ST InfraredXX v1.0.0 resp. ST EnvXX v1.0.0) to contain version number only (e.g.: 1.0.0) */
+  /* Shorten library version string (e.g.: ST MotionXX v1.0.0 resp. ST MotionXXX v1.0.0 resp. ST InfraredXX v1.0.0
+  resp. ST EnvXX v1.0.0) to contain version number only (e.g.: 1.0.0) */
   if (lib_version_len > string_pointer_shift)
   {
     lib_version_num = lib_version_string + string_pointer_shift;

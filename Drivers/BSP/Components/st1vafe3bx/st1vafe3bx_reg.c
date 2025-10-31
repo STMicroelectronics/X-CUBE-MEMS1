@@ -6,12 +6,12 @@
  ******************************************************************************
  * @attention
  *
- * <h2><center>&copy; Copyright (c) 2024 STMicroelectronics.
- * All rights reserved.</center></h2>
+ * Copyright (c) 2024 STMicroelectronics.
+ * All rights reserved.
  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
  *
  ******************************************************************************
  */
@@ -928,15 +928,29 @@ int32_t st1vafe3bx_xl_data_get(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_ah_bio_data_get(const stmdev_ctx_t *ctx,
                                    st1vafe3bx_ah_bio_data_t *data)
 {
-  uint8_t buff[2];
+  uint8_t buff[3];
   int32_t ret;
 
-  ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_OUT_AH_BIO_L, buff, 2);
+  if (ctx->priv_data &&
+      ((st1vafe3bx_priv_t *)(ctx->priv_data))->vafe_only == 1)
+  {
+    ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_OUT_AH_BIO_L, buff, 2);
 
-  data->raw = (int16_t)buff[1];
-  data->raw = (data->raw * 256U) + (int16_t)buff[0];
+    data->raw = (int16_t)buff[1];
+    data->raw = (data->raw * 256U) + (int16_t)buff[0];
 
-  data->mv = st1vafe3bx_from_lsb_to_mv(data->raw);
+    data->mv = st1vafe3bx_from_lsb_to_mv(data->raw);
+  }
+  else
+  {
+    /* Read and discard also OUT_Z_H reg to clear drdy */
+    ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_OUT_AH_BIO_L - 1, buff, 3);
+
+    data->raw = (int16_t)buff[2];
+    data->raw = (data->raw * 256U) + (int16_t)buff[1];
+
+    data->mv = st1vafe3bx_from_lsb_to_mv(data->raw);
+  }
 
   return ret;
 }
@@ -1977,11 +1991,8 @@ int32_t st1vafe3bx_fifo_mode_set(const stmdev_ctx_t *ctx,
     fifo_wtm.xl_only_fifo = val.xl_only;
 
     /* set batching info */
-    if (val.batch.dec_ts != ST1VAFE3BX_DEC_TS_OFF)
-    {
-      fifo_batch.dec_ts_batch = (uint8_t)val.batch.dec_ts;
-      fifo_batch.bdr_xl = (uint8_t)val.batch.bdr_xl;
-    }
+    fifo_batch.dec_ts_batch = (uint8_t)val.batch.dec_ts;
+    fifo_batch.bdr_xl = (uint8_t)val.batch.bdr_xl;
 
     fifo_ctrl.cfg_chg_en = val.cfg_change_in_fifo;
 
@@ -2177,6 +2188,7 @@ int32_t st1vafe3bx_fifo_data_get(const stmdev_ctx_t *ctx,
       data->ah_bio.raw = (int16_t)fifo_raw[0] + (int16_t)fifo_raw[1] * 256U;
       data->ah_bio.mv = st1vafe3bx_from_lsb_to_mv(data->ah_bio.raw);
       break;
+    case ST1VAFE3BX_XL_ONLY:
     case ST1VAFE3BX_XL_AND_AH_VAFE1_TAG:
       ret = st1vafe3bx_fifo_out_raw_get(ctx, fifo_raw);
 
@@ -2445,7 +2457,7 @@ int32_t st1vafe3bx_ah_bio_config_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_enter_vafe_only(const stmdev_ctx_t *ctx)
+int32_t st1vafe3bx_enter_vafe_only(stmdev_ctx_t *ctx)
 {
   st1vafe3bx_ah_bio_cfg2_t cfg2;
   int32_t ret;
@@ -2453,6 +2465,15 @@ int32_t st1vafe3bx_enter_vafe_only(const stmdev_ctx_t *ctx)
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&cfg2, 1);
   cfg2.ah_bio_en = 1;
   ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&cfg2, 1);
+
+  if (ret == 0 && ctx->priv_data != NULL)
+  {
+    ((st1vafe3bx_priv_t *)(ctx->priv_data))->vafe_only = 1;
+  }
+  else
+  {
+    ret = -1;
+  }
 
   return ret;
 }
@@ -2464,7 +2485,7 @@ int32_t st1vafe3bx_enter_vafe_only(const stmdev_ctx_t *ctx)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_exit_vafe_only(const stmdev_ctx_t *ctx)
+int32_t st1vafe3bx_exit_vafe_only(stmdev_ctx_t *ctx)
 {
   st1vafe3bx_ah_bio_cfg2_t cfg2;
   int32_t ret;
@@ -2472,6 +2493,15 @@ int32_t st1vafe3bx_exit_vafe_only(const stmdev_ctx_t *ctx)
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&cfg2, 1);
   cfg2.ah_bio_en = 0;
   ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&cfg2, 1);
+
+  if (ret == 0 && ctx->priv_data != NULL)
+  {
+    ((st1vafe3bx_priv_t *)(ctx->priv_data))->vafe_only = 0;
+  }
+  else
+  {
+    ret = -1;
+  }
 
   return ret;
 }
@@ -4415,3 +4445,4 @@ int32_t st1vafe3bx_mlc_fifo_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @}
   *
   */
+

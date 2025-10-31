@@ -92,7 +92,7 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
- * @brief  This function handles External line 10-15 interrupt request
+ * @brief  This function handles External line 15-10 interrupt request
  * @param  None
  * @retval None
  */
@@ -100,6 +100,16 @@ void EXTI15_10_IRQHandler(void)
 {
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_10);
   HAL_GPIO_EXTI_IRQHandler(KEY_BUTTON_PIN);
+}
+
+/**
+ * @brief  This function handles External line 9-5 interrupt request
+ * @param  None
+ * @retval None
+ */
+void EXTI9_5_IRQHandler(void)
+{
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_8);
 }
 
 /**

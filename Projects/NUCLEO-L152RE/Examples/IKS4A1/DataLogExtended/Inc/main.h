@@ -51,6 +51,7 @@ extern "C" {
 #define INTERRUPTS_ENABLED               0x00000100U
 #define FSM_ENABLED                      0x00000200U
 #define MLC_ENABLED                      0x00000400U
+#define ISPU_ENABLED                     0x00000800U
 #define QVAR_ENABLED                     0x00001000U
 #define ACCELEROMETER_HG_SENSOR_ENABLED  0x00002000U
 
@@ -76,7 +77,7 @@ extern uint8_t UpdateInterrupt;
 /* Exported functions --------------------------------------------------------*/
 void Error_Handler(void);
 void RTC_TimeRegulate(uint8_t hh, uint8_t mm, uint8_t ss);
-uint32_t DWT_GetTickUS(void);
+uint64_t DWT_GetTickUS(void);
 
 #ifdef __cplusplus
 }

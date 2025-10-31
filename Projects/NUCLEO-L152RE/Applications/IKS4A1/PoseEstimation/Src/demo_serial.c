@@ -28,7 +28,7 @@
 
 #ifdef USE_CUSTOM_BOARD
 #include "custom_mems_conf_app.h"
-#endif
+#endif /* USE_CUSTOM_BOARD */
 
 /** @addtogroup MOTION_APPLICATIONS MOTION APPLICATIONS
   * @{
@@ -37,19 +37,19 @@
 /* Private defines -----------------------------------------------------------*/
 #ifndef ACC_GYR_UNICLEO_ID
 #define ACC_GYR_UNICLEO_ID UNKNOWN_UNICLEO_ID
-#endif
+#endif /* ACC_GYR_UNICLEO_ID */
 
 #ifndef MAG_UNICLEO_ID
 #define MAG_UNICLEO_ID UNKNOWN_UNICLEO_ID
-#endif
+#endif /* MAG_UNICLEO_ID */
 
 #ifndef HUM_TEMP_UNICLEO_ID
 #define HUM_TEMP_UNICLEO_ID UNKNOWN_UNICLEO_ID
-#endif
+#endif /* HUM_TEMP_UNICLEO_ID */
 
 #ifndef PRESS_UNICLEO_ID
 #define PRESS_UNICLEO_ID UNKNOWN_UNICLEO_ID
-#endif
+#endif /* PRESS_UNICLEO_ID */
 
 /* Private variables ---------------------------------------------------------*/
 static volatile uint8_t DataStreamingDest = 1;
@@ -443,9 +443,13 @@ void RTC_TimeRegulate(uint8_t hh, uint8_t mm, uint8_t ss)
   stimestructure.Hours          = hh;
   stimestructure.Minutes        = mm;
   stimestructure.Seconds        = ss;
-#if defined(STM32L100xBA) || defined (STM32L151xBA) || defined (STM32L152xBA) || defined(STM32L100xC) || defined (STM32L151xC) || defined (STM32L152xC) || defined (STM32L162xC) || defined(STM32L151xCA) || defined (STM32L151xD) || defined (STM32L152xCA) || defined (STM32L152xD) || defined (STM32L162xCA) || defined (STM32L162xD) || defined(STM32L151xE) || defined(STM32L151xDX) || defined (STM32L152xE) || defined (STM32L152xDX) || defined (STM32L162xE) || defined (STM32L162xDX)
+#if defined(STM32L100xBA) || defined(STM32L151xBA) || defined(STM32L152xBA) || defined(STM32L100xC) || \
+    defined(STM32L151xC)  || defined(STM32L152xC)  || defined(STM32L162xC)  || defined(STM32L151xCA) || \
+    defined(STM32L151xD)  || defined(STM32L152xCA) || defined(STM32L152xD)  || defined(STM32L162xCA) || \
+    defined(STM32L162xD)  || defined(STM32L151xE)  || defined(STM32L151xDX) || defined(STM32L152xE)  || \
+    defined(STM32L152xDX) || defined(STM32L162xE)  || defined(STM32L162xDX)
   stimestructure.SubSeconds     = 0;
-#endif
+#endif /* STM32Lxxx */
   stimestructure.TimeFormat     = RTC_HOURFORMAT12_AM;
   stimestructure.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
   stimestructure.StoreOperation = RTC_STOREOPERATION_RESET;
@@ -473,7 +477,8 @@ void Get_PresentationString(char *PresentationString, uint32_t *Length)
 
   MotionPE_manager_get_version(lib_version_string, &lib_version_len);
 
-  /* Shorten library version string (e.g.: ST MotionXX v1.0.0 resp. ST MotionXXX v1.0.0 resp. ST InfraredXX v1.0.0 resp. ST EnvXX v1.0.0) to contain version number only (e.g.: 1.0.0) */
+  /* Shorten library version string (e.g.: ST MotionXX v1.0.0 resp. ST MotionXXX v1.0.0 resp. ST InfraredXX v1.0.0
+  resp. ST EnvXX v1.0.0) to contain version number only (e.g.: 1.0.0) */
   if (lib_version_len > string_pointer_shift)
   {
     lib_version_num = lib_version_string + string_pointer_shift;

@@ -32,13 +32,6 @@
  */
 
 /* Private typedef -----------------------------------------------------------*/
-typedef struct displayFloatToInt_s
-{
-  int8_t sign; /* 0 means positive, 1 means negative*/
-  uint32_t out_int;
-  uint32_t out_dec;
-} displayFloatToInt_t;
-
 /* Private define ------------------------------------------------------------*/
 #define MAX_BUF_SIZE    256
 #define MLC_STATUS_MAX    8
@@ -47,16 +40,16 @@ typedef struct displayFloatToInt_s
 
 /* Private macro -------------------------------------------------------------*/
 /* Public variables ----------------------------------------------------------*/
+extern void *MotionCompObj[];
+
 int32_t UseLSI = 0;
 uint8_t UpdateInterrupt = 0;
 uint32_t SensorsEnabled = 0;
 uint32_t StartTime = 0;
 
 /* Private variables ---------------------------------------------------------*/
-static char DataOut[MAX_BUF_SIZE];
 static RTC_HandleTypeDef RtcHandle;
 static uint32_t PreviousSensorsEnabled = 0;
-static volatile uint8_t AutoInit = 0;
 static volatile uint32_t IntCurrentTime1 = 0;
 static volatile uint32_t IntCurrentTime2 = 0;
 static volatile uint8_t DIL24_INT1_Event = 0;
@@ -72,7 +65,6 @@ static void RTC_Config(void);
 static void RTC_TimeStampConfig(void);
 
 static void Enable_Disable_Sensors(void);
-static void Float_To_Int(float In, displayFloatToInt_t *OutValue, int32_t DecPrec);
 
 static void Time_Handler(Msg_t *Msg);
 static void Temp_Sensor_Handler(Msg_t *Msg, uint32_t Instance);
@@ -153,10 +145,6 @@ int main(void)
       if (msg_cmd.Data[0] == DEV_ADDR)
       {
         (void)HandleMSG((Msg_t *)&msg_cmd);
-        if (DataLoggerActive != 0U)
-        {
-          AutoInit = 0;
-        }
       }
     }
 
@@ -167,18 +155,8 @@ int main(void)
       Enable_Disable_Sensors();
     }
 
-    /* For terminal output enable all sensors */
-    if (AutoInit == 1U)
-    {
-      SensorsEnabled = 0xFFFFFFFF;
-    }
-
     /* LED control */
     if (DataLoggerActive != 0U)
-    {
-      BSP_LED_Toggle(LED2);
-    }
-    else if (AutoInit != 0U)
     {
       BSP_LED_Toggle(LED2);
     }
@@ -247,12 +225,6 @@ int main(void)
         NewData = 0;
         NewDataFlags = 0;
       }
-    }
-
-    /* For terminal output reduce speed */
-    if (AutoInit != 0U)
-    {
-      HAL_Delay(500);
     }
   }
 }
@@ -357,30 +329,6 @@ static void Enable_Disable_Sensors(void)
 }
 
 /**
- * @brief  Splits a float into two integer values
- * @param  In the float value as input
- * @param  OutValue the pointer to the output integer structure
- * @param  DecPrec the decimal precision to be used
- * @retval None
- */
-static void Float_To_Int(float In, displayFloatToInt_t *OutValue, int32_t DecPrec)
-{
-  if (In >= 0.0f)
-  {
-    OutValue->sign = 0;
-  }
-  else
-  {
-    OutValue->sign = 1;
-    In = -In;
-  }
-
-  OutValue->out_int = (uint32_t)In;
-  In = In - (float)(OutValue->out_int);
-  OutValue->out_dec = (uint32_t)trunc((double)In * pow(10.0, (double)DecPrec));
-}
-
-/**
  * @brief  Handles the precise time
  * @param  Msg the time part of the stream
  * @retval None
@@ -394,12 +342,6 @@ static void Time_Handler(Msg_t *Msg)
     time_us = DWT_GetTickUS() - StartTime;
     Serialize(&Msg->Data[3], time_us, 4);
     MsgIndex = 9;
-  }
-  else if (AutoInit != 0U)
-  {
-    time_us = DWT_GetTickUS() - StartTime;
-    (void)snprintf(DataOut, MAX_BUF_SIZE, "TimeStamp: %lu\r\n", (unsigned long)time_us);
-    (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
   }
   else
   {
@@ -452,14 +394,6 @@ static void Temp_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
     {
       (void)memcpy(&Msg->Data[MsgIndex], (void *)&temperature, 4);
       MsgIndex = MsgIndex + 4;
-    }
-    else if (AutoInit != 0U)
-    {
-      displayFloatToInt_t out_value;
-      Float_To_Int(temperature, &out_value, 2);
-      (void)snprintf(DataOut, MAX_BUF_SIZE, "TEMP: %c%d.%02d\r\n", ((out_value.sign != 0) ? '-' : '+'),
-                     (int)out_value.out_int, (int)out_value.out_dec);
-      (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
     }
     else
     {
@@ -514,13 +448,6 @@ static void Hum_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
       (void)memcpy(&Msg->Data[MsgIndex], (void *)&humidity, 4);
       MsgIndex = MsgIndex + 4;
     }
-    else if (AutoInit != 0U)
-    {
-      displayFloatToInt_t out_value;
-      Float_To_Int(humidity, &out_value, 2);
-      (void)snprintf(DataOut, MAX_BUF_SIZE, "HUM: %d.%02d\r\n", (int)out_value.out_int, (int)out_value.out_dec);
-      (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
-    }
     else
     {
       /* Nothing to do */
@@ -536,7 +463,6 @@ static void Hum_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
  */
 static void Accelero_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
 {
-  int32_t data[6];
   IKS02A1_MOTION_SENSOR_Axes_t acceleration;
   uint8_t status = 0;
 
@@ -554,15 +480,6 @@ static void Accelero_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
       Serialize_s32(&Msg->Data[MsgIndex + 8], acceleration.z, 4);
       MsgIndex = MsgIndex + 12;
     }
-    else if (AutoInit != 0U)
-    {
-      data[0] = acceleration.x;
-      data[1] = acceleration.y;
-      data[2] = acceleration.z;
-
-      (void)snprintf(DataOut, MAX_BUF_SIZE, "ACC_X: %d, ACC_Y: %d, ACC_Z: %d\r\n", (int)data[0], (int)data[1], (int)data[2]);
-      (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
-    }
     else
     {
       /* Nothing to do */
@@ -578,7 +495,6 @@ static void Accelero_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
  */
 static void Gyro_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
 {
-  int32_t data[6];
   IKS02A1_MOTION_SENSOR_Axes_t angular_velocity;
   uint8_t status = 0;
 
@@ -596,15 +512,6 @@ static void Gyro_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
       Serialize_s32(&Msg->Data[MsgIndex + 8], angular_velocity.z, 4);
       MsgIndex = MsgIndex + 12;
     }
-    else if (AutoInit != 0U)
-    {
-      data[0] = angular_velocity.x;
-      data[1] = angular_velocity.y;
-      data[2] = angular_velocity.z;
-
-      (void)snprintf(DataOut, MAX_BUF_SIZE, "GYR_X: %d, GYR_Y: %d, GYR_Z: %d\r\n", (int)data[0], (int)data[1], (int)data[2]);
-      (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
-    }
     else
     {
       /* Nothing to do */
@@ -620,7 +527,6 @@ static void Gyro_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
  */
 static void Magneto_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
 {
-  int32_t data[3];
   IKS02A1_MOTION_SENSOR_Axes_t magnetic_field;
   uint8_t status = 0;
 
@@ -637,15 +543,6 @@ static void Magneto_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
       Serialize_s32(&Msg->Data[MsgIndex + 4], (int32_t)magnetic_field.y, 4);
       Serialize_s32(&Msg->Data[MsgIndex + 8], (int32_t)magnetic_field.z, 4);
       MsgIndex = MsgIndex + 12;
-    }
-    else if (AutoInit != 0U)
-    {
-      data[0] = magnetic_field.x;
-      data[1] = magnetic_field.y;
-      data[2] = magnetic_field.z;
-
-      (void)snprintf(DataOut, MAX_BUF_SIZE, "MAG_X: %d, MAG_Y: %d, MAG_Z: %d\r\n", (int)data[0], (int)data[1], (int)data[2]);
-      (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
     }
     else
     {
@@ -717,7 +614,7 @@ static void MLC_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_ISM330DHCX_0, ISM330DHCX_FUNC_CFG_ACCESS, ISM330DHCX_EMBEDDED_FUNC_BANK << 6);
+    (void)ISM330DHCX_Set_Mem_Bank(MotionCompObj[IKS02A1_ISM330DHCX_0], ISM330DHCX_EMBEDDED_FUNC_BANK);
 
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330DHCX_0, ISM330DHCX_MLC0_SRC, &mlc_status[0]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330DHCX_0, ISM330DHCX_MLC1_SRC, &mlc_status[1]);
@@ -728,7 +625,7 @@ static void MLC_Handler(Msg_t *Msg)
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330DHCX_0, ISM330DHCX_MLC6_SRC, &mlc_status[6]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330DHCX_0, ISM330DHCX_MLC7_SRC, &mlc_status[7]);
 
-    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_ISM330DHCX_0, ISM330DHCX_FUNC_CFG_ACCESS, ISM330DHCX_USER_BANK << 6);
+    (void)ISM330DHCX_Set_Mem_Bank(MotionCompObj[IKS02A1_ISM330DHCX_0], ISM330DHCX_USER_BANK);
   }
   else if (AccInstance == IKS02A1_IIS2ICLX_0)
   {
@@ -738,7 +635,7 @@ static void MLC_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_IIS2ICLX_0, IIS2ICLX_FUNC_CFG_ACCESS, IIS2ICLX_EMBEDDED_FUNC_BANK << 6);
+    (void)IIS2ICLX_Set_Mem_Bank(MotionCompObj[IKS02A1_IIS2ICLX_0], IIS2ICLX_EMBEDDED_FUNC_BANK);
 
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2ICLX_0, IIS2ICLX_MLC0_SRC, &mlc_status[0]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2ICLX_0, IIS2ICLX_MLC1_SRC, &mlc_status[1]);
@@ -749,7 +646,7 @@ static void MLC_Handler(Msg_t *Msg)
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2ICLX_0, IIS2ICLX_MLC6_SRC, &mlc_status[6]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2ICLX_0, IIS2ICLX_MLC7_SRC, &mlc_status[7]);
 
-    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_IIS2ICLX_0, IIS2ICLX_FUNC_CFG_ACCESS, IIS2ICLX_USER_BANK << 6);
+    (void)IIS2ICLX_Set_Mem_Bank(MotionCompObj[IKS02A1_IIS2ICLX_0], IIS2ICLX_USER_BANK);
   }
   else if ((AccInstance == IKS02A1_ISM330BX_0) && (GyrInstance == IKS02A1_ISM330BX_0))
   {
@@ -759,14 +656,14 @@ static void MLC_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_ISM330BX_0, ISM330BX_FUNC_CFG_ACCESS, ISM330BX_EMBED_FUNC_MEM_BANK << 7);
+    (void)ISM330BX_Set_Mem_Bank(MotionCompObj[IKS02A1_ISM330BX_0], ISM330BX_EMBED_FUNC_MEM_BANK);
 
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330BX_0, ISM330BX_MLC1_SRC, &mlc_status[0]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330BX_0, ISM330BX_MLC2_SRC, &mlc_status[1]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330BX_0, ISM330BX_MLC3_SRC, &mlc_status[2]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330BX_0, ISM330BX_MLC4_SRC, &mlc_status[3]);
 
-    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_ISM330BX_0, ISM330BX_FUNC_CFG_ACCESS, ISM330BX_MAIN_MEM_BANK << 7);
+    (void)ISM330BX_Set_Mem_Bank(MotionCompObj[IKS02A1_ISM330BX_0], ISM330BX_MAIN_MEM_BANK);
   }
   else if (AccInstance == IKS02A1_IIS2DULPX_0)
   {
@@ -776,14 +673,14 @@ static void MLC_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FUNC_CFG_ACCESS, IIS2DULPX_EMBED_FUNC_MEM_BANK << 7);
+    (void)IIS2DULPX_Set_Mem_Bank(MotionCompObj[IKS02A1_IIS2DULPX_0], IIS2DULPX_EMBED_FUNC_MEM_BANK);
 
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_MLC1_SRC, &mlc_status[0]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_MLC2_SRC, &mlc_status[1]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_MLC3_SRC, &mlc_status[2]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_MLC4_SRC, &mlc_status[3]);
 
-    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FUNC_CFG_ACCESS, IIS2DULPX_MAIN_MEM_BANK << 7);
+    (void)IIS2DULPX_Set_Mem_Bank(MotionCompObj[IKS02A1_IIS2DULPX_0], IIS2DULPX_MAIN_MEM_BANK);
   }
   else
   {
@@ -844,7 +741,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_ISM330DHCX_0, ISM330DHCX_FUNC_CFG_ACCESS, ISM330DHCX_EMBEDDED_FUNC_BANK << 6);
+    (void)ISM330DHCX_Set_Mem_Bank(MotionCompObj[IKS02A1_ISM330DHCX_0], ISM330DHCX_EMBEDDED_FUNC_BANK);
 
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330DHCX_0, ISM330DHCX_FSM_OUTS1, &fsm_status[0]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330DHCX_0, ISM330DHCX_FSM_OUTS2, &fsm_status[1]);
@@ -863,7 +760,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330DHCX_0, ISM330DHCX_FSM_OUTS15, &fsm_status[14]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330DHCX_0, ISM330DHCX_FSM_OUTS16, &fsm_status[15]);
 
-    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_ISM330DHCX_0, ISM330DHCX_FUNC_CFG_ACCESS, ISM330DHCX_USER_BANK << 6);
+    (void)ISM330DHCX_Set_Mem_Bank(MotionCompObj[IKS02A1_ISM330DHCX_0], ISM330DHCX_USER_BANK);
 
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330DHCX_0, ISM330DHCX_FSM_STATUS_A_MAINPAGE, &fsm_status[16]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330DHCX_0, ISM330DHCX_FSM_STATUS_B_MAINPAGE, &fsm_status[17]);
@@ -876,7 +773,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_IIS2ICLX_0, IIS2ICLX_FUNC_CFG_ACCESS, IIS2ICLX_EMBEDDED_FUNC_BANK << 6);
+    (void)IIS2ICLX_Set_Mem_Bank(MotionCompObj[IKS02A1_IIS2ICLX_0], IIS2ICLX_EMBEDDED_FUNC_BANK);
 
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2ICLX_0, IIS2ICLX_FSM_OUTS1, &fsm_status[0]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2ICLX_0, IIS2ICLX_FSM_OUTS2, &fsm_status[1]);
@@ -895,7 +792,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2ICLX_0, IIS2ICLX_FSM_OUTS15, &fsm_status[14]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2ICLX_0, IIS2ICLX_FSM_OUTS16, &fsm_status[15]);
 
-    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_IIS2ICLX_0, IIS2ICLX_FUNC_CFG_ACCESS, IIS2ICLX_USER_BANK << 6);
+    (void)IIS2ICLX_Set_Mem_Bank(MotionCompObj[IKS02A1_IIS2ICLX_0], IIS2ICLX_USER_BANK);
 
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2ICLX_0, IIS2ICLX_FSM_STATUS_A_MAINPAGE, &fsm_status[16]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2ICLX_0, IIS2ICLX_FSM_STATUS_B_MAINPAGE, &fsm_status[17]);
@@ -908,7 +805,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_ISM330BX_0, ISM330BX_FUNC_CFG_ACCESS, ISM330BX_EMBED_FUNC_MEM_BANK << 7);
+    (void)ISM330BX_Set_Mem_Bank(MotionCompObj[IKS02A1_ISM330BX_0], ISM330BX_EMBED_FUNC_MEM_BANK);
 
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330BX_0, ISM330BX_FSM_OUTS1, &fsm_status[0]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330BX_0, ISM330BX_FSM_OUTS2, &fsm_status[1]);
@@ -919,7 +816,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330BX_0, ISM330BX_FSM_OUTS7, &fsm_status[6]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330BX_0, ISM330BX_FSM_OUTS8, &fsm_status[7]);
 
-    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_ISM330BX_0, ISM330BX_FUNC_CFG_ACCESS, ISM330BX_MAIN_MEM_BANK << 7);
+    (void)ISM330BX_Set_Mem_Bank(MotionCompObj[IKS02A1_ISM330BX_0], ISM330BX_MAIN_MEM_BANK);
 
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_ISM330BX_0, ISM330BX_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
@@ -931,7 +828,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FUNC_CFG_ACCESS, IIS2DULPX_EMBED_FUNC_MEM_BANK << 7);
+    (void)IIS2DULPX_Set_Mem_Bank(MotionCompObj[IKS02A1_IIS2DULPX_0], IIS2DULPX_EMBED_FUNC_MEM_BANK);
 
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS1, &fsm_status[0]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS2, &fsm_status[1]);
@@ -942,7 +839,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS7, &fsm_status[6]);
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_OUTS8, &fsm_status[7]);
 
-    (void)IKS02A1_MOTION_SENSOR_Write_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FUNC_CFG_ACCESS, IIS2DULPX_MAIN_MEM_BANK << 7);
+    (void)IIS2DULPX_Set_Mem_Bank(MotionCompObj[IKS02A1_IIS2DULPX_0], IIS2DULPX_MAIN_MEM_BANK);
 
     (void)IKS02A1_MOTION_SENSOR_Read_Register(IKS02A1_IIS2DULPX_0, IIS2DULPX_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
@@ -1041,13 +938,6 @@ static void QVAR_Handler(Msg_t *Msg, uint32_t Instance)
     {
       (void)memcpy(&Msg->Data[MsgIndex], (void *)&qvar_mv, 4);
       MsgIndex = MsgIndex + 4;
-    }
-    else if (AutoInit != 0U)
-    {
-      displayFloatToInt_t out_value;
-      Float_To_Int(qvar_mv, &out_value, 2);
-      (void)snprintf(DataOut, MAX_BUF_SIZE, "QVAR: %d.%02d\r\n", (int)out_value.out_int, (int)out_value.out_dec);
-      (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
     }
     else
     {
@@ -1182,14 +1072,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIOPin)
 
     if (do_operation != 0)
     {
-      if (DataLoggerActive != 0U)
-      {
-        AutoInit = 0; /* always off */
-      }
-      else
-      {
-        AutoInit = (AutoInit != 0U) ? 0U : 1U; /* toggle on each button pressed */
-      }
+      /* Not used - reserved for future purposes */
     }
   }
   else if (GPIOPin == GPIO_PIN_0)
@@ -1231,12 +1114,6 @@ void RTC_TimeRegulate(uint8_t hh, uint8_t mm, uint8_t ss)
  */
 void Error_Handler(void)
 {
-  if (AutoInit != 0U)
-  {
-    (void)snprintf(DataOut, MAX_BUF_SIZE, "Error");
-    (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
-  }
-
   for (;;)
   {
     BSP_LED_On(LED2);

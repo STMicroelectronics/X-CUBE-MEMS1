@@ -100,7 +100,7 @@ int32_t __weak lps22hb_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
 
 float_t lps22hb_from_lsb_to_hpa(int32_t lsb)
 {
-  return ((float_t)lsb / 4096.0f);
+  return ((float_t)lsb / 1048576.0f);   /* 4096.0f * 256 */
 }
 
 float_t lps22hb_from_lsb_to_kpa(int32_t lsb)
@@ -119,7 +119,7 @@ float_t lps22hb_from_lsb_to_altitude(int32_t lsb)
   // The altitude in meters can be calculated with the
   // international barometric formula.
   // Average sea level pressure is 1013.25 hPa.
-  return 44330.0 * (1.0 - pow(atmospheric / 1013.25f, (1.0 / 5.255)));
+  return 44330.0f * (1.0f - powf(atmospheric / 1013.25f, (1.0f / 5.255f)));
 }
 
 float_t lps22hb_from_lsb_to_degc(int16_t lsb)
@@ -550,7 +550,7 @@ int32_t lps22hb_one_shoot_trigger_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
 /**
   * @brief  pressure_ref:   The Reference pressure value is a 24-bit data
-  *         expressed as 2's complement. The value is used when AUTOZERO
+  *         expressed as 2’s complement. The value is used when AUTOZERO
   *         or AUTORIFP function is enabled.[set]
   *
   * @param  ctx    Read / write interface definitions
@@ -574,7 +574,7 @@ int32_t lps22hb_pressure_ref_set(const stmdev_ctx_t *ctx, int32_t val)
 
 /**
   * @brief  pressure_ref:   The Reference pressure value is a 24-bit data
-  *         expressed as 2's complement. The value is used when AUTOZERO
+  *         expressed as 2’s complement. The value is used when AUTOZERO
   *         or AUTORIFP function is enabled.[get]
   *
   * @param  ctx    Read / write interface definitions
@@ -1001,7 +1001,7 @@ int32_t lps22hb_low_power_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  If '1' indicates that the Boot (Reboot) phase is running.[get]
+  * @brief  If ‘1’ indicates that the Boot (Reboot) phase is running.[get]
   *
   * @param  ctx    Read / write interface definitions
   * @param  val    Change the values of boot_status in reg INT_SOURCE

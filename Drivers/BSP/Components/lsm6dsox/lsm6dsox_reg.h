@@ -121,6 +121,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 /**
@@ -3040,7 +3043,7 @@ float_t lsm6dsox_from_lsb_to_nsec(int16_t lsb);
 typedef enum
 {
   LSM6DSOX_2g   = 0,
-  LSM6DSOX_16g  = 1, /* if XL_FS_MODE = '1' -> LSM6DSOX_2g */
+  LSM6DSOX_16g  = 1, /* if XL_FS_MODE = ‘1’ -> LSM6DSOX_2g */
   LSM6DSOX_4g   = 2,
   LSM6DSOX_8g   = 3,
 } lsm6dsox_fs_xl_t;

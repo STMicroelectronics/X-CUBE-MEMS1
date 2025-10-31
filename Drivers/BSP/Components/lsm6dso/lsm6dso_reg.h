@@ -121,6 +121,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 #ifndef __weak
@@ -2596,149 +2599,6 @@ typedef struct
 
 #define LSM6DSO_START_FSM_ADD                0x0400U
 
-/**
-  * @defgroup LSM6DSO_Register_Union
-  * @brief    This union group all the registers having a bit-field
-  *           description.
-  *           This union is useful but it's not needed by the driver.
-  *
-  *           REMOVING this union you are compliant with:
-  *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
-  *
-  * @{
-  *
-  */
-typedef union
-{
-  lsm6dso_func_cfg_access_t               func_cfg_access;
-  lsm6dso_pin_ctrl_t                      pin_ctrl;
-  lsm6dso_fifo_ctrl1_t                    fifo_ctrl1;
-  lsm6dso_fifo_ctrl2_t                    fifo_ctrl2;
-  lsm6dso_fifo_ctrl3_t                    fifo_ctrl3;
-  lsm6dso_fifo_ctrl4_t                    fifo_ctrl4;
-  lsm6dso_counter_bdr_reg1_t              counter_bdr_reg1;
-  lsm6dso_counter_bdr_reg2_t              counter_bdr_reg2;
-  lsm6dso_int1_ctrl_t                     int1_ctrl;
-  lsm6dso_int2_ctrl_t                     int2_ctrl;
-  lsm6dso_ctrl1_xl_t                      ctrl1_xl;
-  lsm6dso_ctrl2_g_t                       ctrl2_g;
-  lsm6dso_ctrl3_c_t                       ctrl3_c;
-  lsm6dso_ctrl4_c_t                       ctrl4_c;
-  lsm6dso_ctrl5_c_t                       ctrl5_c;
-  lsm6dso_ctrl6_c_t                       ctrl6_c;
-  lsm6dso_ctrl7_g_t                       ctrl7_g;
-  lsm6dso_ctrl8_xl_t                      ctrl8_xl;
-  lsm6dso_ctrl9_xl_t                      ctrl9_xl;
-  lsm6dso_ctrl10_c_t                      ctrl10_c;
-  lsm6dso_all_int_src_t                   all_int_src;
-  lsm6dso_wake_up_src_t                   wake_up_src;
-  lsm6dso_tap_src_t                       tap_src;
-  lsm6dso_d6d_src_t                       d6d_src;
-  lsm6dso_status_reg_t                    status_reg;
-  lsm6dso_status_spiaux_t                 status_spiaux;
-  lsm6dso_fifo_status1_t                  fifo_status1;
-  lsm6dso_fifo_status2_t                  fifo_status2;
-  lsm6dso_tap_cfg0_t                      tap_cfg0;
-  lsm6dso_tap_cfg1_t                      tap_cfg1;
-  lsm6dso_tap_cfg2_t                      tap_cfg2;
-  lsm6dso_tap_ths_6d_t                    tap_ths_6d;
-  lsm6dso_int_dur2_t                      int_dur2;
-  lsm6dso_wake_up_ths_t                   wake_up_ths;
-  lsm6dso_wake_up_dur_t                   wake_up_dur;
-  lsm6dso_free_fall_t                     free_fall;
-  lsm6dso_md1_cfg_t                       md1_cfg;
-  lsm6dso_md2_cfg_t                       md2_cfg;
-  lsm6dso_i3c_bus_avb_t                   i3c_bus_avb;
-  lsm6dso_internal_freq_fine_t            internal_freq_fine;
-  lsm6dso_int_ois_t                       int_ois;
-  lsm6dso_ctrl1_ois_t                     ctrl1_ois;
-  lsm6dso_ctrl2_ois_t                     ctrl2_ois;
-  lsm6dso_ctrl3_ois_t                     ctrl3_ois;
-  lsm6dso_fifo_data_out_tag_t             fifo_data_out_tag;
-  lsm6dso_page_sel_t                      page_sel;
-  lsm6dso_emb_func_en_a_t                 emb_func_en_a;
-  lsm6dso_emb_func_en_b_t                 emb_func_en_b;
-  lsm6dso_page_address_t                  page_address;
-  lsm6dso_page_value_t                    page_value;
-  lsm6dso_emb_func_int1_t                 emb_func_int1;
-  lsm6dso_fsm_int1_a_t                    fsm_int1_a;
-  lsm6dso_fsm_int1_b_t                    fsm_int1_b;
-  lsm6dso_emb_func_int2_t                 emb_func_int2;
-  lsm6dso_fsm_int2_a_t                    fsm_int2_a;
-  lsm6dso_fsm_int2_b_t                    fsm_int2_b;
-  lsm6dso_emb_func_status_t               emb_func_status;
-  lsm6dso_fsm_status_a_t                  fsm_status_a;
-  lsm6dso_fsm_status_b_t                  fsm_status_b;
-  lsm6dso_page_rw_t                       page_rw;
-  lsm6dso_emb_func_fifo_cfg_t              emb_func_fifo_cfg;
-  lsm6dso_fsm_enable_a_t                  fsm_enable_a;
-  lsm6dso_fsm_enable_b_t                  fsm_enable_b;
-  lsm6dso_fsm_long_counter_clear_t        fsm_long_counter_clear;
-  lsm6dso_fsm_outs1_t                     fsm_outs1;
-  lsm6dso_fsm_outs2_t                     fsm_outs2;
-  lsm6dso_fsm_outs3_t                     fsm_outs3;
-  lsm6dso_fsm_outs4_t                     fsm_outs4;
-  lsm6dso_fsm_outs5_t                     fsm_outs5;
-  lsm6dso_fsm_outs6_t                     fsm_outs6;
-  lsm6dso_fsm_outs7_t                     fsm_outs7;
-  lsm6dso_fsm_outs8_t                     fsm_outs8;
-  lsm6dso_fsm_outs9_t                     fsm_outs9;
-  lsm6dso_fsm_outs10_t                    fsm_outs10;
-  lsm6dso_fsm_outs11_t                    fsm_outs11;
-  lsm6dso_fsm_outs12_t                    fsm_outs12;
-  lsm6dso_fsm_outs13_t                    fsm_outs13;
-  lsm6dso_fsm_outs14_t                    fsm_outs14;
-  lsm6dso_fsm_outs15_t                    fsm_outs15;
-  lsm6dso_fsm_outs16_t                    fsm_outs16;
-  lsm6dso_emb_func_odr_cfg_b_t            emb_func_odr_cfg_b;
-  lsm6dso_emb_func_src_t                  emb_func_src;
-  lsm6dso_emb_func_init_a_t               emb_func_init_a;
-  lsm6dso_emb_func_init_b_t               emb_func_init_b;
-  lsm6dso_mag_cfg_a_t                     mag_cfg_a;
-  lsm6dso_mag_cfg_b_t                     mag_cfg_b;
-  lsm6dso_pedo_cmd_reg_t                  pedo_cmd_reg;
-  lsm6dso_sensor_hub_1_t                  sensor_hub_1;
-  lsm6dso_sensor_hub_2_t                  sensor_hub_2;
-  lsm6dso_sensor_hub_3_t                  sensor_hub_3;
-  lsm6dso_sensor_hub_4_t                  sensor_hub_4;
-  lsm6dso_sensor_hub_5_t                  sensor_hub_5;
-  lsm6dso_sensor_hub_6_t                  sensor_hub_6;
-  lsm6dso_sensor_hub_7_t                  sensor_hub_7;
-  lsm6dso_sensor_hub_8_t                  sensor_hub_8;
-  lsm6dso_sensor_hub_9_t                  sensor_hub_9;
-  lsm6dso_sensor_hub_10_t                 sensor_hub_10;
-  lsm6dso_sensor_hub_11_t                 sensor_hub_11;
-  lsm6dso_sensor_hub_12_t                 sensor_hub_12;
-  lsm6dso_sensor_hub_13_t                 sensor_hub_13;
-  lsm6dso_sensor_hub_14_t                 sensor_hub_14;
-  lsm6dso_sensor_hub_15_t                 sensor_hub_15;
-  lsm6dso_sensor_hub_16_t                 sensor_hub_16;
-  lsm6dso_sensor_hub_17_t                 sensor_hub_17;
-  lsm6dso_sensor_hub_18_t                 sensor_hub_18;
-  lsm6dso_master_config_t                 master_config;
-  lsm6dso_slv0_add_t                      slv0_add;
-  lsm6dso_slv0_subadd_t                   slv0_subadd;
-  lsm6dso_slv0_config_t                   slv0_config;
-  lsm6dso_slv1_add_t                      slv1_add;
-  lsm6dso_slv1_subadd_t                   slv1_subadd;
-  lsm6dso_slv1_config_t                   slv1_config;
-  lsm6dso_slv2_add_t                      slv2_add;
-  lsm6dso_slv2_subadd_t                   slv2_subadd;
-  lsm6dso_slv2_config_t                   slv2_config;
-  lsm6dso_slv3_add_t                      slv3_add;
-  lsm6dso_slv3_subadd_t                   slv3_subadd;
-  lsm6dso_slv3_config_t                   slv3_config;
-  lsm6dso_datawrite_src_mode_sub_slv0_t   datawrite_src_mode_sub_slv0;
-  lsm6dso_status_master_t                 status_master;
-  bitwise_t                               bitwise;
-  uint8_t                                 byte;
-} lsm6dso_reg_t;
-
-/**
-  * @}
-  *
-  */
-
 float_t lsm6dso_from_fs2_to_mg(int16_t lsb);
 float_t lsm6dso_from_fs4_to_mg(int16_t lsb);
 float_t lsm6dso_from_fs8_to_mg(int16_t lsb);
@@ -4442,7 +4302,7 @@ typedef struct
   } ois;
 } lsm6dso_data_t;
 int32_t lsm6dso_data_get(const stmdev_ctx_t *ctx, stmdev_ctx_t *aux_ctx,
-                         lsm6dso_md_t *md, lsm6dso_data_t *data);
+                         const lsm6dso_md_t *md, lsm6dso_data_t *data);
 
 typedef struct
 {
@@ -4454,7 +4314,7 @@ typedef struct
   uint8_t fifo_compr   : 1; /* FIFO compression */
 } lsm6dso_emb_sens_t;
 int32_t lsm6dso_embedded_sens_set(const stmdev_ctx_t *ctx,
-                                  lsm6dso_emb_sens_t *emb_sens);
+                                  const lsm6dso_emb_sens_t *emb_sens);
 int32_t lsm6dso_embedded_sens_get(const stmdev_ctx_t *ctx,
                                   lsm6dso_emb_sens_t *emb_sens);
 int32_t lsm6dso_embedded_sens_off(const stmdev_ctx_t *ctx);

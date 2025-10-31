@@ -32,33 +32,28 @@
  */
 
 /* Private typedef -----------------------------------------------------------*/
-typedef struct displayFloatToInt_s
-{
-  int8_t sign; /* 0 means positive, 1 means negative */
-  uint32_t out_int;
-  uint32_t out_dec;
-} displayFloatToInt_t;
-
 /* Private define ------------------------------------------------------------*/
 #define MAX_BUF_SIZE    256
 #define MLC_STATUS_MAX    8
 #define FSM_STATUS_MAX   18
 #define SHT40AD1B_ODR  1000U
+#define MAX_ISPU_BYTES   64U
 
 /* Private macro -------------------------------------------------------------*/
 #define DELAY(x)  for (__IO uint32_t counter = (x); counter > 0U; counter--) {}
 
 /* Public variables ----------------------------------------------------------*/
+extern void *MotionCompObj[];
+
 int32_t UseLSI = 0;
 uint8_t UpdateInterrupt = 0;
 uint32_t SensorsEnabled = 0;
 uint32_t StartTime = 0;
+volatile uint8_t IspuBytes = MAX_ISPU_BYTES;
 
 /* Private variables ---------------------------------------------------------*/
-static char DataOut[MAX_BUF_SIZE];
 static RTC_HandleTypeDef RtcHandle;
 static uint32_t PreviousSensorsEnabled = 0;
-static volatile uint8_t AutoInit = 0;
 static volatile uint32_t IntCurrentTime1 = 0;
 static volatile uint32_t IntCurrentTime2 = 0;
 static volatile uint8_t DIL24_INT1_Event = 0;
@@ -66,6 +61,10 @@ static uint8_t NewData = 0;
 static uint16_t NewDataFlags = 0;
 static uint8_t MsgIndex = 0;
 static uint32_t LastUpdate = 0;
+static volatile uint8_t IspuRunning = 0U;
+static volatile uint32_t IspuResetStateTickUs = 0U;
+static volatile uint32_t IspuSetStateTickUs = 0U;
+static volatile uint32_t IspuElapsedTimeUs = 0U;
 
 /* Private function prototypes -----------------------------------------------*/
 static void GPIO_Init(void);
@@ -74,7 +73,6 @@ static void RTC_Config(void);
 static void RTC_TimeStampConfig(void);
 
 static void Enable_Disable_Sensors(void);
-static void Float_To_Int(float In, displayFloatToInt_t *OutValue, int32_t DecPrec);
 
 static void Time_Handler(Msg_t *Msg);
 static void Press_Sensor_Handler(Msg_t *Msg, uint32_t Instance);
@@ -86,6 +84,7 @@ static void Magneto_Sensor_Handler(Msg_t *Msg, uint32_t Instance);
 static void Sensors_Interrupt_Handler(Msg_t *Msg);
 static void MLC_Handler(Msg_t *Msg);
 static void FSM_Handler(Msg_t *Msg);
+static void ISPU_Handler(Msg_t *Msg);
 static void QVAR_Handler(Msg_t *Msg, uint32_t Instance);
 static void Accelero_HG_Sensor_Handler(Msg_t *Msg, uint32_t Instance);
 
@@ -111,7 +110,7 @@ int main(void)
   Msg_t msg_dat;
   Msg_t msg_cmd;
 
-  /* STM32F4xx HAL library initialization:
+  /* STM32L1xx HAL library initialization:
   - Configure the Flash prefetch, instruction and Data caches
   - Configure the Systick to generate an interrupt each 1 msec
   - Set NVIC Group Priority to 4
@@ -157,10 +156,6 @@ int main(void)
       if (msg_cmd.Data[0] == DEV_ADDR)
       {
         (void)HandleMSG((Msg_t *)&msg_cmd);
-        if (DataLoggerActive != 0U)
-        {
-          AutoInit = 0;
-        }
       }
     }
 
@@ -171,18 +166,8 @@ int main(void)
       Enable_Disable_Sensors();
     }
 
-    /* For terminal output enable all sensors */
-    if (AutoInit == 1U)
-    {
-      SensorsEnabled = 0xFFFFFFFF;
-    }
-
     /* LED control */
     if (DataLoggerActive != 0U)
-    {
-      BSP_LED_Toggle(LED2);
-    }
-    else if (AutoInit != 0U)
     {
       BSP_LED_Toggle(LED2);
     }
@@ -241,6 +226,11 @@ int main(void)
         FSM_Handler(&msg_dat);
       }
 
+      if ((SensorsEnabled & ISPU_ENABLED) == ISPU_ENABLED)
+      {
+        ISPU_Handler(&msg_dat);
+      }
+
       if ((SensorsEnabled & QVAR_ENABLED) == QVAR_ENABLED)
       {
         QVAR_Handler(&msg_dat, AccInstance);
@@ -261,12 +251,6 @@ int main(void)
         NewData = 0;
         NewDataFlags = 0;
       }
-    }
-
-    /* For terminal output reduce speed */
-    if (AutoInit != 0U)
-    {
-      HAL_Delay(500);
     }
   }
 }
@@ -298,12 +282,24 @@ static void GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
 
-  /* Configure GPIO pins : PA4 PA8 */
-  GPIO_InitStruct.Pin   = GPIO_PIN_4 | GPIO_PIN_8;
+  /* Configure GPIO pin : PA4 */
+  GPIO_InitStruct.Pin   = GPIO_PIN_4;
   GPIO_InitStruct.Mode  = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull  = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /* Configure GPIO pin : PA8 */
+  GPIO_InitStruct.Pin   = GPIO_PIN_8;
+  GPIO_InitStruct.Mode  = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Pull  = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /* Enable and set EXTI Interrupt to the lowest priority */
+  /* LSM6DSO16IS INT2 pin where the ISPU sleep state is routed for algorithm execution time measurement */
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0x0F, 0x00);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
   /* Configure GPIO pins : PB0 PB4 PB5 PB10 */
   GPIO_InitStruct.Pin   = GPIO_PIN_0 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_10;
@@ -312,7 +308,7 @@ static void GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /* Configure GPIO pin : PC0 PC1 */
+  /* Configure GPIO pins : PC0 PC1 */
   GPIO_InitStruct.Pin   = GPIO_PIN_0 | GPIO_PIN_1;
   GPIO_InitStruct.Mode  = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull  = GPIO_NOPULL;
@@ -411,30 +407,6 @@ static void Enable_Disable_Sensors(void)
 }
 
 /**
- * @brief  Splits a float into two integer values
- * @param  In the float value as input
- * @param  OutValue the pointer to the output integer structure
- * @param  DecPrec the decimal precision to be used
- * @retval None
- */
-static void Float_To_Int(float In, displayFloatToInt_t *OutValue, int32_t DecPrec)
-{
-  if (In >= 0.0f)
-  {
-    OutValue->sign = 0;
-  }
-  else
-  {
-    OutValue->sign = 1;
-    In = -In;
-  }
-
-  OutValue->out_int = (uint32_t)In;
-  In = In - (float)(OutValue->out_int);
-  OutValue->out_dec = (uint32_t)trunc((double)In * pow(10.0, (double)DecPrec));
-}
-
-/**
  * @brief  Handles the precise time
  * @param  Msg the time part of the stream
  * @retval None
@@ -448,12 +420,6 @@ static void Time_Handler(Msg_t *Msg)
     time_us = DWT_GetTickUS() - StartTime;
     Serialize(&Msg->Data[3], time_us, 4);
     MsgIndex = 9;
-  }
-  else if (AutoInit != 0U)
-  {
-    time_us = DWT_GetTickUS() - StartTime;
-    (void)snprintf(DataOut, MAX_BUF_SIZE, "TimeStamp: %lu\r\n", (unsigned long)time_us);
-    (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
   }
   else
   {
@@ -483,13 +449,6 @@ static void Press_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
     {
       (void)memcpy(&Msg->Data[MsgIndex], (void *)&pressure, 4);
       MsgIndex = MsgIndex + 4;
-    }
-    else if (AutoInit != 0U)
-    {
-      displayFloatToInt_t out_value;
-      Float_To_Int(pressure, &out_value, 2);
-      (void)snprintf(DataOut, MAX_BUF_SIZE, "PRESS: %d.%02d\r\n", (int)out_value.out_int, (int)out_value.out_dec);
-      (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
     }
     else
     {
@@ -603,14 +562,6 @@ static void Temp_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
       (void)memcpy(&Msg->Data[MsgIndex], (void *)&temperature, 4);
       MsgIndex = MsgIndex + 4;
     }
-    else if (AutoInit != 0U)
-    {
-      displayFloatToInt_t out_value;
-      Float_To_Int(temperature, &out_value, 2);
-      (void)snprintf(DataOut, MAX_BUF_SIZE, "TEMP: %c%d.%02d\r\n", ((out_value.sign != 0) ? '-' : '+'),
-                     (int)out_value.out_int, (int)out_value.out_dec);
-      (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
-    }
     else
     {
       /* Nothing to do */
@@ -664,13 +615,6 @@ static void Hum_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
       (void)memcpy(&Msg->Data[MsgIndex], (void *)&humidity, 4);
       MsgIndex = MsgIndex + 4;
     }
-    else if (AutoInit != 0U)
-    {
-      displayFloatToInt_t out_value;
-      Float_To_Int(humidity, &out_value, 2);
-      (void)snprintf(DataOut, MAX_BUF_SIZE, "HUM: %d.%02d\r\n", (int)out_value.out_int, (int)out_value.out_dec);
-      (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
-    }
     else
     {
       /* Nothing to do */
@@ -686,7 +630,6 @@ static void Hum_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
  */
 static void Accelero_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
 {
-  int32_t data[6];
   IKS4A1_MOTION_SENSOR_Axes_t acceleration;
   IKS4A1_HYBRID_MOTION_SENSOR_Axes_t hyb_acc;
   uint8_t status = 0;
@@ -740,15 +683,6 @@ static void Accelero_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
       Serialize_s32(&Msg->Data[MsgIndex + 8], acceleration.z, 4);
       MsgIndex = MsgIndex + 12;
     }
-    else if (AutoInit != 0U)
-    {
-      data[0] = acceleration.x;
-      data[1] = acceleration.y;
-      data[2] = acceleration.z;
-
-      (void)snprintf(DataOut, MAX_BUF_SIZE, "ACC_X: %d, ACC_Y: %d, ACC_Z: %d\r\n", (int)data[0], (int)data[1], (int)data[2]);
-      (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
-    }
     else
     {
       /* Nothing to do */
@@ -764,7 +698,6 @@ static void Accelero_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
  */
 static void Gyro_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
 {
-  int32_t data[6];
   IKS4A1_MOTION_SENSOR_Axes_t angular_velocity;
   uint8_t status = 0;
 
@@ -782,15 +715,6 @@ static void Gyro_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
       Serialize_s32(&Msg->Data[MsgIndex + 8], angular_velocity.z, 4);
       MsgIndex = MsgIndex + 12;
     }
-    else if (AutoInit != 0U)
-    {
-      data[0] = angular_velocity.x;
-      data[1] = angular_velocity.y;
-      data[2] = angular_velocity.z;
-
-      (void)snprintf(DataOut, MAX_BUF_SIZE, "GYR_X: %d, GYR_Y: %d, GYR_Z: %d\r\n", (int)data[0], (int)data[1], (int)data[2]);
-      (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
-    }
     else
     {
       /* Nothing to do */
@@ -806,7 +730,6 @@ static void Gyro_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
  */
 static void Magneto_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
 {
-  int32_t data[3];
   IKS4A1_MOTION_SENSOR_Axes_t magnetic_field;
   uint8_t status = 0;
 
@@ -823,15 +746,6 @@ static void Magneto_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
       Serialize_s32(&Msg->Data[MsgIndex + 4], (int32_t)magnetic_field.y, 4);
       Serialize_s32(&Msg->Data[MsgIndex + 8], (int32_t)magnetic_field.z, 4);
       MsgIndex = MsgIndex + 12;
-    }
-    else if (AutoInit != 0U)
-    {
-      data[0] = magnetic_field.x;
-      data[1] = magnetic_field.y;
-      data[2] = magnetic_field.z;
-
-      (void)snprintf(DataOut, MAX_BUF_SIZE, "MAG_X: %d, MAG_Y: %d, MAG_Z: %d\r\n", (int)data[0], (int)data[1], (int)data[2]);
-      (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
     }
     else
     {
@@ -903,7 +817,7 @@ static void MLC_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSOX_0, LSM6DSOX_FUNC_CFG_ACCESS, LSM6DSOX_EMBEDDED_FUNC_BANK << 6);
+    (void)LSM6DSOX_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSOX_0], LSM6DSOX_EMBEDDED_FUNC_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSOX_0, LSM6DSOX_MLC0_SRC, &mlc_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSOX_0, LSM6DSOX_MLC1_SRC, &mlc_status[1]);
@@ -914,7 +828,7 @@ static void MLC_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSOX_0, LSM6DSOX_MLC6_SRC, &mlc_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSOX_0, LSM6DSOX_MLC7_SRC, &mlc_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSOX_0, LSM6DSOX_FUNC_CFG_ACCESS, LSM6DSOX_USER_BANK << 6);
+    (void)LSM6DSOX_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSOX_0], LSM6DSOX_USER_BANK);
   }
   else if ((AccInstance == IKS4A1_LSM6DSRX_0) && (GyrInstance == IKS4A1_LSM6DSRX_0))
   {
@@ -924,7 +838,7 @@ static void MLC_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSRX_0, LSM6DSRX_FUNC_CFG_ACCESS, LSM6DSRX_EMBEDDED_FUNC_BANK << 6);
+    (void)LSM6DSRX_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSRX_0], LSM6DSRX_EMBEDDED_FUNC_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSRX_0, LSM6DSRX_MLC0_SRC, &mlc_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSRX_0, LSM6DSRX_MLC1_SRC, &mlc_status[1]);
@@ -935,7 +849,7 @@ static void MLC_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSRX_0, LSM6DSRX_MLC6_SRC, &mlc_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSRX_0, LSM6DSRX_MLC7_SRC, &mlc_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSRX_0, LSM6DSRX_FUNC_CFG_ACCESS, LSM6DSRX_USER_BANK << 6);
+    (void)LSM6DSRX_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSRX_0], LSM6DSRX_USER_BANK);
   }
   else if ((AccInstance == IKS4A1_ISM330DHCX_0) && (GyrInstance == IKS4A1_ISM330DHCX_0))
   {
@@ -945,7 +859,7 @@ static void MLC_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ISM330DHCX_0, ISM330DHCX_FUNC_CFG_ACCESS, ISM330DHCX_EMBEDDED_FUNC_BANK << 6);
+    (void)ISM330DHCX_Set_Mem_Bank(MotionCompObj[IKS4A1_ISM330DHCX_0], ISM330DHCX_EMBEDDED_FUNC_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330DHCX_0, ISM330DHCX_MLC0_SRC, &mlc_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330DHCX_0, ISM330DHCX_MLC1_SRC, &mlc_status[1]);
@@ -956,7 +870,7 @@ static void MLC_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330DHCX_0, ISM330DHCX_MLC6_SRC, &mlc_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330DHCX_0, ISM330DHCX_MLC7_SRC, &mlc_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ISM330DHCX_0, ISM330DHCX_FUNC_CFG_ACCESS, ISM330DHCX_USER_BANK << 6);
+    (void)ISM330DHCX_Set_Mem_Bank(MotionCompObj[IKS4A1_ISM330DHCX_0], ISM330DHCX_USER_BANK);
   }
   else if (AccInstance == IKS4A1_IIS2ICLX_0)
   {
@@ -966,7 +880,7 @@ static void MLC_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_IIS2ICLX_0, IIS2ICLX_FUNC_CFG_ACCESS, IIS2ICLX_EMBEDDED_FUNC_BANK << 6);
+    (void)IIS2ICLX_Set_Mem_Bank(MotionCompObj[IKS4A1_IIS2ICLX_0], IIS2ICLX_EMBEDDED_FUNC_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_IIS2ICLX_0, IIS2ICLX_MLC0_SRC, &mlc_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_IIS2ICLX_0, IIS2ICLX_MLC1_SRC, &mlc_status[1]);
@@ -977,7 +891,7 @@ static void MLC_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_IIS2ICLX_0, IIS2ICLX_MLC6_SRC, &mlc_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_IIS2ICLX_0, IIS2ICLX_MLC7_SRC, &mlc_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_IIS2ICLX_0, IIS2ICLX_FUNC_CFG_ACCESS, IIS2ICLX_USER_BANK << 6);
+    (void)IIS2ICLX_Set_Mem_Bank(MotionCompObj[IKS4A1_IIS2ICLX_0], IIS2ICLX_USER_BANK);
   }
   else if ((AccInstance == IKS4A1_LSM6DSO32X_0) && (GyrInstance == IKS4A1_LSM6DSO32X_0))
   {
@@ -987,7 +901,7 @@ static void MLC_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSO32X_0, LSM6DSO32X_FUNC_CFG_ACCESS, LSM6DSO32X_EMBEDDED_FUNC_BANK << 6);
+    (void)LSM6DSO32X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSO32X_0], LSM6DSO32X_EMBEDDED_FUNC_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSO32X_0, LSM6DSO32X_MLC0_SRC, &mlc_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSO32X_0, LSM6DSO32X_MLC1_SRC, &mlc_status[1]);
@@ -998,7 +912,7 @@ static void MLC_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSO32X_0, LSM6DSO32X_MLC6_SRC, &mlc_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSO32X_0, LSM6DSO32X_MLC7_SRC, &mlc_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSO32X_0, LSM6DSO32X_FUNC_CFG_ACCESS, LSM6DSO32X_USER_BANK << 6);
+    (void)LSM6DSO32X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSO32X_0], LSM6DSO32X_USER_BANK);
   }
   else if ((AccInstance == IKS4A1_LSM6DSV16X_0) && (GyrInstance == IKS4A1_LSM6DSV16X_0))
   {
@@ -1008,14 +922,14 @@ static void MLC_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV16X_0, LSM6DSV16X_FUNC_CFG_ACCESS, LSM6DSV16X_EMBED_FUNC_MEM_BANK << 7);
+    (void)LSM6DSV16X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV16X_0], LSM6DSV16X_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16X_0, LSM6DSV16X_MLC1_SRC, &mlc_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16X_0, LSM6DSV16X_MLC2_SRC, &mlc_status[1]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16X_0, LSM6DSV16X_MLC3_SRC, &mlc_status[2]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16X_0, LSM6DSV16X_MLC4_SRC, &mlc_status[3]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV16X_0, LSM6DSV16X_FUNC_CFG_ACCESS, LSM6DSV16X_MAIN_MEM_BANK << 7);
+    (void)LSM6DSV16X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV16X_0], LSM6DSV16X_MAIN_MEM_BANK);
   }
   else if ((AccInstance == IKS4A1_LSM6DSV16BX_0) && (GyrInstance == IKS4A1_LSM6DSV16BX_0))
   {
@@ -1025,14 +939,14 @@ static void MLC_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV16BX_0, LSM6DSV16BX_FUNC_CFG_ACCESS, LSM6DSV16BX_EMBED_FUNC_MEM_BANK << 7);
+    (void)LSM6DSV16BX_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV16BX_0], LSM6DSV16BX_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16BX_0, LSM6DSV16BX_MLC1_SRC, &mlc_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16BX_0, LSM6DSV16BX_MLC2_SRC, &mlc_status[1]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16BX_0, LSM6DSV16BX_MLC3_SRC, &mlc_status[2]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16BX_0, LSM6DSV16BX_MLC4_SRC, &mlc_status[3]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV16BX_0, LSM6DSV16BX_FUNC_CFG_ACCESS, LSM6DSV16BX_MAIN_MEM_BANK << 7);
+    (void)LSM6DSV16BX_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV16BX_0], LSM6DSV16BX_MAIN_MEM_BANK);
   }
   else if ((AccInstance == IKS4A1_ISM330BX_0) && (GyrInstance == IKS4A1_ISM330BX_0))
   {
@@ -1042,53 +956,48 @@ static void MLC_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ISM330BX_0, ISM330BX_FUNC_CFG_ACCESS, ISM330BX_EMBED_FUNC_MEM_BANK << 7);
+    (void)ISM330BX_Set_Mem_Bank(MotionCompObj[IKS4A1_ISM330BX_0], ISM330BX_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330BX_0, ISM330BX_MLC1_SRC, &mlc_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330BX_0, ISM330BX_MLC2_SRC, &mlc_status[1]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330BX_0, ISM330BX_MLC3_SRC, &mlc_status[2]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330BX_0, ISM330BX_MLC4_SRC, &mlc_status[3]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ISM330BX_0, ISM330BX_FUNC_CFG_ACCESS, ISM330BX_MAIN_MEM_BANK << 7);
+    (void)ISM330BX_Set_Mem_Bank(MotionCompObj[IKS4A1_ISM330BX_0], ISM330BX_MAIN_MEM_BANK);
   }
   else if (AccInstance == IKS4A1_LIS2DUX12_0)
   {
     mlc_status_max = 4;
-    uint8_t func_cfg_reg;
 
 #if (MLC_STATUS_MAX < 4)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUX12_0, LIS2DUX12_FUNC_CFG_ACCESS, &func_cfg_reg);
-
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LIS2DUX12_0, LIS2DUX12_FUNC_CFG_ACCESS, func_cfg_reg | (LIS2DUX12_EMBED_FUNC_MEM_BANK << 7));
+    (void)LIS2DUX12_Set_Mem_Bank(MotionCompObj[IKS4A1_LIS2DUX12_0], LIS2DUX12_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUX12_0, LIS2DUX12_MLC1_SRC, &mlc_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUX12_0, LIS2DUX12_MLC2_SRC, &mlc_status[1]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUX12_0, LIS2DUX12_MLC3_SRC, &mlc_status[2]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUX12_0, LIS2DUX12_MLC4_SRC, &mlc_status[3]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LIS2DUX12_0, LIS2DUX12_FUNC_CFG_ACCESS, func_cfg_reg | LIS2DUX12_MAIN_MEM_BANK << 7);
+    (void)LIS2DUX12_Set_Mem_Bank(MotionCompObj[IKS4A1_LIS2DUX12_0], LIS2DUX12_MAIN_MEM_BANK);
   }
   else if (AccInstance == IKS4A1_LIS2DUXS12_0)
   {
     mlc_status_max = 4;
-    uint8_t func_cfg_reg;
 
 #if (MLC_STATUS_MAX < 4)
 #error "ERROR: Array index out of bounds!"
 #endif
-    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_FUNC_CFG_ACCESS, &func_cfg_reg);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_FUNC_CFG_ACCESS, func_cfg_reg | (LIS2DUXS12_EMBED_FUNC_MEM_BANK << 7));
+    (void)LIS2DUXS12_Set_Mem_Bank(MotionCompObj[IKS4A1_LIS2DUXS12_0], LIS2DUXS12_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_MLC1_SRC, &mlc_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_MLC2_SRC, &mlc_status[1]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_MLC3_SRC, &mlc_status[2]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_MLC4_SRC, &mlc_status[3]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_FUNC_CFG_ACCESS, func_cfg_reg | (LIS2DUXS12_MAIN_MEM_BANK << 7));
+    (void)LIS2DUXS12_Set_Mem_Bank(MotionCompObj[IKS4A1_LIS2DUXS12_0], LIS2DUXS12_MAIN_MEM_BANK);
   }
   else if ((AccInstance == IKS4A1_LSM6DSV32X_0) && (GyrInstance == IKS4A1_LSM6DSV32X_0))
   {
@@ -1098,14 +1007,14 @@ static void MLC_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV32X_0, LSM6DSV32X_FUNC_CFG_ACCESS, LSM6DSV32X_EMBED_FUNC_MEM_BANK << 7);
+    (void)LSM6DSV32X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV32X_0], LSM6DSV32X_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV32X_0, LSM6DSV32X_MLC1_SRC, &mlc_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV32X_0, LSM6DSV32X_MLC2_SRC, &mlc_status[1]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV32X_0, LSM6DSV32X_MLC3_SRC, &mlc_status[2]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV32X_0, LSM6DSV32X_MLC4_SRC, &mlc_status[3]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV32X_0, LSM6DSV32X_FUNC_CFG_ACCESS, LSM6DSV32X_MAIN_MEM_BANK << 7);
+    (void)LSM6DSV32X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV32X_0], LSM6DSV32X_MAIN_MEM_BANK);
   }
   else if ((AccInstance == IKS4A1_LSM6DSV80X_0) && (GyrInstance == IKS4A1_LSM6DSV80X_0))
   {
@@ -1115,7 +1024,7 @@ static void MLC_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FUNC_CFG_ACCESS, LSM6DSV80X_EMBED_FUNC_MEM_BANK << 7);
+    (void)LSM6DSV80X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV80X_0], LSM6DSV80X_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_MLC1_SRC, &mlc_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_MLC2_SRC, &mlc_status[1]);
@@ -1126,7 +1035,7 @@ static void MLC_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_MLC7_SRC, &mlc_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_MLC8_SRC, &mlc_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FUNC_CFG_ACCESS, LSM6DSV80X_MAIN_MEM_BANK << 7);
+    (void)LSM6DSV80X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV80X_0], LSM6DSV80X_MAIN_MEM_BANK);
   }
   else if ((AccInstance == IKS4A1_LSM6DSV320X_0) && (GyrInstance == IKS4A1_LSM6DSV320X_0))
   {
@@ -1136,7 +1045,7 @@ static void MLC_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FUNC_CFG_ACCESS, LSM6DSV320X_EMBED_FUNC_MEM_BANK << 7);
+    (void)LSM6DSV320X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV320X_0], LSM6DSV320X_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_MLC1_SRC, &mlc_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_MLC2_SRC, &mlc_status[1]);
@@ -1147,26 +1056,24 @@ static void MLC_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_MLC7_SRC, &mlc_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_MLC8_SRC, &mlc_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FUNC_CFG_ACCESS, LSM6DSV320X_MAIN_MEM_BANK << 7);
+    (void)LSM6DSV320X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV320X_0], LSM6DSV320X_MAIN_MEM_BANK);
   }
   else if (AccInstance == IKS4A1_ST1VAFE3BX_0)
   {
     mlc_status_max = 4;
-    uint8_t func_cfg_reg;
 
 #if (MLC_STATUS_MAX < 4)
 #error "ERROR: Array index out of bounds!"
 #endif
-    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FUNC_CFG_ACCESS, &func_cfg_reg);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FUNC_CFG_ACCESS, func_cfg_reg | (ST1VAFE3BX_EMBED_FUNC_MEM_BANK << 7));
+    (void)ST1VAFE3BX_Set_Mem_Bank(MotionCompObj[IKS4A1_ST1VAFE3BX_0], ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_MLC1_SRC, &mlc_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_MLC2_SRC, &mlc_status[1]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_MLC3_SRC, &mlc_status[2]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_MLC4_SRC, &mlc_status[3]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FUNC_CFG_ACCESS, func_cfg_reg | (ST1VAFE3BX_MAIN_MEM_BANK << 7));
+    (void)ST1VAFE3BX_Set_Mem_Bank(MotionCompObj[IKS4A1_ST1VAFE3BX_0], ST1VAFE3BX_MAIN_MEM_BANK);
   }
   else if ((AccInstance == IKS4A1_ST1VAFE6AX_0) && (GyrInstance == IKS4A1_ST1VAFE6AX_0))
   {
@@ -1176,14 +1083,14 @@ static void MLC_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FUNC_CFG_ACCESS, ST1VAFE6AX_EMBED_FUNC_MEM_BANK << 7);
+    (void)ST1VAFE6AX_Set_Mem_Bank(MotionCompObj[IKS4A1_ST1VAFE6AX_0], ST1VAFE6AX_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_MLC1_SRC, &mlc_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_MLC2_SRC, &mlc_status[1]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_MLC3_SRC, &mlc_status[2]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_MLC4_SRC, &mlc_status[3]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FUNC_CFG_ACCESS, ST1VAFE6AX_MAIN_MEM_BANK << 7);
+    (void)ST1VAFE6AX_Set_Mem_Bank(MotionCompObj[IKS4A1_ST1VAFE6AX_0], ST1VAFE6AX_MAIN_MEM_BANK);
   }
   else
   {
@@ -1244,7 +1151,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSO_0, LSM6DSO_FUNC_CFG_ACCESS, LSM6DSO_EMBEDDED_FUNC_BANK << 6);
+    (void)LSM6DSO_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSO_0], LSM6DSO_EMBEDDED_FUNC_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSO_0, LSM6DSO_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSO_0, LSM6DSO_FSM_OUTS2, &fsm_status[1]);
@@ -1263,7 +1170,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSO_0, LSM6DSO_FSM_OUTS15, &fsm_status[14]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSO_0, LSM6DSO_FSM_OUTS16, &fsm_status[15]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSO_0, LSM6DSO_FUNC_CFG_ACCESS, LSM6DSO_USER_BANK << 6);
+    (void)LSM6DSO_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSO_0], LSM6DSO_USER_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSO_0, LSM6DSO_FSM_STATUS_A_MAINPAGE, &fsm_status[16]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSO_0, LSM6DSO_FSM_STATUS_B_MAINPAGE, &fsm_status[17]);
@@ -1276,7 +1183,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSOX_0, LSM6DSOX_FUNC_CFG_ACCESS, LSM6DSOX_EMBEDDED_FUNC_BANK << 6);
+    (void)LSM6DSOX_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSOX_0], LSM6DSOX_EMBEDDED_FUNC_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSOX_0, LSM6DSOX_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSOX_0, LSM6DSOX_FSM_OUTS2, &fsm_status[1]);
@@ -1295,7 +1202,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSOX_0, LSM6DSOX_FSM_OUTS15, &fsm_status[14]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSOX_0, LSM6DSOX_FSM_OUTS16, &fsm_status[15]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSOX_0, LSM6DSOX_FUNC_CFG_ACCESS, LSM6DSOX_USER_BANK << 6);
+    (void)LSM6DSOX_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSOX_0], LSM6DSOX_USER_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSOX_0, LSM6DSOX_FSM_STATUS_A_MAINPAGE, &fsm_status[16]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSOX_0, LSM6DSOX_FSM_STATUS_B_MAINPAGE, &fsm_status[17]);
@@ -1308,7 +1215,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSR_0, LSM6DSR_FUNC_CFG_ACCESS, LSM6DSR_EMBEDDED_FUNC_BANK << 6);
+    (void)LSM6DSR_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSR_0], LSM6DSR_EMBEDDED_FUNC_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSR_0, LSM6DSR_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSR_0, LSM6DSR_FSM_OUTS2, &fsm_status[1]);
@@ -1327,7 +1234,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSR_0, LSM6DSR_FSM_OUTS15, &fsm_status[14]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSR_0, LSM6DSR_FSM_OUTS16, &fsm_status[15]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSR_0, LSM6DSR_FUNC_CFG_ACCESS, LSM6DSR_USER_BANK << 6);
+    (void)LSM6DSR_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSR_0], LSM6DSR_USER_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSR_0, LSM6DSR_FSM_STATUS_A_MAINPAGE, &fsm_status[16]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSR_0, LSM6DSR_FSM_STATUS_B_MAINPAGE, &fsm_status[17]);
@@ -1340,7 +1247,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSRX_0, LSM6DSRX_FUNC_CFG_ACCESS, LSM6DSRX_EMBEDDED_FUNC_BANK << 6);
+    (void)LSM6DSRX_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSRX_0], LSM6DSRX_EMBEDDED_FUNC_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSRX_0, LSM6DSRX_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSRX_0, LSM6DSRX_FSM_OUTS2, &fsm_status[1]);
@@ -1359,7 +1266,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSRX_0, LSM6DSRX_FSM_OUTS15, &fsm_status[14]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSRX_0, LSM6DSRX_FSM_OUTS16, &fsm_status[15]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSRX_0, LSM6DSRX_FUNC_CFG_ACCESS, LSM6DSRX_USER_BANK << 6);
+    (void)LSM6DSRX_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSRX_0], LSM6DSRX_USER_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSRX_0, LSM6DSRX_FSM_STATUS_A_MAINPAGE, &fsm_status[16]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSRX_0, LSM6DSRX_FSM_STATUS_B_MAINPAGE, &fsm_status[17]);
@@ -1372,7 +1279,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ISM330DHCX_0, ISM330DHCX_FUNC_CFG_ACCESS, ISM330DHCX_EMBEDDED_FUNC_BANK << 6);
+    (void)ISM330DHCX_Set_Mem_Bank(MotionCompObj[IKS4A1_ISM330DHCX_0], ISM330DHCX_EMBEDDED_FUNC_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330DHCX_0, ISM330DHCX_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330DHCX_0, ISM330DHCX_FSM_OUTS2, &fsm_status[1]);
@@ -1391,7 +1298,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330DHCX_0, ISM330DHCX_FSM_OUTS15, &fsm_status[14]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330DHCX_0, ISM330DHCX_FSM_OUTS16, &fsm_status[15]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ISM330DHCX_0, ISM330DHCX_FUNC_CFG_ACCESS, ISM330DHCX_USER_BANK << 6);
+    (void)ISM330DHCX_Set_Mem_Bank(MotionCompObj[IKS4A1_ISM330DHCX_0], ISM330DHCX_USER_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330DHCX_0, ISM330DHCX_FSM_STATUS_A_MAINPAGE, &fsm_status[16]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330DHCX_0, ISM330DHCX_FSM_STATUS_B_MAINPAGE, &fsm_status[17]);
@@ -1404,7 +1311,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_IIS2ICLX_0, IIS2ICLX_FUNC_CFG_ACCESS, IIS2ICLX_EMBEDDED_FUNC_BANK << 6);
+    (void)IIS2ICLX_Set_Mem_Bank(MotionCompObj[IKS4A1_IIS2ICLX_0], IIS2ICLX_EMBEDDED_FUNC_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_IIS2ICLX_0, IIS2ICLX_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_IIS2ICLX_0, IIS2ICLX_FSM_OUTS2, &fsm_status[1]);
@@ -1423,7 +1330,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_IIS2ICLX_0, IIS2ICLX_FSM_OUTS15, &fsm_status[14]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_IIS2ICLX_0, IIS2ICLX_FSM_OUTS16, &fsm_status[15]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_IIS2ICLX_0, IIS2ICLX_FUNC_CFG_ACCESS, IIS2ICLX_USER_BANK << 6);
+    (void)IIS2ICLX_Set_Mem_Bank(MotionCompObj[IKS4A1_IIS2ICLX_0], IIS2ICLX_USER_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_IIS2ICLX_0, IIS2ICLX_FSM_STATUS_A_MAINPAGE, &fsm_status[16]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_IIS2ICLX_0, IIS2ICLX_FSM_STATUS_B_MAINPAGE, &fsm_status[17]);
@@ -1436,7 +1343,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSO32X_0, LSM6DSO32X_FUNC_CFG_ACCESS, LSM6DSO32X_EMBEDDED_FUNC_BANK << 6);
+    (void)LSM6DSO32X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSO32X_0], LSM6DSO32X_EMBEDDED_FUNC_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSO32X_0, LSM6DSO32X_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSO32X_0, LSM6DSO32X_FSM_OUTS2, &fsm_status[1]);
@@ -1455,7 +1362,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSO32X_0, LSM6DSO32X_FSM_OUTS15, &fsm_status[14]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSO32X_0, LSM6DSO32X_FSM_OUTS16, &fsm_status[15]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSO32X_0, LSM6DSO32X_FUNC_CFG_ACCESS, LSM6DSO32X_USER_BANK << 6);
+    (void)LSM6DSO32X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSO32X_0], LSM6DSO32X_USER_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSO32X_0, LSM6DSO32X_FSM_STATUS_A_MAINPAGE, &fsm_status[16]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSO32X_0, LSM6DSO32X_FSM_STATUS_B_MAINPAGE, &fsm_status[17]);
@@ -1468,7 +1375,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV16X_0, LSM6DSV16X_FUNC_CFG_ACCESS, LSM6DSV16X_EMBED_FUNC_MEM_BANK << 7);
+    (void)LSM6DSV16X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV16X_0], LSM6DSV16X_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16X_0, LSM6DSV16X_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16X_0, LSM6DSV16X_FSM_OUTS2, &fsm_status[1]);
@@ -1479,7 +1386,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16X_0, LSM6DSV16X_FSM_OUTS7, &fsm_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16X_0, LSM6DSV16X_FSM_OUTS8, &fsm_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV16X_0, LSM6DSV16X_FUNC_CFG_ACCESS, LSM6DSV16X_MAIN_MEM_BANK << 7);
+    (void)LSM6DSV16X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV16X_0], LSM6DSV16X_MAIN_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16X_0, LSM6DSV16X_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
@@ -1491,7 +1398,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV16BX_0, LSM6DSV16BX_FUNC_CFG_ACCESS, LSM6DSV16BX_EMBED_FUNC_MEM_BANK << 7);
+    (void)LSM6DSV16BX_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV16BX_0], LSM6DSV16BX_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16BX_0, LSM6DSV16BX_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16BX_0, LSM6DSV16BX_FSM_OUTS2, &fsm_status[1]);
@@ -1502,7 +1409,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16BX_0, LSM6DSV16BX_FSM_OUTS7, &fsm_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16BX_0, LSM6DSV16BX_FSM_OUTS8, &fsm_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV16BX_0, LSM6DSV16BX_FUNC_CFG_ACCESS, LSM6DSV16BX_MAIN_MEM_BANK << 7);
+    (void)LSM6DSV16BX_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV16BX_0], LSM6DSV16BX_MAIN_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16BX_0, LSM6DSV16BX_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
@@ -1514,7 +1421,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ISM330BX_0, ISM330BX_FUNC_CFG_ACCESS, ISM330BX_EMBED_FUNC_MEM_BANK << 7);
+    (void)ISM330BX_Set_Mem_Bank(MotionCompObj[IKS4A1_ISM330BX_0], ISM330BX_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330BX_0, ISM330BX_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330BX_0, ISM330BX_FSM_OUTS2, &fsm_status[1]);
@@ -1525,22 +1432,19 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330BX_0, ISM330BX_FSM_OUTS7, &fsm_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330BX_0, ISM330BX_FSM_OUTS8, &fsm_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ISM330BX_0, ISM330BX_FUNC_CFG_ACCESS, ISM330BX_MAIN_MEM_BANK << 7);
+    (void)ISM330BX_Set_Mem_Bank(MotionCompObj[IKS4A1_ISM330BX_0], ISM330BX_MAIN_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ISM330BX_0, ISM330BX_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
   else if (AccInstance == IKS4A1_LIS2DUX12_0)
   {
     fsm_status_max = 9;
-    uint8_t func_cfg_reg;
 
 #if (FSM_STATUS_MAX < 9)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUX12_0, LIS2DUX12_FUNC_CFG_ACCESS, &func_cfg_reg);
-
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LIS2DUX12_0, LIS2DUX12_FUNC_CFG_ACCESS,  func_cfg_reg | (LIS2DUX12_EMBED_FUNC_MEM_BANK << 7));
+    (void)LIS2DUX12_Set_Mem_Bank(MotionCompObj[IKS4A1_LIS2DUX12_0], LIS2DUX12_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUX12_0, LIS2DUX12_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUX12_0, LIS2DUX12_FSM_OUTS2, &fsm_status[1]);
@@ -1551,22 +1455,19 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUX12_0, LIS2DUX12_FSM_OUTS7, &fsm_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUX12_0, LIS2DUX12_FSM_OUTS8, &fsm_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LIS2DUX12_0, LIS2DUX12_FUNC_CFG_ACCESS,  func_cfg_reg | (LIS2DUX12_MAIN_MEM_BANK << 7));
+    (void)LIS2DUX12_Set_Mem_Bank(MotionCompObj[IKS4A1_LIS2DUX12_0], LIS2DUX12_MAIN_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUX12_0, LIS2DUX12_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
   else if (AccInstance == IKS4A1_LIS2DUXS12_0)
   {
     fsm_status_max = 9;
-    uint8_t func_cfg_reg;
 
 #if (FSM_STATUS_MAX < 9)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_FUNC_CFG_ACCESS, &func_cfg_reg);
-
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_FUNC_CFG_ACCESS, func_cfg_reg | (LIS2DUXS12_EMBED_FUNC_MEM_BANK << 7));
+    (void)LIS2DUXS12_Set_Mem_Bank(MotionCompObj[IKS4A1_LIS2DUXS12_0], LIS2DUXS12_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_FSM_OUTS2, &fsm_status[1]);
@@ -1577,7 +1478,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_FSM_OUTS7, &fsm_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_FSM_OUTS8, &fsm_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_FUNC_CFG_ACCESS, func_cfg_reg | (LIS2DUXS12_MAIN_MEM_BANK << 7));
+    (void)LIS2DUXS12_Set_Mem_Bank(MotionCompObj[IKS4A1_LIS2DUXS12_0], LIS2DUXS12_MAIN_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LIS2DUXS12_0, LIS2DUXS12_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
@@ -1589,7 +1490,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV_0, LSM6DSV_FUNC_CFG_ACCESS, LSM6DSV_EMBED_FUNC_MEM_BANK << 7);
+    (void)LSM6DSV_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV_0], LSM6DSV_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV_0, LSM6DSV_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV_0, LSM6DSV_FSM_OUTS2, &fsm_status[1]);
@@ -1600,7 +1501,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV_0, LSM6DSV_FSM_OUTS7, &fsm_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV_0, LSM6DSV_FSM_OUTS8, &fsm_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV_0, LSM6DSV_FUNC_CFG_ACCESS, LSM6DSV_MAIN_MEM_BANK << 7);
+    (void)LSM6DSV_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV_0], LSM6DSV_MAIN_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV_0, LSM6DSV_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
@@ -1612,7 +1513,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV16B_0, LSM6DSV16B_FUNC_CFG_ACCESS, LSM6DSV16B_EMBED_FUNC_MEM_BANK << 7);
+    (void)LSM6DSV16B_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV16B_0], LSM6DSV16B_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16B_0, LSM6DSV16B_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16B_0, LSM6DSV16B_FSM_OUTS2, &fsm_status[1]);
@@ -1623,7 +1524,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16B_0, LSM6DSV16B_FSM_OUTS7, &fsm_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16B_0, LSM6DSV16B_FSM_OUTS8, &fsm_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV16B_0, LSM6DSV16B_FUNC_CFG_ACCESS, LSM6DSV16B_MAIN_MEM_BANK << 7);
+    (void)LSM6DSV16B_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV16B_0], LSM6DSV16B_MAIN_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV16B_0, LSM6DSV16B_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
@@ -1635,7 +1536,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV32X_0, LSM6DSV32X_FUNC_CFG_ACCESS, LSM6DSV32X_EMBED_FUNC_MEM_BANK << 7);
+    (void)LSM6DSV32X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV32X_0], LSM6DSV32X_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV32X_0, LSM6DSV32X_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV32X_0, LSM6DSV32X_FSM_OUTS2, &fsm_status[1]);
@@ -1646,7 +1547,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV32X_0, LSM6DSV32X_FSM_OUTS7, &fsm_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV32X_0, LSM6DSV32X_FSM_OUTS8, &fsm_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV32X_0, LSM6DSV32X_FUNC_CFG_ACCESS, LSM6DSV32X_MAIN_MEM_BANK << 7);
+    (void)LSM6DSV32X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV32X_0], LSM6DSV32X_MAIN_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV32X_0, LSM6DSV32X_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
@@ -1658,7 +1559,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FUNC_CFG_ACCESS, LSM6DSV80X_EMBED_FUNC_MEM_BANK << 7);
+    (void)LSM6DSV80X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV80X_0], LSM6DSV80X_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FSM_OUTS2, &fsm_status[1]);
@@ -1669,7 +1570,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FSM_OUTS7, &fsm_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FSM_OUTS8, &fsm_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FUNC_CFG_ACCESS, LSM6DSV80X_MAIN_MEM_BANK << 7);
+    (void)LSM6DSV80X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV80X_0], LSM6DSV80X_MAIN_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV80X_0, LSM6DSV80X_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
@@ -1681,7 +1582,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FUNC_CFG_ACCESS, LSM6DSV320X_EMBED_FUNC_MEM_BANK << 7);
+    (void)LSM6DSV320X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV320X_0], LSM6DSV320X_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FSM_OUTS2, &fsm_status[1]);
@@ -1692,22 +1593,19 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FSM_OUTS7, &fsm_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FSM_OUTS8, &fsm_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FUNC_CFG_ACCESS, LSM6DSV320X_MAIN_MEM_BANK << 7);
+    (void)LSM6DSV320X_Set_Mem_Bank(MotionCompObj[IKS4A1_LSM6DSV320X_0], LSM6DSV320X_MAIN_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_LSM6DSV320X_0, LSM6DSV320X_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
   else if (AccInstance == IKS4A1_ST1VAFE3BX_0)
   {
     fsm_status_max = 9;
-    uint8_t func_cfg_reg;
 
 #if (FSM_STATUS_MAX < 9)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FUNC_CFG_ACCESS, &func_cfg_reg);
-
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FUNC_CFG_ACCESS, func_cfg_reg | (ST1VAFE3BX_EMBED_FUNC_MEM_BANK << 7));
+    (void)ST1VAFE3BX_Set_Mem_Bank(MotionCompObj[IKS4A1_ST1VAFE3BX_0], ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FSM_OUTS2, &fsm_status[1]);
@@ -1718,7 +1616,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FSM_OUTS7, &fsm_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FSM_OUTS8, &fsm_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FUNC_CFG_ACCESS, func_cfg_reg | (ST1VAFE3BX_MAIN_MEM_BANK << 7));
+    (void)ST1VAFE3BX_Set_Mem_Bank(MotionCompObj[IKS4A1_ST1VAFE3BX_0], ST1VAFE3BX_MAIN_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE3BX_0, ST1VAFE3BX_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
@@ -1730,7 +1628,7 @@ static void FSM_Handler(Msg_t *Msg)
 #error "ERROR: Array index out of bounds!"
 #endif
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FUNC_CFG_ACCESS, ST1VAFE6AX_EMBED_FUNC_MEM_BANK << 7);
+    (void)ST1VAFE6AX_Set_Mem_Bank(MotionCompObj[IKS4A1_ST1VAFE6AX_0], ST1VAFE6AX_EMBED_FUNC_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FSM_OUTS1, &fsm_status[0]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FSM_OUTS2, &fsm_status[1]);
@@ -1741,7 +1639,7 @@ static void FSM_Handler(Msg_t *Msg)
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FSM_OUTS7, &fsm_status[6]);
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FSM_OUTS8, &fsm_status[7]);
 
-    (void)IKS4A1_MOTION_SENSOR_Write_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FUNC_CFG_ACCESS, ST1VAFE6AX_MAIN_MEM_BANK << 7);
+    (void)ST1VAFE6AX_Set_Mem_Bank(MotionCompObj[IKS4A1_ST1VAFE6AX_0], ST1VAFE6AX_MAIN_MEM_BANK);
 
     (void)IKS4A1_MOTION_SENSOR_Read_Register(IKS4A1_ST1VAFE6AX_0, ST1VAFE6AX_FSM_STATUS_MAINPAGE, &fsm_status[8]);
   }
@@ -1790,6 +1688,68 @@ static void FSM_Handler(Msg_t *Msg)
 
     NewData++;
     NewDataFlags |= FSM_SYNC;
+  }
+}
+
+/**
+ * @brief  Handles the ISPU data
+ * @param  Msg the ISPU part of the stream
+ * @retval None
+ */
+static void ISPU_Handler(Msg_t *Msg)
+{
+  uint8_t i;
+  uint8_t new_status = 0;
+  uint8_t int_status = 0;
+  uint8_t ispu_status[MAX_ISPU_BYTES];
+  static uint8_t mem_ispu_status[MAX_ISPU_BYTES];
+
+  if ((AccInstance == IKS4A1_LSM6DSO16IS_0) && (GyrInstance == IKS4A1_LSM6DSO16IS_0))
+  {
+    /* Enable routing ISPU sleep state to INT2 pin */
+    IKS4A1_MOTION_SENSOR_Write_Register(AccInstance, LSM6DSO16IS_INT2_CTRL, 0x80);
+
+    IKS4A1_MOTION_SENSOR_Read_Register(AccInstance, LSM6DSO16IS_ISPU_INT_STATUS0_MAINPAGE, &int_status);
+
+    if (IspuBytes > MAX_ISPU_BYTES)
+    {
+      IspuBytes = MAX_ISPU_BYTES;
+    }
+
+    if (int_status != 0U)
+    {
+      IKS4A1_MOTION_SENSOR_Write_Register(AccInstance, LSM6DSO16IS_FUNC_CFG_ACCESS, 0x80);
+
+      for (i = 0U; i < IspuBytes; i++)
+      {
+        IKS4A1_MOTION_SENSOR_Read_Register(AccInstance, LSM6DSO16IS_ISPU_DOUT_00_L + i, &ispu_status[i]);
+      }
+
+      IKS4A1_MOTION_SENSOR_Write_Register(AccInstance, LSM6DSO16IS_FUNC_CFG_ACCESS, 0x00);
+
+      for (i = 0U; i < IspuBytes; i++)
+      {
+        if (ispu_status[i] != mem_ispu_status[i])
+        {
+          new_status = 1;
+          break;
+        }
+      }
+    }
+  }
+
+  if (new_status == 1U)
+  {
+    (void)memcpy((void *)&Msg->Data[MsgIndex], (void *)ispu_status, IspuBytes);
+    (void)memcpy((void *)mem_ispu_status, (void *)ispu_status, IspuBytes);
+    MsgIndex += IspuBytes;
+
+    /* Add ISPU algorithm execution time in [us] to the stream */
+    (void)memcpy((void *)&Msg->Data[MsgIndex], (void *)&IspuElapsedTimeUs, sizeof(IspuElapsedTimeUs));
+    MsgIndex += (uint8_t)sizeof(IspuElapsedTimeUs);
+
+    NewData++;
+    NewDataFlags |= ISPU_SYNC;
   }
 }
 
@@ -1977,13 +1937,6 @@ static void QVAR_Handler(Msg_t *Msg, uint32_t Instance)
       (void)memcpy(&Msg->Data[MsgIndex], (void *)&qvar_mv, 4);
       MsgIndex = MsgIndex + 4;
     }
-    else if (AutoInit != 0U)
-    {
-      displayFloatToInt_t out_value;
-      Float_To_Int(qvar_mv, &out_value, 2);
-      (void)snprintf(DataOut, MAX_BUF_SIZE, "QVAR: %d.%02d\r\n", (int)out_value.out_int, (int)out_value.out_dec);
-      (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
-    }
     else
     {
       /* Nothing to do */
@@ -1999,7 +1952,6 @@ static void QVAR_Handler(Msg_t *Msg, uint32_t Instance)
  */
 static void Accelero_HG_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
 {
-  int32_t data[6];
   IKS4A1_MOTION_SENSOR_Axes_t acceleration;
   uint8_t status = 0;
 
@@ -2036,15 +1988,6 @@ static void Accelero_HG_Sensor_Handler(Msg_t *Msg, uint32_t Instance)
       Serialize_s32(&Msg->Data[MsgIndex + 4], acceleration.y, 4);
       Serialize_s32(&Msg->Data[MsgIndex + 8], acceleration.z, 4);
       MsgIndex = MsgIndex + 12;
-    }
-    else if (AutoInit != 0U)
-    {
-      data[0] = acceleration.x;
-      data[1] = acceleration.y;
-      data[2] = acceleration.z;
-
-      (void)snprintf(DataOut, MAX_BUF_SIZE, "ACC_HG_X: %d, ACC_HG_Y: %d, ACC_HG_Z: %d\r\n", (int)data[0], (int)data[1], (int)data[2]);
-      (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
     }
     else
     {
@@ -2158,7 +2101,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIOPin)
   {
     int_current_time2_local = IntCurrentTime2;
 
-    /* Manage software debouncing*/
+    /* Manage software de-bouncing */
     if (IntCurrentTime1 == 0U && int_current_time2_local == 0U)
     {
       IntCurrentTime1 = HAL_GetTick();
@@ -2179,24 +2122,41 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIOPin)
 
     if (do_operation != 0)
     {
-      if (DataLoggerActive != 0U)
-      {
-        AutoInit = 0; /* always off */
-      }
-      else
-      {
-        AutoInit = (AutoInit != 0U) ? 0U : 1U; /* toggle on each button pressed */
-      }
+      /* Not used - reserved for future purposes */
     }
   }
   else if (GPIOPin == GPIO_PIN_10)
   {
     DIL24_INT1_Event = 1;
   }
+  /* LSM6DSO16IS INT2 pin where the ISPU sleep state is routed for algorithm execution time measurement */
+  else if (GPIOPin == GPIO_PIN_8)
+  {
+    if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8) == GPIO_PIN_RESET)
+    {
+      IspuRunning = 1U;
+      IspuResetStateTickUs = DWT_GetTickUS();
+    }
+    else
+    {
+      IspuSetStateTickUs = DWT_GetTickUS();
+
+      /* Calculate ISPU algorithm execution time in [us] */
+      if (IspuRunning == 1U)
+      {
+        IspuRunning = 0U;
+
+        uint32_t reset_us = IspuResetStateTickUs;
+        uint32_t set_us   = IspuSetStateTickUs;
+
+        IspuElapsedTimeUs = set_us - reset_us;
+      }
+    }
+  }
 }
 
 /**
- * @brief  Configures the current time and date
+ * @brief  Configures the current time
  * @param  hh the hour value to be set
  * @param  mm the minute value to be set
  * @param  ss the second value to be set
@@ -2207,9 +2167,9 @@ void RTC_TimeRegulate(uint8_t hh, uint8_t mm, uint8_t ss)
   RTC_TimeTypeDef stimestructure;
 
   stimestructure.TimeFormat = RTC_HOURFORMAT12_AM;
-  stimestructure.Hours = hh;
-  stimestructure.Minutes = mm;
-  stimestructure.Seconds = ss;
+  stimestructure.Hours      = hh;
+  stimestructure.Minutes    = mm;
+  stimestructure.Seconds    = ss;
   stimestructure.SubSeconds = 0;
   stimestructure.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
   stimestructure.StoreOperation = RTC_STOREOPERATION_RESET;
@@ -2228,12 +2188,6 @@ void RTC_TimeRegulate(uint8_t hh, uint8_t mm, uint8_t ss)
  */
 void Error_Handler(void)
 {
-  if (AutoInit != 0U)
-  {
-    (void)snprintf(DataOut, MAX_BUF_SIZE, "Error");
-    (void)HAL_UART_Transmit(&UartHandle, (uint8_t *)DataOut, (uint16_t)strlen(DataOut), 5000);
-  }
-
   for (;;)
   {
     BSP_LED_On(LED2);
@@ -2260,7 +2214,32 @@ static void DIL24_INT1_Force_Low(void)
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10, GPIO_PIN_RESET);
+
+  /* Unlock DIL24 I2C bus SDA line if LPS22HH DIL24 used */
+#define UNLOCK_VALUE     0x42
+#define UNLOCK_ADDRESS   0xB9
+#define UNLOCK_REGISTER  0x0E
+
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  GPIO_InitStruct.Pin  = GPIO_PIN_8;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  for (int i = 0; i < 10; i++)
+  {
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
+    DELAY(10U);
+
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
+    DELAY(10U);
+  }
+
   BSP_I2C1_Init();
+
+  uint8_t value = UNLOCK_VALUE;
+  BSP_I2C1_WriteReg(UNLOCK_ADDRESS, UNLOCK_REGISTER, &value, 1);
 }
 
 /**
@@ -2300,26 +2279,30 @@ static uint32_t DWT_Delay_Init(void)
 
 /**
  * @brief  Get relative time in micro seconds
- * @note   Call at least every 2^32 cycles. Do not call from interrupt context!
+ * @note   Call at least every 2^32 cycles.
  * @retval Relative time in micro seconds
  */
-uint32_t DWT_GetTickUS(void)
+uint64_t DWT_GetTickUS(void)
 {
   static uint64_t last_cycle_count_64 = 0;
   uint32_t clock_MHz = HAL_RCC_GetHCLKFreq() / 1000000;
 
+  __disable_irq();
   last_cycle_count_64 += DWT->CYCCNT - (uint32_t)(last_cycle_count_64);
+  uint64_t result = last_cycle_count_64;
+  __enable_irq();
 
-  return (uint32_t)(last_cycle_count_64 / clock_MHz);
+  return result / clock_MHz;
 }
 
 #ifdef  USE_FULL_ASSERT
 /**
- * @brief  Reports the name of the source file and the source line number where the assert_param error has occurred
- * @param  file pointer to the source file name
- * @param  line assert_param error line source number
- * @retval None
- */
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred
+  * @param  file pointer to the source file name
+  * @param  line assert_param error line source number
+  * @retval None
+  */
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* User can add his own implementation to report the file name and line number,

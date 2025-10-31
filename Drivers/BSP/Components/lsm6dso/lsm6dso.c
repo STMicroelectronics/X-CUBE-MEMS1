@@ -2876,14 +2876,14 @@ int32_t LSM6DSO_FIFO_Get_Num_Samples(LSM6DSO_Object_t *pObj, uint16_t *NumSample
   */
 int32_t LSM6DSO_FIFO_Get_Full_Status(LSM6DSO_Object_t *pObj, uint8_t *Status)
 {
-  lsm6dso_reg_t reg;
+  lsm6dso_fifo_status2_t reg;
 
-  if (lsm6dso_read_reg(&(pObj->Ctx), LSM6DSO_FIFO_STATUS2, &reg.byte, 1) != LSM6DSO_OK)
+  if (lsm6dso_fifo_status_get(&(pObj->Ctx), &reg) != LSM6DSO_OK)
   {
     return LSM6DSO_ERROR;
   }
 
-  *Status = reg.fifo_status2.fifo_full_ia;
+  *Status = reg.fifo_full_ia;
 
   return LSM6DSO_OK;
 }
@@ -2896,16 +2896,16 @@ int32_t LSM6DSO_FIFO_Get_Full_Status(LSM6DSO_Object_t *pObj, uint8_t *Status)
   */
 int32_t LSM6DSO_FIFO_Set_INT1_FIFO_Full(LSM6DSO_Object_t *pObj, uint8_t Status)
 {
-  lsm6dso_reg_t reg;
+  lsm6dso_pin_int1_route_t reg;
 
-  if (lsm6dso_read_reg(&(pObj->Ctx), LSM6DSO_INT1_CTRL, &reg.byte, 1) != LSM6DSO_OK)
+  if (lsm6dso_pin_int1_route_get(&(pObj->Ctx), &reg) != LSM6DSO_OK)
   {
     return LSM6DSO_ERROR;
   }
 
-  reg.int1_ctrl.int1_fifo_full = Status;
+  reg.fifo_full = Status;
 
-  if (lsm6dso_write_reg(&(pObj->Ctx), LSM6DSO_INT1_CTRL, &reg.byte, 1) != LSM6DSO_OK)
+  if (lsm6dso_pin_int1_route_set(&(pObj->Ctx), reg) != LSM6DSO_OK)
   {
     return LSM6DSO_ERROR;
   }

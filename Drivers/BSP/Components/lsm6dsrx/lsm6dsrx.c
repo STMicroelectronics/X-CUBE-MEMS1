@@ -165,7 +165,7 @@ int32_t LSM6DSRX_Init(LSM6DSRX_Object_t *pObj)
       return LSM6DSRX_ERROR;
     }
   }
-  
+
   /* Set main memory bank */
   if (LSM6DSRX_Set_Mem_Bank(pObj, (uint8_t)LSM6DSRX_USER_BANK) != LSM6DSRX_OK)
   {
@@ -2460,14 +2460,14 @@ int32_t LSM6DSRX_FIFO_Get_Num_Samples(LSM6DSRX_Object_t *pObj, uint16_t *NumSamp
   */
 int32_t LSM6DSRX_FIFO_Get_Full_Status(LSM6DSRX_Object_t *pObj, uint8_t *Status)
 {
-  lsm6dsrx_reg_t reg;
+  lsm6dsrx_fifo_status2_t reg;
 
-  if (lsm6dsrx_read_reg(&(pObj->Ctx), LSM6DSRX_FIFO_STATUS2, &reg.byte, 1) != LSM6DSRX_OK)
+  if (lsm6dsrx_fifo_status_get(&(pObj->Ctx), &reg) != LSM6DSRX_OK)
   {
     return LSM6DSRX_ERROR;
   }
 
-  *Status = reg.fifo_status2.fifo_full_ia;
+  *Status = reg.fifo_full_ia;
 
   return LSM6DSRX_OK;
 }
@@ -2480,16 +2480,16 @@ int32_t LSM6DSRX_FIFO_Get_Full_Status(LSM6DSRX_Object_t *pObj, uint8_t *Status)
   */
 int32_t LSM6DSRX_FIFO_Set_INT1_FIFO_Full(LSM6DSRX_Object_t *pObj, uint8_t Status)
 {
-  lsm6dsrx_reg_t reg;
+  lsm6dsrx_pin_int1_route_t reg;
 
-  if (lsm6dsrx_read_reg(&(pObj->Ctx), LSM6DSRX_INT1_CTRL, &reg.byte, 1) != LSM6DSRX_OK)
+  if (lsm6dsrx_pin_int1_route_get(&(pObj->Ctx), &reg) != LSM6DSRX_OK)
   {
     return LSM6DSRX_ERROR;
   }
 
   reg.int1_ctrl.int1_fifo_full = Status;
 
-  if (lsm6dsrx_write_reg(&(pObj->Ctx), LSM6DSRX_INT1_CTRL, &reg.byte, 1) != LSM6DSRX_OK)
+  if (lsm6dsrx_pin_int1_route_set(&(pObj->Ctx), &reg) != LSM6DSRX_OK)
   {
     return LSM6DSRX_ERROR;
   }

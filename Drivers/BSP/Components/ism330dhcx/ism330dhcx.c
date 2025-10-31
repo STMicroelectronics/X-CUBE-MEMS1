@@ -1009,16 +1009,16 @@ int32_t ISM330DHCX_Set_Interrupt_Latch(ISM330DHCX_Object_t *pObj, uint8_t Status
   */
 int32_t ISM330DHCX_Set_INT1_Drdy(ISM330DHCX_Object_t *pObj, uint8_t Status)
 {
-  ism330dhcx_reg_t reg;
+  ism330dhcx_pin_int1_route_t reg;
 
-  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_INT1_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int1_route_get(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
 
   reg.int1_ctrl.int1_drdy_xl = Status;
 
-  if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT1_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int1_route_set(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
@@ -1034,16 +1034,16 @@ int32_t ISM330DHCX_Set_INT1_Drdy(ISM330DHCX_Object_t *pObj, uint8_t Status)
   */
 int32_t ISM330DHCX_Set_INT2_Drdy(ISM330DHCX_Object_t *pObj, uint8_t Status)
 {
-  ism330dhcx_reg_t reg;
+  ism330dhcx_pin_int2_route_t reg;
 
-  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int2_route_get(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
 
   reg.int2_ctrl.int2_drdy_xl = Status;
 
-  if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int2_route_set(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
 
   {
     return ISM330DHCX_ERROR;
@@ -2330,19 +2330,14 @@ int32_t ISM330DHCX_FIFO_Get_Num_Samples(ISM330DHCX_Object_t *pObj, uint16_t *Num
   */
 int32_t ISM330DHCX_FIFO_Get_Full_Status(ISM330DHCX_Object_t *pObj, uint8_t *Status)
 {
-  ism330dhcx_reg_t reg;
+  ism330dhcx_fifo_status2_t reg;
 
-  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_FIFO_STATUS1, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_fifo_status_get(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
 
-  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_FIFO_STATUS2, &reg.byte, 1) != ISM330DHCX_OK)
-  {
-    return ISM330DHCX_ERROR;
-  }
-
-  *Status = reg.fifo_status2.fifo_full_ia;
+  *Status = reg.fifo_full_ia;
 
   return ISM330DHCX_OK;
 }
@@ -2355,23 +2350,18 @@ int32_t ISM330DHCX_FIFO_Get_Full_Status(ISM330DHCX_Object_t *pObj, uint8_t *Stat
   */
 int32_t ISM330DHCX_FIFO_Get_All_Status(ISM330DHCX_Object_t *pObj, ISM330DHCX_Fifo_Status_t *Status)
 {
-  ism330dhcx_reg_t reg;
+  ism330dhcx_fifo_status2_t reg;
 
-  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_FIFO_STATUS1, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_fifo_status_get(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
 
-  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_FIFO_STATUS2, &reg.byte, 1) != ISM330DHCX_OK)
-  {
-    return ISM330DHCX_ERROR;
-  }
-
-  Status->FifoWatermark = reg.fifo_status2.fifo_wtm_ia;
-  Status->FifoFull = reg.fifo_status2.fifo_full_ia;
-  Status->FifoOverrun = reg.fifo_status2.fifo_ovr_ia;
-  Status->FifoOverrunLatched = reg.fifo_status2.over_run_latched;
-  Status->CounterBdr = reg.fifo_status2.counter_bdr_ia;
+  Status->FifoWatermark = reg.fifo_wtm_ia;
+  Status->FifoFull = reg.fifo_full_ia;
+  Status->FifoOverrun = reg.fifo_ovr_ia;
+  Status->FifoOverrunLatched = reg.over_run_latched;
+  Status->CounterBdr = reg.counter_bdr_ia;
 
   return ISM330DHCX_OK;
 }
@@ -2442,16 +2432,16 @@ int32_t ISM330DHCX_FIFO_GYRO_Set_BDR(ISM330DHCX_Object_t *pObj, float Bdr)
   */
 int32_t ISM330DHCX_FIFO_Set_INT1_FIFO_Full(ISM330DHCX_Object_t *pObj, uint8_t Status)
 {
-  ism330dhcx_reg_t reg;
+  ism330dhcx_pin_int1_route_t reg;
 
-  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_INT1_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int1_route_get(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
 
   reg.int1_ctrl.int1_fifo_full = Status;
 
-  if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT1_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int1_route_set(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
@@ -2467,16 +2457,16 @@ int32_t ISM330DHCX_FIFO_Set_INT1_FIFO_Full(ISM330DHCX_Object_t *pObj, uint8_t St
   */
 int32_t ISM330DHCX_FIFO_Set_INT1_FIFO_Threshold(ISM330DHCX_Object_t *pObj, uint8_t Status)
 {
-  ism330dhcx_reg_t reg;
+  ism330dhcx_pin_int1_route_t reg;
 
-  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_INT1_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int1_route_get(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
 
   reg.int1_ctrl.int1_fifo_th = Status;
 
-  if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT1_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int1_route_set(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
@@ -2492,16 +2482,16 @@ int32_t ISM330DHCX_FIFO_Set_INT1_FIFO_Threshold(ISM330DHCX_Object_t *pObj, uint8
   */
 int32_t ISM330DHCX_FIFO_Set_INT1_FIFO_Overrun(ISM330DHCX_Object_t *pObj, uint8_t Status)
 {
-  ism330dhcx_reg_t reg;
+  ism330dhcx_pin_int1_route_t reg;
 
-  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_INT1_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int1_route_get(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
 
   reg.int1_ctrl.int1_fifo_ovr = Status;
 
-  if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT1_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int1_route_set(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
@@ -2517,16 +2507,16 @@ int32_t ISM330DHCX_FIFO_Set_INT1_FIFO_Overrun(ISM330DHCX_Object_t *pObj, uint8_t
   */
 int32_t ISM330DHCX_FIFO_Set_INT2_FIFO_Full(ISM330DHCX_Object_t *pObj, uint8_t Status)
 {
-  ism330dhcx_reg_t reg;
+  ism330dhcx_pin_int2_route_t reg;
 
-  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int2_route_get(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
 
   reg.int2_ctrl.int2_fifo_full = Status;
 
-  if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int2_route_set(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
@@ -2542,16 +2532,16 @@ int32_t ISM330DHCX_FIFO_Set_INT2_FIFO_Full(ISM330DHCX_Object_t *pObj, uint8_t St
   */
 int32_t ISM330DHCX_FIFO_Set_INT2_FIFO_Threshold(ISM330DHCX_Object_t *pObj, uint8_t Status)
 {
-  ism330dhcx_reg_t reg;
+  ism330dhcx_pin_int2_route_t reg;
 
-  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int2_route_get(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
 
   reg.int2_ctrl.int2_fifo_th = Status;
 
-  if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int2_route_set(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
@@ -2567,16 +2557,16 @@ int32_t ISM330DHCX_FIFO_Set_INT2_FIFO_Threshold(ISM330DHCX_Object_t *pObj, uint8
   */
 int32_t ISM330DHCX_FIFO_Set_INT2_FIFO_Overrun(ISM330DHCX_Object_t *pObj, uint8_t Status)
 {
-  ism330dhcx_reg_t reg;
+  ism330dhcx_pin_int2_route_t reg;
 
-  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int2_route_get(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
 
   reg.int2_ctrl.int2_fifo_ovr = Status;
 
-  if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int2_route_set(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
@@ -2774,16 +2764,16 @@ int32_t ISM330DHCX_FIFO_GYRO_Get_Axes(ISM330DHCX_Object_t *pObj, ISM330DHCX_Axes
   */
 int32_t ISM330DHCX_FIFO_Full_Set_INT1(ISM330DHCX_Object_t *pObj, uint8_t Status)
 {
-  ism330dhcx_reg_t reg;
+  ism330dhcx_pin_int1_route_t reg;
 
-  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_INT1_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int1_route_get(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
 
   reg.int1_ctrl.int1_fifo_full = Status;
 
-  if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT1_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int1_route_set(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
@@ -2799,16 +2789,16 @@ int32_t ISM330DHCX_FIFO_Full_Set_INT1(ISM330DHCX_Object_t *pObj, uint8_t Status)
   */
 int32_t ISM330DHCX_FIFO_Set_INT2_Drdy(ISM330DHCX_Object_t *pObj, uint8_t Status)
 {
-  ism330dhcx_reg_t reg;
+  ism330dhcx_pin_int2_route_t reg;
 
-  if (ism330dhcx_read_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int2_route_get(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }
 
   reg.int2_ctrl.int2_fifo_full = Status;
 
-  if (ism330dhcx_write_reg(&(pObj->Ctx), ISM330DHCX_INT2_CTRL, &reg.byte, 1) != ISM330DHCX_OK)
+  if (ism330dhcx_pin_int2_route_set(&(pObj->Ctx), &reg) != ISM330DHCX_OK)
   {
     return ISM330DHCX_ERROR;
   }

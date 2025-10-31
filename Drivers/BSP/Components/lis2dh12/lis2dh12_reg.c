@@ -2784,3 +2784,4 @@ int32_t lis2dh12_spi_mode_get(const stmdev_ctx_t *ctx, lis2dh12_sim_t *val)
   * @}
   *
   */
+

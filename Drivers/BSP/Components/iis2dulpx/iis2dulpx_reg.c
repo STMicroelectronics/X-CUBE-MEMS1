@@ -1,20 +1,20 @@
-/**
-  ******************************************************************************
-  * @file    iis2dulpx_reg.c
-  * @author  Sensors Software Solution Team
-  * @brief   IIS2DULPX driver file
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2024 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+/*
+ ******************************************************************************
+ * @file    iis2dulpx_reg.c
+ * @author  Sensors Software Solution Team
+ * @brief   IIS2DULPX driver file
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2022 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 
 #include "iis2dulpx_reg.h"
 
@@ -210,6 +210,11 @@ int32_t iis2dulpx_init_set(const stmdev_ctx_t *ctx, iis2dulpx_init_t val)
 
       do
       {
+        if (ctx->mdelay != NULL)
+        {
+          ctx->mdelay(1); /* should be 50 us */
+        }
+
         ret = iis2dulpx_status_get(ctx, &status);
         if (ret != 0)
         {
@@ -220,11 +225,6 @@ int32_t iis2dulpx_init_set(const stmdev_ctx_t *ctx, iis2dulpx_init_t val)
         if (status.sw_reset == 0U)
         {
           break;
-        }
-
-        if (ctx->mdelay != NULL)
-        {
-          ctx->mdelay(1); /* should be 50 us */
         }
       } while (cnt++ < 5U);
 
@@ -294,12 +294,10 @@ int32_t iis2dulpx_status_get(const stmdev_ctx_t *ctx, iis2dulpx_status_t *val)
   */
 int32_t iis2dulpx_embedded_status_get(const stmdev_ctx_t *ctx, iis2dulpx_embedded_status_t *val)
 {
-  iis2dulpx_emb_func_status_t status;
+  iis2dulpx_emb_func_status_mainpage_t status;
   int32_t ret;
 
-  ret = iis2dulpx_mem_bank_set(ctx, IIS2DULPX_EMBED_FUNC_MEM_BANK);
-  ret += iis2dulpx_read_reg(ctx, IIS2DULPX_EMB_FUNC_STATUS, (uint8_t *)&status, 1);
-  ret += iis2dulpx_mem_bank_set(ctx, IIS2DULPX_MAIN_MEM_BANK);
+  ret = iis2dulpx_read_reg(ctx, IIS2DULPX_EMB_FUNC_STATUS_MAINPAGE, (uint8_t *)&status, 1);
 
   val->is_step_det = status.is_step_det;
   val->is_tilt = status.is_tilt;
@@ -874,13 +872,14 @@ int32_t iis2dulpx_outt_data_get(const stmdev_ctx_t *ctx,
 int32_t iis2dulpx_ah_qvar_data_get(const stmdev_ctx_t *ctx,
                                    iis2dulpx_ah_qvar_data_t *data)
 {
-  uint8_t buff[2];
+  uint8_t buff[3];
   int32_t ret;
 
-  ret = iis2dulpx_read_reg(ctx, IIS2DULPX_OUT_T_AH_QVAR_L, buff, 2);
+  /* Read and discard also OUT_Z_H reg to clear drdy */
+  ret = iis2dulpx_read_reg(ctx, IIS2DULPX_OUT_T_AH_QVAR_L - 1, buff, 3);
 
-  data->raw = (int16_t)buff[1U];
-  data->raw = (data->raw * 256) + (int16_t) buff[0];
+  data->raw = (int16_t)buff[2U];
+  data->raw = (data->raw * 256) + (int16_t) buff[1U];
 
   data->mv = iis2dulpx_from_lsb_to_mv(data->raw);
   return ret;
@@ -1730,8 +1729,8 @@ int32_t iis2dulpx_pin_int2_route_get(const stmdev_ctx_t *ctx, iis2dulpx_pin_int_
   iis2dulpx_md2_cfg_t md2_cfg;
   int32_t ret;
 
-  ret = iis2dulpx_read_reg(ctx, IIS2DULPX_CTRL2, (uint8_t *)&ctrl3, 1);
-  ret += iis2dulpx_read_reg(ctx, IIS2DULPX_MD1_CFG, (uint8_t *)&md2_cfg, 1);
+  ret = iis2dulpx_read_reg(ctx, IIS2DULPX_CTRL3, (uint8_t *)&ctrl3, 1);
+  ret += iis2dulpx_read_reg(ctx, IIS2DULPX_MD2_CFG, (uint8_t *)&md2_cfg, 1);
 
   if (ret == 0)
   {
@@ -2032,11 +2031,8 @@ int32_t iis2dulpx_fifo_mode_set(const stmdev_ctx_t *ctx, iis2dulpx_fifo_mode_t v
     fifo_wtm.xl_only_fifo = val.xl_only;
 
     /* set batching info */
-    if (val.batch.dec_ts != IIS2DULPX_DEC_TS_OFF)
-    {
-      fifo_batch.dec_ts_batch = (uint8_t)val.batch.dec_ts;
-      fifo_batch.bdr_xl = (uint8_t)val.batch.bdr_xl;
-    }
+    fifo_batch.dec_ts_batch = (uint8_t)val.batch.dec_ts;
+    fifo_batch.bdr_xl = (uint8_t)val.batch.bdr_xl;
 
     fifo_ctrl.cfg_chg_en = val.cfg_change_in_fifo;
 
@@ -3398,9 +3394,6 @@ int32_t iis2dulpx_emb_fsm_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
                              (uint8_t *)&emb_func_en_b, 1);
 
     *val = emb_func_en_b.fsm_en;
-
-    ret += iis2dulpx_write_reg(ctx, IIS2DULPX_EMB_FUNC_EN_B,
-                               (uint8_t *)&emb_func_en_b, 1);
   }
 
   ret += iis2dulpx_mem_bank_set(ctx, IIS2DULPX_MAIN_MEM_BANK);

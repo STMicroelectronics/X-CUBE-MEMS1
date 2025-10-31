@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2019 STMicroelectronics.
+  * Copyright (c) 2021 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -121,6 +121,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 /**
@@ -129,38 +132,6 @@ typedef struct
   */
 
 #endif /* MEMS_SHARED_TYPES */
-
-#ifndef MEMS_UCF_SHARED_TYPES
-#define MEMS_UCF_SHARED_TYPES
-
-/** @defgroup    Generic address-data structure definition
-  * @brief       This structure is useful to load a predefined configuration
-  *              of a sensor.
-  *              You can create a sensor configuration by your own or using
-  *              Unico / Unicleo tools available on STMicroelectronics
-  *              web site.
-  *
-  * @{
-  *
-  */
-
-typedef struct
-{
-  uint8_t address;
-  uint8_t data;
-} ucf_line_t;
-
-/**
-  * @}
-  *
-  */
-
-#endif /* MEMS_UCF_SHARED_TYPES */
-
-/**
-  * @}
-  *
-  */
 
 /** @defgroup LPS22HH_Infos
   * @{
@@ -401,34 +372,6 @@ typedef struct
 #define LPS22HH_FIFO_DATA_OUT_TEMP_H            0x7CU
 
 /**
-  * @defgroup LPS22HH_Register_Union
-  * @brief    This union group all the registers having a bit-field
-  *           description.
-  *           This union is useful but it's not needed by the driver.
-  *
-  *           REMOVING this union you are compliant with:
-  *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
-  *
-  * @{
-  *
-  */
-typedef union
-{
-  lps22hh_interrupt_cfg_t        interrupt_cfg;
-  lps22hh_if_ctrl_t              if_ctrl;
-  lps22hh_ctrl_reg1_t            ctrl_reg1;
-  lps22hh_ctrl_reg2_t            ctrl_reg2;
-  lps22hh_ctrl_reg3_t            ctrl_reg3;
-  lps22hh_fifo_ctrl_t            fifo_ctrl;
-  lps22hh_fifo_wtm_t             fifo_wtm;
-  lps22hh_int_source_t           int_source;
-  lps22hh_fifo_status2_t         fifo_status2;
-  lps22hh_status_t               status;
-  bitwise_t                      bitwise;
-  uint8_t                        byte;
-} lps22hh_reg_t;
-
-/**
   * @}
   *
   */
@@ -626,7 +569,7 @@ typedef struct
   uint8_t fifo_full : 1; /* FIFO full */
 } lps22hh_pin_int_route_t;
 int32_t lps22hh_pin_int_route_set(const stmdev_ctx_t *ctx,
-                                  lps22hh_pin_int_route_t *val);
+                                  lps22hh_pin_int_route_t val);
 int32_t lps22hh_pin_int_route_get(const stmdev_ctx_t *ctx,
                                   lps22hh_pin_int_route_t *val);
 

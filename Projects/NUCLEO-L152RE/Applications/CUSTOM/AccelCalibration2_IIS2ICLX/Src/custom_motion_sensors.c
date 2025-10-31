@@ -65,7 +65,7 @@ static CUSTOM_MOTION_SENSOR_Ctx_t MotionCtx[CUSTOM_MOTION_INSTANCES_NBR];
 
 #if (USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0 == 1)
 static int32_t IIS2ICLX_0_Probe(uint32_t Functions);
-#endif
+#endif /* USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0 */
 
 /**
   * @}
@@ -117,7 +117,7 @@ int32_t CUSTOM_MOTION_SENSOR_Init(uint32_t Instance, uint32_t Functions)
         component_functions |= MOTION_MAGNETO;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0 */
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -668,7 +668,7 @@ static int32_t IIS2ICLX_0_Probe(uint32_t Functions)
 
   return ret;
 }
-#endif
+#endif /* USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0 */
 
 /**
   * @}

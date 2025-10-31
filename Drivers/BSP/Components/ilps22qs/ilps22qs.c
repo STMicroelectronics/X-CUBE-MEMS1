@@ -749,6 +749,7 @@ static int32_t ILPS22QS_Initialize(ILPS22QS_Object_t *pObj)
   md.avg = ILPS22QS_4_AVG;
   md.lpf = ILPS22QS_LPF_ODR_DIV_4;
   md.fs = ILPS22QS_1260hPa;
+  md.interleaved_mode = 0;
 
   if (ilps22qs_mode_set(&(pObj->Ctx), &md) != ILPS22QS_OK)
   {

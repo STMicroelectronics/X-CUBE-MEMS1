@@ -25,20 +25,20 @@ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-
 #include "iks4a1_mems_control.h"
 #include "iks4a1_mems_control_ex.h"
 
-/* Exported defines ----------------------------------------------------------*/
+/* Exported functions --------------------------------------------------------*/
+void MX_TIM3_Init(void);
 
+/* Exported defines ----------------------------------------------------------*/
 #define BOARD_NAME "IKS4A1"
 
-/* Exported variables --------------------------------------------------------*/
-/* Exported defines ----------------------------------------------------------*/
 extern TIM_HandleTypeDef htim3;
 #define BSP_IP_TIM_HANDLE htim3
 #define BSP_IP_TIM_INIT MX_TIM3_Init
 
+/* Exported variables --------------------------------------------------------*/
 extern RTC_HandleTypeDef hrtc;
 
 #ifdef __cplusplus

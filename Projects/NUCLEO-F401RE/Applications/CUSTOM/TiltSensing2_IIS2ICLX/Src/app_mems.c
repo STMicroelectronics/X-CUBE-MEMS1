@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.3.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.12.0.0 instances.
   ******************************************************************************
   * @attention
   *
@@ -40,6 +40,9 @@ extern "C" {
 #define ALGO_FREQ  100U /* Algorithm frequency 100Hz */
 #define ACC_ODR  ((float)ALGO_FREQ)
 #define ACC_FS  2000 /* FS = <-2g, 2g> */
+#define FROM_S_TO_MS  1000U
+#define CLOCK_4KHZ    4000 /* TIM counter clock 4 kHz */
+#define CLOCK_2KHZ    2000 /* TIM counter clock 2 kHz */
 
 /* Public variables ----------------------------------------------------------*/
 volatile uint8_t DataLoggerActive = 0;
@@ -60,7 +63,7 @@ MTL2_knobs_t MTL2_Knobs;
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 static MOTION_SENSOR_Axes_t AccValue;
-static const uint32_t ReportInterval = 1000U / ALGO_FREQ;
+static const uint32_t ReportInterval = FROM_S_TO_MS / ALGO_FREQ;
 static int64_t Timestamp = 0;
 static MAC2_knobs_t MAC2_Knobs;
 static float AccCalibrated[2] = {0.0f, 0.0f};
@@ -145,7 +148,7 @@ static void MX_TiltSensing2_Init(void)
 #ifdef BSP_IP_MEMS_INT1_PIN_NUM
   /* Force MEMS INT1 pin of the sensor low during startup in order to disable I3C and enable I2C. This function needs
    * to be called only if user wants to disable I3C / enable I2C and didn't put the pull-down resistor to MEMS INT1 pin
-   * on his HW setup. This is also the case of usage X-NUCLEO-IKS4A1 or X-NUCLEO-IKS01A3 expansion board together with
+   * on his HW setup. This is also the case of usage X-NUCLEO-IKS4A1 or X-NUCLEO-IKS5A1 expansion board together with
    * sensor in DIL24 adapter board where the LDO with internal pull-up is used.
    */
   MEMS_INT1_Force_Low();
@@ -445,11 +448,11 @@ static void TIM_Config(uint32_t Freq)
 
   if (SystemCoreClock > 120000000)
   {
-    tim_counter_clock = 4000; /* TIM counter clock 4 kHz */
+    tim_counter_clock = CLOCK_4KHZ; /* TIM counter clock 4 kHz */
   }
   else
   {
-    tim_counter_clock = 2000; /* TIM counter clock 2 kHz */
+    tim_counter_clock = CLOCK_2KHZ; /* TIM counter clock 2 kHz */
   }
   uint32_t prescaler_value = (uint32_t)((SystemCoreClock / tim_counter_clock) - 1);
   uint32_t period = (tim_counter_clock / Freq) - 1;

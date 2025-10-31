@@ -39,7 +39,7 @@
 volatile uint8_t DataLoggerActive;
 
 /* Private variables ---------------------------------------------------------*/
-static uint8_t PresentationString[] = {"MEMS shield demo,101,11.3.0,0.0.0,IKS4A1"};
+static uint8_t PresentationString[] = {"MEMS shield demo,101,12.0.0,0.0.0,IKS4A1"};
 static volatile uint8_t DataStreamingDest = 1;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -235,6 +235,19 @@ int32_t HandleMSG(Msg_t *Msg)
       BUILD_REPLY_HEADER(Msg);
       Msg->Len = 3;
       RTC_TimeRegulate(Msg->Data[3], Msg->Data[4], Msg->Data[5]);
+      UART_SendMsg(Msg);
+      break;
+
+    case CMD_Set_Ispu_Data_Length:
+      if (Msg->Len != 4U)
+      {
+        return 0;
+      }
+
+      IspuBytes = Msg->Data[3];
+
+      BUILD_REPLY_HEADER(Msg);
+      Msg->Len = 3;
       UART_SendMsg(Msg);
       break;
 

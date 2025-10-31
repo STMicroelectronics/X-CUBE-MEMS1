@@ -1,20 +1,20 @@
-/**
-  ******************************************************************************
-  * @file    lis2dux12_reg.c
-  * @author  Sensors Software Solution Team
-  * @brief   LIS2DUX12 driver file
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2022 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+/*
+ ******************************************************************************
+ * @file    lis2dux12_reg.c
+ * @author  Sensors Software Solution Team
+ * @brief   LIS2DUX12 driver file
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2022 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 
 #include "lis2dux12_reg.h"
 
@@ -205,6 +205,11 @@ int32_t lis2dux12_init_set(const stmdev_ctx_t *ctx, lis2dux12_init_t val)
 
       do
       {
+        if (ctx->mdelay != NULL)
+        {
+          ctx->mdelay(1); /* should be 50 us */
+        }
+
         ret = lis2dux12_status_get(ctx, &status);
         if (ret != 0)
         {
@@ -215,11 +220,6 @@ int32_t lis2dux12_init_set(const stmdev_ctx_t *ctx, lis2dux12_init_t val)
         if (status.sw_reset == 0U)
         {
           break;
-        }
-
-        if (ctx->mdelay != NULL)
-        {
-          ctx->mdelay(1); /* should be 50 us */
         }
       } while (cnt++ < 5U);
 
@@ -289,12 +289,10 @@ int32_t lis2dux12_status_get(const stmdev_ctx_t *ctx, lis2dux12_status_t *val)
   */
 int32_t lis2dux12_embedded_status_get(const stmdev_ctx_t *ctx, lis2dux12_embedded_status_t *val)
 {
-  lis2dux12_emb_func_status_t status;
+  lis2dux12_emb_func_status_mainpage_t status;
   int32_t ret;
 
-  ret = lis2dux12_mem_bank_set(ctx, LIS2DUX12_EMBED_FUNC_MEM_BANK);
-  ret += lis2dux12_read_reg(ctx, LIS2DUX12_EMB_FUNC_STATUS, (uint8_t *)&status, 1);
-  ret += lis2dux12_mem_bank_set(ctx, LIS2DUX12_MAIN_MEM_BANK);
+  ret = lis2dux12_read_reg(ctx, LIS2DUX12_EMB_FUNC_STATUS_MAINPAGE, (uint8_t *)&status, 1);
 
   val->is_step_det = status.is_step_det;
   val->is_tilt = status.is_tilt;
@@ -675,6 +673,43 @@ int32_t lis2dux12_exit_deep_power_down(const stmdev_ctx_t *ctx)
   {
     ctx->mdelay(25); /* See AN5909 - paragraphs 3.1.1.1 and 3.1.1.2 */
   }
+
+  return ret;
+}
+
+/**
+  * @brief  Disable hard-reset from CS.[set]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  md    0: enable hard-reset from CS, 1: disable hard-reset from CS
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  */
+int32_t lis2dux12_disable_hard_reset_from_cs_set(const stmdev_ctx_t *ctx, uint8_t val)
+{
+  lis2dux12_fifo_ctrl_t fifo_ctrl;
+  int32_t ret;
+
+  ret = lis2dux12_read_reg(ctx, LIS2DUX12_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
+  fifo_ctrl.dis_hard_rst_cs = (val == 1) ? PROPERTY_ENABLE : PROPERTY_DISABLE;
+  ret += lis2dux12_write_reg(ctx, LIS2DUX12_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
+
+  return ret;
+}
+
+/**
+  * @brief  Disable hard-reset from CS.[get]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  md    0: enable hard-reset from CS, 1: disable hard-reset from CS
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  */
+int32_t lis2dux12_disable_hard_reset_from_cs_get(const stmdev_ctx_t *ctx, uint8_t *val)
+{
+  lis2dux12_fifo_ctrl_t fifo_ctrl;
+  int32_t ret;
+
+  ret = lis2dux12_read_reg(ctx, LIS2DUX12_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
+  *val = fifo_ctrl.dis_hard_rst_cs;
 
   return ret;
 }
@@ -1664,8 +1699,8 @@ int32_t lis2dux12_pin_int2_route_get(const stmdev_ctx_t *ctx, lis2dux12_pin_int_
   lis2dux12_md2_cfg_t md2_cfg;
   int32_t ret;
 
-  ret = lis2dux12_read_reg(ctx, LIS2DUX12_CTRL2, (uint8_t *)&ctrl3, 1);
-  ret += lis2dux12_read_reg(ctx, LIS2DUX12_MD1_CFG, (uint8_t *)&md2_cfg, 1);
+  ret = lis2dux12_read_reg(ctx, LIS2DUX12_CTRL3, (uint8_t *)&ctrl3, 1);
+  ret += lis2dux12_read_reg(ctx, LIS2DUX12_MD2_CFG, (uint8_t *)&md2_cfg, 1);
 
   if (ret == 0)
   {
@@ -1966,11 +2001,8 @@ int32_t lis2dux12_fifo_mode_set(const stmdev_ctx_t *ctx, lis2dux12_fifo_mode_t v
     fifo_wtm.xl_only_fifo = val.xl_only;
 
     /* set batching info */
-    if (val.batch.dec_ts != LIS2DUX12_DEC_TS_OFF)
-    {
-      fifo_batch.dec_ts_batch = (uint8_t)val.batch.dec_ts;
-      fifo_batch.bdr_xl = (uint8_t)val.batch.bdr_xl;
-    }
+    fifo_batch.dec_ts_batch = (uint8_t)val.batch.dec_ts;
+    fifo_batch.bdr_xl = (uint8_t)val.batch.bdr_xl;
 
     fifo_ctrl.cfg_chg_en = val.cfg_change_in_fifo;
 
@@ -3219,9 +3251,6 @@ int32_t lis2dux12_emb_fsm_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
                              (uint8_t *)&emb_func_en_b, 1);
 
     *val = emb_func_en_b.fsm_en;
-
-    ret += lis2dux12_write_reg(ctx, LIS2DUX12_EMB_FUNC_EN_B,
-                               (uint8_t *)&emb_func_en_b, 1);
   }
 
   ret += lis2dux12_mem_bank_set(ctx, LIS2DUX12_MAIN_MEM_BANK);

@@ -1,13 +1,13 @@
-/**
+/*
   ******************************************************************************
   * @file    asm330lhhx_reg.h
-  * @author  Sensors Software Solution Team
+  * @author  Sensor Solutions Software Team
   * @brief   This file contains all the functions prototypes for the
   *          asm330lhhx_reg.c driver.
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2022 STMicroelectronics.
+  * Copyright (c) 2023 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -121,6 +121,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 /**
@@ -2417,6 +2420,12 @@ typedef struct
 #endif /* DRV_BYTE_ORDER */
 } asm330lhhx_status_master_t;
 
+#define ASM330LHHX_FSM_LC_TIMEOUT_L             0x17AU
+#define ASM330LHHX_FSM_LC_TIMEOUT_H             0x17BU
+#define ASM330LHHX_FSM_PROGRAMS                 0x17CU
+#define ASM330LHHX_FSM_START_ADD_L              0x17EU
+#define ASM330LHHX_FSM_START_ADD_H              0x17FU
+
 /**
   * @defgroup ASM330LHHX_Register_Union
   * @brief    This union group all the registers that has a bit-field
@@ -2604,7 +2613,7 @@ typedef enum
   ASM330LHHX_XL_ODR_417Hz  = 6,
   ASM330LHHX_XL_ODR_833Hz  = 7,
   ASM330LHHX_XL_ODR_1667Hz = 8,
-  ASM330LHHX_XL_ODR_3333Hz = 9,
+  ASM330LHHX_XL_ODR_3333Hz =  9,
   ASM330LHHX_XL_ODR_6667Hz = 10,
   ASM330LHHX_XL_ODR_1Hz6   = 11, /* (low power only) */
 } asm330lhhx_odr_xl_t;
@@ -2635,7 +2644,7 @@ typedef enum
   ASM330LHHX_GY_ODR_417Hz  = 6,
   ASM330LHHX_GY_ODR_833Hz  = 7,
   ASM330LHHX_GY_ODR_1667Hz = 8,
-  ASM330LHHX_GY_ODR_3333Hz = 9,
+  ASM330LHHX_GY_ODR_3333Hz =  9,
   ASM330LHHX_GY_ODR_6667Hz = 10,
 } asm330lhhx_odr_g_t;
 int32_t asm330lhhx_gy_data_rate_set(const stmdev_ctx_t *ctx,
@@ -3092,7 +3101,7 @@ int32_t asm330lhhx_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
-  ASM330LHHX_XL_NOT_BATCHED       =  0,
+  ASM330LHHX_XL_NOT_BATCHED        =  0,
   ASM330LHHX_XL_BATCHED_AT_12Hz5   =  1,
   ASM330LHHX_XL_BATCHED_AT_26Hz    =  2,
   ASM330LHHX_XL_BATCHED_AT_52Hz    =  3,
@@ -3425,7 +3434,6 @@ int32_t asm330lhhx_mlc_out_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 
 int32_t asm330lhhx_mlc_mag_sensitivity_set(const stmdev_ctx_t *ctx, uint16_t val);
 int32_t asm330lhhx_mlc_mag_sensitivity_get(const stmdev_ctx_t *ctx, uint16_t *val);
-
 typedef struct
 {
   asm330lhhx_sensor_hub_1_t   sh_byte_1;

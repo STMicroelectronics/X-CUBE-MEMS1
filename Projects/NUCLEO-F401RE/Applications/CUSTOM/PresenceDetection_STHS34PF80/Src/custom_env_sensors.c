@@ -64,7 +64,7 @@ static CUSTOM_ENV_SENSOR_Ctx_t EnvCtx[CUSTOM_ENV_INSTANCES_NBR];
 
 #if (USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 == 1)
 static int32_t STHS34PF80_0_Probe(uint32_t Functions);
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 */
 
 /**
   * @}
@@ -121,7 +121,7 @@ int32_t CUSTOM_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
         component_functions |= ENV_GAS;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 */
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -522,7 +522,7 @@ static int32_t STHS34PF80_0_Probe(uint32_t Functions)
 
   return ret;
 }
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 */
 
 /**
   * @}

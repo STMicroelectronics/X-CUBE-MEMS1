@@ -7,12 +7,12 @@
  ******************************************************************************
  * @attention
  *
- * <h2><center>&copy; Copyright (c) 2024 STMicroelectronics.
- * All rights reserved.</center></h2>
+ * Copyright (c) 2024 STMicroelectronics.
+ * All rights reserved.
  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
  *
  ******************************************************************************
  */
@@ -114,6 +114,9 @@ typedef int32_t (*stmdev_read_ptr)(void *ctx, uint8_t reg,
                                    uint8_t *data, uint16_t len);
 typedef void (*stmdev_mdelay_ptr)(uint32_t millisec);
 
+/*
+ * Proprietary read/write device context structure
+ */
 typedef struct
 {
   /** Component mandatory fields **/
@@ -123,6 +126,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 /**
@@ -2365,6 +2371,7 @@ int32_t st1vafe3bx_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val);
 typedef enum
 {
   ST1VAFE3BX_FIFO_EMPTY_TAG             = 0x0,
+  ST1VAFE3BX_XL_ONLY                    = 0x2,
   ST1VAFE3BX_XL_ONLY_2X_TAG             = 0x3,
   ST1VAFE3BX_TIMESTAMP_CFG_CHG_TAG      = 0x4,
   ST1VAFE3BX_STEP_COUNTER_TAG           = 0x12,
@@ -2452,8 +2459,13 @@ int32_t st1vafe3bx_ah_bio_config_set(const stmdev_ctx_t *ctx,
 int32_t st1vafe3bx_ah_bio_config_get(const stmdev_ctx_t *ctx,
                                      st1vafe3bx_ah_bio_config_t *val);
 
-int32_t st1vafe3bx_enter_vafe_only(const stmdev_ctx_t *ctx);
-int32_t st1vafe3bx_exit_vafe_only(const stmdev_ctx_t *ctx);
+typedef struct
+{
+  uint8_t vafe_only;
+} st1vafe3bx_priv_t;
+
+int32_t st1vafe3bx_enter_vafe_only(stmdev_ctx_t *ctx);
+int32_t st1vafe3bx_exit_vafe_only(stmdev_ctx_t *ctx);
 int32_t st1vafe3bx_ah_bio_active(const stmdev_ctx_t *ctx, uint8_t filter_on);
 
 typedef struct

@@ -71,7 +71,7 @@ int32_t CUSTOM_ENV_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint8_t 
         ret = BSP_ERROR_NONE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 */
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;
@@ -106,7 +106,7 @@ int32_t CUSTOM_ENV_SENSOR_Write_Register(uint32_t Instance, uint8_t Reg, uint8_t
         ret = BSP_ERROR_NONE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 */
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;
@@ -151,7 +151,7 @@ int32_t CUSTOM_ENV_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Function, 
         ret = BSP_ERROR_COMPONENT_FAILURE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 */
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;
@@ -545,7 +545,7 @@ int32_t CUSTOM_ENV_SENSOR_Get_TObjRaw(uint32_t Instance, int16_t *Value)
         ret = BSP_ERROR_NONE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 */
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;
@@ -578,7 +578,7 @@ int32_t CUSTOM_ENV_SENSOR_Set_AvgTmos(uint32_t Instance, uint16_t Value)
         ret = BSP_ERROR_NONE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 */
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;
@@ -613,7 +613,7 @@ int32_t CUSTOM_ENV_SENSOR_Get_TAmbRaw(uint32_t Instance, int16_t *Value)
         ret = BSP_ERROR_NONE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 */
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;
@@ -646,7 +646,7 @@ int32_t CUSTOM_ENV_SENSOR_Get_AvgTmos(uint32_t Instance, uint16_t *Value)
         ret = BSP_ERROR_NONE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 */
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;
@@ -679,7 +679,7 @@ int32_t CUSTOM_ENV_SENSOR_Get_AvgT(uint32_t Instance, uint8_t *Value)
         ret = BSP_ERROR_NONE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 */
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;
@@ -712,7 +712,7 @@ int32_t CUSTOM_ENV_SENSOR_Get_GainFactor(uint32_t Instance, uint8_t *Value)
         ret = BSP_ERROR_NONE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 */
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;
@@ -745,7 +745,7 @@ int32_t CUSTOM_ENV_SENSOR_Get_Sensitivity(uint32_t Instance, uint16_t *Value)
         ret = BSP_ERROR_NONE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 */
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;

@@ -1,20 +1,20 @@
-/**
-  ******************************************************************************
-  * @file    asm330lhhx_reg.c
-  * @author  Sensors Software Solution Team
-  * @brief   ASM330LHHX driver file
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2022 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+/*
+ ******************************************************************************
+ * @file    asm330lhhx_reg.c
+ * @author  Sensors Software Solution Team
+ * @brief   ASM330LHHX driver file
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2023 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 
 #include "asm330lhhx_reg.h"
 
@@ -50,7 +50,10 @@ int32_t __weak asm330lhhx_read_reg(const stmdev_ctx_t *ctx, uint8_t reg, uint8_t
 {
   int32_t ret;
 
-  if (ctx == NULL) return -1;
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->read_reg(ctx->handle, reg, data, len);
 
@@ -72,7 +75,10 @@ int32_t __weak asm330lhhx_write_reg(const stmdev_ctx_t *ctx, uint8_t reg, uint8_
 {
   int32_t ret;
 
-  if (ctx == NULL) return -1;
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->write_reg(ctx->handle, reg, data, len);
 
@@ -1449,7 +1455,7 @@ int32_t asm330lhhx_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
 /**
   * @brief  Timestamp first data output register (r).
   *         The value is expressed as a 32-bit word and the bit resolution
-  *         is 25 us.[get]
+  *         is 25 μs.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  buff   Buffer that stores data read
@@ -3241,6 +3247,7 @@ int32_t asm330lhhx_pin_int1_route_set(const stmdev_ctx_t *ctx,
   {
     ret = asm330lhhx_write_reg(ctx, ASM330LHHX_MD1_CFG, (uint8_t *)&val->md1_cfg, 1);
   }
+
   if (ret == 0)
   {
     ret = asm330lhhx_read_reg(ctx, ASM330LHHX_INT_CFG1, (uint8_t *) &int_cfg1, 1);
@@ -4481,19 +4488,15 @@ int32_t asm330lhhx_fifo_watermark_set(const stmdev_ctx_t *ctx, uint16_t val)
   asm330lhhx_fifo_ctrl2_t fifo_ctrl2;
   int32_t ret;
 
-  ret = asm330lhhx_read_reg(ctx, ASM330LHHX_FIFO_CTRL2,
-                            (uint8_t *)&fifo_ctrl2, 1);
+  ret = asm330lhhx_read_reg(ctx, ASM330LHHX_FIFO_CTRL1, (uint8_t *)&fifo_ctrl1, 1);
+  ret += asm330lhhx_read_reg(ctx, ASM330LHHX_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
+
   if (ret == 0)
   {
+    fifo_ctrl1.wtm = (uint8_t)(val  & 0xFFU);
     fifo_ctrl2.wtm = (uint8_t)((val / 256U) & 0x01U);
-    ret = asm330lhhx_write_reg(ctx, ASM330LHHX_FIFO_CTRL2,
-                               (uint8_t *)&fifo_ctrl2, 1);
-  }
-  if (ret == 0)
-  {
-    fifo_ctrl1.wtm = (uint8_t)(val - (fifo_ctrl2.wtm * 256U));
-    ret = asm330lhhx_write_reg(ctx, ASM330LHHX_FIFO_CTRL1,
-                               (uint8_t *)&fifo_ctrl1, 1);
+    ret = asm330lhhx_write_reg(ctx, ASM330LHHX_FIFO_CTRL1, (uint8_t *)&fifo_ctrl1, 1);
+    ret += asm330lhhx_write_reg(ctx, ASM330LHHX_FIFO_CTRL2, (uint8_t *)&fifo_ctrl2, 1);
   }
 
   return ret;
@@ -5061,7 +5064,7 @@ int32_t asm330lhhx_fifo_cnt_event_batch_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  Resets the internal counter of batching events for a single sensor.
-  *         This bit is automatically reset to zero if it was set to '1'.[set]
+  *         This bit is automatically reset to zero if it was set to ‘1’.[set]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  val    Change the values of rst_counter_bdr in reg COUNTER_BDR_REG1
@@ -5086,7 +5089,7 @@ int32_t asm330lhhx_rst_batch_counter_set(const stmdev_ctx_t *ctx, uint8_t val)
 
 /**
   * @brief  Resets the internal counter of batching events for a single sensor.
-  *         This bit is automatically reset to zero if it was set to '1'.[get]
+  *         This bit is automatically reset to zero if it was set to ‘1’.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
   * @param  val    Change the values of rst_counter_bdr in reg COUNTER_BDR_REG1
@@ -5170,26 +5173,25 @@ int32_t asm330lhhx_batch_counter_threshold_get(const stmdev_ctx_t *ctx,
   * @brief  Number of unread sensor data (TAG + 6 bytes) stored in FIFO.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Change the values of diff_fifo in reg FIFO_STATUS1
+  * @param  val    Read the value of diff_fifo in reg FIFO_STATUS1 and FIFO_STATUS2
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
 int32_t asm330lhhx_fifo_data_level_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
-  asm330lhhx_fifo_status1_t fifo_status1;
-  asm330lhhx_fifo_status2_t fifo_status2;
+  uint8_t reg[2];
+  asm330lhhx_fifo_status1_t *fifo_status1 = (asm330lhhx_fifo_status1_t *)&reg[0];
+  asm330lhhx_fifo_status2_t *fifo_status2 = (asm330lhhx_fifo_status2_t *)&reg[1];
   int32_t ret;
 
-  ret = asm330lhhx_read_reg(ctx, ASM330LHHX_FIFO_STATUS1,
-                            (uint8_t *)&fifo_status1, 1);
+  /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
+  ret = asm330lhhx_read_reg(ctx, ASM330LHHX_FIFO_STATUS1, (uint8_t *)reg, 2);
   if (ret == 0)
   {
-    ret = asm330lhhx_read_reg(ctx, ASM330LHHX_FIFO_STATUS2,
-                              (uint8_t *)&fifo_status2, 1);
-
-    *val = fifo_status2.diff_fifo;
-    *val = (*val * 256U) + fifo_status1.diff_fifo;
+    *val = fifo_status2->diff_fifo;
+    *val = (*val * 256U) + fifo_status1->diff_fifo;
   }
+
   return ret;
 }
 
@@ -5197,15 +5199,24 @@ int32_t asm330lhhx_fifo_data_level_get(const stmdev_ctx_t *ctx, uint16_t *val)
   * @brief  Smart FIFO status.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Registers FIFO_STATUS2
+  * @param  val    Read registers FIFO_STATUS2
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
 int32_t asm330lhhx_fifo_status_get(const stmdev_ctx_t *ctx,
                                    asm330lhhx_fifo_status2_t *val)
 {
+  uint8_t reg[2];
+  asm330lhhx_fifo_status2_t *fifo_status2 = (asm330lhhx_fifo_status2_t *)&reg[1];
   int32_t ret;
-  ret = asm330lhhx_read_reg(ctx, ASM330LHHX_FIFO_STATUS2, (uint8_t *)val, 1);
+
+  /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
+  ret = asm330lhhx_read_reg(ctx, ASM330LHHX_FIFO_STATUS1, (uint8_t *)reg, 2);
+  if (ret == 0)
+  {
+    *val = *fifo_status2;
+  }
+
   return ret;
 }
 
@@ -5213,18 +5224,22 @@ int32_t asm330lhhx_fifo_status_get(const stmdev_ctx_t *ctx,
   * @brief  Smart FIFO full status.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Change the values of fifo_full_ia in reg FIFO_STATUS2
+  * @param  val    Read the values of fifo_full_ia in reg FIFO_STATUS2
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
 int32_t asm330lhhx_fifo_full_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  asm330lhhx_fifo_status2_t fifo_status2;
+  uint8_t reg[2];
+  asm330lhhx_fifo_status2_t *fifo_status2 = (asm330lhhx_fifo_status2_t *)&reg[1];
   int32_t ret;
 
-  ret = asm330lhhx_read_reg(ctx, ASM330LHHX_FIFO_STATUS2,
-                            (uint8_t *)&fifo_status2, 1);
-  *val = fifo_status2.fifo_full_ia;
+  /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
+  ret = asm330lhhx_read_reg(ctx, ASM330LHHX_FIFO_STATUS1, (uint8_t *)reg, 2);
+  if (ret == 0)
+  {
+    *val = fifo_status2->fifo_full_ia;
+  }
 
   return ret;
 }
@@ -5233,19 +5248,23 @@ int32_t asm330lhhx_fifo_full_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @brief  FIFO overrun status.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Change the values of  fifo_over_run_latched in
+  * @param  val    Read the values of  fifo_over_run_latched in
   *                reg FIFO_STATUS2
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
 int32_t asm330lhhx_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  asm330lhhx_fifo_status2_t fifo_status2;
+  uint8_t reg[2];
+  asm330lhhx_fifo_status2_t *fifo_status2 = (asm330lhhx_fifo_status2_t *)&reg[1];
   int32_t ret;
 
-  ret = asm330lhhx_read_reg(ctx, ASM330LHHX_FIFO_STATUS2,
-                            (uint8_t *)&fifo_status2, 1);
-  *val = fifo_status2. fifo_ovr_ia;
+  /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
+  ret = asm330lhhx_read_reg(ctx, ASM330LHHX_FIFO_STATUS1, (uint8_t *)reg, 2);
+  if (ret == 0)
+  {
+    *val = fifo_status2->fifo_ovr_ia;
+  }
 
   return ret;
 }
@@ -5254,18 +5273,22 @@ int32_t asm330lhhx_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @brief  FIFO watermark status.[get]
   *
   * @param  ctx    Read / write interface definitions.(ptr)
-  * @param  val    Change the values of fifo_wtm_ia in reg FIFO_STATUS2
+  * @param  val    Read the values of fifo_wtm_ia in reg FIFO_STATUS2
   * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
 int32_t asm330lhhx_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  asm330lhhx_fifo_status2_t fifo_status2;
+  uint8_t reg[2];
+  asm330lhhx_fifo_status2_t *fifo_status2 = (asm330lhhx_fifo_status2_t *)&reg[1];
   int32_t ret;
 
-  ret = asm330lhhx_read_reg(ctx, ASM330LHHX_FIFO_STATUS2,
-                            (uint8_t *)&fifo_status2, 1);
-  *val = fifo_status2.fifo_wtm_ia;
+  /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
+  ret = asm330lhhx_read_reg(ctx, ASM330LHHX_FIFO_STATUS1, (uint8_t *)reg, 2);
+  if (ret == 0)
+  {
+    *val = fifo_status2->fifo_wtm_ia;
+  }
 
   return ret;
 }
@@ -5320,7 +5343,7 @@ int32_t asm330lhhx_fifo_sensor_tag_get(const stmdev_ctx_t *ctx,
       *val = ASM330LHHX_SENSORHUB_NACK_TAG;
       break;
     default:
-      *val = ASM330LHHX_SENSORHUB_NACK_TAG;
+      *val = ASM330LHHX_XL_NC_TAG;
       break;
   }
   return ret;

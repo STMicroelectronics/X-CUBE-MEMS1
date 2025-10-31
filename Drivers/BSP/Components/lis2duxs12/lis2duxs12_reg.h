@@ -1,21 +1,21 @@
-/**
-  ******************************************************************************
-  * @file    lis2duxs12_reg.h
-  * @author  Sensors Software Solution Team
-  * @brief   This file contains all the functions prototypes for the
-  *          lis2duxs12_reg.c driver.
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2022 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+/*
+ ******************************************************************************
+ * @file    lis2duxs12_reg.h
+ * @author  Sensors Software Solution Team
+ * @brief   This file contains all the functions prototypes for the
+ *          lis2duxs12_reg.c driver.
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2022 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef LIS2DUXS12_REGS_H
@@ -121,6 +121,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 /**
@@ -349,13 +352,15 @@ typedef struct
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
   uint8_t fifo_mode                    : 3;
   uint8_t stop_on_fth                  : 1;
-  uint8_t not_used0                    : 2;
+  uint8_t not_used0                    : 1;
+  uint8_t dis_hard_rst_cs              : 1;
   uint8_t fifo_depth                   : 1;
   uint8_t cfg_chg_en                   : 1;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
   uint8_t cfg_chg_en                   : 1;
   uint8_t fifo_depth                   : 1;
-  uint8_t not_used0                    : 2;
+  uint8_t dis_hard_rst_cs              : 1;
+  uint8_t not_used0                    : 1;
   uint8_t stop_on_fth                  : 1;
   uint8_t fifo_mode                    : 3;
 #endif /* DRV_BYTE_ORDER */
@@ -2112,7 +2117,6 @@ typedef struct
   uint8_t sw_reset                     : 1; /* Restoring configuration registers */
   uint8_t boot                         : 1; /* Restoring calibration parameters */
   uint8_t drdy                         : 1; /* Accelerometer data ready */
-  uint8_t power_down                   : 1; /* Monitors power-down. */
 } lis2duxs12_status_t;
 int32_t lis2duxs12_status_get(const stmdev_ctx_t *ctx, lis2duxs12_status_t *val);
 
@@ -2191,7 +2195,6 @@ int32_t lis2duxs12_trigger_sw(const stmdev_ctx_t *ctx, const lis2duxs12_md_t *md
 typedef struct
 {
   uint8_t drdy                         : 1;
-  uint8_t timestamp                    : 1;
   uint8_t free_fall                    : 1;
   uint8_t wake_up                      : 1;
   uint8_t wake_up_z                    : 1;
@@ -2209,11 +2212,6 @@ typedef struct
   uint8_t six_d_zh                     : 1;
   uint8_t sleep_change                 : 1;
   uint8_t sleep_state                  : 1;
-  uint8_t tilt                         : 1;
-  uint8_t fifo_bdr                     : 1;
-  uint8_t fifo_full                    : 1;
-  uint8_t fifo_ovr                     : 1;
-  uint8_t fifo_th                      : 1;
 } lis2duxs12_all_sources_t;
 int32_t lis2duxs12_all_sources_get(const stmdev_ctx_t *ctx, lis2duxs12_all_sources_t *val);
 
@@ -2256,6 +2254,9 @@ int32_t lis2duxs12_self_test_stop(const stmdev_ctx_t *ctx);
 
 int32_t lis2duxs12_enter_deep_power_down(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t lis2duxs12_exit_deep_power_down(const stmdev_ctx_t *ctx);
+
+int32_t lis2duxs12_disable_hard_reset_from_cs_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lis2duxs12_disable_hard_reset_from_cs_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
@@ -2635,10 +2636,10 @@ typedef enum
 
 typedef enum
 {
-  LIS2DUXS12_ODR_NO_CHANGE       = 0,  /* no odr change during inactivity state */
-  LIS2DUXS12_ODR_1_6_HZ          = 1,  /* set odr to 1.6Hz during inactivity state */
-  LIS2DUXS12_ODR_3_HZ            = 1,  /* set odr to 3Hz during inactivity state */
-  LIS2DUXS12_ODR_25_HZ           = 1,  /* set odr to 25Hz during inactivity state */
+  LIS2DUXS12_ODR_NO_CHANGE       = 0x0,  /* no odr change during inactivity state */
+  LIS2DUXS12_ODR_1_6_HZ          = 0x1,  /* set odr to 1.6Hz during inactivity state */
+  LIS2DUXS12_ODR_3_HZ            = 0x2,  /* set odr to 3Hz during inactivity state */
+  LIS2DUXS12_ODR_25_HZ           = 0x3,  /* set odr to 25Hz during inactivity state */
 } lis2duxs12_inact_odr_t;
 
 typedef struct

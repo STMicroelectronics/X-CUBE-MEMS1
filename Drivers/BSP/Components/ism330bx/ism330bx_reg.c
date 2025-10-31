@@ -38,10 +38,10 @@
 /**
   * @brief  Read generic device register
   *
-  * @param  ctx   read / write interface definitions(ptr)
-  * @param  reg   register to read
-  * @param  data  pointer to buffer that store the data read(ptr)
-  * @param  len   number of consecutive register to read
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  reg   first register address to read.
+  * @param  data  buffer for data read.(ptr)
+  * @param  len   number of consecutive register to read.
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -6482,6 +6482,13 @@ int32_t ism330bx_sflp_data_rate_get(const stmdev_ctx_t *ctx,
  *
  * Released under BSD-3-Clause License
  */
+
+#define NPY_HALF_GENERATE_OVERFLOW  0 /* do not trigger FP overflow */
+#define NPY_HALF_GENERATE_UNDERFLOW 0 /* do not trigger FP underflow */
+#ifndef NPY_HALF_ROUND_TIES_TO_EVEN
+#define NPY_HALF_ROUND_TIES_TO_EVEN 1
+#endif
+
 static uint16_t npy_floatbits_to_halfbits(uint32_t f)
 {
   uint32_t f_exp, f_sig;
@@ -7479,7 +7486,7 @@ int32_t ism330bx_mlc_out_get(const stmdev_ctx_t *ctx, ism330bx_mlc_out_t *val)
   ret = ism330bx_mem_bank_set(ctx, ISM330BX_EMBED_FUNC_MEM_BANK);
   if (ret == 0)
   {
-    ret = ism330bx_read_reg(ctx, ISM330BX_MLC1_SRC, (uint8_t *)&val, 4);
+    ret = ism330bx_read_reg(ctx, ISM330BX_MLC1_SRC, (uint8_t *)val, 4);
   }
 
   ret += ism330bx_mem_bank_set(ctx, ISM330BX_MAIN_MEM_BANK);

@@ -121,6 +121,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 /**
@@ -3897,6 +3900,8 @@ float_t lsm6dsv32x_from_lsb_to_nsec(uint32_t lsb);
 
 float_t lsm6dsv32x_from_lsb_to_mv(int16_t lsb);
 
+uint32_t lsm6dsv32x_from_f16_to_f32(uint16_t val);
+
 int32_t lsm6dsv32x_xl_offset_on_out_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsv32x_xl_offset_on_out_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
@@ -4178,6 +4183,7 @@ typedef struct
   uint8_t drdy_g               : 1;
   uint8_t drdy_g_eis           : 1;
   uint8_t drdy_temp            : 1;
+  uint8_t drdy_ah_qvar         : 1;
   uint8_t fifo_th              : 1;
   uint8_t fifo_ovr             : 1;
   uint8_t fifo_full            : 1;
@@ -4201,6 +4207,45 @@ int32_t lsm6dsv32x_pin_int2_route_set(const stmdev_ctx_t *ctx,
                                       lsm6dsv32x_pin_int_route_t *val);
 int32_t lsm6dsv32x_pin_int2_route_get(const stmdev_ctx_t *ctx,
                                       lsm6dsv32x_pin_int_route_t *val);
+
+typedef struct
+{
+  uint8_t step_det                     : 1; /* route step detection event on INT pad */
+  uint8_t tilt                         : 1; /* route tilt event on INT pad */
+  uint8_t sig_mot                      : 1; /* route significant motion event on INT pad */
+  uint8_t fsm_lc                       : 1; /* route FSM long counter event on INT pad */
+} lsm6dsv32x_emb_pin_int_route_t;
+int32_t lsm6dsv32x_emb_pin_int1_route_set(const stmdev_ctx_t *ctx,
+                                          const lsm6dsv32x_emb_pin_int_route_t *val);
+int32_t lsm6dsv32x_emb_pin_int1_route_get(const stmdev_ctx_t *ctx,
+                                          lsm6dsv32x_emb_pin_int_route_t *val);
+int32_t lsm6dsv32x_emb_pin_int2_route_set(const stmdev_ctx_t *ctx,
+                                          const lsm6dsv32x_emb_pin_int_route_t *val);
+int32_t lsm6dsv32x_emb_pin_int2_route_get(const stmdev_ctx_t *ctx,
+                                          lsm6dsv32x_emb_pin_int_route_t *val);
+
+typedef enum
+{
+  LSM6DSV32X_INT_LATCH_DISABLE         = 0x0,
+  LSM6DSV32X_INT_LATCH_ENABLE          = 0x1,
+} lsm6dsv32x_embedded_int_config_t;
+int32_t lsm6dsv32x_embedded_int_cfg_set(const stmdev_ctx_t *ctx,
+                                        lsm6dsv32x_embedded_int_config_t val);
+int32_t lsm6dsv32x_embedded_int_cfg_get(const stmdev_ctx_t *ctx,
+                                        lsm6dsv32x_embedded_int_config_t *val);
+
+typedef struct
+{
+  uint8_t tilt                 : 1;
+  uint8_t sig_mot              : 1;
+  uint8_t fsm_lc               : 1;
+  uint8_t step_detector        : 1;
+  uint8_t step_count_inc       : 1;
+  uint8_t step_count_overflow  : 1;
+  uint8_t step_on_delta_time   : 1;
+} lsm6dsv32x_embedded_status_t;
+int32_t lsm6dsv32x_embedded_status_get(const stmdev_ctx_t *ctx,
+                                       lsm6dsv32x_embedded_status_t *val);
 
 typedef struct
 {
@@ -4438,40 +4483,68 @@ typedef struct
 int32_t lsm6dsv32x_fifo_status_get(const stmdev_ctx_t *ctx,
                                    lsm6dsv32x_fifo_status_t *val);
 
+/* Accel data format in FIFO */
 typedef struct
 {
-  enum
-  {
-    LSM6DSV32X_FIFO_EMPTY                    = 0x0,
-    LSM6DSV32X_GY_NC_TAG                     = 0x1,
-    LSM6DSV32X_XL_NC_TAG                     = 0x2,
-    LSM6DSV32X_TEMPERATURE_TAG               = 0x3,
-    LSM6DSV32X_TIMESTAMP_TAG                 = 0x4,
-    LSM6DSV32X_CFG_CHANGE_TAG                = 0x5,
-    LSM6DSV32X_XL_NC_T_2_TAG                 = 0x6,
-    LSM6DSV32X_XL_NC_T_1_TAG                 = 0x7,
-    LSM6DSV32X_XL_2XC_TAG                    = 0x8,
-    LSM6DSV32X_XL_3XC_TAG                    = 0x9,
-    LSM6DSV32X_GY_NC_T_2_TAG                 = 0xA,
-    LSM6DSV32X_GY_NC_T_1_TAG                 = 0xB,
-    LSM6DSV32X_GY_2XC_TAG                    = 0xC,
-    LSM6DSV32X_GY_3XC_TAG                    = 0xD,
-    LSM6DSV32X_SENSORHUB_SLAVE0_TAG          = 0xE,
-    LSM6DSV32X_SENSORHUB_SLAVE1_TAG          = 0xF,
-    LSM6DSV32X_SENSORHUB_SLAVE2_TAG          = 0x10,
-    LSM6DSV32X_SENSORHUB_SLAVE3_TAG          = 0x11,
-    LSM6DSV32X_STEP_COUNTER_TAG              = 0x12,
-    LSM6DSV32X_SFLP_GAME_ROTATION_VECTOR_TAG = 0x13,
-    LSM6DSV32X_SFLP_GYROSCOPE_BIAS_TAG       = 0x16,
-    LSM6DSV32X_SFLP_GRAVITY_VECTOR_TAG       = 0x17,
-    LSM6DSV32X_SENSORHUB_NACK_TAG            = 0x19,
-    LSM6DSV32X_MLC_RESULT_TAG                = 0x1A,
-    LSM6DSV32X_MLC_FILTER                    = 0x1B,
-    LSM6DSV32X_MLC_FEATURE                   = 0x1C,
-    LSM6DSV32X_XL_DUAL_CORE                  = 0x1D,
-    LSM6DSV32X_GY_ENHANCED_EIS               = 0x1E,
-  } tag;
-  uint8_t cnt;
+  int16_t axis[3];
+} lsm6dsv32x_fifo_xl;
+
+/* Temperature data format in FIFO */
+typedef struct
+{
+  uint16_t temperature;
+} lsm6dsv32x_fifo_temperature;
+
+/* Timestamp  format in FIFO */
+typedef struct
+{
+  uint32_t timestamp;
+} lsm6dsv32x_fifo_timestamp;
+
+/* Step counter data format in FIFO */
+typedef struct
+{
+  uint16_t steps;
+  uint32_t timestamp;
+} lsm6dsv32x_fifo_step_counter;
+
+typedef enum
+{
+  LSM6DSV32X_FIFO_EMPTY                    = 0x0,
+  LSM6DSV32X_GY_NC_TAG                     = 0x1,
+  LSM6DSV32X_XL_NC_TAG                     = 0x2,
+  LSM6DSV32X_TEMPERATURE_TAG               = 0x3,
+  LSM6DSV32X_TIMESTAMP_TAG                 = 0x4,
+  LSM6DSV32X_CFG_CHANGE_TAG                = 0x5,
+  LSM6DSV32X_XL_NC_T_2_TAG                 = 0x6,
+  LSM6DSV32X_XL_NC_T_1_TAG                 = 0x7,
+  LSM6DSV32X_XL_2XC_TAG                    = 0x8,
+  LSM6DSV32X_XL_3XC_TAG                    = 0x9,
+  LSM6DSV32X_GY_NC_T_2_TAG                 = 0xA,
+  LSM6DSV32X_GY_NC_T_1_TAG                 = 0xB,
+  LSM6DSV32X_GY_2XC_TAG                    = 0xC,
+  LSM6DSV32X_GY_3XC_TAG                    = 0xD,
+  LSM6DSV32X_SENSORHUB_SLAVE0_TAG          = 0xE,
+  LSM6DSV32X_SENSORHUB_SLAVE1_TAG          = 0xF,
+  LSM6DSV32X_SENSORHUB_SLAVE2_TAG          = 0x10,
+  LSM6DSV32X_SENSORHUB_SLAVE3_TAG          = 0x11,
+  LSM6DSV32X_STEP_COUNTER_TAG              = 0x12,
+  LSM6DSV32X_SFLP_GAME_ROTATION_VECTOR_TAG = 0x13,
+  LSM6DSV32X_SFLP_GYROSCOPE_BIAS_TAG       = 0x16,
+  LSM6DSV32X_SFLP_GRAVITY_VECTOR_TAG       = 0x17,
+  LSM6DSV32X_SENSORHUB_NACK_TAG            = 0x19,
+  LSM6DSV32X_MLC_RESULT_TAG                = 0x1A,
+  LSM6DSV32X_MLC_FILTER                    = 0x1B,
+  LSM6DSV32X_MLC_FEATURE                   = 0x1C,
+  LSM6DSV32X_XL_DUAL_CORE                  = 0x1D,
+  LSM6DSV32X_GY_ENHANCED_EIS               = 0x1E,
+} lsm6dsv32x_fifo_tag;
+
+typedef struct
+{
+  uint8_t tag  : 5;
+  uint8_t cnt  : 2;
+  uint8_t rsvd : 1;
   uint8_t data[6];
 } lsm6dsv32x_fifo_out_raw_t;
 int32_t lsm6dsv32x_fifo_out_raw_get(const stmdev_ctx_t *ctx,

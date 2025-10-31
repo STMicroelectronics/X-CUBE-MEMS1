@@ -468,7 +468,7 @@ int32_t lps22ch_data_rate_get(const stmdev_ctx_t *ctx, lps22ch_odr_t *val)
 
 /**
   * @brief  The Reference pressure value is a 16-bit data
-  *         expressed as 2's complement. The value is used
+  *         expressed as 2’s complement. The value is used
   *         when AUTOZERO or AUTORIFP function is enabled.[set]
   *
   * @param  ctx      read / write interface definitions
@@ -490,7 +490,7 @@ int32_t lps22ch_pressure_ref_set(const stmdev_ctx_t *ctx, int16_t val)
 
 /**
   * @brief  The Reference pressure value is a 16-bit
-  *         data expressed as 2's complement.
+  *         data expressed as 2’s complement.
   *         The value is used when AUTOZERO or AUTORIFP
   *         function is enabled.[get]
   *

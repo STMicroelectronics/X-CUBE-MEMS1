@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.2.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.12.0.0 instances.
   ******************************************************************************
   * @attention
   *
@@ -39,6 +39,9 @@ extern "C" {
 #define DWT_LAR_KEY  0xC5ACCE55 /* DWT register unlock key */
 #define APP_FREQ  10U /* Application report frequency 10Hz */
 #define PRESS_ODR  ((float)APP_FREQ)
+#define FROM_S_TO_MS  1000U
+#define CLOCK_4KHZ    4000 /* TIM counter clock 4 kHz */
+#define CLOCK_2KHZ    2000 /* TIM counter clock 2 kHz */
 
 /* Public variables ----------------------------------------------------------*/
 volatile uint8_t DataLoggerActive = 0;
@@ -60,7 +63,7 @@ static float PressValue;
 static float TempValue;
 static float HumValue;
 static float GasValue;
-static const uint32_t ReportInterval = 1000U / APP_FREQ;
+static const uint32_t ReportInterval = FROM_S_TO_MS / APP_FREQ;
 static const uint32_t SamplingInterval = GasIndexAlgorithm_DEFAULT_SAMPLING_INTERVAL * 1000.0f;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -430,11 +433,11 @@ static void TIM_Config(uint32_t Freq)
 
   if (SystemCoreClock > 120000000)
   {
-    tim_counter_clock = 4000; /* TIM counter clock 4 kHz */
+    tim_counter_clock = CLOCK_4KHZ; /* TIM counter clock 4 kHz */
   }
   else
   {
-    tim_counter_clock = 2000; /* TIM counter clock 2 kHz */
+    tim_counter_clock = CLOCK_2KHZ; /* TIM counter clock 2 kHz */
   }
   uint32_t prescaler_value = (uint32_t)((SystemCoreClock / tim_counter_clock) - 1);
   uint32_t period = (tim_counter_clock / Freq) - 1;

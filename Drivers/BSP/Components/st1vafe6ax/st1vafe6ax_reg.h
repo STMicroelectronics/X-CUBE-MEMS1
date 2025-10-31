@@ -7,8 +7,8 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2024 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2024 STMicroelectronics.
+  * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
   * in the root directory of this software component.
@@ -121,6 +121,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 /**
@@ -3111,9 +3114,9 @@ int32_t st1vafe6ax_tap_detection_get(const stmdev_ctx_t *ctx,
 
 typedef struct
 {
-  uint8_t x                             : 1;
-  uint8_t y                             : 1;
-  uint8_t z                             : 1;
+  uint8_t x                             : 5;
+  uint8_t y                             : 5;
+  uint8_t z                             : 5;
 } st1vafe6ax_tap_thresholds_t;
 int32_t st1vafe6ax_tap_thresholds_set(const stmdev_ctx_t *ctx,
                                       st1vafe6ax_tap_thresholds_t val);
@@ -3137,9 +3140,9 @@ int32_t st1vafe6ax_tap_axis_priority_get(const stmdev_ctx_t *ctx,
 
 typedef struct
 {
-  uint8_t shock                         : 1;
-  uint8_t quiet                         : 1;
-  uint8_t tap_gap                       : 1;
+  uint8_t shock                         : 2;
+  uint8_t quiet                         : 2;
+  uint8_t tap_gap                       : 4;
 } st1vafe6ax_tap_time_windows_t;
 int32_t st1vafe6ax_tap_time_windows_set(const stmdev_ctx_t *ctx,
                                         st1vafe6ax_tap_time_windows_t val);

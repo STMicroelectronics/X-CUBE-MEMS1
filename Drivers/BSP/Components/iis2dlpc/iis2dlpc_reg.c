@@ -897,11 +897,10 @@ int32_t iis2dlpc_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @brief  Software reset. Restore the default values in user registers.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of soft_reset in reg CTRL2
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dlpc_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t iis2dlpc_reset_set(const stmdev_ctx_t *ctx)
 {
   iis2dlpc_ctrl2_t reg;
   int32_t ret;
@@ -910,7 +909,7 @@ int32_t iis2dlpc_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   if (ret == 0)
   {
-    reg.soft_reset = val;
+    reg.soft_reset = PROPERTY_ENABLE;
     ret = iis2dlpc_write_reg(ctx, IIS2DLPC_CTRL2, (uint8_t *) &reg, 1);
   }
 
@@ -940,11 +939,10 @@ int32_t iis2dlpc_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @brief  Reboot memory content. Reload the calibration parameters.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      change the values of boot in reg CTRL2
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2dlpc_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
+int32_t iis2dlpc_boot_set(const stmdev_ctx_t *ctx)
 {
   iis2dlpc_ctrl2_t reg;
   int32_t ret;
@@ -953,7 +951,7 @@ int32_t iis2dlpc_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   if (ret == 0)
   {
-    reg.boot = val;
+    reg.boot = PROPERTY_ENABLE;
     ret = iis2dlpc_write_reg(ctx, IIS2DLPC_CTRL2, (uint8_t *) &reg, 1);
   }
 
@@ -1712,6 +1710,7 @@ int32_t iis2dlpc_pin_int1_route_set(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
+	// `interrupts_enable` is set to ENABLE when at least one of the int1/int2 events is active 
     if ((ctrl5_int2_pad_ctrl.int2_sleep_state
          | ctrl5_int2_pad_ctrl.int2_sleep_chg
          | val->int1_tap
@@ -1789,6 +1788,7 @@ int32_t iis2dlpc_pin_int2_route_set(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
+	// `interrupts_enable` is set to ENABLE when at least one of the int1/int2 events is active 
     if ((val->int2_sleep_state
          | val->int2_sleep_chg
          | ctrl4_int1_pad.int1_tap

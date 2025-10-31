@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2019 STMicroelectronics.
+  * Copyright (c) 2021 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -121,6 +121,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 /**
@@ -129,33 +132,6 @@ typedef struct
   */
 
 #endif /* MEMS_SHARED_TYPES */
-
-#ifndef MEMS_UCF_SHARED_TYPES
-#define MEMS_UCF_SHARED_TYPES
-
-/** @defgroup    Generic address-data structure definition
-  * @brief       This structure is useful to load a predefined configuration
-  *              of a sensor.
-  *              You can create a sensor configuration by your own or using
-  *              Unico / Unicleo tools available on STMicroelectronics
-  *              web site.
-  *
-  * @{
-  *
-  */
-
-typedef struct
-{
-  uint8_t address;
-  uint8_t data;
-} ucf_line_t;
-
-/**
-  * @}
-  *
-  */
-
-#endif /* MEMS_UCF_SHARED_TYPES */
 
 /**
   * @}
@@ -329,18 +305,6 @@ typedef struct
 #define IIS2MDC_TEMP_OUT_L_REG          0x6EU
 #define IIS2MDC_TEMP_OUT_H_REG          0x6FU
 
-typedef union
-{
-  iis2mdc_cfg_reg_a_t            cfg_reg_a;
-  iis2mdc_cfg_reg_b_t            cfg_reg_b;
-  iis2mdc_cfg_reg_c_t            cfg_reg_c;
-  iis2mdc_int_crtl_reg_t         int_crtl_reg;
-  iis2mdc_int_source_reg_t       int_source_reg;
-  iis2mdc_status_reg_t           status_reg;
-  bitwise_t                      bitwise;
-  uint8_t                        byte;
-} iis2mdc_reg_t;
-
 #ifndef __weak
 #define __weak __attribute__((weak))
 #endif /* __weak */
@@ -418,10 +382,8 @@ int32_t iis2mdc_set_rst_mode_set(const stmdev_ctx_t *ctx,
 int32_t iis2mdc_set_rst_mode_get(const stmdev_ctx_t *ctx,
                                  iis2mdc_set_rst_t *val);
 
-int32_t iis2mdc_set_rst_sensor_single_set(const stmdev_ctx_t *ctx,
-                                          uint8_t val);
-int32_t iis2mdc_set_rst_sensor_single_get(const stmdev_ctx_t *ctx,
-                                          uint8_t *val);
+int32_t iis2mdc_off_canc_en_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t iis2mdc_off_canc_en_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 int32_t iis2mdc_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t iis2mdc_block_data_update_get(const stmdev_ctx_t *ctx,

@@ -1136,7 +1136,7 @@ int32_t lsm6dso32_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
 /**
   * @brief  Timestamp first data output register (r).
   *         The value is expressed as a 32-bit word and the bit
-  *         resolution is 25 us.[get]
+  *         resolution is 25 μs.[get]
   *
   * @param  ctx      read / write interface definitions
   * @param  buff     buffer that stores data read
@@ -5836,7 +5836,7 @@ int32_t lsm6dso32_fifo_cnt_event_batch_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  Resets the internal counter of batching vents for a single sensor.
-  *         This bit is automatically reset to zero if it was set to '1'.[set]
+  *         This bit is automatically reset to zero if it was set to ‘1’.[set]
   *
   * @param  ctx      read / write interface definitions
   * @param  val      change the values of rst_counter_bdr in
@@ -5865,7 +5865,7 @@ int32_t lsm6dso32_rst_batch_counter_set(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  Resets the internal counter of batching events for a single sensor.
-  *         This bit is automatically reset to zero if it was set to '1'.[get]
+  *         This bit is automatically reset to zero if it was set to ‘1’.[get]
   *
   * @param  ctx      read / write interface definitions
   * @param  val      change the values of rst_counter_bdr in
@@ -5953,48 +5953,53 @@ int32_t lsm6dso32_batch_counter_threshold_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Number of unread sensor data(TAG + 6 bytes) stored in FIFO.[get]
+  * @brief  Number of unread sensor data (TAG + 6 bytes) stored in FIFO.[get]
   *
-  * @param  ctx      read / write interface definitions
-  * @param  val      change the values of diff_fifo in reg FIFO_STATUS1
-  * @retval             interface status (MANDATORY: return 0 -> no Error)
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Read the value of diff_fifo in reg FIFO_STATUS1 and FIFO_STATUS2
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
 int32_t lsm6dso32_fifo_data_level_get(const stmdev_ctx_t *ctx,
-                                      uint16_t *val)
+                                     uint16_t *val)
 {
-  lsm6dso32_fifo_status1_t fifo_status1;
-  lsm6dso32_fifo_status2_t fifo_status2;
+  uint8_t reg[2];
+  lsm6dso32_fifo_status1_t *fifo_status1 = (lsm6dso32_fifo_status1_t *)&reg[0];
+  lsm6dso32_fifo_status2_t *fifo_status2 = (lsm6dso32_fifo_status2_t *)&reg[1];
   int32_t ret;
 
-  ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_STATUS1,
-                           (uint8_t *)&fifo_status1, 1);
-
+  /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
+  ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_STATUS1, (uint8_t *)reg, 2);
   if (ret == 0)
   {
-    ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_STATUS2,
-                             (uint8_t *)&fifo_status2, 1);
-    *val = ((uint16_t)fifo_status2.diff_fifo << 8) +
-           (uint16_t)fifo_status1.diff_fifo;
+    *val = fifo_status2->diff_fifo;
+    *val = (*val * 256U) + fifo_status1->diff_fifo;
   }
 
   return ret;
 }
 
 /**
-  * @brief  FIFO status.[get]
+  * @brief  Smart FIFO status.[get]
   *
-  * @param  ctx      read / write interface definitions
-  * @param  val      registers FIFO_STATUS2
-  * @retval             interface status (MANDATORY: return 0 -> no Error)
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Read registers FIFO_STATUS2
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
 int32_t lsm6dso32_fifo_status_get(const stmdev_ctx_t *ctx,
-                                  lsm6dso32_fifo_status2_t *val)
+                                 lsm6dso32_fifo_status2_t *val)
 {
+  uint8_t reg[2];
+  lsm6dso32_fifo_status2_t *fifo_status2 = (lsm6dso32_fifo_status2_t *)&reg[1];
   int32_t ret;
 
-  ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_STATUS2, (uint8_t *) val, 1);
+  /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
+  ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_STATUS1, (uint8_t *)reg, 2);
+  if (ret == 0)
+  {
+    *val = *fifo_status2;
+  }
 
   return ret;
 }
@@ -6002,18 +6007,23 @@ int32_t lsm6dso32_fifo_status_get(const stmdev_ctx_t *ctx,
 /**
   * @brief  Smart FIFO full status.[get]
   *
-  * @param  ctx      read / write interface definitions
-  * @param  val      change the values of fifo_full_ia in reg FIFO_STATUS2
-  * @retval             interface status (MANDATORY: return 0 -> no Error)
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Read the values of fifo_full_ia in reg FIFO_STATUS2
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
 int32_t lsm6dso32_fifo_full_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dso32_fifo_status2_t reg;
+  uint8_t reg[2];
+  lsm6dso32_fifo_status2_t *fifo_status2 = (lsm6dso32_fifo_status2_t *)&reg[1];
   int32_t ret;
 
-  ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_STATUS2, (uint8_t *)&reg, 1);
-  *val = reg.fifo_full_ia;
+  /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
+  ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_STATUS1, (uint8_t *)reg, 2);
+  if (ret == 0)
+  {
+    *val = fifo_status2->fifo_full_ia;
+  }
 
   return ret;
 }
@@ -6021,19 +6031,24 @@ int32_t lsm6dso32_fifo_full_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 /**
   * @brief  FIFO overrun status.[get]
   *
-  * @param  ctx      read / write interface definitions
-  * @param  val      change the values of  fifo_over_run_latched in
-  *                  reg FIFO_STATUS2
-  * @retval             interface status (MANDATORY: return 0 -> no Error)
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Read the values of  fifo_over_run_latched in
+  *                reg FIFO_STATUS2
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
 int32_t lsm6dso32_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dso32_fifo_status2_t reg;
+  uint8_t reg[2];
+  lsm6dso32_fifo_status2_t *fifo_status2 = (lsm6dso32_fifo_status2_t *)&reg[1];
   int32_t ret;
 
-  ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_STATUS2, (uint8_t *)&reg, 1);
-  *val = reg.fifo_ovr_ia;
+  /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
+  ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_STATUS1, (uint8_t *)reg, 2);
+  if (ret == 0)
+  {
+    *val = fifo_status2->fifo_ovr_ia;
+  }
 
   return ret;
 }
@@ -6041,18 +6056,23 @@ int32_t lsm6dso32_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 /**
   * @brief  FIFO watermark status.[get]
   *
-  * @param  ctx      read / write interface definitions
-  * @param  val      change the values of fifo_wtm_ia in reg FIFO_STATUS2
-  * @retval             interface status (MANDATORY: return 0 -> no Error)
+  * @param  ctx    Read / write interface definitions.(ptr)
+  * @param  val    Read the values of fifo_wtm_ia in reg FIFO_STATUS2
+  * @retval        Interface status (MANDATORY: return 0 -> no Error).
   *
   */
 int32_t lsm6dso32_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  lsm6dso32_fifo_status2_t reg;
+  uint8_t reg[2];
+  lsm6dso32_fifo_status2_t *fifo_status2 = (lsm6dso32_fifo_status2_t *)&reg[1];
   int32_t ret;
 
-  ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_STATUS2, (uint8_t *)&reg, 1);
-  *val = reg.fifo_wtm_ia;
+  /* read both FIFO_STATUS1 + FIFO_STATUS2 regs */
+  ret = lsm6dso32_read_reg(ctx, LSM6DSO32_FIFO_STATUS1, (uint8_t *)reg, 2);
+  if (ret == 0)
+  {
+    *val = fifo_status2->fifo_wtm_ia;
+  }
 
   return ret;
 }

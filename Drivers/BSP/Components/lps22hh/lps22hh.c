@@ -831,7 +831,7 @@ int32_t LPS22HH_FIFO_Reset_Interrupt(LPS22HH_Object_t *pObj, uint8_t interrupt)
   }
 
   /* Set new interrupt settings */
-  if (lps22hh_pin_int_route_set(&(pObj->Ctx), &pin_int) != LPS22HH_OK)
+  if (lps22hh_pin_int_route_set(&(pObj->Ctx), pin_int) != LPS22HH_OK)
   {
     return LPS22HH_ERROR;
   }
@@ -878,7 +878,7 @@ int32_t LPS22HH_FIFO_Set_Interrupt(LPS22HH_Object_t *pObj, uint8_t interrupt)
   }
 
   /* Set new interrupt settings */
-  if (lps22hh_pin_int_route_set(&(pObj->Ctx), &pin_int) != LPS22HH_OK)
+  if (lps22hh_pin_int_route_set(&(pObj->Ctx), pin_int) != LPS22HH_OK)
   {
     return LPS22HH_ERROR;
   }
@@ -1022,7 +1022,7 @@ int32_t LPS22HH_Enable_DRDY_Interrupt(LPS22HH_Object_t *pObj)
     return LPS22HH_ERROR;
   }
   pin_int.drdy_pres = 1;
-  if (lps22hh_pin_int_route_set(&(pObj->Ctx), &pin_int) != LPS22HH_OK)
+  if (lps22hh_pin_int_route_set(&(pObj->Ctx), pin_int) != LPS22HH_OK)
   {
     return LPS22HH_ERROR;
   }

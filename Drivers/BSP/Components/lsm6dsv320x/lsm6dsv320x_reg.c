@@ -224,6 +224,19 @@ float_t lsm6dsv320x_from_quaternion_lsb_to_float(uint16_t lsb)
   return npy_half_to_float(lsb);
 }
 
+static uint32_t npy_halfbits_to_floatbits(uint16_t h);
+/**
+  * @brief  Convert from 16-bit to 32-bit float number
+  *
+  * @param  val      Batching in FIFO buffer of SFLP values.
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+uint32_t lsm6dsv320x_from_f16_to_f32(uint16_t val)
+{
+  return npy_halfbits_to_floatbits(val);
+}
+
 /**
   * @}
   *
@@ -748,7 +761,10 @@ int32_t lsm6dsv320x_xl_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_15Hz625;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_13Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_12Hz5;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_13Hz;
           break;
       }
       break;
@@ -764,7 +780,10 @@ int32_t lsm6dsv320x_xl_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_31Hz25;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_26Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_25Hz;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_26Hz;
           break;
       }
       break;
@@ -780,7 +799,10 @@ int32_t lsm6dsv320x_xl_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_62Hz5;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_52Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_50Hz;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_52Hz;
           break;
       }
       break;
@@ -796,7 +818,10 @@ int32_t lsm6dsv320x_xl_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_125Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_104Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_100Hz;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_104Hz;
           break;
       }
       break;
@@ -812,7 +837,10 @@ int32_t lsm6dsv320x_xl_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_250Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_208Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_200Hz;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_208Hz;
           break;
       }
       break;
@@ -828,7 +856,10 @@ int32_t lsm6dsv320x_xl_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_500Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_417Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_400Hz;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_417Hz;
           break;
       }
       break;
@@ -844,7 +875,10 @@ int32_t lsm6dsv320x_xl_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_1000Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_833Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_800Hz;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_833Hz;
           break;
       }
       break;
@@ -860,7 +894,10 @@ int32_t lsm6dsv320x_xl_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_2000Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_1667Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_1600Hz;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_1667Hz;
           break;
       }
       break;
@@ -876,7 +913,10 @@ int32_t lsm6dsv320x_xl_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_4000Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_3333Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_3200Hz;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_3333Hz;
           break;
       }
       break;
@@ -892,7 +932,10 @@ int32_t lsm6dsv320x_xl_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_8000Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_6667Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_6400Hz;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_6667Hz;
           break;
       }
       break;
@@ -1147,7 +1190,10 @@ int32_t lsm6dsv320x_gy_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_15Hz625;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_13Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_12Hz5;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_13Hz;
           break;
       }
       break;
@@ -1163,7 +1209,10 @@ int32_t lsm6dsv320x_gy_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_31Hz25;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_26Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_25Hz;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_26Hz;
           break;
       }
       break;
@@ -1179,7 +1228,10 @@ int32_t lsm6dsv320x_gy_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_62Hz5;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_52Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_50Hz;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_52Hz;
           break;
       }
       break;
@@ -1195,7 +1247,10 @@ int32_t lsm6dsv320x_gy_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_125Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_104Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_100Hz;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_104Hz;
           break;
       }
       break;
@@ -1211,7 +1266,10 @@ int32_t lsm6dsv320x_gy_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_250Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_208Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_200Hz;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_208Hz;
           break;
       }
       break;
@@ -1227,7 +1285,10 @@ int32_t lsm6dsv320x_gy_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_500Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_417Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_400Hz;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_417Hz;
           break;
       }
       break;
@@ -1243,7 +1304,10 @@ int32_t lsm6dsv320x_gy_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_1000Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_833Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_800Hz;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_833Hz;
           break;
       }
       break;
@@ -1259,7 +1323,10 @@ int32_t lsm6dsv320x_gy_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_2000Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_1667Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_1600Hz;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_1667Hz;
           break;
       }
       break;
@@ -1275,7 +1342,10 @@ int32_t lsm6dsv320x_gy_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_4000Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_3333Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_3200Hz;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_3333Hz;
           break;
       }
       break;
@@ -1291,7 +1361,10 @@ int32_t lsm6dsv320x_gy_data_rate_get(const stmdev_ctx_t *ctx,
           *val = LSM6DSV320X_ODR_HA01_AT_8000Hz;
           break;
         case 2:
-          *val = LSM6DSV320X_ODR_HA02_AT_6667Hz;
+          *val = LSM6DSV320X_ODR_HA02_AT_6400Hz;
+          break;
+        case 3:
+          *val = LSM6DSV320X_ODR_HA03_AT_6667Hz;
           break;
       }
       break;
@@ -1300,6 +1373,7 @@ int32_t lsm6dsv320x_gy_data_rate_get(const stmdev_ctx_t *ctx,
       *val = LSM6DSV320X_ODR_OFF;
       break;
   }
+
 
   return ret;
 }
@@ -2899,23 +2973,6 @@ int32_t lsm6dsv320x_pin_int1_route_embedded_set(const stmdev_ctx_t *ctx,
   lsm6dsv320x_mlc_int1_t            mlc_int1;
   int32_t ret;
 
-  /* Embedded Functions */
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_INT1, (uint8_t *)&emb_func_int1, 1);
-  if (ret != 0)
-  {
-    return ret;
-  }
-
-  emb_func_int1.int1_step_detector = val->step_detector;
-  emb_func_int1.int1_tilt = val->tilt;
-  emb_func_int1.int1_sig_mot = val->sig_mot;
-
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_INT1, (uint8_t *)&emb_func_int1, 1);
-  if (ret != 0)
-  {
-    return ret;
-  }
-
   ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MD1_CFG, (uint8_t *)&md1_cfg, 1);
   if (ret != 0)
   {
@@ -2930,11 +2987,34 @@ int32_t lsm6dsv320x_pin_int1_route_embedded_set(const stmdev_ctx_t *ctx,
     return ret;
   }
 
-  /* FSM */
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FSM_INT1, (uint8_t *)&fsm_int1, 1);
+  /* Embedded Functions */
+  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     return ret;
+  }
+
+  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_INT1, (uint8_t *)&emb_func_int1, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  emb_func_int1.int1_step_detector = val->step_detector;
+  emb_func_int1.int1_tilt = val->tilt;
+  emb_func_int1.int1_sig_mot = val->sig_mot;
+
+  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_INT1, (uint8_t *)&emb_func_int1, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  /* FSM */
+  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FSM_INT1, (uint8_t *)&fsm_int1, 1);
+  if (ret != 0)
+  {
+    goto exit;
   }
 
   fsm_int1.int1_fsm1 = val->fsm1;
@@ -2946,17 +3026,17 @@ int32_t lsm6dsv320x_pin_int1_route_embedded_set(const stmdev_ctx_t *ctx,
   fsm_int1.int1_fsm7 = val->fsm7;
   fsm_int1.int1_fsm8 = val->fsm8;
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FSM_INT1, (uint8_t *)&fsm_int1, 1);
+  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FSM_INT1, (uint8_t *)&fsm_int1, 1);
   if (ret != 0)
   {
-    return ret;
+    goto exit;
   }
 
   /* MLC */
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MLC_INT1, (uint8_t *)&mlc_int1, 1);
+  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MLC_INT1, (uint8_t *)&mlc_int1, 1);
   if (ret != 0)
   {
-    return ret;
+    goto exit;
   }
 
   mlc_int1.int1_mlc1 = val->mlc1;
@@ -2968,11 +3048,14 @@ int32_t lsm6dsv320x_pin_int1_route_embedded_set(const stmdev_ctx_t *ctx,
   mlc_int1.int1_mlc7 = val->mlc7;
   mlc_int1.int1_mlc8 = val->mlc8;
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_MLC_INT1, (uint8_t *)&mlc_int1, 1);
+  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_MLC_INT1, (uint8_t *)&mlc_int1, 1);
   if (ret != 0)
   {
-    return ret;
+    goto exit;
   }
+
+exit:
+  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -2995,10 +3078,16 @@ int32_t lsm6dsv320x_pin_int1_route_embedded_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   /* Embedded Functions */
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_INT1, (uint8_t *)&emb_func_int1, 1);
+  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     return ret;
+  }
+
+  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_INT1, (uint8_t *)&emb_func_int1, 1);
+  if (ret != 0)
+  {
+    goto exit;
   }
 
   val->step_detector = emb_func_int1.int1_step_detector;
@@ -3006,10 +3095,10 @@ int32_t lsm6dsv320x_pin_int1_route_embedded_get(const stmdev_ctx_t *ctx,
   val->tilt          = emb_func_int1.int1_tilt;
 
   /* FSM */
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FSM_INT1, (uint8_t *)&fsm_int1, 1);
+  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FSM_INT1, (uint8_t *)&fsm_int1, 1);
   if (ret != 0)
   {
-    return ret;
+    goto exit;
   }
 
   val->fsm1 = fsm_int1.int1_fsm1;
@@ -3022,10 +3111,10 @@ int32_t lsm6dsv320x_pin_int1_route_embedded_get(const stmdev_ctx_t *ctx,
   val->fsm8 = fsm_int1.int1_fsm8;
 
   /* MLC */
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MLC_INT1, (uint8_t *)&mlc_int1, 1);
+  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MLC_INT1, (uint8_t *)&mlc_int1, 1);
   if (ret != 0)
   {
-    return ret;
+    goto exit;
   }
 
   val->mlc1 = mlc_int1.int1_mlc1;
@@ -3036,6 +3125,9 @@ int32_t lsm6dsv320x_pin_int1_route_embedded_get(const stmdev_ctx_t *ctx,
   val->mlc6 = mlc_int1.int1_mlc6;
   val->mlc7 = mlc_int1.int1_mlc7;
   val->mlc8 = mlc_int1.int1_mlc8;
+
+exit:
+  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -3058,23 +3150,6 @@ int32_t lsm6dsv320x_pin_int2_route_embedded_set(const stmdev_ctx_t *ctx,
   lsm6dsv320x_mlc_int2_t            mlc_int2;
   int32_t ret;
 
-  /* Embedded Functions */
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_INT2, (uint8_t *)&emb_func_int2, 1);
-  if (ret != 0)
-  {
-    return ret;
-  }
-
-  emb_func_int2.int2_step_detector = val->step_detector;
-  emb_func_int2.int2_tilt = val->tilt;
-  emb_func_int2.int2_sig_mot = val->sig_mot;
-
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_INT2, (uint8_t *)&emb_func_int2, 1);
-  if (ret != 0)
-  {
-    return ret;
-  }
-
   ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MD2_CFG, (uint8_t *)&md2_cfg, 1);
   if (ret != 0)
   {
@@ -3089,11 +3164,34 @@ int32_t lsm6dsv320x_pin_int2_route_embedded_set(const stmdev_ctx_t *ctx,
     return ret;
   }
 
-  /* FSM */
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FSM_INT2, (uint8_t *)&fsm_int2, 1);
+  /* Embedded Functions */
+  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     return ret;
+  }
+
+  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_INT2, (uint8_t *)&emb_func_int2, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  emb_func_int2.int2_step_detector = val->step_detector;
+  emb_func_int2.int2_tilt = val->tilt;
+  emb_func_int2.int2_sig_mot = val->sig_mot;
+
+  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_INT2, (uint8_t *)&emb_func_int2, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  /* FSM */
+  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FSM_INT2, (uint8_t *)&fsm_int2, 1);
+  if (ret != 0)
+  {
+    goto exit;
   }
 
   fsm_int2.int2_fsm1 = val->fsm1;
@@ -3105,17 +3203,17 @@ int32_t lsm6dsv320x_pin_int2_route_embedded_set(const stmdev_ctx_t *ctx,
   fsm_int2.int2_fsm7 = val->fsm7;
   fsm_int2.int2_fsm8 = val->fsm8;
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FSM_INT2, (uint8_t *)&fsm_int2, 1);
+  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_FSM_INT2, (uint8_t *)&fsm_int2, 1);
   if (ret != 0)
   {
-    return ret;
+    goto exit;
   }
 
   /* MLC */
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MLC_INT2, (uint8_t *)&mlc_int2, 1);
+  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MLC_INT2, (uint8_t *)&mlc_int2, 1);
   if (ret != 0)
   {
-    return ret;
+    goto exit;
   }
 
   mlc_int2.int2_mlc1 = val->mlc1;
@@ -3127,11 +3225,14 @@ int32_t lsm6dsv320x_pin_int2_route_embedded_set(const stmdev_ctx_t *ctx,
   mlc_int2.int2_mlc7 = val->mlc7;
   mlc_int2.int2_mlc8 = val->mlc8;
 
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_MLC_INT2, (uint8_t *)&mlc_int2, 1);
+  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_MLC_INT2, (uint8_t *)&mlc_int2, 1);
   if (ret != 0)
   {
-    return ret;
+    goto exit;
   }
+
+exit:
+  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -3154,10 +3255,16 @@ int32_t lsm6dsv320x_pin_int2_route_embedded_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   /* Embedded Functions */
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_INT2, (uint8_t *)&emb_func_int2, 1);
+  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
   if (ret != 0)
   {
     return ret;
+  }
+
+  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_INT2, (uint8_t *)&emb_func_int2, 1);
+  if (ret != 0)
+  {
+    goto exit;
   }
 
   val->step_detector = emb_func_int2.int2_step_detector;
@@ -3165,10 +3272,10 @@ int32_t lsm6dsv320x_pin_int2_route_embedded_get(const stmdev_ctx_t *ctx,
   val->tilt          = emb_func_int2.int2_tilt;
 
   /* FSM */
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FSM_INT2, (uint8_t *)&fsm_int2, 1);
+  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_FSM_INT2, (uint8_t *)&fsm_int2, 1);
   if (ret != 0)
   {
-    return ret;
+    goto exit;
   }
 
   val->fsm1 = fsm_int2.int2_fsm1;
@@ -3181,10 +3288,10 @@ int32_t lsm6dsv320x_pin_int2_route_embedded_get(const stmdev_ctx_t *ctx,
   val->fsm8 = fsm_int2.int2_fsm8;
 
   /* MLC */
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MLC_INT2, (uint8_t *)&mlc_int2, 1);
+  ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_MLC_INT2, (uint8_t *)&mlc_int2, 1);
   if (ret != 0)
   {
-    return ret;
+    goto exit;
   }
 
   val->mlc1 = mlc_int2.int2_mlc1;
@@ -3195,6 +3302,9 @@ int32_t lsm6dsv320x_pin_int2_route_embedded_get(const stmdev_ctx_t *ctx,
   val->mlc6 = mlc_int2.int2_mlc6;
   val->mlc7 = mlc_int2.int2_mlc7;
   val->mlc8 = mlc_int2.int2_mlc8;
+
+exit:
+  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -3403,7 +3513,9 @@ int32_t lsm6dsv320x_int_ack_mask_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   int32_t ret;
 
+  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
   ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_INT_ACK_MASK, &val, 1);
+  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -3420,7 +3532,9 @@ int32_t lsm6dsv320x_int_ack_mask_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   int32_t ret;
 
+  ret = lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_EMBED_FUNC_MEM_BANK);
   ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_INT_ACK_MASK, val, 1);
+  ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -5198,12 +5312,20 @@ int32_t lsm6dsv320x_fifo_timestamp_batch_get(const stmdev_ctx_t *ctx,
 int32_t lsm6dsv320x_fifo_batch_counter_threshold_set(const stmdev_ctx_t *ctx,
                                                      uint16_t val)
 {
-  uint8_t buff[2];
+  lsm6dsv320x_counter_bdr_reg1_t counter_bdr_reg1;
+  lsm6dsv320x_counter_bdr_reg2_t counter_bdr_reg2;
   int32_t ret;
 
-  buff[1] = (uint8_t)(val / 256U);
-  buff[0] = (uint8_t)(val - (buff[1] * 256U));
-  ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_COUNTER_BDR_REG1, (uint8_t *)&buff[0], 2);
+  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_COUNTER_BDR_REG1, (uint8_t *)&counter_bdr_reg1, 1);
+
+  if (ret == 0)
+  {
+    counter_bdr_reg2.cnt_bdr_th = (uint8_t)val & 0xFFU;
+    counter_bdr_reg1.cnt_bdr_th = (uint8_t)(val >> 8) & 0x3U;
+    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_COUNTER_BDR_REG1, (uint8_t *)&counter_bdr_reg1, 1);
+    ret = lsm6dsv320x_write_reg(ctx, LSM6DSV320X_COUNTER_BDR_REG2, (uint8_t *)&counter_bdr_reg2, 1);
+  }
+
 
   return ret;
 }
@@ -5228,8 +5350,8 @@ int32_t lsm6dsv320x_fifo_batch_counter_threshold_get(const stmdev_ctx_t *ctx,
     return ret;
   }
 
-  *val = buff[1];
-  *val = (*val * 256U) + buff[0];
+  *val = (uint16_t)buff[0] & 0x3U;
+  *val = (*val * 256U) + (uint16_t)buff[1];
 
   return ret;
 }
@@ -5369,11 +5491,11 @@ int32_t lsm6dsv320x_fifo_out_raw_get(const stmdev_ctx_t *ctx,
       break;
 
     case 3:
-      val->tag = LSM6DSV320X_TIMESTAMP_TAG;
+      val->tag = LSM6DSV320X_TEMPERATURE_TAG;
       break;
 
     case 4:
-      val->tag = LSM6DSV320X_TEMPERATURE_TAG;
+      val->tag = LSM6DSV320X_TIMESTAMP_TAG;
       break;
 
     case 5:
@@ -5568,9 +5690,9 @@ int32_t lsm6dsv320x_fifo_fsm_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
     return ret;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_b, 1);
+  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_B, (uint8_t *)&emb_func_fifo_en_b, 1);
   emb_func_fifo_en_b.fsm_fifo_en = val;
-  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_b,
+  ret += lsm6dsv320x_write_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_B, (uint8_t *)&emb_func_fifo_en_b,
                                1);
 
   ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
@@ -5597,7 +5719,7 @@ int32_t lsm6dsv320x_fifo_fsm_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
     return ret;
   }
 
-  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_A, (uint8_t *)&emb_func_fifo_en_b, 1);
+  ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_FIFO_EN_B, (uint8_t *)&emb_func_fifo_en_b, 1);
   *val = emb_func_fifo_en_b.fsm_fifo_en;
 
   ret += lsm6dsv320x_mem_bank_set(ctx, LSM6DSV320X_MAIN_MEM_BANK);
@@ -5967,6 +6089,7 @@ int32_t lsm6dsv320x_filt_settling_mask_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsv320x_read_reg(ctx, LSM6DSV320X_CTRL4, (uint8_t *)&ctrl4, 1);
   ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_EMB_FUNC_CFG, (uint8_t *)&emb_func_cfg, 1);
   ret += lsm6dsv320x_read_reg(ctx, LSM6DSV320X_UI_INT_OIS, (uint8_t *)&ui_int_ois, 1);
+  val->ois_drdy = ui_int_ois.drdy_mask_ois;
 
   val->irq_xl = emb_func_cfg.emb_func_irq_mask_xl_settl;
   val->irq_g = emb_func_cfg.emb_func_irq_mask_g_settl;

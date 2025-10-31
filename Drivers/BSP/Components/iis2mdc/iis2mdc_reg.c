@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2019 STMicroelectronics.
+  * Copyright (c) 2021 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -50,7 +50,10 @@ int32_t __weak iis2mdc_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
 {
   int32_t ret;
 
-  if (ctx == NULL) return -1;
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->read_reg(ctx->handle, reg, data, len);
 
@@ -73,7 +76,10 @@ int32_t __weak iis2mdc_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
 {
   int32_t ret;
 
-  if (ctx == NULL) return -1;
+  if (ctx == NULL)
+  {
+    return -1;
+  }
 
   ret = ctx->write_reg(ctx->handle, reg, data, len);
 
@@ -537,8 +543,7 @@ int32_t iis2mdc_set_rst_mode_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2mdc_set_rst_sensor_single_set(const stmdev_ctx_t *ctx,
-                                          uint8_t val)
+int32_t iis2mdc_off_canc_en_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   iis2mdc_cfg_reg_b_t reg;
   int32_t ret;
@@ -566,8 +571,7 @@ int32_t iis2mdc_set_rst_sensor_single_set(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t iis2mdc_set_rst_sensor_single_get(const stmdev_ctx_t *ctx,
-                                          uint8_t *val)
+int32_t iis2mdc_off_canc_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   iis2mdc_cfg_reg_b_t reg;
   int32_t ret;

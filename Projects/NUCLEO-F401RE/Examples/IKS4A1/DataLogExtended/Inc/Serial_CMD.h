@@ -40,6 +40,7 @@
 #define CMD_Enter_DFU_Mode                                                      0x0EU
 #define CMD_Reset                                                               0x0FU
 #define CMD_Enable_Disable_Sensor                                               0x10U
+#define CMD_Set_Ispu_Data_Length                                                0x11U
 
 #define CMD_Sensor                                                              0x50U
 

@@ -71,7 +71,7 @@ int32_t CUSTOM_ENV_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint8_t 
         ret = BSP_ERROR_NONE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_LPS22DF_0 */
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;
@@ -106,7 +106,7 @@ int32_t CUSTOM_ENV_SENSOR_Write_Register(uint32_t Instance, uint8_t Reg, uint8_t
         ret = BSP_ERROR_NONE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_LPS22DF_0 */
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;
@@ -162,7 +162,7 @@ int32_t CUSTOM_ENV_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Function, 
         ret = BSP_ERROR_COMPONENT_FAILURE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_LPS22DF_0 */
 
 #if (USE_CUSTOM_ENV_SENSOR_SHT40AD1B_0 == 1)
     case CUSTOM_SHT40AD1B_0:
@@ -193,7 +193,7 @@ int32_t CUSTOM_ENV_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Function, 
         ret = BSP_ERROR_COMPONENT_FAILURE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_SHT40AD1B_0 */
 
 #if (USE_CUSTOM_ENV_SENSOR_SGP40_0 == 1)
     case CUSTOM_SGP40_0:
@@ -213,7 +213,7 @@ int32_t CUSTOM_ENV_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Function, 
         ret = BSP_ERROR_COMPONENT_FAILURE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_SGP40_0 */
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;
@@ -758,7 +758,7 @@ int32_t CUSTOM_ENV_SENSOR_Set_Humidity(uint32_t Instance, float Value)
         ret = BSP_ERROR_NONE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_SGP40_0 */
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;
@@ -791,7 +791,7 @@ int32_t CUSTOM_ENV_SENSOR_Set_Temperature(uint32_t Instance, float Value)
         ret = BSP_ERROR_NONE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_SGP40_0 */
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;

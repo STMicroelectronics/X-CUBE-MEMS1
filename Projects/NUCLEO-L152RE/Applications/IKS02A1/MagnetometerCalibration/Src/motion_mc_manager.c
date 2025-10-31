@@ -29,9 +29,9 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Exported functions prototypes ---------------------------------------------*/
-// NOTE: Must be implemented for each platform separately, because its implementation
-//       is platform dependent. No need to call this function, library call this
-//       function automatically.
+/* NOTE: Must be implemented for each platform separately, because its implementation
+         is platform dependent. No need to call this function, library call this
+         function automatically.*/
 char MotionMC_LoadCalFromNVM(unsigned short int datasize, unsigned int *data);
 
 // NOTE: Must be implemented for each platform separately, because its implementation
@@ -139,9 +139,9 @@ int32_t mag_val_to_mGauss(float mag_val_uT)
   }
 }
 
-// NOTE: Must be implemented for each platform separately, because its implementation
-//       is platform dependent. No need to call this function, library call this
-//       function automatically.
+/* NOTE: Must be implemented for each platform separately, because its implementation
+         is platform dependent. No need to call this function, library call this
+         function automatically.*/
 /**
   * @brief  Load the calibration parameters from storage
   * @param  dataSize  size of data
@@ -153,9 +153,9 @@ char MotionMC_LoadCalFromNVM(unsigned short int datasize, unsigned int *data)
   return 1; /* FAILURE: Read from NVM not implemented. */
 }
 
-// NOTE: Must be implemented for each platform separately, because its implementation
-//       is platform dependent. No need to call this function, library call this
-//       function automatically.
+/* NOTE: Must be implemented for each platform separately, because its implementation
+         is platform dependent. No need to call this function, library call this
+         function automatically.*/
 /**
   * @brief  Save the calibration parameters in storage
   * @param  dataSize  size of data

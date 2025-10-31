@@ -64,15 +64,15 @@ static CUSTOM_ENV_SENSOR_Ctx_t EnvCtx[CUSTOM_ENV_INSTANCES_NBR];
 
 #if (USE_CUSTOM_ENV_SENSOR_LPS22DF_0 == 1)
 static int32_t LPS22DF_0_Probe(uint32_t Functions);
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_LPS22DF_0 */
 
 #if (USE_CUSTOM_ENV_SENSOR_SHT40AD1B_0 == 1)
 static int32_t SHT40AD1B_0_Probe(uint32_t Functions);
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_SHT40AD1B_0 */
 
 #if (USE_CUSTOM_ENV_SENSOR_SGP40_0 == 1)
 static int32_t SGP40_0_Probe(uint32_t Functions);
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_SGP40_0 */
 
 /**
   * @}
@@ -129,7 +129,7 @@ int32_t CUSTOM_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
         component_functions |= ENV_GAS;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_LPS22DF_0 */
 #if (USE_CUSTOM_ENV_SENSOR_SHT40AD1B_0 == 1)
     case CUSTOM_SHT40AD1B_0:
       if (SHT40AD1B_0_Probe(Functions) != BSP_ERROR_NONE)
@@ -157,7 +157,7 @@ int32_t CUSTOM_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
         component_functions |= ENV_GAS;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_SHT40AD1B_0 */
 #if (USE_CUSTOM_ENV_SENSOR_SGP40_0 == 1)
     case CUSTOM_SGP40_0:
       if (SGP40_0_Probe(Functions) != BSP_ERROR_NONE)
@@ -185,7 +185,7 @@ int32_t CUSTOM_ENV_SENSOR_Init(uint32_t Instance, uint32_t Functions)
         component_functions |= ENV_GAS;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_SGP40_0 */
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -591,7 +591,7 @@ static int32_t LPS22DF_0_Probe(uint32_t Functions)
 
   return ret;
 }
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_LPS22DF_0 */
 
 #if (USE_CUSTOM_ENV_SENSOR_SHT40AD1B_0 == 1)
 /**
@@ -685,7 +685,7 @@ static int32_t SHT40AD1B_0_Probe(uint32_t Functions)
 
   return ret;
 }
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_SHT40AD1B_0 */
 
 #if (USE_CUSTOM_ENV_SENSOR_SGP40_0 == 1)
 /**
@@ -770,7 +770,7 @@ static int32_t SGP40_0_Probe(uint32_t Functions)
 
   return ret;
 }
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_SGP40_0 */
 
 /**
   * @}

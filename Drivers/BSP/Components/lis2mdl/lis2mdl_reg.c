@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2019 STMicroelectronics.
+  * Copyright (c) 2021 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -1153,7 +1153,7 @@ int32_t lis2mdl_int_gen_source_get(const stmdev_ctx_t *ctx,
 
 /**
   * @brief  User-defined threshold value for xl interrupt event on generator.
-  *         Data format is the same of output data raw: two’s complement with
+  *         Data format is the same of output data raw: two's complement with
   *         1LSb = 1.5mG.[set]
   *
   * @param  ctx   read / write interface definitions.(ptr)
@@ -1175,7 +1175,7 @@ int32_t lis2mdl_int_gen_threshold_set(const stmdev_ctx_t *ctx, uint16_t val)
 
 /**
   * @brief  User-defined threshold value for xl interrupt event on generator.
-  *         Data format is the same of output data raw: two’s complement with
+  *         Data format is the same of output data raw: two's complement with
   *         1LSb = 1.5mG.[get]
   *
   * @param  ctx   read / write interface definitions.(ptr)

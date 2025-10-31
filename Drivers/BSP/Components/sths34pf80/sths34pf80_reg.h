@@ -121,6 +121,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 /**
@@ -773,5 +776,3 @@ int32_t sths34pf80_algo_reset(const stmdev_ctx_t *ctx);
 #endif
 
 #endif /*STHS34PF80_DRIVER_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

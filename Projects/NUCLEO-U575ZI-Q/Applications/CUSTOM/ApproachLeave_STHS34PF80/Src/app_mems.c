@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.3.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.12.0.0 instances.
   ******************************************************************************
   * @attention
   *
@@ -39,6 +39,9 @@ extern "C" {
 #define ALGO_FREQ  30U /* Algorithm frequency between 1 and 30 Hz */
 #define TEMP_ODR  ((float)ALGO_FREQ)
 #define AVG_TMOS  32U
+#define FROM_S_TO_MS  1000U
+#define CLOCK_4KHZ    4000 /* TIM counter clock 4 kHz */
+#define CLOCK_2KHZ    2000 /* TIM counter clock 2 kHz */
 
 /* Public variables ----------------------------------------------------------*/
 volatile uint8_t DataLoggerActive = 0;
@@ -358,11 +361,11 @@ static void TIM_Config(uint32_t Freq)
 
   if (SystemCoreClock > 120000000)
   {
-    tim_counter_clock = 4000; /* TIM counter clock 4 kHz */
+    tim_counter_clock = CLOCK_4KHZ; /* TIM counter clock 4 kHz */
   }
   else
   {
-    tim_counter_clock = 2000; /* TIM counter clock 2 kHz */
+    tim_counter_clock = CLOCK_2KHZ; /* TIM counter clock 2 kHz */
   }
   uint32_t prescaler_value = (uint32_t)((SystemCoreClock / tim_counter_clock) - 1);
   uint32_t period = (tim_counter_clock / Freq) - 1;

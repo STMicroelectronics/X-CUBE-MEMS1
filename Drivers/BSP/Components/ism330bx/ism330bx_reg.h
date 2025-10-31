@@ -121,6 +121,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 /**
@@ -2856,6 +2859,9 @@ int32_t ism330bx_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
 
 int32_t ism330bx_dual_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
 
+int32_t ism330bx_dual_acceleration_raw_get(const stmdev_ctx_t *ctx,
+                                           int16_t *val);
+
 int32_t ism330bx_ah_qvar_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
 
 int32_t ism330bx_odr_cal_reg_get(const stmdev_ctx_t *ctx, int8_t *val);
@@ -3177,9 +3183,9 @@ int32_t ism330bx_tap_detection_get(const stmdev_ctx_t *ctx,
 
 typedef struct
 {
-  uint8_t x                             : 1;
-  uint8_t y                             : 1;
-  uint8_t z                             : 1;
+  uint8_t x                             : 5;
+  uint8_t y                             : 5;
+  uint8_t z                             : 5;
 } ism330bx_tap_thresholds_t;
 int32_t ism330bx_tap_thresholds_set(const stmdev_ctx_t *ctx,
                                     ism330bx_tap_thresholds_t val);
@@ -3203,9 +3209,9 @@ int32_t ism330bx_tap_axis_priority_get(const stmdev_ctx_t *ctx,
 
 typedef struct
 {
-  uint8_t shock                         : 1;
-  uint8_t quiet                         : 1;
-  uint8_t tap_gap                       : 1;
+  uint8_t shock                         : 2;
+  uint8_t quiet                         : 2;
+  uint8_t tap_gap                       : 4;
 } ism330bx_tap_time_windows_t;
 int32_t ism330bx_tap_time_windows_set(const stmdev_ctx_t *ctx,
                                       ism330bx_tap_time_windows_t val);

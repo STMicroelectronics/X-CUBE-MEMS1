@@ -361,7 +361,7 @@ void BSP_SENSOR_HUM_GetOutputDataRate(float *Odr)
 }
 
 /**
-  * @brief  Set full scale for acclerometer
+  * @brief  Set full scale for accelerometer
   * @param  Fullscale Fullscale value to be set
   * @retval None
   */
@@ -391,7 +391,7 @@ void BSP_SENSOR_MAG_SetFullScale(int32_t Fullscale)
 }
 
 /**
-  * @brief  Get full scale for acclerometer
+  * @brief  Get full scale for accelerometer
   * @param  Fullscale Fullscale value
   * @retval None
   */

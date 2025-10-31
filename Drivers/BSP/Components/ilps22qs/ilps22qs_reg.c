@@ -1,20 +1,20 @@
-/*
- ******************************************************************************
- * @file    ilps22qs_reg.c
- * @author  Sensors Software Solution Team
- * @brief   ILPS22QS driver file
- ******************************************************************************
- * @attention
- *
-  * Copyright (c) 2022 STMicroelectronics.
+/**
+  ******************************************************************************
+  * @file    ilps22qs_reg.c
+  * @author  Sensors Software Solution Team
+  * @brief   ILPS22QS driver file
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2020 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
   * in the root directory of this software component.
   * If no LICENSE file comes with this software, it is provided AS-IS.
- *
- ******************************************************************************
- */
+  *
+  ******************************************************************************
+  */
 
 #include "ilps22qs_reg.h"
 
@@ -296,7 +296,7 @@ int32_t ilps22qs_init_set(const stmdev_ctx_t *ctx, ilps22qs_init_t val)
             break;
           }
 
-          /* boot procedue ended correctly */
+          /* boot procedure ended correctly */
           if (int_src.boot_on == 0U)
           {
             break;
@@ -331,7 +331,7 @@ int32_t ilps22qs_init_set(const stmdev_ctx_t *ctx, ilps22qs_init_t val)
             break;
           }
 
-          /* sw-reset procedue ended correctly */
+          /* sw-reset procedure ended correctly */
           if (status.sw_reset == 0U)
           {
             break;

@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.3.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.12.0.0 instances.
   ******************************************************************************
   * @attention
   *
@@ -66,7 +66,6 @@ void MX_MEMS_Init(void)
   /* USER CODE END MEMS_Init_PreTreatment */
 
   /* Initialize the peripherals and the MEMS components */
-
   MX_IKS02A1_DataLogTerminal_Init();
 
   /* USER CODE BEGIN MEMS_Init_PostTreatment */

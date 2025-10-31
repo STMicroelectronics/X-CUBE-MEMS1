@@ -6,12 +6,12 @@
  ******************************************************************************
  * @attention
  *
-  * Copyright (c) 2023 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
+ * Copyright (c) 2024 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
  *
  ******************************************************************************
  */
@@ -70,8 +70,7 @@ int32_t __weak ilps28qsw_read_reg(const stmdev_ctx_t *ctx, uint8_t reg, uint8_t 
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t __weak ilps28qsw_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
-                                   uint8_t *data,
+int32_t __weak ilps28qsw_write_reg(const stmdev_ctx_t *ctx, uint8_t reg, uint8_t *data,
                                    uint16_t len)
 {
   int32_t ret;
@@ -123,7 +122,7 @@ float_t ilps28qsw_from_fs1260_to_hPa(int32_t lsb)
   return ((float_t)lsb / 1048576.0f);   /* 4096.0f * 256 */
 }
 
-float_t ilps28qsw_from_fs4000_to_hPa(int32_t lsb)
+float_t ilps28qsw_from_fs4060_to_hPa(int32_t lsb)
 {
   return ((float_t)lsb /  524288.0f);   /* 2048.0f * 256 */
 }
@@ -188,9 +187,11 @@ int32_t ilps28qsw_bus_mode_set(const stmdev_ctx_t *ctx, ilps28qsw_bus_mode_t *va
   if (ret == 0)
   {
     i3c_if_ctrl.asf_on = (uint8_t)val->filter & 0x01U;
+    i3c_if_ctrl.I3C_Bus_Avb_Sel = (uint8_t)val->bus_avb_time & 0x03U;
     ret = ilps28qsw_write_reg(ctx, ILPS28QSW_I3C_IF_CTRL,
                               (uint8_t *)&i3c_if_ctrl, 1);
   }
+
   return ret;
 }
 
@@ -207,8 +208,7 @@ int32_t ilps28qsw_bus_mode_get(const stmdev_ctx_t *ctx, ilps28qsw_bus_mode_t *va
   ilps28qsw_i3c_if_ctrl_t i3c_if_ctrl;
   int32_t ret;
 
-  ret = ilps28qsw_read_reg(ctx, ILPS28QSW_I3C_IF_CTRL,
-                           (uint8_t *)&i3c_if_ctrl, 1);
+  ret = ilps28qsw_read_reg(ctx, ILPS28QSW_I3C_IF_CTRL, (uint8_t *)&i3c_if_ctrl, 1);
   if (ret == 0)
   {
     switch (i3c_if_ctrl.asf_on)
@@ -223,7 +223,27 @@ int32_t ilps28qsw_bus_mode_get(const stmdev_ctx_t *ctx, ilps28qsw_bus_mode_t *va
         val->filter = ILPS28QSW_AUTO;
         break;
     }
+
+    switch (i3c_if_ctrl.I3C_Bus_Avb_Sel)
+    {
+      case ILPS28QSW_BUS_AVB_TIME_50us:
+        val->bus_avb_time = ILPS28QSW_BUS_AVB_TIME_50us;
+        break;
+      case ILPS28QSW_BUS_AVB_TIME_2us:
+        val->bus_avb_time = ILPS28QSW_BUS_AVB_TIME_2us;
+        break;
+      case ILPS28QSW_BUS_AVB_TIME_1ms:
+        val->bus_avb_time = ILPS28QSW_BUS_AVB_TIME_1ms;
+        break;
+      case ILPS28QSW_BUS_AVB_TIME_25ms:
+        val->bus_avb_time = ILPS28QSW_BUS_AVB_TIME_25ms;
+        break;
+      default:
+        val->bus_avb_time = ILPS28QSW_BUS_AVB_TIME_50us;
+        break;
+    }
   }
+
   return ret;
 }
 
@@ -274,7 +294,6 @@ int32_t ilps28qsw_init_set(const stmdev_ctx_t *ctx, ilps28qsw_init_t val)
         break;
     }
   }
-
   return ret;
 }
 
@@ -359,7 +378,6 @@ int32_t ilps28qsw_pin_conf_get(const stmdev_ctx_t *ctx, ilps28qsw_pin_conf_t *va
   int32_t ret;
 
   ret = ilps28qsw_read_reg(ctx, ILPS28QSW_IF_CTRL, (uint8_t *)&if_ctrl, 1);
-
   val->sda_pull_up  = if_ctrl.sda_pu_en;
 
   return ret;
@@ -473,7 +491,7 @@ int32_t ilps28qsw_mode_set(const stmdev_ctx_t *ctx, ilps28qsw_md_t *val)
     ctrl_reg1.odr = (uint8_t)val->odr;
     ctrl_reg1.avg = (uint8_t)val->avg;
     ctrl_reg2.en_lpfp = (uint8_t)val->lpf & 0x01U;
-    ctrl_reg2.lfpf_cfg = ((uint8_t)val->lpf & 0x02U) >> 2;
+    ctrl_reg2.lfpf_cfg = ((uint8_t)val->lpf & 0x02U) >> 1;
     ctrl_reg2.fs_mode = (uint8_t)val->fs;
 
     bytecpy(&reg[0], (uint8_t *)&ctrl_reg1);
@@ -677,7 +695,7 @@ int32_t ilps28qsw_ah_qvar_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Software trigger for One-Shot.[get]
+  * @brief  Retrieve sensor data.[get]
   *
   * @param  ctx   communication interface handler.(ptr)
   * @param  md    the sensor conversion parameters.(ptr)
@@ -710,7 +728,7 @@ int32_t ilps28qsw_data_get(const stmdev_ctx_t *ctx, ilps28qsw_md_t *md,
           data->pressure.hpa = ilps28qsw_from_fs1260_to_hPa(data->pressure.raw);
           break;
         case ILPS28QSW_4060hPa:
-          data->pressure.hpa = ilps28qsw_from_fs4000_to_hPa(data->pressure.raw);
+          data->pressure.hpa = ilps28qsw_from_fs4060_to_hPa(data->pressure.raw);
           break;
         default:
           data->pressure.hpa = 0.0f;
@@ -733,7 +751,7 @@ int32_t ilps28qsw_data_get(const stmdev_ctx_t *ctx, ilps28qsw_md_t *md,
         data->pressure.hpa = ilps28qsw_from_fs1260_to_hPa(data->pressure.raw);
         break;
       case ILPS28QSW_4060hPa:
-        data->pressure.hpa = ilps28qsw_from_fs4000_to_hPa(data->pressure.raw);
+        data->pressure.hpa = ilps28qsw_from_fs4060_to_hPa(data->pressure.raw);
         break;
       default:
         data->pressure.hpa = 0.0f;
@@ -986,7 +1004,7 @@ int32_t ilps28qsw_fifo_data_get(const stmdev_ctx_t *ctx, uint8_t samp,
             data[i].hpa = ilps28qsw_from_fs1260_to_hPa(data[i].raw);
             break;
           case ILPS28QSW_4060hPa:
-            data[i].hpa = ilps28qsw_from_fs4000_to_hPa(data[i].raw);
+            data[i].hpa = ilps28qsw_from_fs4060_to_hPa(data[i].raw);
             break;
           default:
             data[i].hpa = 0.0f;
@@ -1009,7 +1027,7 @@ int32_t ilps28qsw_fifo_data_get(const stmdev_ctx_t *ctx, uint8_t samp,
           data[i].hpa = ilps28qsw_from_fs1260_to_hPa(data[i].raw);
           break;
         case ILPS28QSW_4060hPa:
-          data[i].hpa = ilps28qsw_from_fs4000_to_hPa(data[i].raw);
+          data[i].hpa = ilps28qsw_from_fs4060_to_hPa(data[i].raw);
           break;
         default:
           data[i].hpa = 0.0f;
@@ -1017,7 +1035,6 @@ int32_t ilps28qsw_fifo_data_get(const stmdev_ctx_t *ctx, uint8_t samp,
       }
       data[i].lsb = 0;
     }
-
   }
 
   return ret;
@@ -1077,25 +1094,7 @@ int32_t ilps28qsw_interrupt_mode_get(const stmdev_ctx_t *ctx,
 
   ret = ilps28qsw_read_reg(ctx, ILPS28QSW_INTERRUPT_CFG,
                            (uint8_t *)&interrupt_cfg, 1);
-
   val->int_latched = interrupt_cfg.lir;
-
-  return ret;
-}
-
-/**
-  * @brief  AH function disable
-  *
-  * @param  ctx   communication interface handler.(ptr)
-  * @retval       interface status (MANDATORY: return 0 -> no Error)
-  *
-  */
-int32_t ilps28qsw_ah_qvar_disable(const stmdev_ctx_t *ctx)
-{
-  uint32_t val = 0;
-  int32_t ret;
-
-  ret = ilps28qsw_write_reg(ctx, ILPS28QSW_ANALOGIC_HUB_DISABLE, (uint8_t *)&val, 1);
 
   return ret;
 }
@@ -1146,7 +1145,7 @@ int32_t ilps28qsw_int_on_threshold_mode_set(const stmdev_ctx_t *ctx,
     bytecpy(&reg[1], (uint8_t *)&ths_p_l);
     bytecpy(&reg[2], (uint8_t *)&ths_p_h);
 
-    ret = ilps28qsw_read_reg(ctx, ILPS28QSW_INTERRUPT_CFG, reg, 3);
+    ret = ilps28qsw_write_reg(ctx, ILPS28QSW_INTERRUPT_CFG, reg, 3);
   }
   return ret;
 }
@@ -1219,8 +1218,8 @@ int32_t ilps28qsw_reference_mode_set(const stmdev_ctx_t *ctx, ilps28qsw_ref_md_t
     interrupt_cfg.reset_az  = ((uint8_t)val->apply_ref & 0x02U) >> 1;
     interrupt_cfg.reset_arp = ((uint8_t)val->apply_ref & 0x02U) >> 1;
 
-    ret = ilps28qsw_read_reg(ctx, ILPS28QSW_INTERRUPT_CFG,
-                             (uint8_t *)&interrupt_cfg, 1);
+    ret = ilps28qsw_write_reg(ctx, ILPS28QSW_INTERRUPT_CFG,
+                              (uint8_t *)&interrupt_cfg, 1);
   }
   return ret;
 }
@@ -1259,6 +1258,26 @@ int32_t ilps28qsw_reference_mode_get(const stmdev_ctx_t *ctx, ilps28qsw_ref_md_t
   return ret;
 }
 
+/**
+  * @brief  Reference Pressure LSB data .[get]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  val   parameters of configuration.(ptr)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t ilps28qsw_refp_get(const stmdev_ctx_t *ctx, int16_t *val)
+{
+  uint8_t reg[2];
+  int32_t ret;
+
+  ret = ilps28qsw_read_reg(ctx, ILPS28QSW_REF_P_L, reg, 2);
+
+  *val = (int16_t)reg[1];
+  *val = *val * 256 + (int16_t)reg[0];
+
+  return ret;
+}
 
 /**
   * @brief  Configuration of Wake-up and Wake-up to Sleep .[set]

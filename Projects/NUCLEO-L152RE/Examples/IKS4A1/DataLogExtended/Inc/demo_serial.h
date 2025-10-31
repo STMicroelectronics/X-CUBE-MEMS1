@@ -37,6 +37,7 @@
 #define HYBRID_SENSOR                   0x01U
 
 extern volatile uint8_t DataLoggerActive;
+extern volatile uint8_t IspuBytes;
 
 int32_t HandleMSG(Msg_t *Msg);
 void BUILD_REPLY_HEADER(Msg_t *Msg);

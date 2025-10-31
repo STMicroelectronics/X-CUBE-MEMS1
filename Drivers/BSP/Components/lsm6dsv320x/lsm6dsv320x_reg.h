@@ -121,6 +121,9 @@ typedef struct
   stmdev_mdelay_ptr   mdelay;
   /** Customizable optional pointer **/
   void *handle;
+
+  /** private data **/
+  void *priv_data;
 } stmdev_ctx_t;
 
 /**
@@ -3037,7 +3040,7 @@ typedef struct
 #endif /* DRV_BYTE_ORDER */
 } lsm6dsv320x_emb_func_init_b_t;
 
-#define LSM6DSV320X_EMB_FUNC_SENSOR_CONV_EN        0x67U
+#define LSM6DSV320X_EMB_FUNC_SENSOR_CONV_EN        0x6EU
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
@@ -4340,6 +4343,8 @@ float_t lsm6dsv320x_from_gbias_lsb_to_mdps(int16_t lsb);
 float_t lsm6dsv320x_from_gravity_lsb_to_mg(int16_t lsb);
 float_t lsm6dsv320x_from_quaternion_lsb_to_float(uint16_t lsb);
 
+uint32_t lsm6dsv320x_from_f16_to_f32(uint16_t val);
+
 int32_t lsm6dsv320x_xl_offset_on_out_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t lsm6dsv320x_xl_offset_on_out_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
@@ -4405,16 +4410,26 @@ typedef enum
   LSM6DSV320X_ODR_HA01_AT_2000Hz   = 0x1A,
   LSM6DSV320X_ODR_HA01_AT_4000Hz   = 0x1B,
   LSM6DSV320X_ODR_HA01_AT_8000Hz   = 0x1C,
-  LSM6DSV320X_ODR_HA02_AT_13Hz     = 0x23,
-  LSM6DSV320X_ODR_HA02_AT_26Hz     = 0x24,
-  LSM6DSV320X_ODR_HA02_AT_52Hz     = 0x25,
-  LSM6DSV320X_ODR_HA02_AT_104Hz    = 0x26,
-  LSM6DSV320X_ODR_HA02_AT_208Hz    = 0x27,
-  LSM6DSV320X_ODR_HA02_AT_417Hz    = 0x28,
-  LSM6DSV320X_ODR_HA02_AT_833Hz    = 0x29,
-  LSM6DSV320X_ODR_HA02_AT_1667Hz   = 0x2A,
-  LSM6DSV320X_ODR_HA02_AT_3333Hz   = 0x2B,
-  LSM6DSV320X_ODR_HA02_AT_6667Hz   = 0x2C,
+  LSM6DSV320X_ODR_HA02_AT_12Hz5    = 0x23,
+  LSM6DSV320X_ODR_HA02_AT_25Hz     = 0x24,
+  LSM6DSV320X_ODR_HA02_AT_50Hz     = 0x25,
+  LSM6DSV320X_ODR_HA02_AT_100Hz    = 0x26,
+  LSM6DSV320X_ODR_HA02_AT_200Hz    = 0x27,
+  LSM6DSV320X_ODR_HA02_AT_400Hz    = 0x28,
+  LSM6DSV320X_ODR_HA02_AT_800Hz    = 0x29,
+  LSM6DSV320X_ODR_HA02_AT_1600Hz   = 0x2A,
+  LSM6DSV320X_ODR_HA02_AT_3200Hz   = 0x2B,
+  LSM6DSV320X_ODR_HA02_AT_6400Hz   = 0x2C,
+  LSM6DSV320X_ODR_HA03_AT_13Hz     = 0x33,
+  LSM6DSV320X_ODR_HA03_AT_26Hz     = 0x34,
+  LSM6DSV320X_ODR_HA03_AT_52Hz     = 0x35,
+  LSM6DSV320X_ODR_HA03_AT_104Hz    = 0x36,
+  LSM6DSV320X_ODR_HA03_AT_208Hz    = 0x37,
+  LSM6DSV320X_ODR_HA03_AT_417Hz    = 0x38,
+  LSM6DSV320X_ODR_HA03_AT_833Hz    = 0x39,
+  LSM6DSV320X_ODR_HA03_AT_1667Hz   = 0x3A,
+  LSM6DSV320X_ODR_HA03_AT_3333Hz   = 0x3B,
+  LSM6DSV320X_ODR_HA03_AT_6667Hz   = 0x3C,
 } lsm6dsv320x_data_rate_t;
 int32_t lsm6dsv320x_xl_data_rate_set(const stmdev_ctx_t *ctx,
                                      lsm6dsv320x_data_rate_t val);

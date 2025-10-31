@@ -68,11 +68,13 @@ extern "C" {
 #define LIS2DUXS12_UNICLEO_ID       38
 #define LSM6DSV32X_UNICLEO_ID       39
 #define ISM330BX_UNICLEO_ID         40
-#define ST1VAFE3BX_UNICLEO_ID       41
-#define ST1VAFE6AX_UNICLEO_ID       42
+#define ST1VAFE6AX_UNICLEO_ID       41
+#define LSM6DSV256X_UNICLEO_ID      42
 #define LSM6DSV80X_UNICLEO_ID       43
 #define IIS2DULPX_UNICLEO_ID        44
 #define LSM6DSV320X_UNICLEO_ID      45
+#define ST1VAFE3BX_UNICLEO_ID       46
+#define ISM6HG256X_UNICLEO_ID       47
 
 /* MAG */
 #define LIS3MDL_UNICLEO_ID          1

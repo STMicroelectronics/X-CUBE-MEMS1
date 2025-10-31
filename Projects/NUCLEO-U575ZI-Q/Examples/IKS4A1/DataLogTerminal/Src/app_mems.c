@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.3.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.12.0.0 instances.
   ******************************************************************************
   * @attention
   *
@@ -499,8 +499,7 @@ static void Temp_Sensor_Handler(uint32_t Instance)
   {
     floatToInt(temperature, &out_value, 2);
     snprintf(dataOut, MAX_BUF_SIZE, "\r\nTemp[%d]: %c%d.%02d degC\r\n", (int)Instance, ((out_value.sign) ? '-' : '+'),
-             (int)out_value.out_int,
-             (int)out_value.out_dec);
+             (int)out_value.out_int, (int)out_value.out_dec);
   }
 
   printf("%s", dataOut);

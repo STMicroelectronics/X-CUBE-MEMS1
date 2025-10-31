@@ -70,7 +70,7 @@ int32_t CUSTOM_MOTION_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint8
         ret = BSP_ERROR_NONE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0 */
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;
@@ -105,7 +105,7 @@ int32_t CUSTOM_MOTION_SENSOR_Write_Register(uint32_t Instance, uint8_t Reg, uint
         ret = BSP_ERROR_NONE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0 */
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;
@@ -150,7 +150,7 @@ int32_t CUSTOM_MOTION_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Functio
         ret = BSP_ERROR_COMPONENT_FAILURE;
       }
       break;
-#endif
+#endif /* USE_CUSTOM_MOTION_SENSOR_IIS2ICLX_0 */
 
     default:
       ret = BSP_ERROR_WRONG_PARAM;

@@ -34,6 +34,8 @@ MEMS, I2C, VCOM
   - This example runs on STM32 Nucleo devices with MEMS sensor expansion board (X-NUCLEO-IKS02A1)
   - This example has been tested with STMicroelectronics:
     - NUCLEO-F401RE RevC board
+    - NUCLEO-L073RZ RevC board
+    - NUCLEO-L152RE RevC board
     - NUCLEO-U575ZI-Q RevC board
 
 

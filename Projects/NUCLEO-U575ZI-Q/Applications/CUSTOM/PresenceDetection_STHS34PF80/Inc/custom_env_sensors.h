@@ -22,7 +22,7 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif /* __cplusplus */
 
 /* Includes ------------------------------------------------------------------*/
 
@@ -31,11 +31,11 @@ extern "C" {
 
 #ifndef USE_CUSTOM_ENV_SENSOR_STHS34PF80_0
 #define USE_CUSTOM_ENV_SENSOR_STHS34PF80_0      1
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 */
 
 #if (USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 == 1)
 #include "sths34pf80.h"
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 */
 
 /** @addtogroup BSP BSP
   * @{
@@ -55,7 +55,7 @@ extern "C" {
 
 #if (USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 == 1)
 #define CUSTOM_STHS34PF80_0 (0)
-#endif
+#endif /* USE_CUSTOM_ENV_SENSOR_STHS34PF80_0 */
 
 /* Environmental Sensor instance Info */
 typedef struct
@@ -86,23 +86,23 @@ typedef struct
 
 #ifndef ENV_TEMPERATURE
 #define ENV_TEMPERATURE      1U
-#endif
+#endif /* ENV_TEMPERATURE */
 #ifndef ENV_PRESSURE
 #define ENV_PRESSURE         2U
-#endif
+#endif /* ENV_PRESSURE */
 #ifndef ENV_HUMIDITY
 #define ENV_HUMIDITY         4U
-#endif
+#endif /* ENV_HUMIDITY */
 #ifndef ENV_GAS
 #define ENV_GAS              8U
-#endif
+#endif /* ENV_GAS */
 
 #define CUSTOM_ENV_FUNCTIONS_NBR    4U
 #define CUSTOM_ENV_INSTANCES_NBR    (USE_CUSTOM_ENV_SENSOR_STHS34PF80_0)
 
 #if (CUSTOM_ENV_INSTANCES_NBR == 0)
 #error "No environmental sensor instance has been selected"
-#endif
+#endif /* CUSTOM_ENV_INSTANCES_NBR */
 
 /**
   * @}
@@ -140,6 +140,6 @@ int32_t CUSTOM_ENV_SENSOR_GetValue(uint32_t Instance, uint32_t Function, float_t
 
 #ifdef __cplusplus
 }
-#endif
+#endif /* __cplusplus */
 
 #endif /* CUSTOM_ENV_SENSORS_H */
