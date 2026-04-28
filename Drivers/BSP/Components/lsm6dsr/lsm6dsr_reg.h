@@ -2989,8 +2989,9 @@ int32_t lsm6dsr_aux_sdo_ocs_mode_get(const stmdev_ctx_t *ctx,
 
 typedef enum
 {
-  LSM6DSR_AUX_ON                    = 1,
-  LSM6DSR_AUX_ON_BY_AUX_INTERFACE   = 0,
+  LSM6DSR_OIS_OFF                   = 0,
+  LSM6DSR_OIS_PRIMARY_INTERFACE_ON  = 3,
+  LSM6DSR_OIS_AUX_INTERFACE_ON      = 1,
 } lsm6dsr_ois_on_t;
 int32_t lsm6dsr_aux_pw_on_ctrl_set(const stmdev_ctx_t *ctx,
                                    lsm6dsr_ois_on_t val);
@@ -3080,10 +3081,10 @@ int32_t lsm6dsr_aux_spi_mode_get(const stmdev_ctx_t *ctx,
 
 typedef enum
 {
-  LSM6DSR_351Hz39 = 0,
-  LSM6DSR_236Hz63 = 1,
-  LSM6DSR_172Hz70 = 2,
-  LSM6DSR_937Hz91 = 3,
+  LSM6DSR_297Hz = 0,
+  LSM6DSR_222Hz = 1,
+  LSM6DSR_154Hz = 2,
+  LSM6DSR_470Hz = 3,
 } lsm6dsr_ftype_ois_t;
 int32_t lsm6dsr_aux_gy_lp1_bandwidth_set(const stmdev_ctx_t *ctx,
                                          lsm6dsr_ftype_ois_t val);
@@ -3133,7 +3134,7 @@ typedef enum
   LSM6DSR_33Hz6 = 4,
   LSM6DSR_16Hz7 = 5,
   LSM6DSR_8Hz3  = 6,
-  LSM6DSR_4Hz11 = 7,
+  LSM6DSR_4Hz14 = 7,
 } lsm6dsr_filter_xl_conf_ois_t;
 int32_t lsm6dsr_aux_xl_bandwidth_set(const stmdev_ctx_t *ctx,
                                      lsm6dsr_filter_xl_conf_ois_t val);
@@ -3464,7 +3465,7 @@ typedef enum
   LSM6DSR_XL_BATCHED_AT_1667Hz  =  8,
   LSM6DSR_XL_BATCHED_AT_3333Hz  =  9,
   LSM6DSR_XL_BATCHED_AT_6667Hz  = 10,
-  LSM6DSR_XL_BATCHED_AT_6Hz5    = 11,
+  LSM6DSR_XL_BATCHED_AT_1Hz6    = 11,
 } lsm6dsr_bdr_xl_t;
 int32_t lsm6dsr_fifo_xl_batch_set(const stmdev_ctx_t *ctx,
                                   lsm6dsr_bdr_xl_t val);
@@ -3508,9 +3509,9 @@ int32_t lsm6dsr_fifo_mode_get(const stmdev_ctx_t *ctx,
 typedef enum
 {
   LSM6DSR_TEMP_NOT_BATCHED        = 0,
-  LSM6DSR_TEMP_BATCHED_AT_52Hz    = 1,
+  LSM6DSR_TEMP_BATCHED_AT_1Hz6    = 1,
   LSM6DSR_TEMP_BATCHED_AT_12Hz5   = 2,
-  LSM6DSR_TEMP_BATCHED_AT_1Hz6    = 3,
+  LSM6DSR_TEMP_BATCHED_AT_52Hz    = 3,
 } lsm6dsr_odr_t_batch_t;
 int32_t lsm6dsr_fifo_temp_batch_set(const stmdev_ctx_t *ctx,
                                     lsm6dsr_odr_t_batch_t val);
@@ -3877,8 +3878,8 @@ int32_t lsm6dsr_sh_master_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
-  LSM6DSR_EXT_PULL_UP      = 0,
-  LSM6DSR_INTERNAL_PULL_UP = 1,
+  LSM6DSR_INTERNAL_PULL_UP_OFF = 0,
+  LSM6DSR_INTERNAL_PULL_UP_ON  = 1,
 } lsm6dsr_shub_pu_en_t;
 int32_t lsm6dsr_sh_pin_mode_set(const stmdev_ctx_t *ctx,
                                 lsm6dsr_shub_pu_en_t val);

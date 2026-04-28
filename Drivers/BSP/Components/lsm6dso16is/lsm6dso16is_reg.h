@@ -2390,7 +2390,7 @@ typedef enum
 {
   LSM6DSO16IS_XL_ODR_OFF =                0x0,
   LSM6DSO16IS_XL_ODR_AT_12Hz5_HP =        0x1,
-  LSM6DSO16IS_XL_ODR_AT_26H_HP =          0x2,
+  LSM6DSO16IS_XL_ODR_AT_26Hz_HP =         0x2,
   LSM6DSO16IS_XL_ODR_AT_52Hz_HP =         0x3,
   LSM6DSO16IS_XL_ODR_AT_104Hz_HP =        0x4,
   LSM6DSO16IS_XL_ODR_AT_208Hz_HP =        0x5,
@@ -2400,15 +2400,10 @@ typedef enum
   LSM6DSO16IS_XL_ODR_AT_3333Hz_HP =       0x9,
   LSM6DSO16IS_XL_ODR_AT_6667Hz_HP =       0xa,
   LSM6DSO16IS_XL_ODR_AT_12Hz5_LP =        0x11,
-  LSM6DSO16IS_XL_ODR_AT_26H_LP =          0x12,
+  LSM6DSO16IS_XL_ODR_AT_26Hz_LP =         0x12,
   LSM6DSO16IS_XL_ODR_AT_52Hz_LP =         0x13,
   LSM6DSO16IS_XL_ODR_AT_104Hz_LP =        0x14,
   LSM6DSO16IS_XL_ODR_AT_208Hz_LP =        0x15,
-  LSM6DSO16IS_XL_ODR_AT_416Hz_LP =        0x16,
-  LSM6DSO16IS_XL_ODR_AT_833Hz_LP =        0x17,
-  LSM6DSO16IS_XL_ODR_AT_1667Hz_LP =       0x18,
-  LSM6DSO16IS_XL_ODR_AT_3333Hz_LP =       0x19,
-  LSM6DSO16IS_XL_ODR_AT_6667Hz_LP =       0x1a,
   LSM6DSO16IS_XL_ODR_AT_1Hz6_LP =         0x1b,
 } lsm6dso16is_xl_data_rate_t;
 int32_t lsm6dso16is_xl_data_rate_set(const stmdev_ctx_t *ctx,
@@ -2433,7 +2428,7 @@ typedef enum
 {
   LSM6DSO16IS_GY_ODR_OFF =                0x0,
   LSM6DSO16IS_GY_ODR_AT_12Hz5_HP =        0x1,
-  LSM6DSO16IS_GY_ODR_AT_26H_HP =          0x2,
+  LSM6DSO16IS_GY_ODR_AT_26Hz_HP =         0x2,
   LSM6DSO16IS_GY_ODR_AT_52Hz_HP =         0x3,
   LSM6DSO16IS_GY_ODR_AT_104Hz_HP =        0x4,
   LSM6DSO16IS_GY_ODR_AT_208Hz_HP =        0x5,
@@ -2443,15 +2438,10 @@ typedef enum
   LSM6DSO16IS_GY_ODR_AT_3333Hz_HP =       0x9,
   LSM6DSO16IS_GY_ODR_AT_6667Hz_HP =       0xa,
   LSM6DSO16IS_GY_ODR_AT_12Hz5_LP =        0x11,
-  LSM6DSO16IS_GY_ODR_AT_26H_LP =          0x12,
+  LSM6DSO16IS_GY_ODR_AT_26Hz_LP =         0x12,
   LSM6DSO16IS_GY_ODR_AT_52Hz_LP =         0x13,
   LSM6DSO16IS_GY_ODR_AT_104Hz_LP =        0x14,
   LSM6DSO16IS_GY_ODR_AT_208Hz_LP =        0x15,
-  LSM6DSO16IS_GY_ODR_AT_416Hz_LP =        0x16,
-  LSM6DSO16IS_GY_ODR_AT_833Hz_LP =        0x17,
-  LSM6DSO16IS_GY_ODR_AT_1667Hz_LP =       0x18,
-  LSM6DSO16IS_GY_ODR_AT_3333Hz_LP =       0x19,
-  LSM6DSO16IS_GY_ODR_AT_6667Hz_LP =       0x1a,
 } lsm6dso16is_gy_data_rate_t;
 int32_t lsm6dso16is_gy_data_rate_set(const stmdev_ctx_t *ctx,
                                      lsm6dso16is_gy_data_rate_t val);
@@ -2805,3 +2795,4 @@ int32_t lsm6dso16is_ispu_algo_set(const stmdev_ctx_t *ctx, uint32_t val);
 #endif
 
 #endif /*LSM6DSO16IS_DRIVER_H */
+

@@ -103,6 +103,10 @@ static int32_t ISM330BX_0_Probe(uint32_t Functions);
 static int32_t ISM330DHCX_0_Probe(uint32_t Functions);
 #endif
 
+#if (USE_IKS5A1_MOTION_SENSOR_MIS2DU12_0 == 1)
+static int32_t MIS2DU12_0_Probe(uint32_t Functions);
+#endif
+
 /**
   * @}
   */
@@ -358,6 +362,31 @@ int32_t IKS5A1_MOTION_SENSOR_Init(uint32_t Instance, uint32_t Functions)
 #if (USE_IKS5A1_MOTION_SENSOR_ISM330DHCX_0 == 1)
     case IKS5A1_ISM330DHCX_0:
       if (ISM330DHCX_0_Probe(Functions) != BSP_ERROR_NONE)
+      {
+        return BSP_ERROR_NO_INIT;
+      }
+      if (MotionDrv[Instance]->GetCapabilities(MotionCompObj[Instance], (void *)&cap) != BSP_ERROR_NONE)
+      {
+        return BSP_ERROR_UNKNOWN_COMPONENT;
+      }
+      if (cap.Acc == 1U)
+      {
+        component_functions |= MOTION_ACCELERO;
+      }
+      if (cap.Gyro == 1U)
+      {
+        component_functions |= MOTION_GYRO;
+      }
+      if (cap.Magneto == 1U)
+      {
+        component_functions |= MOTION_MAGNETO;
+      }
+      break;
+#endif
+
+#if (USE_IKS5A1_MOTION_SENSOR_MIS2DU12_0 == 1)
+    case IKS5A1_MIS2DU12_0:
+      if (MIS2DU12_0_Probe(Functions) != BSP_ERROR_NONE)
       {
         return BSP_ERROR_NO_INIT;
       }
@@ -1666,6 +1695,83 @@ static int32_t ISM330DHCX_0_Probe(uint32_t Functions)
                                                                             void *)&ISM330DHCX_ACC_Driver;
 
       if (MotionDrv[IKS5A1_ISM330DHCX_0]->Init(MotionCompObj[IKS5A1_ISM330DHCX_0]) != ISM330DHCX_OK)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_MAGNETO) == MOTION_MAGNETO))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+  }
+
+  return ret;
+}
+#endif
+
+#if (USE_IKS5A1_MOTION_SENSOR_MIS2DU12_0 == 1)
+/**
+  * @brief  Register Bus IOs for MIS2DU12 instance
+  * @param  Functions Motion sensor functions. Could be :
+  *         - MOTION_ACCELERO
+  * @retval BSP status
+  */
+static int32_t MIS2DU12_0_Probe(uint32_t Functions)
+{
+  MIS2DU12_IO_t            io_ctx;
+  uint8_t                  id;
+  static MIS2DU12_Object_t mis2du12_obj_0;
+  MIS2DU12_Capabilities_t  cap;
+  int32_t                  ret = BSP_ERROR_NONE;
+
+  /* Configure the driver */
+  io_ctx.BusType     = MIS2DU12_I2C_BUS; /* I2C */
+  io_ctx.Address     = MIS2DU12_I2C_ADD_L;
+  io_ctx.Init        = IKS5A1_I2C_INIT;
+  io_ctx.DeInit      = IKS5A1_I2C_DEINIT;
+  io_ctx.ReadReg     = IKS5A1_I2C_READ_REG;
+  io_ctx.WriteReg    = IKS5A1_I2C_WRITE_REG;
+  io_ctx.GetTick     = IKS5A1_GET_TICK;
+  io_ctx.Delay       = IKS5A1_DELAY;
+
+  if (MIS2DU12_RegisterBusIO(&mis2du12_obj_0, &io_ctx) != MIS2DU12_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (MIS2DU12_ReadID(&mis2du12_obj_0, &id) != MIS2DU12_OK)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else if (id != MIS2DU12_ID)
+  {
+    ret = BSP_ERROR_UNKNOWN_COMPONENT;
+  }
+  else
+  {
+    (void)MIS2DU12_GetCapabilities(&mis2du12_obj_0, &cap);
+    MotionCtx[IKS5A1_MIS2DU12_0].Functions = ((uint32_t)cap.Gyro) | ((uint32_t)cap.Acc << 1) | ((uint32_t)cap.Magneto << 2);
+
+    MotionCompObj[IKS5A1_MIS2DU12_0] = &mis2du12_obj_0;
+    /* The second cast (void *) is added to bypass Misra R11.3 rule */
+    MotionDrv[IKS5A1_MIS2DU12_0] = (MOTION_SENSOR_CommonDrv_t *)(void *)&MIS2DU12_COMMON_Driver;
+
+    if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_GYRO) == MOTION_GYRO) && (cap.Gyro == 1U))
+    {
+      /* Return an error if the application try to initialize a function not supported by the component */
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    if ((ret == BSP_ERROR_NONE) && ((Functions & MOTION_ACCELERO) == MOTION_ACCELERO) && (cap.Acc == 1U))
+    {
+      /* The second cast (void *) is added to bypass Misra R11.3 rule */
+      MotionFuncDrv[IKS5A1_MIS2DU12_0][FunctionIndex[MOTION_ACCELERO]] = (MOTION_SENSOR_FuncDrv_t *)(
+                                                                          void *)&MIS2DU12_ACC_Driver;
+
+      if (MotionDrv[IKS5A1_MIS2DU12_0]->Init(MotionCompObj[IKS5A1_MIS2DU12_0]) != MIS2DU12_OK)
       {
         ret = BSP_ERROR_COMPONENT_FAILURE;
       }

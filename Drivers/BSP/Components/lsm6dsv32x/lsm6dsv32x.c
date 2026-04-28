@@ -2768,7 +2768,7 @@ int32_t LSM6DSV32X_FIFO_Set_Watermark_Level(LSM6DSV32X_Object_t *pObj, uint8_t W
   */
 int32_t LSM6DSV32X_FIFO_Set_Stop_On_Fth(LSM6DSV32X_Object_t *pObj, uint8_t Status)
 {
-  if (lsm6dsv32x_fifo_stop_on_wtm_set(&(pObj->Ctx), Status) != LSM6DSV32X_OK)
+  if (lsm6dsv32x_fifo_stop_on_wtm_set(&(pObj->Ctx), (lsm6dsv32x_fifo_event_t)Status) != LSM6DSV32X_OK)
   {
     return LSM6DSV32X_ERROR;
   }

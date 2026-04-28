@@ -649,13 +649,21 @@ typedef enum
   ILPS22QS_BYPASS_TO_FIFO   = 5, /* Bypass, FIFO on Trigger */
 } ilps22qs_operation_t;
 
-typedef struct
+
+int32_t ilps22qs_fifo_mode_set(const stmdev_ctx_t *ctx, ilps22qs_operation_t val);
+int32_t ilps22qs_fifo_mode_get(const stmdev_ctx_t *ctx, ilps22qs_operation_t *val);
+
+int32_t ilps22qs_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t ilps22qs_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val);
+
+typedef enum
 {
-  ilps22qs_operation_t operation;
-  uint8_t watermark : 7; /* (0 disable) max 128.*/
-} ilps22qs_fifo_md_t;
-int32_t ilps22qs_fifo_mode_set(const stmdev_ctx_t *ctx, ilps22qs_fifo_md_t *val);
-int32_t ilps22qs_fifo_mode_get(const stmdev_ctx_t *ctx, ilps22qs_fifo_md_t *val);
+  ILPS22QS_FIFO_EV_WTM           = 0x0,
+  ILPS22QS_FIFO_EV_FULL          = 0x1,
+} ilps22qs_fifo_event_t;
+
+int32_t ilps22qs_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, ilps22qs_fifo_event_t *val);
+int32_t ilps22qs_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, ilps22qs_fifo_event_t *val);
 
 int32_t ilps22qs_fifo_level_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
@@ -722,3 +730,4 @@ int32_t ilps22qs_opc_get(const stmdev_ctx_t *ctx, int16_t *val);
 #endif
 
 #endif /* ILPS22QS_REGS_H */
+

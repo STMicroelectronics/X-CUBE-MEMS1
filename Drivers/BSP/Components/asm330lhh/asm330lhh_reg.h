@@ -1501,3 +1501,4 @@ int32_t asm330lhh_den_mark_axis_z_get(const stmdev_ctx_t *ctx, uint8_t *val);
 #endif
 
 #endif /* ASM330LHH_REGS_H */
+

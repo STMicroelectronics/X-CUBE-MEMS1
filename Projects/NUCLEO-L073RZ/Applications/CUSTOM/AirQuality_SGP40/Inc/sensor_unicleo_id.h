@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2025 STMicroelectronics.
+  * Copyright (c) 2026 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -75,6 +75,7 @@ extern "C" {
 #define LSM6DSV320X_UNICLEO_ID      45
 #define ST1VAFE3BX_UNICLEO_ID       46
 #define ISM6HG256X_UNICLEO_ID       47
+#define MIS2DU12_UNICLEO_ID         48
 
 /* MAG */
 #define LIS3MDL_UNICLEO_ID          1

@@ -1,4 +1,3 @@
-
 /**
   ******************************************************************************
   * @file    custom_mems_control_ex.c
@@ -7,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2025 STMicroelectronics.
+  * Copyright (c) 2026 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -32,14 +31,14 @@ void BSP_SENSOR_ACC_Read_Register(uint8_t Reg, uint8_t *Data)
 #if (defined BSP_HYBRID_SENSORS)
 #ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_HYBRID_SENSOR_Read_Register(CUSTOM_ACC_INSTANCE_0, Reg, Data);
-#endif
+#endif /* CUSTOM_ACC_INSTANCE_0 */
 #else
 #if (defined BSP_MOTION_SENSORS)
 #ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Read_Register(CUSTOM_ACC_INSTANCE_0, Reg, Data);
-#endif
-#endif
-#endif
+#endif /* CUSTOM_ACC_INSTANCE_0 */
+#endif /* BSP_MOTION_SENSORS */
+#endif /* BSP_HYBRID_SENSORS */
 }
 
 /**
@@ -53,8 +52,8 @@ void BSP_SENSOR_GYR_Read_Register(uint8_t Reg, uint8_t *Data)
 #if (defined BSP_MOTION_SENSORS)
 #ifdef CUSTOM_GYR_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Read_Register(CUSTOM_GYR_INSTANCE_0, Reg, Data);
-#endif
-#endif
+#endif /* CUSTOM_GYR_INSTANCE_0 */
+#endif /* BSP_MOTION_SENSORS */
 }
 
 /**
@@ -68,8 +67,8 @@ void BSP_SENSOR_MAG_Read_Register(uint8_t Reg, uint8_t *Data)
 #if (defined BSP_MOTION_SENSORS)
 #ifdef CUSTOM_MAG_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Read_Register(CUSTOM_MAG_INSTANCE_0, Reg, Data);
-#endif
-#endif
+#endif /* CUSTOM_MAG_INSTANCE_0 */
+#endif /* BSP_MOTION_SENSORS */
 }
 
 /**
@@ -83,8 +82,8 @@ void BSP_SENSOR_PRESS_Read_Register(uint8_t Reg, uint8_t *Data)
 #if (defined BSP_ENV_SENSORS)
 #ifdef CUSTOM_PRESS_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Read_Register(CUSTOM_PRESS_INSTANCE_0, Reg, Data);
-#endif
-#endif
+#endif /* CUSTOM_PRESS_INSTANCE_0 */
+#endif /* BSP_ENV_SENSORS */
 }
 
 /**
@@ -98,14 +97,14 @@ void BSP_SENSOR_TEMP_Read_Register(uint8_t Reg, uint8_t *Data)
 #if (defined BSP_HYBRID_SENSORS)
 #ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_HYBRID_SENSOR_Read_Register(CUSTOM_TEMP_INSTANCE_0, Reg, Data);
-#endif
+#endif /* CUSTOM_TEMP_INSTANCE_0 */
 #else
 #if (defined BSP_ENV_SENSORS)
 #ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Read_Register(CUSTOM_TEMP_INSTANCE_0, Reg, Data);
-#endif
-#endif
-#endif
+#endif /* CUSTOM_TEMP_INSTANCE_0 */
+#endif /* BSP_ENV_SENSORS */
+#endif /* BSP_HYBRID_SENSORS */
 }
 
 /**
@@ -119,8 +118,8 @@ void BSP_SENSOR_HUM_Read_Register(uint8_t Reg, uint8_t *Data)
 #if (defined BSP_ENV_SENSORS)
 #ifdef CUSTOM_HUM_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Read_Register(CUSTOM_HUM_INSTANCE_0, Reg, Data);
-#endif
-#endif
+#endif /* CUSTOM_HUM_INSTANCE_0 */
+#endif /* BSP_ENV_SENSORS */
 }
 
 /**
@@ -134,14 +133,14 @@ void BSP_SENSOR_ACC_Write_Register(uint8_t Reg, uint8_t Data)
 #if (defined BSP_HYBRID_SENSORS)
 #ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_HYBRID_SENSOR_Write_Register(CUSTOM_ACC_INSTANCE_0, Reg, Data);
-#endif
+#endif /* CUSTOM_ACC_INSTANCE_0 */
 #else
 #if (defined BSP_MOTION_SENSORS)
 #ifdef CUSTOM_ACC_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Write_Register(CUSTOM_ACC_INSTANCE_0, Reg, Data);
-#endif
-#endif
-#endif
+#endif /* CUSTOM_ACC_INSTANCE_0 */
+#endif /* BSP_MOTION_SENSORS */
+#endif /* BSP_HYBRID_SENSORS */
 }
 
 /**
@@ -155,8 +154,8 @@ void BSP_SENSOR_GYR_Write_Register(uint8_t Reg, uint8_t Data)
 #if (defined BSP_MOTION_SENSORS)
 #ifdef CUSTOM_GYR_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Write_Register(CUSTOM_GYR_INSTANCE_0, Reg, Data);
-#endif
-#endif
+#endif /* CUSTOM_GYR_INSTANCE_0 */
+#endif /* BSP_MOTION_SENSORS */
 }
 
 /**
@@ -170,8 +169,8 @@ void BSP_SENSOR_MAG_Write_Register(uint8_t Reg, uint8_t Data)
 #if (defined BSP_MOTION_SENSORS)
 #ifdef CUSTOM_MAG_INSTANCE_0
   (void)CUSTOM_MOTION_SENSOR_Write_Register(CUSTOM_MAG_INSTANCE_0, Reg, Data);
-#endif
-#endif
+#endif /* CUSTOM_MAG_INSTANCE_0 */
+#endif /* BSP_MOTION_SENSORS */
 }
 
 /**
@@ -185,8 +184,8 @@ void BSP_SENSOR_PRESS_Write_Register(uint8_t Reg, uint8_t Data)
 #if (defined BSP_ENV_SENSORS)
 #ifdef CUSTOM_PRESS_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Write_Register(CUSTOM_PRESS_INSTANCE_0, Reg, Data);
-#endif
-#endif
+#endif /* CUSTOM_PRESS_INSTANCE_0 */
+#endif /* BSP_ENV_SENSORS */
 }
 
 /**
@@ -200,14 +199,14 @@ void BSP_SENSOR_TEMP_Write_Register(uint8_t Reg, uint8_t Data)
 #if (defined BSP_HYBRID_SENSORS)
 #ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_HYBRID_SENSOR_Write_Register(CUSTOM_TEMP_INSTANCE_0, Reg, Data);
-#endif
+#endif /* CUSTOM_TEMP_INSTANCE_0 */
 #else
 #if (defined BSP_ENV_SENSORS)
 #ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Write_Register(CUSTOM_TEMP_INSTANCE_0, Reg, Data);
-#endif
-#endif
-#endif
+#endif /* CUSTOM_TEMP_INSTANCE_0 */
+#endif /* BSP_ENV_SENSORS */
+#endif /* BSP_HYBRID_SENSORS */
 }
 
 /**
@@ -221,11 +220,17 @@ void BSP_SENSOR_HUM_Write_Register(uint8_t Reg, uint8_t Data)
 #if (defined BSP_ENV_SENSORS)
 #ifdef CUSTOM_HUM_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Write_Register(CUSTOM_HUM_INSTANCE_0, Reg, Data);
-#endif
-#endif
+#endif /* CUSTOM_HUM_INSTANCE_0 */
+#endif /* BSP_ENV_SENSORS */
 }
 
-#if ((defined CUSTOM_ALGOBUILDER_FW_TEMPLATE) || (defined CUSTOM_DATALOGFUSION_DEMO) || (defined CUSTOM_TILTSENSING_DEMO) || (defined CUSTOM_GESTURERECOGNITION_DEMO) || (defined CUSTOM_CARRYPOSITION_DEMO) || (defined CUSTOM_ECOMPASS_DEMO) || (defined CUSTOM_DYNAMICINCLINOMETER_DEMO) || (defined CUSTOM_ACTIVITYRECOGNITION_DEMO) || (defined CUSTOM_ACTIVITYRECOGNITIONWRIST_DEMO) || (defined CUSTOM_FITNESSACTIVITIES_DEMO) || (defined CUSTOM_PEDOMETERWRIST_DEMO) || (defined CUSTOM_POSEESTIMATION_DEMO) || (defined CUSTOM_STANDINGSITTINGDESK_DEMO))
+#if ((defined CUSTOM_ALGOBUILDER_FW_TEMPLATE) || (defined CUSTOM_DATALOGFUSION_DEMO) || \
+     (defined CUSTOM_TILTSENSING_DEMO) || (defined CUSTOM_GESTURERECOGNITION_DEMO) || \
+     (defined CUSTOM_CARRYPOSITION_DEMO) || (defined CUSTOM_ECOMPASS_DEMO) || \
+     (defined CUSTOM_DYNAMICINCLINOMETER_DEMO) || (defined CUSTOM_ACTIVITYRECOGNITION_DEMO) || \
+     (defined CUSTOM_ACTIVITYRECOGNITIONWRIST_DEMO) || (defined CUSTOM_FITNESSACTIVITIES_DEMO) || \
+     (defined CUSTOM_PEDOMETERWRIST_DEMO) || (defined CUSTOM_POSEESTIMATION_DEMO) || \
+     (defined CUSTOM_STANDINGSITTINGDESK_DEMO))
 /**
   * @brief  Get accelerometer sensor orientation
   * @param  Orientation Pointer to sensor orientation
@@ -238,12 +243,13 @@ void BSP_SENSOR_ACC_GetOrientation(char *Orientation)
   Orientation[0] = 's';
   Orientation[1] = 'e';
   Orientation[2] = 'u';
-#endif
-#endif
+#endif /* CUSTOM_ACC_INSTANCE_0 */
+#endif /* defined BSP_MOTION_SENSORS || defined BSP_HYBRID_SENSORS */
 }
-#endif
+#endif /* defined Many templates */
 
-#if ((defined CUSTOM_ALGOBUILDER_FW_TEMPLATE) || (defined CUSTOM_DATALOGFUSION_DEMO) || (defined CUSTOM_DYNAMICINCLINOMETER_DEMO) || (defined CUSTOM_FITNESSACTIVITIES_DEMO))
+#if ((defined CUSTOM_ALGOBUILDER_FW_TEMPLATE) || (defined CUSTOM_DATALOGFUSION_DEMO) || \
+     (defined CUSTOM_DYNAMICINCLINOMETER_DEMO) || (defined CUSTOM_FITNESSACTIVITIES_DEMO))
 /**
   * @brief  Get gyroscope sensor orientation
   * @param  Orientation Pointer to sensor orientation
@@ -256,10 +262,10 @@ void BSP_SENSOR_GYR_GetOrientation(char *Orientation)
   Orientation[0] = 's';
   Orientation[1] = 'e';
   Orientation[2] = 'u';
-#endif
-#endif
+#endif /* CUSTOM_GYR_INSTANCE_0 */
+#endif /* BSP_MOTION_SENSORS */
 }
-#endif
+#endif /* defined Many templates */
 
 #if ((defined CUSTOM_ALGOBUILDER_FW_TEMPLATE) || (defined CUSTOM_DATALOGFUSION_DEMO) || (defined CUSTOM_ECOMPASS_DEMO))
 /**
@@ -274,10 +280,10 @@ void BSP_SENSOR_MAG_GetOrientation(char *Orientation)
   Orientation[0] = 'n';
   Orientation[1] = 'e';
   Orientation[2] = 'u';
-#endif
-#endif
+#endif /* CUSTOM_MAG_INSTANCE_0 */
+#endif /* BSP_MOTION_SENSORS */
 }
-#endif
+#endif /* defined Many templates */
 
 #if (defined CUSTOM_ALGOBUILDER_FW_TEMPLATE)
 /**
@@ -300,8 +306,8 @@ void BSP_SENSOR_ACC_SetDRDYMode(uint8_t Mode)
       (void)CUSTOM_MOTION_SENSOR_DRDY_Set_Mode(CUSTOM_ACC_INSTANCE_0, DRDY_LATCHED);
     }
   */
-#endif
-#endif
+#endif /* CUSTOM_ACC_INSTANCE_0 */
+#endif /* BSP_MOTION_SENSORS */
 }
 
 /**
@@ -324,8 +330,8 @@ void BSP_SENSOR_GYR_SetDRDYMode(uint8_t Mode)
       (void)CUSTOM_MOTION_SENSOR_DRDY_Set_Mode(CUSTOM_GYR_INSTANCE_0, DRDY_LATCHED);
     }
   */
-#endif
-#endif
+#endif /* CUSTOM_GYR_INSTANCE_0 */
+#endif /* BSP_MOTION_SENSORS */
 }
 
 /**
@@ -354,8 +360,8 @@ void BSP_SENSOR_ACC_SetDRDYInt(uint8_t Enable)
 
     (void)CUSTOM_MOTION_SENSOR_Write_Register(CUSTOM_ACC_INSTANCE_0, INT1_CTRL, reg);
   */
-#endif
-#endif
+#endif /* CUSTOM_ACC_INSTANCE_0 */
+#endif /* BSP_MOTION_SENSORS */
 }
 
 /**
@@ -384,8 +390,8 @@ void BSP_SENSOR_GYR_SetDRDYInt(uint8_t Enable)
 
     (void)CUSTOM_MOTION_SENSOR_Write_Register(CUSTOM_GYR_INSTANCE_0, INT1_CTRL, reg);
   */
-#endif
-#endif
+#endif /* CUSTOM_GYR_INSTANCE_0 */
+#endif /* BSP_MOTION_SENSORS */
 }
 
 /**
@@ -418,8 +424,8 @@ void BSP_ACC_GYR_Read_FSM_Data(uint8_t *Data)
     (void)CUSTOM_MOTION_SENSOR_Read_Register(LSM6DSOX_0, LSM6DSOX_FSM_OUTS16, &Data[15]);
     (void)CUSTOM_MOTION_SENSOR_Write_Register(LSM6DSOX_0, LSM6DSOX_FUNC_CFG_ACCESS, 0x00);
   */
-#endif
-#endif
+#endif /* defined(CUSTOM_ACC_INSTANCE_0) | defined (CUSTOM_GYR_INSTANCE_0 */
+#endif /* BSP_MOTION_SENSORS */
 }
 
 /**
@@ -444,8 +450,8 @@ void BSP_ACC_GYR_Read_MLC_Data(uint8_t *Data)
     (void)CUSTOM_MOTION_SENSOR_Read_Register(LSM6DSOX_0, LSM6DSOX_MLC7_SRC, &Data[7]);
     (void)CUSTOM_MOTION_SENSOR_Write_Register(LSM6DSOX_0, LSM6DSOX_FUNC_CFG_ACCESS, 0x00);
   */
-#endif
-#endif
+#endif /* defined(CUSTOM_ACC_INSTANCE_0) | defined (CUSTOM_GYR_INSTANCE_0) */
+#endif /* BSP_MOTION_SENSORS */
 }
 #endif /* CUSTOM_ALGOBUILDER_FW_TEMPLATE */
 
@@ -460,8 +466,8 @@ void BSP_SENSOR_TEMP_GetTObjRaw(int16_t *Value)
 #if (defined BSP_ENV_SENSORS)
 #ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Get_TObjRaw(CUSTOM_TEMP_INSTANCE_0, Value);
-#endif
-#endif
+#endif /* CUSTOM_TEMP_INSTANCE_0 */
+#endif /* BSP_ENV_SENSORS */
 }
 
 /**
@@ -474,8 +480,8 @@ void BSP_SENSOR_TEMP_SetAvgTmos(uint16_t Value)
 #if (defined BSP_ENV_SENSORS)
 #ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Set_AvgTmos(CUSTOM_TEMP_INSTANCE_0, Value);
-#endif
-#endif
+#endif /* BSP_ENV_SENSORS */
+#endif /* CUSTOM_TEMP_INSTANCE_0 */
 }
 #endif /* PRESENCEDETECTION_STHS34PF80_DEMO || APPROACHLEAVE_STHS34PF80_DEMO */
 
@@ -490,8 +496,8 @@ void BSP_SENSOR_TEMP_GetTAmbRaw(int16_t *Value)
 #if (defined BSP_ENV_SENSORS)
 #ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Get_TAmbRaw(CUSTOM_TEMP_INSTANCE_0, Value);
-#endif
-#endif
+#endif /* CUSTOM_TEMP_INSTANCE_0 */
+#endif /* BSP_ENV_SENSORS */
 }
 
 /**
@@ -504,8 +510,8 @@ void BSP_SENSOR_TEMP_GetAvgTmos(uint16_t *Value)
 #if (defined BSP_ENV_SENSORS)
 #ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Get_AvgTmos(CUSTOM_TEMP_INSTANCE_0, Value);
-#endif
-#endif
+#endif /* CUSTOM_TEMP_INSTANCE_0 */
+#endif /* BSP_ENV_SENSORS */
 }
 
 /**
@@ -518,8 +524,8 @@ void BSP_SENSOR_TEMP_GetAvgT(uint8_t *Value)
 #if (defined BSP_ENV_SENSORS)
 #ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Get_AvgT(CUSTOM_TEMP_INSTANCE_0, Value);
-#endif
-#endif
+#endif /* CUSTOM_TEMP_INSTANCE_0 */
+#endif /* BSP_ENV_SENSORS */
 }
 
 /**
@@ -532,8 +538,8 @@ void BSP_SENSOR_TEMP_GetGainFactor(uint8_t *Value)
 #if (defined BSP_ENV_SENSORS)
 #ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Get_GainFactor(CUSTOM_TEMP_INSTANCE_0, Value);
-#endif
-#endif
+#endif /* CUSTOM_TEMP_INSTANCE_0 */
+#endif /* BSP_ENV_SENSORS */
 }
 
 /**
@@ -546,8 +552,8 @@ void BSP_SENSOR_TEMP_GetSensitivity(uint16_t *Value)
 #if (defined BSP_ENV_SENSORS)
 #ifdef CUSTOM_TEMP_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Get_Sensitivity(CUSTOM_TEMP_INSTANCE_0, Value);
-#endif
-#endif
+#endif /* CUSTOM_TEMP_INSTANCE_0 */
+#endif /* BSP_ENV_SENSORS */
 }
 #endif /* PRESENCEDETECTION_STHS34PF80_DEMO */
 
@@ -562,8 +568,8 @@ void BSP_SENSOR_Gas_Set_Humidity(float Value)
 #if (defined BSP_ENV_SENSORS)
 #ifdef CUSTOM_GAS_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Set_Humidity(CUSTOM_GAS_INSTANCE_0, Value);
-#endif
-#endif
+#endif /* CUSTOM_GAS_INSTANCE_0 */
+#endif /* BSP_ENV_SENSORS */
 }
 
 /**
@@ -576,7 +582,7 @@ void BSP_SENSOR_Gas_Set_Temperature(float Value)
 #if (defined BSP_ENV_SENSORS)
 #ifdef CUSTOM_GAS_INSTANCE_0
   (void)CUSTOM_ENV_SENSOR_Set_Temperature(CUSTOM_GAS_INSTANCE_0, Value);
-#endif
-#endif
+#endif /* BSP_ENV_SENSORS */
+#endif /* CUSTOM_GAS_INSTANCE_0 */
 }
 #endif /* AIRQUALITY_SGP40_DEMO */

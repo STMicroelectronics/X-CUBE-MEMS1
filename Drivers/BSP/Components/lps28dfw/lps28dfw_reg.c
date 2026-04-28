@@ -95,7 +95,7 @@ int32_t __weak lps28dfw_write_reg(const stmdev_ctx_t *ctx, uint8_t reg, uint8_t 
   * @brief     Section collect all the utility functions needed by APIs.
   * @{
   *
-  */
+*/
 
 static void bytecpy(uint8_t *target, uint8_t *source)
 {
@@ -159,6 +159,11 @@ int32_t lps28dfw_id_get(const stmdev_ctx_t *ctx, lps28dfw_id_t *val)
   int32_t ret;
 
   ret = lps28dfw_read_reg(ctx, LPS28DFW_WHO_AM_I, &reg, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   val->whoami = reg;
 
   return ret;
@@ -221,6 +226,10 @@ int32_t lps28dfw_bus_mode_get(const stmdev_ctx_t *ctx, lps28dfw_bus_mode_t *val)
   if (ret == 0)
   {
     ret = lps28dfw_read_reg(ctx, LPS28DFW_IF_CTRL, (uint8_t *)&if_ctrl, 1);
+    if (ret != 0)
+    {
+      return ret;
+    }
 
     switch (if_ctrl.int_en_i3c << 2)
     {
@@ -352,6 +361,12 @@ int32_t lps28dfw_status_get(const stmdev_ctx_t *ctx, lps28dfw_stat_t *val)
     ret = lps28dfw_read_reg(ctx, LPS28DFW_INTERRUPT_CFG,
                             (uint8_t *)&interrupt_cfg, 1);
   }
+
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   val->sw_reset  = ctrl_reg2.swreset;
   val->boot      = int_source.boot_on;
   val->drdy_pres = status.p_da;
@@ -414,9 +429,14 @@ int32_t lps28dfw_pin_conf_get(const stmdev_ctx_t *ctx, lps28dfw_pin_conf_t *val)
   int32_t ret;
 
   ret = lps28dfw_read_reg(ctx, LPS28DFW_IF_CTRL, (uint8_t *)&if_ctrl, 1);
-  if (ret == 0)
+  if (ret != 0)
   {
-    ret = lps28dfw_read_reg(ctx, LPS28DFW_CTRL_REG3, (uint8_t *)&ctrl_reg3, 1);
+    return ret;
+  }
+  ret = lps28dfw_read_reg(ctx, LPS28DFW_CTRL_REG3, (uint8_t *)&ctrl_reg3, 1);
+  if (ret != 0)
+  {
+    return ret;
   }
 
   val->int_pull_down = ~if_ctrl.int_pd_dis;
@@ -443,15 +463,21 @@ int32_t lps28dfw_all_sources_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lps28dfw_read_reg(ctx, LPS28DFW_STATUS, (uint8_t *)&status, 1);
-  if (ret == 0)
+  if (ret != 0)
   {
-    ret = lps28dfw_read_reg(ctx, LPS28DFW_INT_SOURCE,
-                            (uint8_t *)&int_source, 1);
+    return ret;
   }
-  if (ret == 0)
+  ret = lps28dfw_read_reg(ctx, LPS28DFW_INT_SOURCE,
+                          (uint8_t *)&int_source, 1);
+  if (ret != 0)
   {
-    ret = lps28dfw_read_reg(ctx, LPS28DFW_FIFO_STATUS2,
-                            (uint8_t *)&fifo_status2, 1);
+    return ret;
+  }
+  ret = lps28dfw_read_reg(ctx, LPS28DFW_FIFO_STATUS2,
+                          (uint8_t *)&fifo_status2, 1);
+  if (ret != 0)
+  {
+    return ret;
   }
 
   val->drdy_pres        = status.p_da;
@@ -519,6 +545,10 @@ int32_t lps28dfw_mode_get(const stmdev_ctx_t *ctx, lps28dfw_md_t *val)
   int32_t ret;
 
   ret = lps28dfw_read_reg(ctx, LPS28DFW_CTRL_REG1, reg, 2);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   if (ret == 0)
   {
@@ -664,6 +694,10 @@ int32_t lps28dfw_data_get(const stmdev_ctx_t *ctx, lps28dfw_md_t *md,
   int32_t ret;
 
   ret = lps28dfw_read_reg(ctx, LPS28DFW_PRESS_OUT_XL, buff, 5);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   /* pressure conversion */
   data->pressure.raw = (int32_t)buff[2];
@@ -706,6 +740,11 @@ int32_t lps28dfw_pressure_raw_get(const stmdev_ctx_t *ctx, uint32_t *buff)
   uint8_t reg[3];
 
   ret =  lps28dfw_read_reg(ctx, LPS28DFW_PRESS_OUT_XL, reg, 3);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *buff = reg[2];
   *buff = (*buff * 256U) + reg[1];
   *buff = (*buff * 256U) + reg[0];
@@ -728,6 +767,11 @@ int32_t lps28dfw_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *buff)
   uint8_t reg[2];
 
   ret =  lps28dfw_read_reg(ctx, LPS28DFW_TEMP_OUT_L, reg, 2);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *buff = (int16_t)reg[1];
   *buff = (*buff * 256) + (int16_t)reg[0];
 
@@ -751,41 +795,22 @@ int32_t lps28dfw_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *buff)
   * @brief  FIFO operation mode selection.[set]
   *
   * @param  ctx   communication interface handler.(ptr)
-  * @param  val   set the FIFO operation mode.(ptr)
+  * @param  val   set the FIFO operation mode.
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps28dfw_fifo_mode_set(const stmdev_ctx_t *ctx, lps28dfw_fifo_md_t *val)
+int32_t lps28dfw_fifo_mode_set(const stmdev_ctx_t *ctx, lps28dfw_operation_t val)
 {
   lps28dfw_fifo_ctrl_t fifo_ctrl;
-  lps28dfw_fifo_wtm_t fifo_wtm;
-  uint8_t reg[2];
   int32_t ret;
 
-  ret = lps28dfw_read_reg(ctx, LPS28DFW_FIFO_CTRL, reg, 2);
+  ret = lps28dfw_read_reg(ctx, LPS28DFW_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
   if (ret == 0)
   {
-    bytecpy((uint8_t *)&fifo_ctrl, &reg[0]);
-    bytecpy((uint8_t *)&fifo_wtm, &reg[1]);
+    fifo_ctrl.f_mode = (uint8_t)val & 0x03U;
+    fifo_ctrl.trig_modes = ((uint8_t)val & 0x04U) >> 2;
 
-    fifo_ctrl.f_mode = (uint8_t)val->operation & 0x03U;
-    fifo_ctrl.trig_modes = ((uint8_t)val->operation & 0x04U) >> 2;
-
-    if (val->watermark != 0x00U)
-    {
-      fifo_ctrl.stop_on_wtm = PROPERTY_ENABLE;
-    }
-    else
-    {
-      fifo_ctrl.stop_on_wtm = PROPERTY_DISABLE;
-    }
-
-    fifo_wtm.wtm = val->watermark;
-
-    bytecpy(&reg[0], (uint8_t *)&fifo_ctrl);
-    bytecpy(&reg[1], (uint8_t *)&fifo_wtm);
-
-    ret = lps28dfw_write_reg(ctx, LPS28DFW_FIFO_CTRL, reg, 2);
+    ret = lps28dfw_write_reg(ctx, LPS28DFW_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
   }
   return ret;
 }
@@ -798,45 +823,130 @@ int32_t lps28dfw_fifo_mode_set(const stmdev_ctx_t *ctx, lps28dfw_fifo_md_t *val)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t lps28dfw_fifo_mode_get(const stmdev_ctx_t *ctx, lps28dfw_fifo_md_t *val)
+int32_t lps28dfw_fifo_mode_get(const stmdev_ctx_t *ctx, lps28dfw_operation_t *val)
 {
   lps28dfw_fifo_ctrl_t fifo_ctrl;
-  lps28dfw_fifo_wtm_t fifo_wtm;
-  uint8_t reg[2];
   int32_t ret;
 
-  ret = lps28dfw_read_reg(ctx, LPS28DFW_FIFO_CTRL, reg, 2);
-
-  bytecpy((uint8_t *)&fifo_ctrl, &reg[0]);
-  bytecpy((uint8_t *)&fifo_wtm, &reg[1]);
+  ret = lps28dfw_read_reg(ctx, LPS28DFW_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch ((fifo_ctrl.trig_modes << 2) | fifo_ctrl.f_mode)
   {
     case LPS28DFW_BYPASS:
-      val->operation = LPS28DFW_BYPASS;
+      *val = LPS28DFW_BYPASS;
       break;
     case LPS28DFW_FIFO:
-      val->operation = LPS28DFW_FIFO;
+      *val = LPS28DFW_FIFO;
       break;
     case LPS28DFW_STREAM:
-      val->operation = LPS28DFW_STREAM;
+      *val = LPS28DFW_STREAM;
       break;
     case LPS28DFW_STREAM_TO_FIFO:
-      val->operation = LPS28DFW_STREAM_TO_FIFO;
+      *val = LPS28DFW_STREAM_TO_FIFO;
       break;
     case LPS28DFW_BYPASS_TO_STREAM:
-      val->operation = LPS28DFW_BYPASS_TO_STREAM;
+      *val = LPS28DFW_BYPASS_TO_STREAM;
       break;
     case LPS28DFW_BYPASS_TO_FIFO:
-      val->operation = LPS28DFW_BYPASS_TO_FIFO;
+      *val = LPS28DFW_BYPASS_TO_FIFO;
       break;
     default:
-      val->operation = LPS28DFW_BYPASS;
+      *val = LPS28DFW_BYPASS;
       break;
   }
 
-  val->watermark = fifo_wtm.wtm;
+  return ret;
+}
 
+/**
+  * @brief  FIFO watermark selection.[set]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  val   watermark value (0 disable; max 128)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lps28dfw_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val)
+{
+  lps28dfw_fifo_wtm_t fifo_wtm;
+  int32_t ret;
+
+  ret = lps28dfw_read_reg(ctx, LPS28DFW_FIFO_WTM, (uint8_t *)&fifo_wtm, 1);
+  if (ret == 0)
+  {
+    fifo_wtm.wtm = val & 0x7F;
+
+    ret = lps28dfw_write_reg(ctx, LPS28DFW_FIFO_WTM, (uint8_t *)&fifo_wtm, 1);
+  }
+  return ret;
+}
+
+/**
+  * @brief  FIFO watermark selection.[get]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  val   watermark value (0 disable; max 128)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lps28dfw_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val)
+{
+  lps28dfw_fifo_wtm_t fifo_wtm;
+  int32_t ret;
+
+  ret = lps28dfw_read_reg(ctx, LPS28DFW_FIFO_WTM, (uint8_t *)&fifo_wtm, 1);
+  if (ret == 0)
+  {
+    *val = fifo_wtm.wtm;
+  }
+  return ret;
+}
+
+/**
+  * @brief  FIFO stop_on_wtm selection.[set]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  val   set the stop_on_wtm mode.(ptr)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lps28dfw_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, lps28dfw_fifo_event_t val)
+{
+  lps28dfw_fifo_ctrl_t fifo_ctrl;
+  int32_t ret;
+
+  ret = lps28dfw_read_reg(ctx, LPS28DFW_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
+  if (ret == 0)
+  {
+    fifo_ctrl.stop_on_wtm = (val == LPS28DFW_FIFO_EV_WTM) ? 1 : 0;
+
+    ret = lps28dfw_write_reg(ctx, LPS28DFW_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
+  }
+  return ret;
+}
+
+/**
+  * @brief  FIFO stop_on_wtm selection.[get]
+  *
+  * @param  ctx   communication interface handler.(ptr)
+  * @param  val   set the stop_on_wtm mode.(ptr)
+  * @retval       interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lps28dfw_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, lps28dfw_fifo_event_t *val)
+{
+  lps28dfw_fifo_ctrl_t fifo_ctrl;
+  int32_t ret;
+
+  ret = lps28dfw_read_reg(ctx, LPS28DFW_FIFO_CTRL, (uint8_t *)&fifo_ctrl, 1);
+  if (ret == 0)
+  {
+    *val = (fifo_ctrl.stop_on_wtm == 1) ? LPS28DFW_FIFO_EV_WTM : LPS28DFW_FIFO_EV_FULL;
+  }
   return ret;
 }
 
@@ -856,6 +966,10 @@ int32_t lps28dfw_fifo_level_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lps28dfw_read_reg(ctx, LPS28DFW_FIFO_STATUS1,
                           (uint8_t *)&fifo_status1, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   *val = fifo_status1.fss;
 
@@ -883,6 +997,11 @@ int32_t lps28dfw_fifo_data_get(const stmdev_ctx_t *ctx, uint8_t samp,
   for (i = 0U; i < samp; i++)
   {
     ret = lps28dfw_read_reg(ctx, LPS28DFW_FIFO_DATA_OUT_PRESS_XL, fifo_data, 3);
+    if (ret != 0)
+    {
+      return ret;
+    }
+
     data[i].raw = (int32_t)fifo_data[2];
     data[i].raw = (data[i].raw * 256) + (int32_t)fifo_data[1];
     data[i].raw = (data[i].raw * 256) + (int32_t)fifo_data[0];
@@ -981,10 +1100,15 @@ int32_t lps28dfw_interrupt_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lps28dfw_read_reg(ctx, LPS28DFW_CTRL_REG3, reg, 2);
-  if (ret == 0)
+  if (ret != 0)
   {
-    ret = lps28dfw_read_reg(ctx, LPS28DFW_INTERRUPT_CFG,
-                            (uint8_t *)&interrupt_cfg, 1);
+    return ret;
+  }
+  ret = lps28dfw_read_reg(ctx, LPS28DFW_INTERRUPT_CFG,
+                          (uint8_t *)&interrupt_cfg, 1);
+  if (ret != 0)
+  {
+    return ret;
   }
 
   bytecpy((uint8_t *)&ctrl_reg3, &reg[0]);
@@ -1048,6 +1172,10 @@ int32_t lps28dfw_pin_int_route_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lps28dfw_read_reg(ctx, LPS28DFW_CTRL_REG4, (uint8_t *)&ctrl_reg4, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   val->drdy_pres =  ctrl_reg4.drdy;
   val->fifo_th = ctrl_reg4.int_f_wtm;
@@ -1127,6 +1255,10 @@ int32_t lps28dfw_int_on_threshold_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lps28dfw_read_reg(ctx, LPS28DFW_INTERRUPT_CFG, reg, 3);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   bytecpy((uint8_t *)&interrupt_cfg, &reg[0]);
   bytecpy((uint8_t *)&ths_p_l, &reg[1]);
@@ -1198,6 +1330,10 @@ int32_t lps28dfw_reference_mode_get(const stmdev_ctx_t *ctx, lps28dfw_ref_md_t *
 
   ret = lps28dfw_read_reg(ctx, LPS28DFW_INTERRUPT_CFG,
                           (uint8_t *)&interrupt_cfg, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch ((interrupt_cfg.reset_az << 1) |
           interrupt_cfg.autorefp)
@@ -1231,6 +1367,10 @@ int32_t lps28dfw_refp_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = lps28dfw_read_reg(ctx, LPS28DFW_REF_P_L, reg, 2);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   *val = (int16_t)reg[1];
   *val = *val * 256 + (int16_t)reg[0];
@@ -1273,6 +1413,10 @@ int32_t lps28dfw_opc_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = lps28dfw_read_reg(ctx, LPS28DFW_RPDS_L, reg, 2);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   *val = (int16_t)reg[1];
   *val = *val * 256 + (int16_t)reg[0];

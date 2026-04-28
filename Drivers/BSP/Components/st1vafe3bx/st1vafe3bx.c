@@ -201,7 +201,7 @@ int32_t ST1VAFE3BX_Init(ST1VAFE3BX_Object_t *pObj)
 
   /* Enable register address automatically incremented during a multiple byte
   access with a serial interface. Enable BDU. */
-  if (st1vafe3bx_init_set(&(pObj->Ctx), ST1VAFE3BX_SENSOR_ONLY_ON) != ST1VAFE3BX_OK)
+  if (st1vafe3bx_init_set(&(pObj->Ctx)) != ST1VAFE3BX_OK)
   {
     return ST1VAFE3BX_ERROR;
   }

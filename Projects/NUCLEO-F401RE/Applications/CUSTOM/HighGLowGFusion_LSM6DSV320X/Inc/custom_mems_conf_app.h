@@ -6,7 +6,7 @@
   ******************************************************************************
     * @attention
   *
-  * Copyright (c) 2025 STMicroelectronics.
+  * Copyright (c) 2026 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -1111,6 +1111,20 @@ extern "C" {
 #endif /* CUSTOM_GAS_INSTANCE_0 */
 #endif /* USE_CUSTOM_ENV_SENSOR_SGP40_0 */
 #endif /* USE_CUSTOM_ENV_SENSOR_SGP40_0 */
+
+#ifdef USE_CUSTOM_MOTION_SENSOR_MIS2DU12_0
+#if (USE_CUSTOM_MOTION_SENSOR_MIS2DU12_0 == 1)
+#ifndef CUSTOM_ACC_INSTANCE_0
+#define CUSTOM_ACC_INSTANCE_0 CUSTOM_MIS2DU12_0
+#define CUSTOM_ACC_INSTANCE_NAME_0 "MIS2DU12"
+#define CUSTOM_ACC_INSTANCE_ODR_0 {8, 6, 12.5, 25, 50, 100, 200, 400, 800} /* Hz */
+#define CUSTOM_ACC_INSTANCE_FS_0 {4, 2, 4, 8, 16} /* g */
+#ifndef ACC_GYR_UNICLEO_ID
+#define ACC_GYR_UNICLEO_ID MIS2DU12_UNICLEO_ID
+#endif /* ACC_GYR_UNICLEO_ID */
+#endif /* CUSTOM_ACC_INSTANCE_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_MIS2DU12_0 */
+#endif /* USE_CUSTOM_MOTION_SENSOR_MIS2DU12_0 */
 
 #ifdef __cplusplus
 }

@@ -38,7 +38,7 @@ MEMS, I2C, VCOM
     - NUCLEO-U575ZI-Q RevC board
 
 
-ADDITIONAL_BOARD : X-NUCLEO-IKS4A1 https://www.st.com/en/ecosystems/x-nucleo-iks4a1.html
+ADDITIONAL_BOARD : X-NUCLEO-IKS4A1 https://www.st.com/en/evaluation-tools/x-nucleo-iks4a1.html
 ADDITIONAL_COMP : LSM6DSV16X https://www.st.com/en/mems-and-sensors/lsm6dsv16x.html
 
 
@@ -60,7 +60,7 @@ STMicroelectronics
 
 ### <b>License</b>
 
-Copyright (c) 2025 STMicroelectronics.
+Copyright (c) 2026 STMicroelectronics.
 All rights reserved.
 
 This software is licensed under terms that can be found in the LICENSE file in the root directory of this software component.

@@ -982,18 +982,29 @@ int32_t lis2du12_pin_int2_route_get(const stmdev_ctx_t *ctx,
 typedef enum
 {
   LIS2DU12_DO_NOT_CHANGE = 0,
-  LIS2DU12_SLEEP_AT_6Hz  = 1,
+  LIS2DU12_SLEEP_AT_1Hz6 = 1,
   LIS2DU12_SLEEP_AT_3Hz  = 2,
-  LIS2DU12_SLEEP_AT_1Hz6 = 3,
+  LIS2DU12_SLEEP_AT_6Hz  = 3,
 } lis2du12_sleep_odr_t;
+
+typedef enum
+{
+  LIS2DU12_WAKE_DUR_0_ODR  = 0x00,
+  LIS2DU12_WAKE_DUR_1_ODR  = 0x01,
+  LIS2DU12_WAKE_DUR_2_ODR  = 0x02,
+  LIS2DU12_WAKE_DUR_3_ODR  = 0x10,
+  LIS2DU12_WAKE_DUR_7_ODR  = 0x11,
+  LIS2DU12_WAKE_DUR_11_ODR = 0x12,
+  LIS2DU12_WAKE_DUR_15_ODR = 0x13,
+} lis2du12_wake_dur_t;
 
 typedef struct
 {
   uint8_t x_en  : 1; /* Detection on X-axis */
   uint8_t y_en  : 1; /* Detection on Y-axis */
   uint8_t z_en  : 1; /* Detection on Z-axis */
-  uint8_t threshold; /* full scale dependent */
-  uint8_t duration;  /* 1 LSb: 1 ODR_time */
+  uint8_t threshold; /* 1 LSB = FS_XL / 2^8 */
+  lis2du12_wake_dur_t duration;  /* wake-up duration */
   struct
   {
     uint8_t en  : 1; /* Enable sleep detection */

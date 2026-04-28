@@ -162,7 +162,10 @@ int32_t h3lis331dl_axis_x_data_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG1,
                             (uint8_t *)&ctrl_reg1, 1);
-  *val = ctrl_reg1.xen;
+  if (ret == 0)
+  {
+    *val = ctrl_reg1.xen;
+  }
 
   return ret;
 }
@@ -208,7 +211,10 @@ int32_t h3lis331dl_axis_y_data_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG1,
                             (uint8_t *)&ctrl_reg1, 1);
-  *val = ctrl_reg1.yen;
+  if (ret == 0)
+  {
+    *val = ctrl_reg1.yen;
+  }
 
   return ret;
 }
@@ -254,7 +260,10 @@ int32_t h3lis331dl_axis_z_data_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG1,
                             (uint8_t *)&ctrl_reg1, 1);
-  *val = ctrl_reg1.zen;
+  if (ret == 0)
+  {
+    *val = ctrl_reg1.zen;
+  }
 
   return ret;
 }
@@ -303,6 +312,7 @@ int32_t h3lis331dl_data_rate_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG1,
                             (uint8_t *)&ctrl_reg1, 1);
+  if (ret != 0) { return ret; }
 
   switch ((ctrl_reg1.dr << 4) + ctrl_reg1.pm)
   {
@@ -397,6 +407,7 @@ int32_t h3lis331dl_reference_mode_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG2,
                             (uint8_t *)&ctrl_reg2, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg2.hpm)
   {
@@ -459,6 +470,7 @@ int32_t h3lis331dl_full_scale_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG4,
                             (uint8_t *)&ctrl_reg4, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg4.fs)
   {
@@ -525,6 +537,8 @@ int32_t h3lis331dl_block_data_update_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG4,
                             (uint8_t *)&ctrl_reg4, 1);
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg4.bdu;
 
   return ret;
@@ -565,6 +579,8 @@ int32_t h3lis331dl_flag_data_ready_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_STATUS_REG,
                             (uint8_t *)&status_reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = status_reg.zyxda;
 
   return ret;
@@ -598,6 +614,8 @@ int32_t h3lis331dl_acceleration_raw_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_OUT_X_L, buff, 6);
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -678,6 +696,8 @@ int32_t h3lis331dl_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG2,
                             (uint8_t *)&ctrl_reg2, 1);
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg2.boot;
 
   return ret;
@@ -726,6 +746,7 @@ int32_t h3lis331dl_data_format_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG4,
                             (uint8_t *)&ctrl_reg4, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg4.ble)
   {
@@ -801,6 +822,7 @@ int32_t h3lis331dl_hp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG2,
                             (uint8_t *)&ctrl_reg2, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg2.hpcf)
   {
@@ -872,6 +894,7 @@ int32_t h3lis331dl_hp_path_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG2,
                             (uint8_t *)&ctrl_reg2, 1);
+  if (ret != 0) { return ret; }
 
   switch ((ctrl_reg2.fds << 2) + ctrl_reg2.hpen)
   {
@@ -1030,6 +1053,7 @@ int32_t h3lis331dl_spi_mode_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG4,
                             (uint8_t *)&ctrl_reg4, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg4.sim)
   {
@@ -1105,6 +1129,7 @@ int32_t h3lis331dl_pin_int1_route_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG3,
                             (uint8_t *)&ctrl_reg3, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg3.i1_cfg)
   {
@@ -1177,6 +1202,7 @@ int32_t h3lis331dl_int1_notification_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG3,
                             (uint8_t *)&ctrl_reg3, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg3.lir1)
   {
@@ -1239,6 +1265,7 @@ int32_t h3lis331dl_pin_int2_route_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG3,
                             (uint8_t *)&ctrl_reg3, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg3.i2_cfg)
   {
@@ -1311,6 +1338,7 @@ int32_t h3lis331dl_int2_notification_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG3,
                             (uint8_t *)&ctrl_reg3, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg3.lir2)
   {
@@ -1373,6 +1401,7 @@ int32_t h3lis331dl_pin_mode_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG3,
                             (uint8_t *)&ctrl_reg3, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg3.pp_od)
   {
@@ -1435,6 +1464,7 @@ int32_t h3lis331dl_pin_polarity_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG3,
                             (uint8_t *)&ctrl_reg3, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl_reg3.ihl)
   {
@@ -1515,6 +1545,8 @@ int32_t h3lis331dl_int1_on_threshold_conf_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_INT1_CFG,
                             (uint8_t *)&int1_cfg, 1);
+  if (ret != 0) { return ret; }
+
   val->int1_xlie = int1_cfg.xlie;
   val->int1_xhie = int1_cfg.xhie;
   val->int1_ylie = int1_cfg.ylie;
@@ -1568,6 +1600,7 @@ int32_t h3lis331dl_int1_on_threshold_mode_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_INT1_CFG,
                             (uint8_t *)&int1_cfg, 1);
+  if (ret != 0) { return ret; }
 
   switch (int1_cfg.aoi)
   {
@@ -1646,6 +1679,8 @@ int32_t h3lis331dl_int1_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_INT1_THS,
                             (uint8_t *)&int1_ths, 1);
+  if (ret != 0) { return ret; }
+
   *val = int1_ths.ths;
 
   return ret;
@@ -1692,6 +1727,8 @@ int32_t h3lis331dl_int1_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_INT1_DURATION,
                             (uint8_t *)&int1_duration, 1);
+  if (ret != 0) { return ret; }
+
   *val = int1_duration.d;
 
   return ret;
@@ -1745,6 +1782,8 @@ int32_t h3lis331dl_int2_on_threshold_conf_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_INT2_CFG,
                             (uint8_t *)&int2_cfg, 1);
+  if (ret != 0) { return ret; }
+
   val->int2_xlie = int2_cfg.xlie;
   val->int2_xhie = int2_cfg.xhie;
   val->int2_ylie = int2_cfg.ylie;
@@ -1798,6 +1837,7 @@ int32_t h3lis331dl_int2_on_threshold_mode_get(const stmdev_ctx_t *ctx,
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_INT2_CFG,
                             (uint8_t *)&int2_cfg, 1);
+  if (ret != 0) { return ret; }
 
   switch (int2_cfg.aoi)
   {
@@ -1876,6 +1916,8 @@ int32_t h3lis331dl_int2_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_INT2_THS,
                             (uint8_t *)&int2_ths, 1);
+  if (ret != 0) { return ret; }
+
   *val = int2_ths.ths;
 
   return ret;
@@ -1922,6 +1964,8 @@ int32_t h3lis331dl_int2_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_INT2_DURATION,
                             (uint8_t *)&int2_duration, 1);
+  if (ret != 0) { return ret; }
+
   *val = int2_duration.d;
 
   return ret;
@@ -1981,6 +2025,8 @@ int32_t h3lis331dl_wkup_to_sleep_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = h3lis331dl_read_reg(ctx, H3LIS331DL_CTRL_REG5,
                             (uint8_t *)&ctrl_reg5, 1);
+  if (ret != 0) { return ret; }
+
   *val = ctrl_reg5.turnon;
 
   return ret;

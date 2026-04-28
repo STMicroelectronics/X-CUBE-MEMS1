@@ -143,166 +143,169 @@ int32_t st1vafe3bx_device_id_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Configures the bus operating mode.[get]
+  * @brief  Initialize the device with optimal settings.[set]
   *
   * @param  ctx   communication interface handler.(ptr)
-  * @param  val   configures the bus operating mode.(ptr)
   * @retval       interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_init_set(const stmdev_ctx_t *ctx, st1vafe3bx_init_t val)
+int32_t st1vafe3bx_init_set(const stmdev_ctx_t *ctx)
 {
   st1vafe3bx_ctrl1_t ctrl1;
   st1vafe3bx_ctrl4_t ctrl4;
-  st1vafe3bx_status_t status;
-  st1vafe3bx_ctrl3_t ctrl3;
-  st1vafe3bx_ah_bio_cfg2_t ah_bio_cfg2;
-  st1vafe3bx_ah_bio_cfg3_t ah_bio_cfg3;
-  uint8_t cnt = 0;
-  uint8_t ret;
+
+  int32_t ret;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
-  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2,
-                             (uint8_t *)&ah_bio_cfg2, 1);
-  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG3,
-                             (uint8_t *)&ah_bio_cfg3, 1);
-  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL3, (uint8_t *)&ctrl3, 1);
 
-  switch (val)
+  if (ret != 0)
   {
-    case ST1VAFE3BX_BOOT:
-      ctrl4.boot = PROPERTY_ENABLE;
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
-      if (ret != 0)
-      {
-        break;
-      }
-
-      do
-      {
-        ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
-        if (ret != 0)
-        {
-          break;
-        }
-
-        /* boot procedure ended correctly */
-        if (ctrl4.boot == 0U)
-        {
-          break;
-        }
-
-        if (ctx->mdelay != NULL)
-        {
-          ctx->mdelay(25); /* 25 ms of boot time */
-        }
-      } while (cnt++ < 5U);
-
-      if (cnt >= 5U)
-      {
-        ret = -1;  /* boot procedure failed */
-      }
-      break;
-    case ST1VAFE3BX_RESET:
-      ctrl1.sw_reset = PROPERTY_ENABLE;
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
-      if (ret != 0)
-      {
-        break;
-      }
-
-      do
-      {
-        ret = st1vafe3bx_status_get(ctx, &status);
-        if (ret != 0)
-        {
-          break;
-        }
-
-        /* sw-reset procedure ended correctly */
-        if (status.sw_reset == 0U)
-        {
-          break;
-        }
-
-        if (ctx->mdelay != NULL)
-        {
-          ctx->mdelay(1); /* should be 50 us */
-        }
-      } while (cnt++ < 5U);
-
-      if (cnt >= 5U)
-      {
-        ret = -1;  /* sw-reset procedure failed */
-      }
-      break;
-    case ST1VAFE3BX_SENSOR_ONLY_ON:
-      /* no embedded funcs are used */
-      ctrl4.emb_func_en = PROPERTY_DISABLE;
-      ctrl4.bdu = PROPERTY_ENABLE;
-      ctrl1.if_add_inc = PROPERTY_ENABLE;
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
-      break;
-    case ST1VAFE3BX_SENSOR_EMB_FUNC_ON:
-      /* complete configuration is used */
-      ctrl4.emb_func_en = PROPERTY_ENABLE;
-      ctrl4.bdu = PROPERTY_ENABLE;
-      ctrl1.if_add_inc = PROPERTY_ENABLE;
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
-      break;
-    case ST1VAFE3BX_VAFE_ONLY_LP:
-    case ST1VAFE3BX_VAFE_ONLY_HP:
-      /*
-        * when the device is in the AH / vAFE only state, the embedded low power
-        * features are not available
-        */
-      ctrl4.bdu = PROPERTY_ENABLE;
-      ctrl1.if_add_inc = PROPERTY_ENABLE;
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
-
-      ah_bio_cfg2.ah_bio_en = PROPERTY_ENABLE;
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2,
-                                  (uint8_t *)&ah_bio_cfg2, 1);
-
-      ah_bio_cfg3.ah_bio_active = PROPERTY_ENABLE;
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_AH_BIO_CFG3,
-                                  (uint8_t *)&ah_bio_cfg3, 1);
-
-      if (ctx->mdelay != NULL)
-      {
-        ctx->mdelay(10);
-      }
-
-      if (val == ST1VAFE3BX_VAFE_ONLY_HP)
-      {
-        ctrl3.hp_en = PROPERTY_ENABLE;
-      }
-      else
-      {
-        ctrl3.hp_en = PROPERTY_DISABLE;
-      }
-
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL3, (uint8_t *)&ctrl3, 1);
-
-      ah_bio_cfg3.ah_bio_active = PROPERTY_DISABLE;
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_AH_BIO_CFG3,
-                                  (uint8_t *)&ah_bio_cfg3, 1);
-
-      if (ctx->mdelay != NULL)
-      {
-        ctx->mdelay(10);
-      }
-      break;
-    default:
-      ctrl1.sw_reset = PROPERTY_ENABLE;
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
-      break;
+    goto exit;
   }
 
+  ctrl4.bdu = PROPERTY_ENABLE;
+  ctrl1.if_add_inc = PROPERTY_ENABLE;
+
+  ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
+  ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
+
+exit:
+  return ret;
+}
+
+/**
+  * @brief Enables embedded functions
+  *
+  * @param  ctx      read / write interface definitions
+  * @param  state    enables / disables embedded functions
+  * @retval          0: reboot has been performed, -1: error
+  *
+  */
+int32_t st1vafe3bx_embedded_state_set(const stmdev_ctx_t *ctx, uint8_t state)
+{
+  int32_t ret;
+  st1vafe3bx_ctrl4_t ctrl4;
+
+  ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
+
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  ctrl4.emb_func_en = state;
+
+  ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
+
+
+exit:
+  return ret;
+}
+
+/**
+  * @brief Perform device reboot (boot time: 25 ms)
+  *
+  * @param  ctx      read / write interface definitions
+  * @retval          0: reboot has been performed, -1: error
+  *
+  */
+int32_t st1vafe3bx_reboot(const stmdev_ctx_t *ctx)
+{
+  st1vafe3bx_ctrl4_t ctrl4;
+  uint8_t cnt = 0;
+  int32_t ret = 0;
+
+  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
+
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  ctrl4.boot = PROPERTY_ENABLE;
+  ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  do
+  {
+    ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
+    if (ret != 0)
+    {
+      break;
+    }
+
+    /* boot procedure ended correctly */
+    if (ctrl4.boot == 0U)
+    {
+      break;
+    }
+
+    if (ctx->mdelay != NULL)
+    {
+      ctx->mdelay(25); /* 25 ms of boot time */
+    }
+  } while (cnt++ < 5U);
+
+  if (cnt >= 5U)
+  {
+    ret = -1;  /* boot procedure failed */
+  }
+
+exit:
+  return ret;
+}
+
+/**
+  * @brief Software reset: resets configuration registers.
+  *
+  * @param  ctx      read / write interface definitions
+  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t st1vafe3bx_sw_reset(const stmdev_ctx_t *ctx)
+{
+  st1vafe3bx_ctrl1_t ctrl1 = {0};
+  int32_t ret;
+  uint8_t cnt = 0;
+
+  ctrl1.sw_reset = PROPERTY_ENABLE;
+
+  ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  do
+  {
+    ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
+    if (ret != 0)
+    {
+      break;
+    }
+
+    /* sw-reset procedure ended correctly */
+    if (ctrl1.sw_reset == 0U)
+    {
+      break;
+    }
+
+    if (ctx->mdelay != NULL)
+    {
+      ctx->mdelay(1); /* should be 50 us */
+    }
+  } while (cnt++ < 5U);
+
+  if (cnt >= 5U || ret != 0)
+  {
+    ret = -1;  /* sw-reset procedure failed */
+  }
+
+exit:
   return ret;
 }
 
@@ -385,6 +388,11 @@ int32_t st1vafe3bx_status_get(const stmdev_ctx_t *ctx, st1vafe3bx_status_t *val)
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   val->sw_reset = ctrl1.sw_reset;
   val->boot     = ctrl4.boot;
   val->drdy     = status_register.drdy;
@@ -406,6 +414,12 @@ int32_t st1vafe3bx_drdy_status_get(const stmdev_ctx_t *ctx, st1vafe3bx_status_t 
   int32_t ret;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_STATUS, (uint8_t *)&status_register, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   val->drdy     = status_register.drdy;
 
   return ret;
@@ -426,9 +440,19 @@ int32_t st1vafe3bx_embedded_status_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
-  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_STATUS,
-                             (uint8_t *)&status, 1);
+
+  if (ret == 0)
+  {
+    ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_STATUS,
+                               (uint8_t *)&status, 1);
+  }
+
   ret += st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_MAIN_MEM_BANK);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   val->is_step_det = status.is_step_det;
   val->is_tilt = status.is_tilt;
@@ -479,6 +503,11 @@ int32_t st1vafe3bx_data_ready_mode_get(const stmdev_ctx_t *ctx,
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch ((ctrl1.drdy_pulsed))
   {
     case ST1VAFE3BX_DRDY_LATCHED:
@@ -509,89 +538,229 @@ int32_t st1vafe3bx_mode_set(const stmdev_ctx_t *ctx, const st1vafe3bx_md_t *val)
   st1vafe3bx_ctrl3_t ctrl3;
   st1vafe3bx_ctrl5_t ctrl5;
   int32_t ret;
+  uint8_t hp_en_change = 0U;
 
-  ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL5, (uint8_t *)&ctrl5, 1);
-  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL3, (uint8_t *)&ctrl3, 1);
+  ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL3, (uint8_t *)&ctrl3, 1);
+  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL5, (uint8_t *)&ctrl5, 1);
 
-  ctrl5.odr = (uint8_t)val->odr & 0xFU;
-  ctrl5.fs = (uint8_t)val->fs;
-
-  /* select high performance mode */
-  switch (val->odr & 0x30U)
+  if (ret != 0)
   {
-    case 0x30U:
-    case 0x10U:
-      /* high performance mode */
-      ctrl3.hp_en = 1U;
-      break;
-    case 0x00U:
-    case 0x20U:
-    default:
-      /* low power mode */
-      ctrl3.hp_en = 0U;
-      break;
+    return ret;
   }
 
-  /* set the bandwidth */
-  switch (val->odr)
+  uint8_t hp_en = (val->odr & 0x10) >> 4;
+
+  if (ctrl3.hp_en != hp_en)
   {
-    /* no anti-aliasing filter present */
-    default:
-    case ST1VAFE3BX_OFF:
-    case ST1VAFE3BX_1Hz6_ULP:
-    case ST1VAFE3BX_3Hz_ULP:
-    case ST1VAFE3BX_25Hz_ULP:
-      ctrl5.bw = 0x0;
-      break;
+    hp_en_change = 1U;
+  }
 
-    /* low-power mode with ODR < 50 Hz */
-    case ST1VAFE3BX_6Hz_LP:
-    case ST1VAFE3BX_12Hz5_LP:
-    case ST1VAFE3BX_25Hz_LP:
-      switch (val->bw)
-      {
-        default:
-          /* value not allowed */
-          ret = -1;
-          break;
-        case ST1VAFE3BX_BW_LP_12Hz5:
-          ctrl5.bw = 0x1;
-          break;
-        case ST1VAFE3BX_BW_LP_6Hz:
-          ctrl5.bw = 0x2;
-          break;
-        case ST1VAFE3BX_BW_LP_3Hz:
-          ctrl5.bw = 0x3;
-          break;
-      }
-      break;
+  /* Set the power mode */
+  ctrl3.hp_en = hp_en;
 
-    /* High Performance cases */
-    case ST1VAFE3BX_800Hz_VAFE_HP:
-    case ST1VAFE3BX_3200Hz_VAFE_LP:
-    case ST1VAFE3BX_50Hz_LP:
-    case ST1VAFE3BX_100Hz_LP:
-    case ST1VAFE3BX_200Hz_LP:
-    case ST1VAFE3BX_400Hz_LP:
-    case ST1VAFE3BX_800Hz_LP:
-    case ST1VAFE3BX_TRIG_PIN:
-    case ST1VAFE3BX_TRIG_SW:
-    case ST1VAFE3BX_6Hz_HP:
-    case ST1VAFE3BX_12Hz5_HP:
-    case ST1VAFE3BX_25Hz_HP:
-    case ST1VAFE3BX_50Hz_HP:
-    case ST1VAFE3BX_100Hz_HP:
-    case ST1VAFE3BX_200Hz_HP:
-    case ST1VAFE3BX_400Hz_HP:
-    case ST1VAFE3BX_800Hz_HP:
-      ctrl5.bw = (uint8_t)val->bw;
-      break;
+  if (hp_en_change == 1U  &&  ctrl5.odr != 0x00)
+  {
+    /* Power down to allow HP_EN change (see: ST1VAFE3BX datasheet) */
+    uint32_t timeout = (ctrl5.odr == 0x01U) ? 625U   /*     1.6 Hz */
+                       : (ctrl5.odr == 0x02U) ? 335U   /*     3.0 Hz */
+                       : (ctrl5.odr == 0x03U) ?  40U   /*    25.0 Hz */
+                       : (ctrl5.odr == 0x04U) ? 170U   /*     6.0 Hz */
+                       : (ctrl5.odr == 0x05U) ?  80U   /*    12.5 Hz */
+                       : (ctrl5.odr == 0x06U) ?  40U   /*    25.0 Hz */
+                       :                         25U;  /* >= 50.0 Hz */
+
+    ctrl5.odr = 0x00U;
+    ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL5, (uint8_t *)&ctrl5, 1);
+
+    /* Wait one ODR period (see AN6160 Section 3.1) */
+    if (ctx->mdelay != NULL)
+    {
+      ctx->mdelay(timeout);
+    }
+  }
+
+  /* Set the ODR, full scale */
+  ctrl5.odr = (val->odr == ST1VAFE3BX_TRIG_PIN) ? 0x0FU : (uint8_t)val->odr & 0x0FU;
+  ctrl5.fs  = (uint8_t)val->fs;
+
+  /* Set the bandwidth */
+  if (ctx->priv_data && ((st1vafe3bx_priv_t *)(ctx->priv_data))->vafe_only == 1)
+  {
+    switch (val->odr)
+    {
+      case ST1VAFE3BX_800Hz_VAFE_HP:
+        switch (val->bw)
+        {
+          case ST1VAFE3BX_BW_VAFE_360Hz:
+            ctrl5.bw = 0x00U;
+            break;
+
+          case ST1VAFE3BX_BW_VAFE_180Hz:
+            ctrl5.bw = 0x01U;
+            break;
+
+          case ST1VAFE3BX_BW_VAFE_90Hz:
+            ctrl5.bw = 0x02U;
+            break;
+
+          case ST1VAFE3BX_BW_VAFE_45Hz:
+            ctrl5.bw = 0x03U;
+            break;
+
+          default:
+            /* Value not allowed */
+            ret += 1;
+            break;
+        }
+        break;
+
+      case ST1VAFE3BX_3200Hz_VAFE_LP:
+        switch (val->bw)
+        {
+          case ST1VAFE3BX_BW_VAFE_1600Hz:
+            ctrl5.bw = 0x00U;
+            break;
+
+          case ST1VAFE3BX_BW_VAFE_700Hz:
+            ctrl5.bw = 0x01U;
+            break;
+
+          case ST1VAFE3BX_BW_VAFE_360Hz:
+            ctrl5.bw = 0x02U;
+            break;
+
+          case ST1VAFE3BX_BW_VAFE_180Hz:
+            ctrl5.bw = 0x03U;
+            break;
+
+          default:
+            /* Value not allowed */
+            ret += 1;
+            break;
+        }
+        break;
+
+      default:
+        /* Value not allowed */
+        ret += 1;
+        break;
+    }
+  }
+  else
+  {
+    switch (val->odr)
+    {
+      /* No anti-aliasing filter present */
+      default:
+      case ST1VAFE3BX_OFF:
+      case ST1VAFE3BX_1Hz6_ULP:
+      case ST1VAFE3BX_3Hz_ULP:
+      case ST1VAFE3BX_25Hz_ULP:
+      case ST1VAFE3BX_TRIG_PIN:
+      case ST1VAFE3BX_TRIG_SW:
+        ctrl5.bw = 0x00U;
+        break;
+
+      /* The low-power mode with ODR < 50 Hz */
+      case ST1VAFE3BX_6Hz_LP:
+        switch (val->bw)
+        {
+          case ST1VAFE3BX_BW_LP_3Hz:
+            ctrl5.bw = 0x03U;
+            break;
+
+          default:
+            /* Value not allowed */
+            ret += 1;
+            break;
+        }
+        break;
+
+      case ST1VAFE3BX_12Hz5_LP:
+        switch (val->bw)
+        {
+          case ST1VAFE3BX_BW_LP_6Hz:
+            ctrl5.bw = 0x02U;
+            break;
+
+          case ST1VAFE3BX_BW_LP_3Hz:
+            ctrl5.bw = 0x03U;
+            break;
+
+          default:
+            /* Value not allowed */
+            ret += 1;
+            break;
+        }
+        break;
+
+      case ST1VAFE3BX_25Hz_LP:
+        switch (val->bw)
+        {
+          case ST1VAFE3BX_BW_LP_12Hz5:
+            ctrl5.bw = 0x01U;
+            break;
+
+          case ST1VAFE3BX_BW_LP_6Hz:
+            ctrl5.bw = 0x02U;
+            break;
+
+          case ST1VAFE3BX_BW_LP_3Hz:
+            ctrl5.bw = 0x03U;
+            break;
+
+          default:
+            /* Value not allowed */
+            ret += 1;
+            break;
+        }
+        break;
+
+      /* The low-power mode with ODR >= 50 Hz, High Performance cases */
+      case ST1VAFE3BX_50Hz_LP:
+      case ST1VAFE3BX_100Hz_LP:
+      case ST1VAFE3BX_200Hz_LP:
+      case ST1VAFE3BX_400Hz_LP:
+      case ST1VAFE3BX_800Hz_LP:
+      case ST1VAFE3BX_6Hz_HP:
+      case ST1VAFE3BX_12Hz5_HP:
+      case ST1VAFE3BX_25Hz_HP:
+      case ST1VAFE3BX_50Hz_HP:
+      case ST1VAFE3BX_100Hz_HP:
+      case ST1VAFE3BX_200Hz_HP:
+      case ST1VAFE3BX_400Hz_HP:
+      case ST1VAFE3BX_800Hz_HP:
+        switch (val->bw)
+        {
+          case ST1VAFE3BX_BW_ODR_div_2:
+            ctrl5.bw = 0x00U;
+            break;
+
+          case ST1VAFE3BX_BW_ODR_div_4:
+            ctrl5.bw = 0x01U;
+            break;
+
+          case ST1VAFE3BX_BW_ODR_div_8:
+            ctrl5.bw = 0x02U;
+            break;
+
+          case ST1VAFE3BX_BW_ODR_div_16:
+            ctrl5.bw = 0x03U;
+            break;
+
+          default:
+            /* Value not allowed */
+            ret += 1;
+            break;
+        }
+        break;
+    }
   }
 
   if (ret == 0)
   {
-    ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL5, (uint8_t *)&ctrl5, 1);
-    ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL3, (uint8_t *)&ctrl3, 1);
+    ret  = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL3, (uint8_t *)&ctrl3, 1);
+    ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL5, (uint8_t *)&ctrl5, 1);
   }
 
   return ret;
@@ -616,7 +785,10 @@ int32_t st1vafe3bx_mode_get(const stmdev_ctx_t *ctx, st1vafe3bx_md_t *val)
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL3, (uint8_t *)&ctrl3, 1);
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&ah_bio_cfg2, 1);
 
-  val->hp_en = ctrl3.hp_en;
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl5.odr)
   {
@@ -633,7 +805,7 @@ int32_t st1vafe3bx_mode_get(const stmdev_ctx_t *ctx, st1vafe3bx_md_t *val)
       val->odr = ST1VAFE3BX_25Hz_ULP;
       break;
     case 0x04:
-      val->odr = ST1VAFE3BX_6Hz_LP;
+      val->odr = (ctrl3.hp_en == 0x1U) ? ST1VAFE3BX_6Hz_HP : ST1VAFE3BX_6Hz_LP;
       break;
     case 0x05:
       val->odr = (ctrl3.hp_en == 0x1U) ? ST1VAFE3BX_12Hz5_HP : ST1VAFE3BX_12Hz5_LP;
@@ -723,8 +895,8 @@ int32_t st1vafe3bx_mode_get(const stmdev_ctx_t *ctx, st1vafe3bx_md_t *val)
   }
   else
   {
-    if (ctrl5.odr == ST1VAFE3BX_6Hz_LP || ctrl5.odr == ST1VAFE3BX_12Hz5_LP
-        || ctrl5.odr == ST1VAFE3BX_25Hz_LP)
+    if (val->odr == ST1VAFE3BX_6Hz_LP || val->odr == ST1VAFE3BX_12Hz5_LP
+        || val->odr == ST1VAFE3BX_25Hz_LP)
     {
       switch (ctrl5.bw)
       {
@@ -828,6 +1000,12 @@ int32_t st1vafe3bx_all_sources_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_STATUS, (uint8_t *)&status, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   val->drdy = status.drdy;
 
   if (ret == 0 && status.int_global == 0x1U)
@@ -842,6 +1020,10 @@ int32_t st1vafe3bx_all_sources_get(const stmdev_ctx_t *ctx,
                                (uint8_t *)&wu_src, 1);
     ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_TAP_SRC,
                                (uint8_t *)&tap_src, 1);
+    if (ret != 0)
+    {
+      return ret;
+    }
 
     val->six_d    = sixd_src.d6d_ia;
     val->six_d_xl = sixd_src.xl;
@@ -886,6 +1068,11 @@ int32_t st1vafe3bx_xl_data_get(const stmdev_ctx_t *ctx,
   uint8_t j;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_OUT_X_L, buff, 6);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   /* acceleration conversion */
   j = 0U;
@@ -935,6 +1122,10 @@ int32_t st1vafe3bx_ah_bio_data_get(const stmdev_ctx_t *ctx,
       ((st1vafe3bx_priv_t *)(ctx->priv_data))->vafe_only == 1)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_OUT_AH_BIO_L, buff, 2);
+    if (ret != 0)
+    {
+      return ret;
+    }
 
     data->raw = (int16_t)buff[1];
     data->raw = (data->raw * 256U) + (int16_t)buff[0];
@@ -945,6 +1136,10 @@ int32_t st1vafe3bx_ah_bio_data_get(const stmdev_ctx_t *ctx,
   {
     /* Read and discard also OUT_Z_H reg to clear drdy */
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_OUT_AH_BIO_L - 1, buff, 3);
+    if (ret != 0)
+    {
+      return ret;
+    }
 
     data->raw = (int16_t)buff[2];
     data->raw = (data->raw * 256U) + (int16_t)buff[1];
@@ -973,6 +1168,11 @@ int32_t st1vafe3bx_self_test_sign_set(const stmdev_ctx_t *ctx,
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL3, (uint8_t *)&ctrl3, 1);
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_WAKE_UP_DUR,
                              (uint8_t *)&wkup_dur, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (val)
   {
@@ -1099,6 +1299,11 @@ int32_t st1vafe3bx_i3c_configure_set(const stmdev_ctx_t *ctx,
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_I3C_IF_CTRL,
                             (uint8_t *)&i3c_cfg, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   val->drstdaa_en = i3c_cfg.dis_drstdaa;
   val->asf_on = i3c_cfg.asf_on;
 
@@ -1171,6 +1376,11 @@ int32_t st1vafe3bx_mem_bank_get(const stmdev_ctx_t *ctx,
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FUNC_CFG_ACCESS,
                             (uint8_t *)&func_cfg_access, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch ((func_cfg_access.emb_func_reg_access))
   {
     case 0x0:
@@ -1214,61 +1424,94 @@ int32_t st1vafe3bx_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
   lsb = (uint8_t)address & 0xFFU;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
-
-  if (ret == 0)
+  if (ret != 0)
   {
-    ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_RW, (uint8_t *)&page_rw, 1);
-    page_rw.page_read = PROPERTY_DISABLE;
-    page_rw.page_write = PROPERTY_ENABLE;
-    ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_RW,
-                                (uint8_t *)&page_rw, 1);
-
-    ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_SEL,
-                               (uint8_t *)&page_sel, 1);
-    page_sel.page_sel = msb;
-    page_sel.not_used0 = 1; // Default value
-    ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_SEL,
-                                (uint8_t *)&page_sel, 1);
-
-    page_address.page_addr = lsb;
-    ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_ADDRESS,
-                                (uint8_t *)&page_address, 1);
-
-    for (i = 0; i < len; i++)
-    {
-      ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_VALUE, &buf[i], 1);
-      lsb++;
-
-      /* Check if page wrap */
-      if (((lsb & 0xFFU) == 0x00U) && (ret == 0))
-      {
-        msb++;
-        ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_SEL,
-                                   (uint8_t *)&page_sel, 1);
-        page_sel.page_sel = msb;
-        page_sel.not_used0 = 1; // Default value
-        ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_SEL,
-                                    (uint8_t *)&page_sel, 1);
-      }
-
-      if (ret != 0)
-      {
-        break;
-      }
-    }
-
-    page_sel.page_sel = 0;
-    page_sel.not_used0 = 1;// Default value
-    ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_SEL,
-                                (uint8_t *)&page_sel, 1);
-
-    ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_RW, (uint8_t *)&page_rw, 1);
-    page_rw.page_read = PROPERTY_DISABLE;
-    page_rw.page_write = PROPERTY_DISABLE;
-    ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_RW,
-                                (uint8_t *)&page_rw, 1);
+    return ret;
   }
 
+  /* set page write */
+  ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+  page_rw.page_read = PROPERTY_DISABLE;
+  page_rw.page_write = PROPERTY_ENABLE;
+  ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_RW,
+                             (uint8_t *)&page_rw, 1);
+
+  /* select page */
+  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_SEL,
+                             (uint8_t *)&page_sel, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+  page_sel.page_sel = msb;
+  page_sel.not_used0 = 1; // Default value
+  ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_SEL,
+                             (uint8_t *)&page_sel, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  /* set page addr */
+  page_address.page_addr = lsb;
+  ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_ADDRESS,
+                             (uint8_t *)&page_address, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  for (i = 0; i < len; i++)
+  {
+    ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_VALUE, &buf[i], 1);
+    if (ret != 0)
+    {
+      goto exit;
+    }
+    lsb++;
+
+    /* Check if page wrap */
+    if (((lsb & 0xFFU) == 0x00U) && (ret == 0))
+    {
+      msb++;
+      ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_SEL,
+                                (uint8_t *)&page_sel, 1);
+      if (ret != 0)
+      {
+        goto exit;
+      }
+
+      page_sel.page_sel = msb;
+      page_sel.not_used0 = 1; // Default value
+      ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_SEL,
+                                 (uint8_t *)&page_sel, 1);
+      if (ret != 0)
+      {
+        goto exit;
+      }
+    }
+  }
+
+  page_sel.page_sel = 0;
+  page_sel.not_used0 = 1;// Default value
+  ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_SEL,
+                             (uint8_t *)&page_sel, 1);
+
+  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+  page_rw.page_read = PROPERTY_DISABLE;
+  page_rw.page_write = PROPERTY_DISABLE;
+  ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_RW,
+                             (uint8_t *)&page_rw, 1);
+
+exit:
   ret += st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_MAIN_MEM_BANK);
 
   return ret;
@@ -1300,61 +1543,98 @@ int32_t st1vafe3bx_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address,
   lsb = (uint8_t)address & 0xFFU;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
-
-  if (ret == 0)
+  if (ret != 0)
   {
-    ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_RW, (uint8_t *)&page_rw, 1);
-    page_rw.page_read = PROPERTY_ENABLE;
-    page_rw.page_write = PROPERTY_DISABLE;
-    ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_RW,
-                                (uint8_t *)&page_rw, 1);
-
-    ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_SEL,
-                               (uint8_t *)&page_sel, 1);
-    page_sel.page_sel = msb;
-    page_sel.not_used0 = 1; // Default value
-    ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_SEL,
-                                (uint8_t *)&page_sel, 1);
-
-    page_address.page_addr = lsb;
-    ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_ADDRESS,
-                                (uint8_t *)&page_address, 1);
-
-    for (i = 0; i < len; i++)
-    {
-      ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_VALUE, &buf[i], 1);
-      lsb++;
-
-      /* Check if page wrap */
-      if (((lsb & 0xFFU) == 0x00U) && (ret == 0))
-      {
-        msb++;
-        ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_SEL,
-                                   (uint8_t *)&page_sel, 1);
-        page_sel.page_sel = msb;
-        page_sel.not_used0 = 1; // Default value
-        ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_SEL,
-                                    (uint8_t *)&page_sel, 1);
-      }
-
-      if (ret != 0)
-      {
-        break;
-      }
-    }
-
-    page_sel.page_sel = 0;
-    page_sel.not_used0 = 1;// Default value
-    ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_SEL,
-                                (uint8_t *)&page_sel, 1);
-
-    ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_RW, (uint8_t *)&page_rw, 1);
-    page_rw.page_read = PROPERTY_DISABLE;
-    page_rw.page_write = PROPERTY_DISABLE;
-    ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_RW,
-                                (uint8_t *)&page_rw, 1);
+    return ret;
   }
 
+  /* set page read */
+  ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+  page_rw.page_read = PROPERTY_ENABLE;
+  page_rw.page_write = PROPERTY_DISABLE;
+  ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_RW,
+                             (uint8_t *)&page_rw, 1);
+
+  /* select page */
+  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_SEL,
+                             (uint8_t *)&page_sel, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+  page_rw.page_read = PROPERTY_ENABLE;
+  page_sel.page_sel = msb;
+  page_sel.not_used0 = 1; // Default value
+  ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_SEL,
+                             (uint8_t *)&page_sel, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  /* set page addr */
+  page_address.page_addr = lsb;
+  ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_ADDRESS,
+                              (uint8_t *)&page_address, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  for (i = 0; i < len; i++)
+  {
+    ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_VALUE, &buf[i], 1);
+    if (ret != 0)
+    {
+      goto exit;
+    }
+    lsb++;
+
+    /* Check if page wrap */
+    if (((lsb & 0xFFU) == 0x00U) && (ret == 0))
+    {
+      msb++;
+      ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_SEL,
+                                (uint8_t *)&page_sel, 1);
+      if (ret != 0)
+      {
+        goto exit;
+      }
+      page_sel.page_sel = msb;
+      page_sel.not_used0 = 1; // Default value
+      ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_SEL,
+                                 (uint8_t *)&page_sel, 1);
+      if (ret != 0)
+      {
+        goto exit;
+      }
+    }
+  }
+
+  page_sel.page_sel = 0;
+  page_sel.not_used0 = 1;// Default value
+  ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_SEL,
+                             (uint8_t *)&page_sel, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0)
+  {
+    goto exit;
+  }
+  page_rw.page_read = PROPERTY_DISABLE;
+  page_rw.page_write = PROPERTY_DISABLE;
+  ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_RW,
+                             (uint8_t *)&page_rw, 1);
+
+exit:
   ret += st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_MAIN_MEM_BANK);
 
   return ret;
@@ -1386,6 +1666,11 @@ int32_t st1vafe3bx_ext_clk_en_set(const stmdev_ctx_t *ctx, uint8_t val)
   int32_t ret;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EXT_CLK_CFG, (uint8_t *)&clk, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   clk.ext_clk_en = val;
   ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_EXT_CLK_CFG, (uint8_t *)&clk, 1);
 
@@ -1406,6 +1691,11 @@ int32_t st1vafe3bx_ext_clk_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EXT_CLK_CFG, (uint8_t *)&clk, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *val = clk.ext_clk_en;
 
   return ret;
@@ -1456,6 +1746,10 @@ int32_t st1vafe3bx_pin_conf_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   val->cs_pull_up = ~pin_ctrl.cs_pu_dis;
   val->sda_pull_up = pin_ctrl.sda_pu_en;
@@ -1506,6 +1800,10 @@ int32_t st1vafe3bx_int_pin_polarity_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch ((pin_ctrl.h_lactive))
   {
@@ -1566,6 +1864,10 @@ int32_t st1vafe3bx_spi_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch ((pin_ctrl.sim))
   {
@@ -1601,6 +1903,11 @@ int32_t st1vafe3bx_pin_int_route_set(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   ctrl1.int_pin_en = PROPERTY_ENABLE;
   ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL1, (uint8_t *)&ctrl1, 1);
 
@@ -1752,7 +2059,7 @@ int32_t st1vafe3bx_emb_pin_int_route_get(const stmdev_ctx_t *ctx,
     val->step_det = emb_func_int.int_step_det;
     val->fsm_lc = emb_func_int.int_fsm_lc;
   }
-  ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_MAIN_MEM_BANK);
+  ret += st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -1861,6 +2168,10 @@ int32_t st1vafe3bx_embedded_int_cfg_set(const stmdev_ctx_t *ctx,
   if (ret == 0)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_RW, (uint8_t *)&page_rw, 1);
+  }
+
+  if (ret == 0)
+  {
 
     switch (val)
     {
@@ -1874,8 +2185,8 @@ int32_t st1vafe3bx_embedded_int_cfg_set(const stmdev_ctx_t *ctx,
         break;
     }
 
-    ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_RW,
-                                (uint8_t *)&page_rw, 1);
+    ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_PAGE_RW,
+                               (uint8_t *)&page_rw, 1);
   }
 
   ret += st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_MAIN_MEM_BANK);
@@ -1901,6 +2212,9 @@ int32_t st1vafe3bx_embedded_int_cfg_get(const stmdev_ctx_t *ctx,
   if (ret == 0)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_PAGE_RW, (uint8_t *)&page_rw, 1);
+  }
+  if (ret == 0)
+  {
 
     if (page_rw.emb_func_lir == 0U)
     {
@@ -2084,6 +2398,10 @@ int32_t st1vafe3bx_fifo_data_level_get(const stmdev_ctx_t *ctx, uint16_t *val)
   int32_t ret;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FIFO_STATUS2, &buff, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   *val = buff;
 
@@ -2096,6 +2414,10 @@ int32_t st1vafe3bx_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FIFO_STATUS1, (uint8_t *)&fifo_status1, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   *val = fifo_status1.fifo_wtm_ia;
 
@@ -2110,6 +2432,10 @@ int32_t st1vafe3bx_fifo_sensor_tag_get(const stmdev_ctx_t *ctx,
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FIFO_DATA_OUT_TAG,
                             (uint8_t *)&fifo_tag, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   *val = (st1vafe3bx_fifo_sensor_tag_t) fifo_tag.tag_sensor;
 
@@ -2136,12 +2462,22 @@ int32_t st1vafe3bx_fifo_data_get(const stmdev_ctx_t *ctx,
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FIFO_DATA_OUT_TAG,
                             (uint8_t *)&fifo_tag, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   data->tag = fifo_tag.tag_sensor;
 
   switch (fifo_tag.tag_sensor)
   {
     case ST1VAFE3BX_TIMESTAMP_CFG_CHG_TAG:
       ret = st1vafe3bx_fifo_out_raw_get(ctx, fifo_raw);
+
+      if (ret != 0)
+      {
+        return ret;
+      }
 
       data->cfg_chg.cfg_change = fifo_raw[0] >> 7;
       data->cfg_chg.odr = (fifo_raw[0] >> 3) & 0xFU;
@@ -2163,6 +2499,12 @@ int32_t st1vafe3bx_fifo_data_get(const stmdev_ctx_t *ctx,
        * of 2 x 8-bits 3-axis XL at ODR/2
        */
       ret = st1vafe3bx_fifo_out_raw_get(ctx, fifo_raw);
+
+      if (ret != 0)
+      {
+        return ret;
+      }
+
       for (i = 0; i < 3; i++)
       {
         data->xl[0].raw[i] = (int16_t)fifo_raw[i] * 256U;
@@ -2172,6 +2514,11 @@ int32_t st1vafe3bx_fifo_data_get(const stmdev_ctx_t *ctx,
     case ST1VAFE3BX_STEP_COUNTER_TAG:
       /* step counted + timestamp */
       ret = st1vafe3bx_fifo_out_raw_get(ctx, fifo_raw);
+
+      if (ret != 0)
+      {
+        return ret;
+      }
 
       data->pedo.steps = fifo_raw[1];
       data->pedo.steps = (data->pedo.steps * 256U) +  fifo_raw[0];
@@ -2185,12 +2532,22 @@ int32_t st1vafe3bx_fifo_data_get(const stmdev_ctx_t *ctx,
       /* vAFE data (16 bit) if vafe_only mode is enabled */
       ret = st1vafe3bx_fifo_out_raw_get(ctx, fifo_raw);
 
+      if (ret != 0)
+      {
+        return ret;
+      }
+
       data->ah_bio.raw = (int16_t)fifo_raw[0] + (int16_t)fifo_raw[1] * 256U;
       data->ah_bio.mv = st1vafe3bx_from_lsb_to_mv(data->ah_bio.raw);
       break;
     case ST1VAFE3BX_XL_ONLY:
     case ST1VAFE3BX_XL_AND_AH_VAFE1_TAG:
       ret = st1vafe3bx_fifo_out_raw_get(ctx, fifo_raw);
+
+      if (ret != 0)
+      {
+        return ret;
+      }
 
       /*
        * XL data(12bit) + vAFE(12bit) if xl_only bit in FIFO WTM
@@ -2457,12 +2814,17 @@ int32_t st1vafe3bx_ah_bio_config_get(const stmdev_ctx_t *ctx,
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_enter_vafe_only(stmdev_ctx_t *ctx)
+int32_t st1vafe3bx_enter_vafe_only(const stmdev_ctx_t *ctx)
 {
   st1vafe3bx_ah_bio_cfg2_t cfg2;
   int32_t ret;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&cfg2, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   cfg2.ah_bio_en = 1;
   ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&cfg2, 1);
 
@@ -2485,12 +2847,17 @@ int32_t st1vafe3bx_enter_vafe_only(stmdev_ctx_t *ctx)
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
-int32_t st1vafe3bx_exit_vafe_only(stmdev_ctx_t *ctx)
+int32_t st1vafe3bx_exit_vafe_only(const stmdev_ctx_t *ctx)
 {
   st1vafe3bx_ah_bio_cfg2_t cfg2;
   int32_t ret;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&cfg2, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   cfg2.ah_bio_en = 0;
   ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2, (uint8_t *)&cfg2, 1);
 
@@ -2509,9 +2876,9 @@ int32_t st1vafe3bx_exit_vafe_only(stmdev_ctx_t *ctx)
 /**
   * @brief  Device active mode when it is set in the AH / vAFE only state[set]
   *
-  * @param  ctx      read / write interface definitions
-  * @param  val      1: enable active state - 0: disable active state
-  * @retval          interface status (MANDATORY: return 0 -> no Error)
+  * @param  ctx        read / write interface definitions
+  * @param  filter_on  1: enable active state - 0: disable active state
+  * @retval            interface status (MANDATORY: return 0 -> no Error)
   *
   */
 int32_t st1vafe3bx_ah_bio_active(const stmdev_ctx_t *ctx, uint8_t filter_on)
@@ -2520,8 +2887,17 @@ int32_t st1vafe3bx_ah_bio_active(const stmdev_ctx_t *ctx, uint8_t filter_on)
   st1vafe3bx_ctrl3_t ctrl3;
   int32_t ret;
 
+  if (ctx->priv_data && ((st1vafe3bx_priv_t *)(ctx->priv_data))->vafe_only == 0)
+  {
+    return -1;
+  }
+
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG3, (uint8_t *)&cfg3, 1);
-  cfg3.ah_bio_active = 0;
+  if (ret != 0)
+  {
+    return ret;
+  }
+  cfg3.ah_bio_active = 1;
   ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_AH_BIO_CFG3, (uint8_t *)&cfg3, 1);
 
   if (ctx->mdelay != NULL)
@@ -2530,6 +2906,10 @@ int32_t st1vafe3bx_ah_bio_active(const stmdev_ctx_t *ctx, uint8_t filter_on)
   }
 
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL3, (uint8_t *)&ctrl3, 1);
+  if (ret != 0)
+  {
+    return ret;
+  }
   ctrl3.hp_en = filter_on;
   ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL3, (uint8_t *)&ctrl3, 1);
 
@@ -2568,29 +2948,41 @@ int32_t st1vafe3bx_stpcnt_mode_set(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
-  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_A,
-                             (uint8_t *)&emb_func_en_a, 1);
-  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_B,
-                             (uint8_t *)&emb_func_en_b, 1);
-  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_FIFO_EN,
-                             (uint8_t *)&emb_func_fifo_en, 1);
-
-  if ((val.false_step_rej == PROPERTY_ENABLE)
-      && ((emb_func_en_a.mlc_before_fsm_en &
-           emb_func_en_b.mlc_en) == PROPERTY_DISABLE))
+  if (ret == 0)
   {
-    emb_func_en_a.mlc_before_fsm_en = PROPERTY_ENABLE;
+    ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_A,
+                              (uint8_t *)&emb_func_en_a, 1);
+    ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_B,
+                               (uint8_t *)&emb_func_en_b, 1);
+    ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_FIFO_EN,
+                               (uint8_t *)&emb_func_fifo_en, 1);
   }
 
-  emb_func_fifo_en.step_counter_fifo_en = val.step_counter_in_fifo;
-  ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_EMB_FUNC_FIFO_EN,
-                              (uint8_t *)&emb_func_fifo_en, 1);
+  if (ret == 0)
+  {
+    if ((val.false_step_rej == PROPERTY_ENABLE)
+        && ((emb_func_en_a.mlc_before_fsm_en &
+             emb_func_en_b.mlc_en) == PROPERTY_DISABLE))
+    {
+      emb_func_en_a.mlc_before_fsm_en = PROPERTY_ENABLE;
+    }
 
-  emb_func_en_a.pedo_en = val.step_counter_enable;
-  ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_A,
-                              (uint8_t *)&emb_func_en_a, 1);
+    emb_func_fifo_en.step_counter_fifo_en = val.step_counter_in_fifo;
+    ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_EMB_FUNC_FIFO_EN,
+                                (uint8_t *)&emb_func_fifo_en, 1);
+
+    emb_func_en_a.pedo_en = val.step_counter_enable;
+    ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_A,
+                                (uint8_t *)&emb_func_en_a, 1);
+  }
 
   ret += st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_MAIN_MEM_BANK);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   ret += st1vafe3bx_ln_pg_read(ctx, ST1VAFE3BX_EMB_ADV_PG_0 +
                                ST1VAFE3BX_PEDO_CMD_REG,
                                (uint8_t *)&pedo_cmd_reg, 1);
@@ -2622,15 +3014,26 @@ int32_t st1vafe3bx_stpcnt_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
-  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_A,
-                             (uint8_t *)&emb_func_en_a, 1);
+  if (ret == 0)
+  {
+    ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_A,
+                               (uint8_t *)&emb_func_en_a, 1);
+  }
   ret += st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_MAIN_MEM_BANK);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   ret += st1vafe3bx_ln_pg_read(ctx, ST1VAFE3BX_EMB_ADV_PG_0 +
                                ST1VAFE3BX_PEDO_CMD_REG,
                                (uint8_t *)&pedo_cmd_reg, 1);
-  val->false_step_rej = pedo_cmd_reg.fp_rejection_en;
-  val->step_counter_enable = emb_func_en_a.pedo_en;
+  if (ret == 0)
+  {
+    val->false_step_rej = pedo_cmd_reg.fp_rejection_en;
+    val->step_counter_enable = emb_func_en_a.pedo_en;
+  }
 
   return ret;
 }
@@ -2649,8 +3052,16 @@ int32_t st1vafe3bx_stpcnt_steps_get(const stmdev_ctx_t *ctx, uint16_t *val)
   int32_t ret;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
-  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_STEP_COUNTER_L, &buff[0], 2);
+  if (ret == 0)
+  {
+    ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_STEP_COUNTER_L, &buff[0], 2);
+  }
   ret += st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_MAIN_MEM_BANK);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   *val = buff[1];
   *val = (*val * 256U) + buff[0];
@@ -2676,6 +3087,9 @@ int32_t st1vafe3bx_stpcnt_rst_step_set(const stmdev_ctx_t *ctx)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_SRC,
                               (uint8_t *)&emb_func_src, 1);
+  }
+  if (ret == 0)
+  {
     emb_func_src.pedo_rst_step = 1;
     ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_EMB_FUNC_SRC,
                                 (uint8_t *)&emb_func_src, 1);
@@ -2723,7 +3137,10 @@ int32_t st1vafe3bx_stpcnt_debounce_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ret = st1vafe3bx_ln_pg_read(ctx, ST1VAFE3BX_EMB_ADV_PG_0 +
                               ST1VAFE3BX_PEDO_DEB_STEPS_CONF,
                               (uint8_t *)&pedo_deb_steps_conf, 1);
-  *val = pedo_deb_steps_conf.deb_step;
+  if (ret == 0)
+  {
+    *val = pedo_deb_steps_conf.deb_step;
+  }
 
   return ret;
 }
@@ -2767,6 +3184,11 @@ int32_t st1vafe3bx_stpcnt_period_get(const stmdev_ctx_t *ctx, uint16_t *val)
   ret = st1vafe3bx_ln_pg_read(ctx, ST1VAFE3BX_EMB_ADV_PG_0 +
                               ST1VAFE3BX_PEDO_SC_DELTAT_L,
                               (uint8_t *)buff, 2);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *val = buff[1];
   *val = (*val * 256U) + buff[0];
 
@@ -2802,6 +3224,9 @@ int32_t st1vafe3bx_tilt_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_A,
                               (uint8_t *)&emb_func_en_a, 1);
+  }
+  if (ret == 0)
+  {
     emb_func_en_a.tilt_en = val;
     ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_A,
                                 (uint8_t *)&emb_func_en_a, 1);
@@ -2830,6 +3255,9 @@ int32_t st1vafe3bx_tilt_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_A,
                               (uint8_t *)&emb_func_en_a, 1);
+  }
+  if (ret == 0)
+  {
     *val = emb_func_en_a.tilt_en;
   }
 
@@ -2867,6 +3295,9 @@ int32_t st1vafe3bx_sigmot_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_A,
                               (uint8_t *)&emb_func_en_a, 1);
+  }
+  if (ret == 0)
+  {
     emb_func_en_a.sign_motion_en = val;
     ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_A,
                                 (uint8_t *)&emb_func_en_a, 1);
@@ -2895,6 +3326,9 @@ int32_t st1vafe3bx_sigmot_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_A,
                               (uint8_t *)&emb_func_en_a, 1);
+  }
+  if (ret == 0)
+  {
     *val = emb_func_en_a.sign_motion_en;
   }
 
@@ -2933,22 +3367,20 @@ int32_t st1vafe3bx_ff_duration_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_WAKE_UP_DUR,
                             (uint8_t *)&wake_up_dur, 1);
-
-  if (ret == 0)
+  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FREE_FALL,
+                             (uint8_t *)&free_fall, 1);
+  if (ret != 0)
   {
-    wake_up_dur.ff_dur = (val >> 5) & 0x1U;
-    ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_WAKE_UP_DUR,
-                               (uint8_t *)&wake_up_dur, 1);
+    return ret;
   }
 
-  if (ret == 0)
-  {
-    ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FREE_FALL,
+  wake_up_dur.ff_dur = (val >> 5) & 0x1U;
+  free_fall.ff_dur = val & 0x1FU;
+
+  ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_WAKE_UP_DUR,
+                             (uint8_t *)&wake_up_dur, 1);
+  ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_FREE_FALL,
                               (uint8_t *)&free_fall, 1);
-    free_fall.ff_dur = val & 0x1FU;
-    ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_FREE_FALL,
-                                (uint8_t *)&free_fall, 1);
-  }
 
   return ret;
 }
@@ -2974,6 +3406,11 @@ int32_t st1vafe3bx_ff_duration_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FREE_FALL,
                              (uint8_t *)&free_fall, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *val = (wake_up_dur.ff_dur << 5) | free_fall.ff_dur;
 
   return ret;
@@ -2996,6 +3433,12 @@ int32_t st1vafe3bx_ff_thresholds_set(const stmdev_ctx_t *ctx,
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FREE_FALL,
                             (uint8_t *)&free_fall, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   free_fall.ff_ths = ((uint8_t)val & 0x7U);
   ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_FREE_FALL,
                               (uint8_t *)&free_fall, 1);
@@ -3020,6 +3463,11 @@ int32_t st1vafe3bx_ff_thresholds_get(const stmdev_ctx_t *ctx,
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FREE_FALL,
                             (uint8_t *)&free_fall, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (free_fall.ff_ths)
   {
@@ -3116,6 +3564,11 @@ int32_t st1vafe3bx_sixd_config_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_SIXD, (uint8_t *)&sixd, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   val->mode = (st1vafe3bx_mode_t)sixd.d4d_en;
 
@@ -3252,40 +3705,41 @@ int32_t st1vafe3bx_wakeup_config_get(const stmdev_ctx_t *ctx,
                              (uint8_t *)&wup_dur_ext, 1);
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_INTERRUPT_CFG,
                              (uint8_t *)&int_cfg, 1);
-  ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
+  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_CTRL4, (uint8_t *)&ctrl4, 1);
 
-  if (ret == 0)
+  if (ret != 0)
   {
-    switch (wup_dur.wake_dur)
-    {
-      case 0x0:
-        val->wake_dur = (wup_dur_ext.wu_dur_extended == 1U) ?
-                        ST1VAFE3BX_3_ODR : ST1VAFE3BX_0_ODR;
-        break;
-
-      case 0x1:
-        val->wake_dur = (wup_dur_ext.wu_dur_extended == 1U) ?
-                        ST1VAFE3BX_7_ODR : ST1VAFE3BX_1_ODR;
-        break;
-
-      case 0x2:
-        val->wake_dur = (wup_dur_ext.wu_dur_extended == 1U) ?
-                        ST1VAFE3BX_11_ODR : ST1VAFE3BX_2_ODR;
-        break;
-
-      case 0x3:
-      default:
-        val->wake_dur = ST1VAFE3BX_15_ODR;
-        break;
-    }
-
-    val->sleep_dur = wup_dur.sleep_dur;
-
-    val->wake_ths_weight = int_cfg.wake_ths_w;
-    val->wake_ths = wup_ths.wk_ths;
-    val->wake_enable = (st1vafe3bx_wake_enable_t)wup_ths.sleep_on;
-    val->inact_odr = (st1vafe3bx_inact_odr_t)ctrl4.inact_odr;
+    return ret;
   }
+
+  switch (wup_dur.wake_dur)
+  {
+    case 0x0:
+      val->wake_dur = (wup_dur_ext.wu_dur_extended == 1U) ?
+                      ST1VAFE3BX_3_ODR : ST1VAFE3BX_0_ODR;
+      break;
+
+    case 0x1:
+      val->wake_dur = (wup_dur_ext.wu_dur_extended == 1U) ?
+                      ST1VAFE3BX_7_ODR : ST1VAFE3BX_1_ODR;
+      break;
+
+    case 0x2:
+      val->wake_dur = (wup_dur_ext.wu_dur_extended == 1U) ?
+                      ST1VAFE3BX_11_ODR : ST1VAFE3BX_2_ODR;
+      break;
+
+    case 0x3:
+    default:
+      val->wake_dur = ST1VAFE3BX_15_ODR;
+      break;
+  }
+
+  val->sleep_dur = wup_dur.sleep_dur;
+  val->wake_ths_weight = int_cfg.wake_ths_w;
+  val->wake_ths = wup_ths.wk_ths;
+  val->wake_enable = (st1vafe3bx_wake_enable_t)wup_ths.sleep_on;
+  val->inact_odr = (st1vafe3bx_inact_odr_t)ctrl4.inact_odr;
 
   return ret;
 }
@@ -3449,6 +3903,12 @@ int32_t st1vafe3bx_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_INTERRUPT_CFG,
                             (uint8_t *)&int_cfg, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *val = int_cfg.timestamp_en;
 
   return ret;
@@ -3470,6 +3930,12 @@ int32_t st1vafe3bx_timestamp_raw_get(const stmdev_ctx_t *ctx, uint32_t *val)
   int32_t ret;
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_TIMESTAMP0, buff, 4);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *val = buff[3];
   *val = (*val * 256U) +  buff[2];
   *val = (*val * 256U) +  buff[1];
@@ -3512,7 +3978,10 @@ int32_t st1vafe3bx_long_cnt_flag_data_ready_get(const stmdev_ctx_t *ctx,
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_STATUS,
                               (uint8_t *)&emb_func_status, 1);
+  }
 
+  if (ret == 0)
+  {
     *val = emb_func_status.is_fsm_lc;
   }
 
@@ -3540,7 +4009,10 @@ int32_t st1vafe3bx_emb_fsm_en_set(const stmdev_ctx_t *ctx, uint8_t val)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_B,
                               (uint8_t *)&emb_func_en_b, 1);
+  }
 
+  if (ret == 0)
+  {
     emb_func_en_b.fsm_en = (uint8_t)val;
 
     ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_B,
@@ -3571,11 +4043,12 @@ int32_t st1vafe3bx_emb_fsm_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_B,
                               (uint8_t *)&emb_func_en_b, 1);
+  }
+
+  if (ret == 0)
+  {
 
     *val = emb_func_en_b.fsm_en;
-
-    ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_B,
-                                (uint8_t *)&emb_func_en_b, 1);
   }
 
   ret += st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_MAIN_MEM_BANK);
@@ -3609,7 +4082,10 @@ int32_t st1vafe3bx_fsm_enable_set(const stmdev_ctx_t *ctx,
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_B,
                               (uint8_t *)&emb_func_en_b, 1);
+  }
 
+  if (ret == 0)
+  {
     if ((val->fsm_enable.fsm1_en |
          val->fsm_enable.fsm2_en |
          val->fsm_enable.fsm3_en |
@@ -3708,6 +4184,10 @@ int32_t st1vafe3bx_long_cnt_get(const stmdev_ctx_t *ctx, uint16_t *val)
   if (ret == 0)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FSM_LONG_COUNTER_L, buff, 2);
+  }
+
+  if (ret == 0)
+  {
     *val = buff[1];
     *val = (*val * 256U) + buff[0];
   }
@@ -3773,16 +4253,24 @@ int32_t st1vafe3bx_fsm_data_rate_set(const stmdev_ctx_t *ctx,
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2,
                             (uint8_t *)&ah_bio_cfg2, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   ret += st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
   if (ret == 0)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FSM_ODR,
                               (uint8_t *)&fsm_odr_reg, 1);
+  }
 
+  if (ret == 0)
+  {
     fsm_odr_reg.fsm_odr = (uint8_t)val & 0xfU;
-    ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_FSM_ODR,
-                                (uint8_t *)&fsm_odr_reg, 1);
+    ret = st1vafe3bx_write_reg(ctx, ST1VAFE3BX_FSM_ODR,
+                               (uint8_t *)&fsm_odr_reg, 1);
   }
 
   ret += st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_MAIN_MEM_BANK);
@@ -3806,9 +4294,15 @@ int32_t st1vafe3bx_fsm_data_rate_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
-  ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FSM_ODR,
-                             (uint8_t *)&fsm_odr_reg, 1);
+
+  if (ret == 0)
+  {
+    ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_FSM_ODR,
+                               (uint8_t *)&fsm_odr_reg, 1);
+  }
+
   ret += st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_MAIN_MEM_BANK);
+
   ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2,
                              (uint8_t *)&ah_bio_cfg2, 1);
 
@@ -3898,7 +4392,10 @@ int32_t st1vafe3bx_fsm_init_set(const stmdev_ctx_t *ctx, uint8_t val)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_INIT_B,
                               (uint8_t *)&emb_func_init_b, 1);
+  }
 
+  if (ret == 0)
+  {
     emb_func_init_b.fsm_init = (uint8_t)val;
 
     ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_EMB_FUNC_INIT_B,
@@ -3929,7 +4426,10 @@ int32_t st1vafe3bx_fsm_init_get(const stmdev_ctx_t *ctx, uint8_t *val)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_INIT_B,
                               (uint8_t *)&emb_func_init_b, 1);
+  }
 
+  if (ret == 0)
+  {
     *val = emb_func_init_b.fsm_init;
   }
 
@@ -3957,6 +4457,10 @@ int32_t st1vafe3bx_fsm_fifo_en_set(const stmdev_ctx_t *ctx, uint8_t val)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_FIFO_EN,
                               (uint8_t *)&fifo_reg, 1);
+  }
+
+  if (ret == 0)
+  {
     fifo_reg.fsm_fifo_en = val;
     ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_EMB_FUNC_FIFO_EN,
                                 (uint8_t *)&fifo_reg, 1);
@@ -3986,6 +4490,10 @@ int32_t st1vafe3bx_fsm_fifo_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_FIFO_EN,
                               (uint8_t *)&fifo_reg, 1);
+  }
+
+  if (ret == 0)
+  {
     *val = fifo_reg.fsm_fifo_en;
   }
 
@@ -4036,6 +4544,12 @@ int32_t st1vafe3bx_long_cnt_int_value_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = st1vafe3bx_ln_pg_read(ctx, ST1VAFE3BX_FSM_LC_TIMEOUT_L, buff, 2);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *val = buff[1];
   *val = (*val * 256U) + buff[0];
 
@@ -4114,6 +4628,11 @@ int32_t st1vafe3bx_fsm_start_address_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = st1vafe3bx_ln_pg_read(ctx, ST1VAFE3BX_FSM_START_ADD_L, buff, 2);
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *val = buff[1];
   *val = (*val * 256U) +  buff[0];
 
@@ -4156,7 +4675,10 @@ int32_t st1vafe3bx_mlc_set(const stmdev_ctx_t *ctx, st1vafe3bx_mlc_mode_t val)
                               (uint8_t *)&emb_en_a, 1);
     ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_B,
                                (uint8_t *)&emb_en_b, 1);
+  }
 
+  if (ret == 0)
+  {
     switch (val)
     {
       case ST1VAFE3BX_MLC_OFF:
@@ -4210,7 +4732,10 @@ int32_t st1vafe3bx_mlc_get(const stmdev_ctx_t *ctx, st1vafe3bx_mlc_mode_t *val)
                               (uint8_t *)&emb_en_a, 1);
     ret += st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_EN_B,
                                (uint8_t *)&emb_en_b, 1);
+  }
 
+  if (ret == 0)
+  {
     if (emb_en_a.mlc_before_fsm_en == 0U && emb_en_b.mlc_en == 0U)
     {
       *val = ST1VAFE3BX_MLC_OFF;
@@ -4288,12 +4813,21 @@ int32_t st1vafe3bx_mlc_data_rate_set(const stmdev_ctx_t *ctx,
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2,
                             (uint8_t *)&ah_bio_cfg2, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   ret += st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
   if (ret == 0)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_MLC_ODR, (uint8_t *)&reg, 1);
+  }
 
+  if (ret == 0)
+  {
     reg.mlc_odr = (uint8_t)val & 0xfU;
     ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_MLC_ODR, (uint8_t *)&reg, 1);
   }
@@ -4320,12 +4854,21 @@ int32_t st1vafe3bx_mlc_data_rate_get(const stmdev_ctx_t *ctx,
 
   ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_AH_BIO_CFG2,
                             (uint8_t *)&ah_bio_cfg2, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   ret += st1vafe3bx_mem_bank_set(ctx, ST1VAFE3BX_EMBED_FUNC_MEM_BANK);
 
   if (ret == 0)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_MLC_ODR, (uint8_t *)&reg, 1);
+  }
 
+  if (ret == 0)
+  {
     /* depends on vAFE mode only enabled */
     if (ah_bio_cfg2.ah_bio_en == 0x1U)
     {
@@ -4404,6 +4947,10 @@ int32_t st1vafe3bx_mlc_fifo_en_set(const stmdev_ctx_t *ctx, uint8_t val)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_FIFO_EN,
                               (uint8_t *)&fifo_reg, 1);
+  }
+
+  if (ret == 0)
+  {
     fifo_reg.mlc_fifo_en = val;
     ret += st1vafe3bx_write_reg(ctx, ST1VAFE3BX_EMB_FUNC_FIFO_EN,
                                 (uint8_t *)&fifo_reg, 1);
@@ -4433,6 +4980,10 @@ int32_t st1vafe3bx_mlc_fifo_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
   {
     ret = st1vafe3bx_read_reg(ctx, ST1VAFE3BX_EMB_FUNC_FIFO_EN,
                               (uint8_t *)&fifo_reg, 1);
+  }
+
+  if (ret == 0)
+  {
     *val = fifo_reg.mlc_fifo_en;
   }
 
@@ -4445,4 +4996,3 @@ int32_t st1vafe3bx_mlc_fifo_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
   * @}
   *
   */
-

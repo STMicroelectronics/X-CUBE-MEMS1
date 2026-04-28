@@ -2010,17 +2010,11 @@ float_t st1vafe3bx_from_lsb_to_mv(int16_t lsb);
 
 int32_t st1vafe3bx_device_id_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
-typedef enum
-{
-  ST1VAFE3BX_SENSOR_ONLY_ON     = 0x00, /* Initialize the driver for sensor usage */
-  ST1VAFE3BX_BOOT               = 0x01, /* Restore calib. param. (it takes 10ms) */
-  ST1VAFE3BX_RESET              = 0x02, /* Reset configuration registers */
-  ST1VAFE3BX_SENSOR_EMB_FUNC_ON = 0x03, /* Initialize the driver for sensor and/or
-                                           embedded functions usage (it takes 10ms) */
-  ST1VAFE3BX_VAFE_ONLY_LP       = 0x04, /* Enable sensor in vAFE only mode - low performance */
-  ST1VAFE3BX_VAFE_ONLY_HP       = 0x05, /* Enable sensor in vAFE only mode - high performance */
-} st1vafe3bx_init_t;
-int32_t st1vafe3bx_init_set(const stmdev_ctx_t *ctx, st1vafe3bx_init_t val);
+int32_t st1vafe3bx_init_set(const stmdev_ctx_t *ctx);
+
+int32_t st1vafe3bx_embedded_state_set(const stmdev_ctx_t *ctx, uint8_t state);
+int32_t st1vafe3bx_reboot(const stmdev_ctx_t *ctx);
+int32_t st1vafe3bx_sw_reset(const stmdev_ctx_t *ctx);
 
 typedef struct
 {
@@ -2114,7 +2108,6 @@ typedef enum
 typedef struct
 {
   /* if the hp_en bit is set the AH / vAFE data are in 14-bit format */
-  uint8_t hp_en                        : 1;
   st1vafe3bx_fs_t fs                 : 2;
   st1vafe3bx_odr_t odr;
   st1vafe3bx_bw_t bw;
@@ -2464,8 +2457,8 @@ typedef struct
   uint8_t vafe_only;
 } st1vafe3bx_priv_t;
 
-int32_t st1vafe3bx_enter_vafe_only(stmdev_ctx_t *ctx);
-int32_t st1vafe3bx_exit_vafe_only(stmdev_ctx_t *ctx);
+int32_t st1vafe3bx_enter_vafe_only(const stmdev_ctx_t *ctx);
+int32_t st1vafe3bx_exit_vafe_only(const stmdev_ctx_t *ctx);
 int32_t st1vafe3bx_ah_bio_active(const stmdev_ctx_t *ctx, uint8_t filter_on);
 
 typedef struct

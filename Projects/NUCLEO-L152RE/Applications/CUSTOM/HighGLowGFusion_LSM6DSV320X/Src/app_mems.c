@@ -2,11 +2,11 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.11.3.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.12.1.0 instances.
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2025 STMicroelectronics.
+  * Copyright (c) 2026 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -41,6 +41,9 @@ extern "C" {
 #define ACC_ODR  ((float)ALGO_FREQ)
 #define ACC_FS  16 /* FS = <-16g, 16g> */
 #define ACC_HG_FS  256 /* FS = <-256g, 256g> */
+#define FROM_S_TO_MS  1000U
+#define CLOCK_4KHZ    4000 /* TIM counter clock 4 kHz */
+#define CLOCK_2KHZ    2000 /* TIM counter clock 2 kHz */
 
 /* Public variables ----------------------------------------------------------*/
 volatile uint8_t DataLoggerActive = 0;
@@ -60,10 +63,10 @@ uint16_t HighGODR = ACCEL_FUSION_ODR_TEMP;
 uint8_t FSM_OUT1 = 0;
 uint8_t FSM_OUT2 = 0;
 uint16_t ReportRate = 30;
+int32_t ContinuousTracking = 1;
 
 /* Extern variables ----------------------------------------------------------*/
 extern void *MotionCompObj[CUSTOM_MOTION_INSTANCES_NBR];
-
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 MOTION_SENSOR_Axes_t AccValue;
@@ -74,17 +77,16 @@ static void MX_HighGLowGFusion_Init(void);
 static void MX_HighGLowGFusion_Process(void);
 static void XLF_Data_Handler(Msg_t *Msg);
 static void Init_Sensors(void);
-static void RTC_Handler(Msg_t *Msg);
+static void Time_Handler(Msg_t *Msg);
 static void Acc_Sensor_Handler(Msg_t *Msg);
 static void TIM_Config(uint32_t Freq);
 static void DWT_Init(void);
 static void DWT_Start(void);
-static uint32_t DWT_Stop(void);
-
-void Disable_HighG(void);
-void Enable_HighG(void);
-void FSM_Init(void);
-void FSM_Handler(void);
+static uint64_t DWT_GetTickUS(void);
+static void Disable_HighG(void);
+static void Enable_HighG(void);
+static void FSM_Init(void);
+static void FSM_Handler(void);
 
 void MX_MEMS_Init(void)
 {
@@ -166,6 +168,7 @@ static void MX_HighGLowGFusion_Init(void)
   MotionXLF_manager_get_version(LibVersion, &LibVersionLen);
 
   DWT_Init();
+  DWT_Start();
 
   BSP_LED_On(LED2);
   HAL_Delay(500);
@@ -197,7 +200,7 @@ static void MX_HighGLowGFusion_Process(void)
     SensorReadRequest = 0;
 
     /* Acquire data from enabled sensors and fill Msg stream */
-    RTC_Handler(&msg_dat);
+    Time_Handler(&msg_dat);
     Acc_Sensor_Handler(&msg_dat);
     FSM_Handler();
 
@@ -252,8 +255,7 @@ static void Init_Sensors(void)
 
   LSM6DSV320X_ACC_HG_SetOutputDataRate(MotionCompObj[CUSTOM_LSM6DSV320X_0], HighGODR);
   LSM6DSV320X_ACC_HG_SetFullScale(MotionCompObj[CUSTOM_LSM6DSV320X_0], ACC_HG_FS);
-  LSM6DSV320X_ACC_SetOutputDataRate_With_Mode(MotionCompObj[CUSTOM_LSM6DSV320X_0], LowGODR,
-                                              LSM6DSV320X_ACC_HIGH_PERFORMANCE_MODE);
+  LSM6DSV320X_ACC_SetOutputDataRate_With_Mode(MotionCompObj[CUSTOM_LSM6DSV320X_0], LowGODR, LSM6DSV320X_ACC_HIGH_PERFORMANCE_MODE);
 
   LSM6DSV320X_Write_Reg(MotionCompObj[CUSTOM_LSM6DSV320X_0], LSM6DSV320X_MD1_CFG, 0x02);
   LSM6DSV320X_Write_Reg(MotionCompObj[CUSTOM_LSM6DSV320X_0], LSM6DSV320X_FUNC_CFG_ACCESS, LSM6DSV320X_EMBED_FUNC_MEM_BANK << 7);
@@ -264,45 +266,16 @@ static void Init_Sensors(void)
 }
 
 /**
-  * @brief  Handles the time+date getting/sending
-  * @param  Msg the time+date part of the stream
+  * @brief  Handles the precise time
+  * @param  Msg the time part of the stream
   * @retval None
   */
-static void RTC_Handler(Msg_t *Msg)
+static void Time_Handler(Msg_t *Msg)
 {
-  uint32_t sub_sec = 0;
-  RTC_DateTypeDef sdatestructureget;
-  RTC_TimeTypeDef stimestructure;
-#if defined(STM32L100xBA) || defined (STM32L151xBA) || defined (STM32L152xBA) || defined(STM32L100xC) || defined (STM32L151xC) || defined (STM32L152xC) || defined (STM32L162xC) || defined(STM32L151xCA) || defined (STM32L151xD) || defined (STM32L152xCA) || defined (STM32L152xD) || defined (STM32L162xCA) || defined (STM32L162xD) || defined(STM32L151xE) || defined(STM32L151xDX) || defined (STM32L152xE) || defined (STM32L152xDX) || defined (STM32L162xE) || defined (STM32L162xDX)
-  uint32_t total_seconds;
-  uint32_t RtcSynchPrediv = hrtc.Init.SynchPrediv;
-  uint32_t virtual_timestamp_int_us;
-#endif
+  uint64_t time_us;
 
-  if (UseOfflineData == 1)
-  {
-    total_seconds = (OfflineData[OfflineDataReadIndex].hours * 3600) + (OfflineData[OfflineDataReadIndex].minutes * 60) + OfflineData[OfflineDataReadIndex].seconds;
-    virtual_timestamp_int_us = (total_seconds * 1000000) + (OfflineData[OfflineDataReadIndex].subsec * 10000);
-
-    Serialize_s32(&Msg->Data[3], (int32_t)virtual_timestamp_int_us, 4);
-  }
-  else
-  {
-    (void)HAL_RTC_GetTime(&hrtc, &stimestructure, RTC_FORMAT_BIN);
-    (void)HAL_RTC_GetDate(&hrtc, &sdatestructureget, RTC_FORMAT_BIN);
-
-#if defined(STM32L100xBA) || defined (STM32L151xBA) || defined (STM32L152xBA) || defined(STM32L100xC) || defined (STM32L151xC) || defined (STM32L152xC) || defined (STM32L162xC) || defined(STM32L151xCA) || defined (STM32L151xD) || defined (STM32L152xCA) || defined (STM32L152xD) || defined (STM32L162xCA) || defined (STM32L162xD) || defined(STM32L151xE) || defined(STM32L151xDX) || defined (STM32L152xE) || defined (STM32L152xDX) || defined (STM32L162xE) || defined (STM32L162xDX)
-    /* To be MISRA C-2012 compliant the original calculation:
-     sub_sec = (((((int)RtcSynchPrediv) - ((int)stimestructure.SubSeconds)) * 1000000) / (RtcSynchPrediv + 1));
-     has been split to separate expressions */
-    sub_sec = (RtcSynchPrediv - (int32_t)stimestructure.SubSeconds) * 1000000;
-    sub_sec /= RtcSynchPrediv + 1;
-    total_seconds = (stimestructure.Hours * 3600) + (stimestructure.Minutes * 60) + stimestructure.Seconds;
-    virtual_timestamp_int_us = (total_seconds * 1000000) + sub_sec;
-#endif
-
-    Serialize_s32(&Msg->Data[3], (int32_t)virtual_timestamp_int_us, 4);
-  }
+  time_us = DWT_GetTickUS();
+  Serialize_s32(&Msg->Data[3], (int32_t)time_us, 4);
 }
 
 /**
@@ -312,7 +285,8 @@ static void RTC_Handler(Msg_t *Msg)
   */
 static void XLF_Data_Handler(Msg_t *Msg)
 {
-  uint32_t elapsed_time_us = 0U;
+  uint64_t start_time_us = 0U;
+  uint64_t elapsed_time_us = 0U;
   XLF_in_t data_in;
   XLF_out_t data_out;
   XLF_algo_settings algo_set;
@@ -336,14 +310,14 @@ static void XLF_Data_Handler(Msg_t *Msg)
     algo_set.ACCEL_FUSION_ENABLE_NOISE_REMOVAL = 1;
     algo_set.ACCEL_FUSION_ENABLE_DISCONTINUITY_REMOVAL = 1;
     algo_set.ACCEL_FUSION_ENABLE_OFFSET_CALCULATOR = 1;
-    algo_set.ACCEL_FUSION_CONTINUOUS_TRACKING = 1;
+    algo_set.ACCEL_FUSION_CONTINUOUS_TRACKING = ContinuousTracking;
     algo_set.ACCEL_FUSION_LOWER_THRESHOLD = 16000;
 
     /* Run High-g Low-g Fusion algorithm */
     BSP_LED_On(LED2);
-    DWT_Start();
+    start_time_us = DWT_GetTickUS();
     MotionXLF_manager_run(&data_in, &data_out, Enable_HighG, Disable_HighG, &algo_set);
-    elapsed_time_us = DWT_Stop();
+    elapsed_time_us = DWT_GetTickUS() - start_time_us;
     BSP_LED_Off(LED2);
 
     FloatToArray(&Msg->Data[31], (float)data_out.fused_imu.x / 1000);
@@ -404,11 +378,11 @@ static void TIM_Config(uint32_t Freq)
 
   if (SystemCoreClock > 120000000)
   {
-    tim_counter_clock = 4000; /* TIM counter clock 4 kHz */
+    tim_counter_clock = CLOCK_4KHZ; /* TIM counter clock 4 kHz */
   }
   else
   {
-    tim_counter_clock = 2000; /* TIM counter clock 2 kHz */
+    tim_counter_clock = CLOCK_2KHZ; /* TIM counter clock 2 kHz */
   }
   uint32_t prescaler_value = (uint32_t)((SystemCoreClock / tim_counter_clock) - 1);
   uint32_t period = (tim_counter_clock / Freq) - 1;
@@ -447,28 +421,29 @@ static void DWT_Start(void)
 }
 
 /**
-  * @brief  Stop counting clock cycles and calculate elapsed time in [us]
-  * @param  None
-  * @retval Elapsed time in [us]
+  * @brief  Get relative time in micro seconds
+  * @note   Call at least every 2^32 cycles
+  * @retval Relative time in micro seconds
   */
-static uint32_t DWT_Stop(void)
+static uint64_t DWT_GetTickUS(void)
 {
-  volatile uint32_t cycles_count = 0U;
-  uint32_t system_core_clock_mhz = 0U;
+  static uint64_t last_cycle_count_64 = 0;
+  uint32_t clock_MHz = HAL_RCC_GetHCLKFreq() / 1000000;
 
-  DWT->CTRL &= ~DWT_CTRL_CYCCNTENA_Msk; /* Disable counter */
-  cycles_count = DWT->CYCCNT; /* Read count of clock cycles */
+  __disable_irq();
+  last_cycle_count_64 += DWT->CYCCNT - (uint32_t)(last_cycle_count_64);
+  uint64_t result = last_cycle_count_64;
+  __enable_irq();
 
-  /* Calculate elapsed time in [us] */
-  system_core_clock_mhz = SystemCoreClock / 1000000U;
-  return cycles_count / system_core_clock_mhz;
+  return result / clock_MHz;
 }
+
 /**
   * @brief  Enable High-g in the sensor
   * @param  None
   * @retval None
   */
-void Enable_HighG(void)
+static void Enable_HighG(void)
 {
   (void)LSM6DSV320X_ACC_HG_Enable(MotionCompObj[CUSTOM_LSM6DSV320X_0]);
   (void)LSM6DSV320X_ACC_HG_SetOutputDataRate(MotionCompObj[CUSTOM_LSM6DSV320X_0], HighGODR);
@@ -480,7 +455,7 @@ void Enable_HighG(void)
   * @param  None
   * @retval None
   */
-void Disable_HighG(void)
+static void Disable_HighG(void)
 {
   (void)LSM6DSV320X_ACC_HG_Disable(MotionCompObj[CUSTOM_LSM6DSV320X_0]);
   HighGEnable = 0; //external flag to signal high-g sensor has been disabled
@@ -491,7 +466,7 @@ void Disable_HighG(void)
   * @param  None
   * @retval None
   */
-void FSM_Init(void)
+static void FSM_Init(void)
 {
   int i;
   int length = 0;
@@ -507,7 +482,7 @@ void FSM_Init(void)
   * @param  None
   * @retval None
   */
-void FSM_Handler(void)
+static void FSM_Handler(void)
 {
   (void)LSM6DSV320X_Write_Reg(MotionCompObj[CUSTOM_LSM6DSV320X_0], LSM6DSV320X_FUNC_CFG_ACCESS,
                               LSM6DSV320X_EMBED_FUNC_MEM_BANK << 7);
@@ -549,6 +524,27 @@ void Set_Sensor_Report_Rate(uint8_t index)
   }
 
   TIM_Config(ReportRate);
+}
+
+/**
+  * @brief  Set continuous mode value
+  * @param  None
+  * @retval None
+  */
+void Set_Continuous_Mode(uint8_t index)
+{
+  if (index <= 1)
+  {
+    ContinuousTracking = index;
+    if (ContinuousTracking == 1)
+    {
+    	Enable_HighG();
+    }
+    else
+    {
+    	Disable_HighG();
+    }
+  }
 }
 
 /**

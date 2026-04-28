@@ -666,13 +666,21 @@ typedef enum
   LPS22DF_BYPASS_TO_FIFO   = 5, /* Bypass, FIFO on Trigger */
 } lps22df_operation_t;
 
-typedef struct
+
+int32_t lps22df_fifo_mode_set(const stmdev_ctx_t *ctx, lps22df_operation_t val);
+int32_t lps22df_fifo_mode_get(const stmdev_ctx_t *ctx, lps22df_operation_t *val);
+
+int32_t lps22df_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val);
+int32_t lps22df_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val);
+
+typedef enum
 {
-  lps22df_operation_t operation;
-  uint8_t watermark : 7; /* (0 disable) max 128.*/
-} lps22df_fifo_md_t;
-int32_t lps22df_fifo_mode_set(const stmdev_ctx_t *ctx, lps22df_fifo_md_t *val);
-int32_t lps22df_fifo_mode_get(const stmdev_ctx_t *ctx, lps22df_fifo_md_t *val);
+  LPS22DF_FIFO_EV_WTM           = 0x0,
+  LPS22DF_FIFO_EV_FULL          = 0x1,
+} lps22df_fifo_event_t;
+
+int32_t lps22df_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, lps22df_fifo_event_t *val);
+int32_t lps22df_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, lps22df_fifo_event_t *val);
 
 int32_t lps22df_fifo_level_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
@@ -745,3 +753,4 @@ int32_t lps22df_opc_get(const stmdev_ctx_t *ctx, int16_t *val);
 #endif
 
 #endif /* LPS22DF_REGS_H */
+

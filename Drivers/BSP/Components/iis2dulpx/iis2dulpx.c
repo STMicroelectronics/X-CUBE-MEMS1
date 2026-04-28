@@ -107,6 +107,7 @@ int32_t IIS2DULPX_RegisterBusIO(IIS2DULPX_Object_t *pObj, IIS2DULPX_IO_t *pIO)
     pObj->Ctx.write_reg = WriteRegWrap;
     pObj->Ctx.mdelay    = pIO->Delay;
     pObj->Ctx.handle    = pObj;
+    pObj->Ctx.priv_data = (void *)&pObj->priv_data;
 
     if (pObj->IO.Init == NULL)
     {
@@ -178,6 +179,8 @@ int32_t IIS2DULPX_Init(IIS2DULPX_Object_t *pObj)
 {
   iis2dulpx_i3c_cfg_t val;
 
+  memset(&pObj->priv_data, 0, sizeof(iis2dulpx_priv_t));
+
   if(pObj->IO.BusType != IIS2DULPX_I3C_BUS)
   {
     /* Disable I3C */
@@ -200,7 +203,7 @@ int32_t IIS2DULPX_Init(IIS2DULPX_Object_t *pObj)
 
   /* Enable register address automatically incremented during a multiple byte
   access with a serial interface. Enable BDU. */
-  if (iis2dulpx_init_set(&(pObj->Ctx), IIS2DULPX_SENSOR_ONLY_ON) != IIS2DULPX_OK)
+  if (iis2dulpx_init_set(&(pObj->Ctx)) != IIS2DULPX_OK)
   {
     return IIS2DULPX_ERROR;
   }
@@ -210,7 +213,6 @@ int32_t IIS2DULPX_Init(IIS2DULPX_Object_t *pObj)
   {
     .operation = IIS2DULPX_BYPASS_MODE,
     .store     = IIS2DULPX_FIFO_1X,
-    .watermark = 0,
   };
 
   if (iis2dulpx_fifo_mode_set(&(pObj->Ctx), fifo_mode) != IIS2DULPX_OK)

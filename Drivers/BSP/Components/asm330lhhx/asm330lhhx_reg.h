@@ -3558,3 +3558,4 @@ int32_t asm330lhhx_sh_status_get(const stmdev_ctx_t *ctx,
 #endif
 
 #endif /* ASM330LHHX_REGS_H */
+

@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2025 STMicroelectronics.
+  * Copyright (c) 2026 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -43,6 +43,9 @@ extern TIM_HandleTypeDef htim3;
 
 #define BSP_IP_MEMS_INT1_PIN_NUM GPIO_PIN_0
 #define BSP_IP_MEMS_INT1_GPIOX GPIOC
+
+#define BSP_IP_MEMS_INT1_IKS5_PIN_NUM GPIO_PIN_10
+#define BSP_IP_MEMS_INT1_IKS5_GPIOX GPIOB
 
 /* Exported variables --------------------------------------------------------*/
 extern RTC_HandleTypeDef hrtc;

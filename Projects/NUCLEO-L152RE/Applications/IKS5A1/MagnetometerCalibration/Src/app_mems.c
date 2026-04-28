@@ -2,11 +2,11 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.12.0.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.12.1.0 instances.
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2025 STMicroelectronics.
+  * Copyright (c) 2026 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -506,7 +506,7 @@ static void Humidity_Sensor_Handler(Msg_t *Msg)
       BSP_SENSOR_HUM_GetValue(&HumValue);
     }
 
-    (void)memcpy(&Msg->Data[15], (void *)&HumValue, sizeof(float));;
+    (void)memcpy(&Msg->Data[15], (void *)&HumValue, sizeof(float));
   }
 }
 

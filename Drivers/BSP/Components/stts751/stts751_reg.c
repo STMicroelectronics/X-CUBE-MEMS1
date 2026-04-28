@@ -204,12 +204,9 @@ int32_t stts751_temp_data_rate_get(const stmdev_ctx_t *ctx,
 
   ret = stts751_read_reg(ctx, STTS751_CONVERSION_RATE,
                          (uint8_t *)&conversion_rate, 1);
-
-  if (ret == 0)
-  {
-    ret = stts751_read_reg(ctx, STTS751_CONFIGURATION,
-                           (uint8_t *)&configuration, 1);
-  }
+  ret += stts751_read_reg(ctx, STTS751_CONFIGURATION,
+                         (uint8_t *)&configuration, 1);
+  if (ret != 0) { return ret; }
 
   switch ((configuration.stop << 7) + conversion_rate.conv)
   {
@@ -307,6 +304,7 @@ int32_t stts751_resolution_get(const stmdev_ctx_t *ctx, stts751_tres_t *val)
   int32_t ret;
 
   ret = stts751_read_reg(ctx, STTS751_CONFIGURATION, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.tres)
   {
@@ -366,6 +364,8 @@ int32_t stts751_flag_busy_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = stts751_read_reg(ctx, STTS751_STATUS, (uint8_t *)&reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.busy;
 
   return ret;
@@ -399,14 +399,12 @@ int32_t stts751_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 
   ret = stts751_read_reg(ctx, STTS751_TEMPERATURE_HIGH,
                          (uint8_t *)&buff[1], 1);
+  ret += stts751_read_reg(ctx, STTS751_TEMPERATURE_LOW,
+                         &buff[0], 1);
+  if (ret != 0) { return ret; }
 
-  if (ret == 0)
-  {
-    ret = stts751_read_reg(ctx, STTS751_TEMPERATURE_LOW,
-                           &buff[0], 1);
-    *val = (int16_t)buff[1];
-    *val = (*val * 256) + (int16_t)buff[0];
-  }
+  *val = (int16_t)buff[1];
+  *val = (*val * 256) + (int16_t)buff[0];
 
   return ret;
 }
@@ -461,6 +459,8 @@ int32_t stts751_pin_event_route_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = stts751_read_reg(ctx, STTS751_CONFIGURATION, (uint8_t *)&reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.mask1;
 
   return ret;
@@ -517,6 +517,8 @@ int32_t stts751_high_temperature_threshold_get(const stmdev_ctx_t *ctx,
 
   ret = stts751_read_reg(ctx, STTS751_TEMPERATURE_HIGH_LIMIT_HIGH, buff,
                          2);
+  if (ret != 0) { return ret; }
+
   *val = (int16_t)buff[0];
   *val = (*val * 256) + (int16_t)buff[1];
 
@@ -561,6 +563,8 @@ int32_t stts751_low_temperature_threshold_get(const stmdev_ctx_t *ctx,
 
   ret = stts751_read_reg(ctx, STTS751_TEMPERATURE_LOW_LIMIT_HIGH, buff,
                          2);
+  if (ret != 0) { return ret; }
+
   *val = (int16_t)buff[0];
   *val = (*val * 256) + (int16_t)buff[1];
 
@@ -703,6 +707,8 @@ int32_t stts751_smbus_timeout_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = stts751_read_reg(ctx, STTS751_SMBUS_TIMEOUT, (uint8_t *)&reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.timeout;
 
   return ret;

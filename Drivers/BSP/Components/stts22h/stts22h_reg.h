@@ -145,6 +145,8 @@ typedef struct
 
 /** I2C Device Address 8 bit format **/
 #define STTS22H_I2C_ADD_H       0x71U
+#define STTS22H_I2C_ADD_15K_OHM 0x79U
+#define STTS22H_I2C_ADD_56K_OHM 0x7DU
 #define STTS22H_I2C_ADD_L       0x7FU
 
 /** Device Identification (Who am I) **/
@@ -209,6 +211,33 @@ typedef struct
 #define STTS22H_TEMP_L_OUT                   0x06U
 #define STTS22H_TEMP_H_OUT                   0x07U
 
+/**
+  * @defgroup STTS22H_Register_Union
+  * @brief    This union group all the registers having a bit-field
+  *           description.
+  *           This union is useful but it's not needed by the driver.
+  *
+  *           REMOVING this union you are compliant with:
+  *           MISRA-C 2012 [Rule 19.2] -> " Union are not allowed "
+  *
+  * @{
+  *
+  */
+typedef union
+{
+  stts22h_temp_h_limit_t      temp_h_limit;
+  stts22h_temp_l_limit_t      temp_l_limit;
+  stts22h_ctrl_t              ctrl;
+  stts22h_status_t            status;
+  bitwise_t                   bitwise;
+  uint8_t                     byte;
+} stts22h_reg_t;
+
+/**
+  * @}
+  *
+  */
+
 #ifndef __weak
 #define __weak __attribute__((weak))
 #endif /* __weak */
@@ -252,6 +281,10 @@ int32_t stts22h_block_data_update_get(const stmdev_ctx_t *ctx,
 
 int32_t stts22h_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val);
+typedef struct
+{
+  uint8_t has_autoincrement;
+} stts22h_priv_t;
 
 int32_t stts22h_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val);
 

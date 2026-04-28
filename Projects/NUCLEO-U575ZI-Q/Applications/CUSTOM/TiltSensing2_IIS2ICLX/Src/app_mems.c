@@ -2,11 +2,11 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.12.0.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.12.1.0 instances.
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2025 STMicroelectronics.
+  * Copyright (c) 2026 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -84,6 +84,11 @@ static uint32_t DWT_Stop(void);
 #ifdef BSP_IP_MEMS_INT1_PIN_NUM
 static void MEMS_INT1_Force_Low(void);
 static void MEMS_INT1_Init(void);
+#endif
+
+#ifdef BSP_IP_MEMS_INT1_IKS5_PIN_NUM
+static void MEMS_INT1_IKS5_Force_Low(void);
+static void MEMS_INT1_IKS5_Init(void);
 #endif
 
 void MX_MEMS_Init(void)
@@ -168,6 +173,15 @@ static void MX_TiltSensing2_Init(void)
   MEMS_INT1_Force_Low();
 #endif
 
+#ifdef BSP_IP_MEMS_INT1_IKS5_PIN_NUM
+  /* Force MEMS INT1 pin of the sensor low during startup in order to disable I3C and enable I2C. This function needs
+   * to be called only if user wants to disable I3C / enable I2C and didn't put the pull-down resistor to MEMS INT1 pin
+   * on his HW setup. This is also the case of usage X-NUCLEO-IKS4A1 or X-NUCLEO-IKS5A1 expansion board together with
+   * sensor in DIL24 adapter board where the LDO with internal pull-up is used.
+   */
+  MEMS_INT1_IKS5_Force_Low();
+#endif
+
   /* Initialize LED */
   BSP_LED_Init(LED2);
 
@@ -186,6 +200,11 @@ static void MX_TiltSensing2_Init(void)
 #ifdef BSP_IP_MEMS_INT1_PIN_NUM
   /* Initialize MEMS INT1 pin back to it's default state after I3C disable / I2C enable */
   MEMS_INT1_Init();
+#endif
+
+#ifdef BSP_IP_MEMS_INT1_IKS5_PIN_NUM
+  /* Initialize MEMS INT1 pin back to it's default state after I3C disable / I2C enable */
+  MEMS_INT1_IKS5_Init();
 #endif
 
   algo_freq = (float)ALGO_FREQ;
@@ -513,6 +532,40 @@ static void MEMS_INT1_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(BSP_IP_MEMS_INT1_GPIOX, &GPIO_InitStruct);
+}
+#endif
+
+#ifdef BSP_IP_MEMS_INT1_IKS5_PIN_NUM
+/**
+  * @brief  Force MEMS INT1 pin low
+  * @param  None
+  * @retval None
+  */
+static void MEMS_INT1_IKS5_Force_Low(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+  GPIO_InitStruct.Pin = BSP_IP_MEMS_INT1_IKS5_PIN_NUM;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(BSP_IP_MEMS_INT1_IKS5_GPIOX, &GPIO_InitStruct);
+
+  HAL_GPIO_WritePin(BSP_IP_MEMS_INT1_IKS5_GPIOX, BSP_IP_MEMS_INT1_IKS5_PIN_NUM, GPIO_PIN_RESET);
+}
+
+/**
+  * @brief  Configure MEMS INT1 pin to the default state
+  * @param  None
+  * @retval None
+  */
+static void MEMS_INT1_IKS5_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+  GPIO_InitStruct.Pin = BSP_IP_MEMS_INT1_IKS5_PIN_NUM;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(BSP_IP_MEMS_INT1_IKS5_GPIOX, &GPIO_InitStruct);
 }
 #endif
 

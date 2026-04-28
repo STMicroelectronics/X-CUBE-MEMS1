@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2025 STMicroelectronics.
+  * Copyright (c) 2026 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -96,6 +96,7 @@ void RTC_TimeRegulate(uint8_t hh, uint8_t mm, uint8_t ss);
 void Get_PresentationString(char *PresentationString, uint32_t *Length);
 void Set_Sensor_Report_Rate(uint8_t index);
 void Set_Sensor_HighG_LowG_ODR(uint8_t index);
+void Set_Continuous_Mode(uint8_t index);
 
 #ifdef __cplusplus
 }

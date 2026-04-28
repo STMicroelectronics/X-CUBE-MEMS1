@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2025 STMicroelectronics.
+  * Copyright (c) 2026 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -47,8 +47,7 @@ extern "C" {
 /* Algorithm  CMD  (0x51 - 0x5F) -----------------*/
 #define CMD_Algo_Set_Report_Rate       0x51
 #define CMD_Algo_Set_HighG_LowG_ODR    0x52
-#define CMD_Calibration_Mode           0x53
-#define CMD_Calibration_Reset          0x54
+#define CMD_Use_Always_High_G          0x53
 
 /* ENVIRONMENTAL  CMD  (0x60 - 0x6F) -------------*/
 #define CMD_PRESSURE_Init              0x60

@@ -459,11 +459,19 @@ int32_t lis2mdl_temperature_raw_get(const stmdev_ctx_t *ctx,  int16_t *val);
 
 int32_t lis2mdl_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff);
 
-int32_t lis2mdl_reset_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t lis2mdl_reset_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lis2mdl_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
+__attribute__((deprecated("Please use sw_reset to align with the AN")));
+int32_t lis2mdl_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
+__attribute__((deprecated("Please use sw_reset to align with the AN")));
 
-int32_t lis2mdl_boot_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t lis2mdl_boot_get(const stmdev_ctx_t *ctx, uint8_t *val);
+int32_t lis2mdl_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
+__attribute__((deprecated("Please use reboot to align with the AN")));
+int32_t lis2mdl_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
+__attribute__((deprecated("Please use reboot to align with the AN")));
+
+int32_t lis2mdl_sw_reset(const stmdev_ctx_t *ctx);
+
+int32_t lis2mdl_reboot(const stmdev_ctx_t *ctx);
 
 int32_t lis2mdl_self_test_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t lis2mdl_self_test_get(const stmdev_ctx_t *ctx, uint8_t *val);

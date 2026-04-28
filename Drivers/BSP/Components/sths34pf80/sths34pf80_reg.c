@@ -176,6 +176,7 @@ int32_t sths34pf80_avg_tobject_num_get(const stmdev_ctx_t *ctx, sths34pf80_avg_t
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_AVG_TRIM, (uint8_t *)&avg_trim, 1);
+  if (ret != 0) { return ret; }
 
   switch (avg_trim.avg_tmos)
   {
@@ -256,6 +257,7 @@ int32_t sths34pf80_avg_tambient_num_get(const stmdev_ctx_t *ctx, sths34pf80_avg_
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_AVG_TRIM, (uint8_t *)&avg_trim, 1);
+  if (ret != 0) { return ret; }
 
   switch (avg_trim.avg_t)
   {
@@ -320,6 +322,7 @@ int32_t sths34pf80_gain_mode_get(const stmdev_ctx_t *ctx, sths34pf80_gain_mode_t
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL0, (uint8_t *)&ctrl0, 1);
+  if (ret != 0) { return ret; }
 
   switch (ctrl0.gain)
   {
@@ -376,6 +379,8 @@ int32_t sths34pf80_tobject_sensitivity_get(const stmdev_ctx_t *ctx, uint16_t *va
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_SENS_DATA, (uint8_t *)&data, 1);
+  if (ret != 0) { return ret; }
+
   *val = (int8_t)data.sens * 16 + 2048;
 
   return ret;
@@ -403,6 +408,7 @@ static int32_t sths34pf80_safe_power_down(const stmdev_ctx_t *ctx, sths34pf80_ct
 
   /* reset the DRDY bit */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_FUNC_STATUS, (uint8_t *)&func_status, 1);
+  if (ret != 0) { return ret; }
 
   /* wait DRDY bit go to '1'. Maximum wait may be up to 4 sec (0.25 Hz) */
   uint16_t retry = 0U;
@@ -420,6 +426,7 @@ static int32_t sths34pf80_safe_power_down(const stmdev_ctx_t *ctx, sths34pf80_ct
   /* perform power-down */
   ctrl1->odr = 0U;
   ret += sths34pf80_write_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)ctrl1, 1);
+  if (ret != 0) { return ret; }
 
   /* reset the DRDY bit */
   ret += sths34pf80_read_reg(ctx, STHS34PF80_FUNC_STATUS, (uint8_t *)&func_status, 1);
@@ -444,6 +451,7 @@ static int32_t sths34pf80_odr_safe_set(const stmdev_ctx_t *ctx,
 
   /* perform power-down transition in a safe way. */
   ret = sths34pf80_safe_power_down(ctx, ctrl1);
+  if (ret != 0) { return ret; }
 
   if (odr_new > 0U)
   {
@@ -452,6 +460,7 @@ static int32_t sths34pf80_odr_safe_set(const stmdev_ctx_t *ctx,
      * operative state.
      */
     ret += sths34pf80_reset_algo_bit_set(ctx);
+    if (ret != 0) { return ret; }
 
     /* set new odr */
     ctrl1->odr = (odr_new & 0xfU);
@@ -477,46 +486,41 @@ int32_t sths34pf80_odr_set(const stmdev_ctx_t *ctx, sths34pf80_odr_t val)
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
+  ret += sths34pf80_read_reg(ctx, STHS34PF80_AVG_TRIM, (uint8_t *)&avg_trim, 1);
 
-  if (ret == 0)
+  if (ret != 0) { return ret; }
+
+  switch (avg_trim.avg_tmos)
   {
-    ret = sths34pf80_read_reg(ctx, STHS34PF80_AVG_TRIM, (uint8_t *)&avg_trim, 1);
-
-    switch (avg_trim.avg_tmos)
-    {
-      default:
-      case STHS34PF80_AVG_TMOS_2:
-      case STHS34PF80_AVG_TMOS_8:
-      case STHS34PF80_AVG_TMOS_32:
-        max_odr = STHS34PF80_ODR_AT_30Hz;
-        break;
-      case STHS34PF80_AVG_TMOS_128:
-        max_odr = STHS34PF80_ODR_AT_8Hz;
-        break;
-      case STHS34PF80_AVG_TMOS_256:
-        max_odr = STHS34PF80_ODR_AT_4Hz;
-        break;
-      case STHS34PF80_AVG_TMOS_512:
-        max_odr = STHS34PF80_ODR_AT_2Hz;
-        break;
-      case STHS34PF80_AVG_TMOS_1024:
-        max_odr = STHS34PF80_ODR_AT_1Hz;
-        break;
-      case STHS34PF80_AVG_TMOS_2048:
-        max_odr = STHS34PF80_ODR_AT_0Hz50;
-        break;
-    }
+    default:
+    case STHS34PF80_AVG_TMOS_2:
+    case STHS34PF80_AVG_TMOS_8:
+    case STHS34PF80_AVG_TMOS_32:
+      max_odr = STHS34PF80_ODR_AT_30Hz;
+      break;
+    case STHS34PF80_AVG_TMOS_128:
+      max_odr = STHS34PF80_ODR_AT_8Hz;
+      break;
+    case STHS34PF80_AVG_TMOS_256:
+      max_odr = STHS34PF80_ODR_AT_4Hz;
+      break;
+    case STHS34PF80_AVG_TMOS_512:
+      max_odr = STHS34PF80_ODR_AT_2Hz;
+      break;
+    case STHS34PF80_AVG_TMOS_1024:
+      max_odr = STHS34PF80_ODR_AT_1Hz;
+      break;
+    case STHS34PF80_AVG_TMOS_2048:
+      max_odr = STHS34PF80_ODR_AT_0Hz50;
+      break;
   }
 
-  if (ret == 0)
+  if (val > max_odr)
   {
-    if (val > max_odr)
-    {
-      return -1;
-    }
-
-    ret = sths34pf80_odr_safe_set(ctx, &ctrl1, (uint8_t)val);
+    return -1;
   }
+
+  ret = sths34pf80_odr_safe_set(ctx, &ctrl1, (uint8_t)val);
 
   return ret;
 }
@@ -535,6 +539,7 @@ int32_t sths34pf80_odr_get(const stmdev_ctx_t *ctx, sths34pf80_odr_t *val)
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
+  if(ret != 0) { return ret; }
 
   switch (ctrl1.odr)
   {
@@ -619,6 +624,7 @@ int32_t sths34pf80_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
+  if(ret != 0) { return ret; }
 
   *val = ctrl1.bdu;
 
@@ -664,6 +670,7 @@ int32_t sths34pf80_one_shot_get(const stmdev_ctx_t *ctx, sths34pf80_one_shot_t *
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL2, (uint8_t *)&ctrl2, 1);
+  if(ret != 0) { return ret; }
 
   switch (ctrl2.one_shot)
   {
@@ -720,6 +727,7 @@ int32_t sths34pf80_mem_bank_get(const stmdev_ctx_t *ctx, sths34pf80_mem_bank_t *
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL2, (uint8_t *)&ctrl2, 1);
+  if(ret != 0) { return ret; }
 
   switch (ctrl2.func_cfg_access)
   {
@@ -776,6 +784,8 @@ int32_t sths34pf80_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL2, (uint8_t *)&ctrl2, 1);
+  if(ret != 0) { return ret; }
+
   *val = ctrl2.boot;
 
   return ret;
@@ -795,6 +805,7 @@ int32_t sths34pf80_drdy_status_get(const stmdev_ctx_t *ctx, sths34pf80_drdy_stat
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_STATUS, (uint8_t *)&status, 1);
+  if(ret != 0) { return ret; }
 
   val->drdy = status.drdy;
 
@@ -815,6 +826,7 @@ int32_t sths34pf80_func_status_get(const stmdev_ctx_t *ctx, sths34pf80_func_stat
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_FUNC_STATUS, (uint8_t *)&func_status, 1);
+  if(ret != 0) { return ret; }
 
   val->tamb_shock_flag = func_status.tamb_shock_flag;
   val->mot_flag = func_status.mot_flag;
@@ -837,6 +849,7 @@ int32_t sths34pf80_tobject_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_TOBJECT_L, &buff[0], 2);
+  if(ret != 0) { return ret; }
 
   *val = (int16_t)buff[1];
   *val = (*val * 256) + (int16_t)buff[0];
@@ -858,6 +871,7 @@ int32_t sths34pf80_tambient_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_TAMBIENT_L, &buff[0], 2);
+  if(ret != 0) { return ret; }
 
   *val = (int16_t)buff[1];
   *val = (*val * 256) + (int16_t)buff[0];
@@ -879,6 +893,7 @@ int32_t sths34pf80_tobj_comp_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_TOBJ_COMP_L, &buff[0], 2);
+  if(ret != 0) { return ret; }
 
   *val = (int16_t)buff[1];
   *val = (*val * 256) + (int16_t)buff[0];
@@ -900,6 +915,7 @@ int32_t sths34pf80_tpresence_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_TPRESENCE_L, &buff[0], 2);
+  if(ret != 0) { return ret; }
 
   *val = (int16_t)buff[1];
   *val = (*val * 256) + (int16_t)buff[0];
@@ -921,6 +937,7 @@ int32_t sths34pf80_tmotion_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_TMOTION_L, &buff[0], 2);
+  if(ret != 0) { return ret; }
 
   *val = (int16_t)buff[1];
   *val = (*val * 256) + (int16_t)buff[0];
@@ -942,6 +959,7 @@ int32_t sths34pf80_tamb_shock_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_TAMB_SHOCK_L, &buff[0], 2);
+  if(ret != 0) { return ret; }
 
   *val = (int16_t)buff[1];
   *val = (*val * 256) + (int16_t)buff[0];
@@ -998,6 +1016,7 @@ int32_t sths34pf80_lpf_m_bandwidth_get(const stmdev_ctx_t *ctx, sths34pf80_lpf_b
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_LPF1, (uint8_t *)&lpf1, 1);
+  if(ret != 0) { return ret; }
 
   switch ((lpf1.lpf_m))
   {
@@ -1074,6 +1093,7 @@ int32_t sths34pf80_lpf_p_m_bandwidth_get(const stmdev_ctx_t *ctx, sths34pf80_lpf
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_LPF1, (uint8_t *)&lpf1, 1);
+  if(ret != 0) { return ret; }
 
   switch ((lpf1.lpf_p_m))
   {
@@ -1150,6 +1170,7 @@ int32_t sths34pf80_lpf_a_t_bandwidth_get(const stmdev_ctx_t *ctx, sths34pf80_lpf
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_LPF2, (uint8_t *)&lpf2, 1);
+  if(ret != 0) { return ret; }
 
   switch ((lpf2.lpf_a_t))
   {
@@ -1226,6 +1247,7 @@ int32_t sths34pf80_lpf_p_bandwidth_get(const stmdev_ctx_t *ctx, sths34pf80_lpf_b
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_LPF2, (uint8_t *)&lpf2, 1);
+  if(ret != 0) { return ret; }
 
   switch ((lpf2.lpf_p))
   {
@@ -1317,6 +1339,7 @@ int32_t sths34pf80_route_int_get(const stmdev_ctx_t *ctx, sths34pf80_route_int_t
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL3, (uint8_t *)&ctrl3, 1);
+  if(ret != 0) { return ret; }
 
   switch ((ctrl3.ien))
   {
@@ -1377,6 +1400,7 @@ int32_t sths34pf80_int_or_get(const stmdev_ctx_t *ctx, sths34pf80_int_or_t *val)
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL3, (uint8_t *)&ctrl3, 1);
+  if(ret != 0) { return ret; }
 
   switch ((ctrl3.int_msk))
   {
@@ -1458,6 +1482,7 @@ int32_t sths34pf80_int_mode_get(const stmdev_ctx_t *ctx, sths34pf80_int_mode_t *
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL3, (uint8_t *)&ctrl3, 1);
+  if(ret != 0) { return ret; }
 
   switch (ctrl3.pp_od)
   {
@@ -1530,6 +1555,7 @@ int32_t sths34pf80_drdy_mode_get(const stmdev_ctx_t *ctx, sths34pf80_drdy_mode_t
   int32_t ret;
 
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL3, (uint8_t *)&ctrl3, 1);
+  if(ret != 0) { return ret; }
 
   switch (ctrl3.int_latched)
   {
@@ -1579,29 +1605,35 @@ int32_t sths34pf80_func_cfg_write(const stmdev_ctx_t *ctx, uint8_t addr, uint8_t
 
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
+  if(ret != 0) { return ret; }
   odr = ctrl1.odr;
   ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
 
   /* Enable access to embedded functions register */
   ret += sths34pf80_mem_bank_set(ctx, STHS34PF80_EMBED_FUNC_MEM_BANK);
+  if(ret != 0) { return ret; }
 
   /* Enable write mode */
   page_rw.func_cfg_write = 1;
   ret += sths34pf80_write_reg(ctx, STHS34PF80_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if(ret != 0) { goto exit; }
 
   /* Select register address (it will autoincrement when writing) */
   ret += sths34pf80_write_reg(ctx, STHS34PF80_FUNC_CFG_ADDR, &addr, 1);
+  if(ret != 0) { goto exit; }
 
   for (i = 0; i < len; i++)
   {
     /* Write data */
     ret += sths34pf80_write_reg(ctx, STHS34PF80_FUNC_CFG_DATA, &data[i], 1);
+    if(ret != 0) { goto exit; }
   }
 
   /* Disable write mode */
   page_rw.func_cfg_write = 0;
   ret += sths34pf80_write_reg(ctx, STHS34PF80_PAGE_RW, (uint8_t *)&page_rw, 1);
 
+exit:
   /* Disable access to embedded functions register */
   ret += sths34pf80_mem_bank_set(ctx, STHS34PF80_MAIN_MEM_BANK);
 
@@ -1632,30 +1664,37 @@ int32_t sths34pf80_func_cfg_read(const stmdev_ctx_t *ctx, uint8_t addr, uint8_t 
 
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
+  if (ret != 0) { return ret; }
   odr = ctrl1.odr;
   ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
+  if (ret != 0) { return ret; }
 
   /* Enable access to embedded functions register */
   ret += sths34pf80_mem_bank_set(ctx, STHS34PF80_EMBED_FUNC_MEM_BANK);
+  if (ret != 0) { return ret; }
 
   /* Enable read mode */
   page_rw.func_cfg_read = 1;
   ret += sths34pf80_write_reg(ctx, STHS34PF80_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if(ret != 0) { goto exit; }
 
   for (i = 0; i < len; i++)
   {
     /* Select register address */
     reg_addr = addr + i;
     ret += sths34pf80_write_reg(ctx, STHS34PF80_FUNC_CFG_ADDR, &reg_addr, 1);
+    if(ret != 0) { goto exit; }
 
     /* Read data */
     ret += sths34pf80_read_reg(ctx, STHS34PF80_FUNC_CFG_DATA, &data[i], 1);
+    if(ret != 0) { goto exit; }
   }
 
   /* Disable read mode */
   page_rw.func_cfg_read = 0;
   ret += sths34pf80_write_reg(ctx, STHS34PF80_PAGE_RW, (uint8_t *)&page_rw, 1);
 
+exit:
   /* Disable access to embedded functions register */
   ret += sths34pf80_mem_bank_set(ctx, STHS34PF80_MAIN_MEM_BANK);
 
@@ -1688,12 +1727,15 @@ int32_t sths34pf80_presence_threshold_set(const stmdev_ctx_t *ctx, uint16_t val)
 
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
+  if(ret != 0) { return ret; }
   odr = ctrl1.odr;
   ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
+  if(ret != 0) { return ret; }
 
   buff[1] = (uint8_t)(val / 256U);
   buff[0] = (uint8_t)(val - (buff[1] * 256U));
   ret += sths34pf80_func_cfg_write(ctx, STHS34PF80_PRESENCE_THS, &buff[0], 2);
+  if(ret != 0) { return ret; }
 
   ret += sths34pf80_reset_algo_bit_set(ctx);
 
@@ -1717,6 +1759,7 @@ int32_t sths34pf80_presence_threshold_get(const stmdev_ctx_t *ctx, uint16_t *val
   int32_t ret;
 
   ret = sths34pf80_func_cfg_read(ctx, STHS34PF80_PRESENCE_THS, &buff[0], 2);
+  if(ret != 0) { return ret; }
 
   *val = buff[1];
   *val = (*val * 256U) +  buff[0];
@@ -1747,15 +1790,19 @@ int32_t sths34pf80_motion_threshold_set(const stmdev_ctx_t *ctx, uint16_t val)
 
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
+  if(ret != 0) { return ret; }
   odr = ctrl1.odr;
   ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
+  if(ret != 0) { return ret; }
 
   buff[1] = (uint8_t)(val / 256U);
   buff[0] = (uint8_t)(val - (buff[1] * 256U));
   ret += sths34pf80_func_cfg_write(ctx, STHS34PF80_MOTION_THS, &buff[0], 2);
+  if(ret != 0) { goto exit; }
 
   ret += sths34pf80_reset_algo_bit_set(ctx);
 
+exit:
   /* Set saved odr back */
   ret += sths34pf80_odr_safe_set(ctx, &ctrl1, odr);
 
@@ -1776,6 +1823,7 @@ int32_t sths34pf80_motion_threshold_get(const stmdev_ctx_t *ctx, uint16_t *val)
   int32_t ret;
 
   ret = sths34pf80_func_cfg_read(ctx, STHS34PF80_MOTION_THS, &buff[0], 2);
+  if(ret != 0) { return ret; }
 
   *val = buff[1];
   *val = (*val * 256U) +  buff[0];
@@ -1806,15 +1854,19 @@ int32_t sths34pf80_tambient_shock_threshold_set(const stmdev_ctx_t *ctx, uint16_
 
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
+  if(ret != 0) { return ret; }
   odr = ctrl1.odr;
   ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
+  if(ret != 0) { return ret; }
 
   buff[1] = (uint8_t)(val / 256U);
   buff[0] = (uint8_t)(val - (buff[1] * 256U));
   ret += sths34pf80_func_cfg_write(ctx, STHS34PF80_TAMB_SHOCK_THS, &buff[0], 2);
+  if(ret != 0) { goto exit; }
 
   ret += sths34pf80_reset_algo_bit_set(ctx);
 
+exit:
   /* Set saved odr back */
   ret += sths34pf80_odr_safe_set(ctx, &ctrl1, odr);
 
@@ -1835,6 +1887,7 @@ int32_t sths34pf80_tambient_shock_threshold_get(const stmdev_ctx_t *ctx, uint16_
   int32_t ret;
 
   ret = sths34pf80_func_cfg_read(ctx, STHS34PF80_TAMB_SHOCK_THS, &buff[0], 2);
+  if(ret != 0) { return ret; }
 
   *val = buff[1];
   *val = (*val * 256U) +  buff[0];
@@ -1858,13 +1911,17 @@ int32_t sths34pf80_motion_hysteresis_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
+  if(ret != 0) { return ret; }
   odr = ctrl1.odr;
   ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
+  if(ret != 0) { return ret; }
 
   ret += sths34pf80_func_cfg_write(ctx, STHS34PF80_HYST_MOTION, &val, 1);
+  if(ret != 0) { goto exit; }
 
   ret += sths34pf80_reset_algo_bit_set(ctx);
 
+exit:
   /* Set saved odr back */
   ret += sths34pf80_odr_safe_set(ctx, &ctrl1, odr);
 
@@ -1904,13 +1961,17 @@ int32_t sths34pf80_presence_hysteresis_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
+  if(ret != 0) { return ret; }
   odr = ctrl1.odr;
   ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
+  if(ret != 0) { return ret; }
 
   ret += sths34pf80_func_cfg_write(ctx, STHS34PF80_HYST_PRESENCE, &val, 1);
+  if(ret != 0) { goto exit; }
 
   ret += sths34pf80_reset_algo_bit_set(ctx);
 
+exit:
   /* Set saved odr back */
   ret += sths34pf80_odr_safe_set(ctx, &ctrl1, odr);
 
@@ -1950,13 +2011,17 @@ int32_t sths34pf80_tambient_shock_hysteresis_set(const stmdev_ctx_t *ctx, uint8_
 
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
+  if(ret != 0) { return ret; }
   odr = ctrl1.odr;
   ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
+  if(ret != 0) { return ret; }
 
   ret += sths34pf80_func_cfg_write(ctx, STHS34PF80_HYST_TAMB_SHOCK, &val, 1);
+  if(ret != 0) { goto exit; }
 
   ret += sths34pf80_reset_algo_bit_set(ctx);
 
+exit:
   /* Set saved odr back */
   ret += sths34pf80_odr_safe_set(ctx, &ctrl1, odr);
 
@@ -2013,6 +2078,8 @@ static int32_t sths34pf80_algo_config_get(const stmdev_ctx_t *ctx, sths34pf80_al
   int32_t ret;
 
   ret = sths34pf80_func_cfg_read(ctx, STHS34PF80_ALGO_CONFIG, &tmp, 1);
+  if (ret != 0) { return ret; }
+
   val->sel_abs = (tmp >> 1) & 0x1U;
   val->comp_type = (tmp >> 2) & 0x1U;
   val->int_pulsed = (tmp >> 3) & 0x1U;
@@ -2037,18 +2104,19 @@ int32_t sths34pf80_tobject_algo_compensation_set(const stmdev_ctx_t *ctx, uint8_
 
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
+  if (ret != 0) { return ret; }
   odr = ctrl1.odr;
   ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
-  if (ret != 0)
-  {
-    return ret;
-  }
+  if (ret != 0) { return ret; }
 
   ret = sths34pf80_algo_config_get(ctx, &config);
+  if (ret != 0) { goto exit; }
   config.comp_type = val;
   ret += sths34pf80_algo_config_set(ctx, config);
+  if (ret != 0) { goto exit; }
   ret += sths34pf80_reset_algo_bit_set(ctx);
 
+exit:
   /* Set saved odr back */
   ret += sths34pf80_odr_safe_set(ctx, &ctrl1, odr);
 
@@ -2069,6 +2137,8 @@ int32_t sths34pf80_tobject_algo_compensation_get(const stmdev_ctx_t *ctx, uint8_
   int32_t ret;
 
   ret = sths34pf80_algo_config_get(ctx, &config);
+  if (ret != 0) { return ret; }
+
   *val = config.comp_type;
 
   return ret;
@@ -2091,18 +2161,19 @@ int32_t sths34pf80_presence_abs_value_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
+  if (ret != 0) { return ret; }
   odr = ctrl1.odr;
   ret += sths34pf80_odr_safe_set(ctx, &ctrl1, 0);
-  if (ret != 0)
-  {
-    return ret;
-  }
+  if (ret != 0) { return ret; }
 
   ret = sths34pf80_algo_config_get(ctx, &config);
+  if (ret != 0) { goto exit; }
   config.sel_abs = val;
   ret += sths34pf80_algo_config_set(ctx, config);
+  if (ret != 0) { goto exit; }
   ret += sths34pf80_reset_algo_bit_set(ctx);
 
+exit:
   /* Set saved odr back */
   ret += sths34pf80_odr_safe_set(ctx, &ctrl1, odr);
 
@@ -2123,6 +2194,8 @@ int32_t sths34pf80_presence_abs_value_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = sths34pf80_algo_config_get(ctx, &config);
+  if (ret != 0) { return ret; }
+
   *val = config.sel_abs;
 
   return ret;
@@ -2142,6 +2215,7 @@ int32_t sths34pf80_int_or_pulsed_set(const stmdev_ctx_t *ctx, uint8_t val)
   int32_t ret;
 
   ret = sths34pf80_algo_config_get(ctx, &config);
+  if (ret != 0) { return ret; }
   config.int_pulsed = val;
   ret += sths34pf80_algo_config_set(ctx, config);
 
@@ -2162,6 +2236,8 @@ int32_t sths34pf80_int_or_pulsed_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = sths34pf80_algo_config_get(ctx, &config);
+  if (ret != 0) { return ret; }
+
   *val = config.int_pulsed;
 
   return ret;
@@ -2177,23 +2253,36 @@ static int32_t sths34pf80_reset_algo_bit_set(const stmdev_ctx_t *ctx)
 
   /* Enable access to embedded functions register */
   ret = sths34pf80_mem_bank_set(ctx, STHS34PF80_EMBED_FUNC_MEM_BANK);
+  if (ret != 0) { return ret; }
 
   /* Enable write mode */
   page_rw.func_cfg_write = 1;
   ret += sths34pf80_write_reg(ctx, STHS34PF80_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0)
+  {
+    ret += sths34pf80_mem_bank_set(ctx, STHS34PF80_MAIN_MEM_BANK);
+    return ret;
+  }
 
   /* Select register address (it will autoincrement when writing) */
   uint8_t addr = STHS34PF80_RESET_ALGO;
   ret += sths34pf80_write_reg(ctx, STHS34PF80_FUNC_CFG_ADDR, &addr, 1);
-
+  if (ret != 0)
+  {
+    ret += sths34pf80_mem_bank_set(ctx, STHS34PF80_MAIN_MEM_BANK);
+    return ret;
+  }
+  
   /* Write data */
   uint8_t data = 0x01;
   ret += sths34pf80_write_reg(ctx, STHS34PF80_FUNC_CFG_DATA, &data, 1);
+  if (ret != 0) { goto exit; }
 
   /* Disable write mode */
   page_rw.func_cfg_write = 0;
   ret += sths34pf80_write_reg(ctx, STHS34PF80_PAGE_RW, (uint8_t *)&page_rw, 1);
 
+exit:
   /* Disable access to embedded functions register */
   ret += sths34pf80_mem_bank_set(ctx, STHS34PF80_MAIN_MEM_BANK);
 
@@ -2216,8 +2305,10 @@ int32_t sths34pf80_algo_reset(const stmdev_ctx_t *ctx)
 
   /* Save current odr and enter PD mode */
   ret = sths34pf80_read_reg(ctx, STHS34PF80_CTRL1, (uint8_t *)&ctrl1, 1);
+  if (ret != 0) { return ret; }
   odr = ctrl1.odr;
   ret += sths34pf80_safe_power_down(ctx, &ctrl1);
+  if (ret != 0) { return ret; }
 
   ret += sths34pf80_reset_algo_bit_set(ctx);
 

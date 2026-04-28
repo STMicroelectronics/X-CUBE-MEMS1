@@ -108,6 +108,7 @@ typedef struct
 {
   LIS2DUXS12_IO_t         IO;
   stmdev_ctx_t            Ctx;
+  lis2duxs12_priv_t       priv_data;
   uint8_t                 is_initialized;
   uint8_t                 acc_is_enabled;
   float                   acc_odr;

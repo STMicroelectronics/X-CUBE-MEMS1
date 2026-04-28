@@ -69,6 +69,10 @@ extern "C" {
 #define USE_IKS5A1_MOTION_SENSOR_ISM330DHCX_0                  0
 #endif
 
+#ifndef USE_IKS5A1_MOTION_SENSOR_MIS2DU12_0
+#define USE_IKS5A1_MOTION_SENSOR_MIS2DU12_0                    0
+#endif
+
 #if (USE_IKS5A1_MOTION_SENSOR_ISM6HG256X_0 == 1)
 #include "ism6hg256x.h"
 #endif
@@ -107,6 +111,10 @@ extern "C" {
 
 #if (USE_IKS5A1_MOTION_SENSOR_ISM330DHCX_0 == 1)
 #include "ism330dhcx.h"
+#endif
+
+#if (USE_IKS5A1_MOTION_SENSOR_MIS2DU12_0 == 1)
+#include "mis2du12.h"
 #endif
 
 /** @addtogroup BSP BSP
@@ -243,6 +251,19 @@ typedef struct
                              USE_IKS5A1_MOTION_SENSOR_ISM330BX_0)
 #endif
 
+#if (USE_IKS5A1_MOTION_SENSOR_MIS2DU12_0 == 1)
+#define IKS5A1_MIS2DU12_0 (USE_IKS5A1_MOTION_SENSOR_ISM6HG256X_0 + \
+                           USE_IKS5A1_MOTION_SENSOR_ISM330IS_0 +   \
+                           USE_IKS5A1_MOTION_SENSOR_IIS2DULPX_0 +  \
+                           USE_IKS5A1_MOTION_SENSOR_IIS2MDC_0 +    \
+                           USE_IKS5A1_MOTION_SENSOR_AIS2IH_0 +     \
+                           USE_IKS5A1_MOTION_SENSOR_ASM330LHHX_0 + \
+                           USE_IKS5A1_MOTION_SENSOR_IIS2DLPC_0 +   \
+                           USE_IKS5A1_MOTION_SENSOR_IIS2ICLX_0 +   \
+                           USE_IKS5A1_MOTION_SENSOR_ISM330BX_0 +   \
+                           USE_IKS5A1_MOTION_SENSOR_ISM330DHCX_0)
+#endif
+
 #ifndef MOTION_GYRO
 #define MOTION_GYRO      1U
 #endif
@@ -263,7 +284,8 @@ typedef struct
                                       USE_IKS5A1_MOTION_SENSOR_IIS2DLPC_0 +   \
                                       USE_IKS5A1_MOTION_SENSOR_IIS2ICLX_0 +   \
                                       USE_IKS5A1_MOTION_SENSOR_ISM330BX_0 +   \
-                                      USE_IKS5A1_MOTION_SENSOR_ISM330DHCX_0)
+                                      USE_IKS5A1_MOTION_SENSOR_ISM330DHCX_0 + \
+                                      USE_IKS5A1_MOTION_SENSOR_MIS2DU12_0)
 
 #if (IKS5A1_MOTION_INSTANCES_NBR == 0)
 #error "No motion sensor instance has been selected"

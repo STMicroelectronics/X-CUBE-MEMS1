@@ -107,6 +107,7 @@ int32_t LIS2DUXS12_RegisterBusIO(LIS2DUXS12_Object_t *pObj, LIS2DUXS12_IO_t *pIO
     pObj->Ctx.write_reg = WriteRegWrap;
     pObj->Ctx.mdelay    = pIO->Delay;
     pObj->Ctx.handle    = pObj;
+    pObj->Ctx.priv_data = (void *)&pObj->priv_data;
 
     if (pObj->IO.Init == NULL)
     {
@@ -178,6 +179,8 @@ int32_t LIS2DUXS12_Init(LIS2DUXS12_Object_t *pObj)
 {
   lis2duxs12_i3c_cfg_t val;
 
+  memset(&pObj->priv_data, 0, sizeof(lis2duxs12_priv_t));
+
   if(pObj->IO.BusType != LIS2DUXS12_I3C_BUS)
   {
     /* Disable I3C */
@@ -200,7 +203,7 @@ int32_t LIS2DUXS12_Init(LIS2DUXS12_Object_t *pObj)
 
   /* Enable register address automatically incremented during a multiple byte
   access with a serial interface. Enable BDU. */
-  if (lis2duxs12_init_set(&(pObj->Ctx), LIS2DUXS12_SENSOR_ONLY_ON) != LIS2DUXS12_OK)
+  if (lis2duxs12_init_set(&(pObj->Ctx)) != LIS2DUXS12_OK)
   {
     return LIS2DUXS12_ERROR;
   }
@@ -210,7 +213,6 @@ int32_t LIS2DUXS12_Init(LIS2DUXS12_Object_t *pObj)
   {
     .operation = LIS2DUXS12_BYPASS_MODE,
     .store     = LIS2DUXS12_FIFO_1X,
-    .watermark = 0,
   };
 
   if (lis2duxs12_fifo_mode_set(&(pObj->Ctx), fifo_mode) != LIS2DUXS12_OK)

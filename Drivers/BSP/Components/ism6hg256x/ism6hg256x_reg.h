@@ -1592,9 +1592,9 @@ typedef struct
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t xl_hg_x_ofs_usr              : 8;
+  int8_t xl_hg_x_ofs_usr              : 8;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t xl_hg_x_ofs_usr              : 8;
+  int8_t xl_hg_x_ofs_usr              : 8;
 #endif /* DRV_BYTE_ORDER */
 } ism6hg256x_hg_x_ofs_usr_t;
 
@@ -1602,9 +1602,9 @@ typedef struct
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t xl_hg_y_ofs_usr              : 8;
+  int8_t xl_hg_y_ofs_usr              : 8;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t xl_hg_y_ofs_usr              : 8;
+  int8_t xl_hg_y_ofs_usr              : 8;
 #endif /* DRV_BYTE_ORDER */
 } ism6hg256x_hg_y_ofs_usr_t;
 
@@ -1612,9 +1612,9 @@ typedef struct
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t xl_hg_z_ofs_usr              : 8;
+  int8_t xl_hg_z_ofs_usr              : 8;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t xl_hg_z_ofs_usr              : 8;
+  int8_t xl_hg_z_ofs_usr              : 8;
 #endif /* DRV_BYTE_ORDER */
 } ism6hg256x_hg_z_ofs_usr_t;
 
@@ -1690,9 +1690,9 @@ typedef struct
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t x_ofs_usr                    : 8;
+  int8_t x_ofs_usr                    : 8;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t x_ofs_usr                    : 8;
+  int8_t x_ofs_usr                    : 8;
 #endif /* DRV_BYTE_ORDER */
 } ism6hg256x_x_ofs_usr_t;
 
@@ -1700,9 +1700,9 @@ typedef struct
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t y_ofs_usr                    : 8;
+  int8_t y_ofs_usr                    : 8;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t y_ofs_usr                    : 8;
+  int8_t y_ofs_usr                    : 8;
 #endif /* DRV_BYTE_ORDER */
 } ism6hg256x_y_ofs_usr_t;
 
@@ -1710,9 +1710,9 @@ typedef struct
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
-  uint8_t z_ofs_usr                    : 8;
+  int8_t z_ofs_usr                    : 8;
 #elif DRV_BYTE_ORDER == DRV_BIG_ENDIAN
-  uint8_t z_ofs_usr                    : 8;
+  int8_t z_ofs_usr                    : 8;
 #endif /* DRV_BYTE_ORDER */
 } ism6hg256x_z_ofs_usr_t;
 
@@ -3040,7 +3040,7 @@ typedef struct
 #endif /* DRV_BYTE_ORDER */
 } ism6hg256x_emb_func_init_b_t;
 
-#define ISM6HG256X_EMB_FUNC_SENSOR_CONV_EN        0x67U
+#define ISM6HG256X_EMB_FUNC_SENSOR_CONV_EN        0x6EU
 typedef struct
 {
 #if DRV_BYTE_ORDER == DRV_LITTLE_ENDIAN
@@ -4326,8 +4326,9 @@ float_t ism6hg256x_from_fs64_to_mg(int16_t lsb);
 float_t ism6hg256x_from_fs128_to_mg(int16_t lsb);
 float_t ism6hg256x_from_fs256_to_mg(int16_t lsb);
 
-float_t ism6hg256x_from_fs500_to_mdps(int16_t lsb);
+float_t ism6hg256x_from_fs125_to_mdps(int16_t lsb);
 float_t ism6hg256x_from_fs250_to_mdps(int16_t lsb);
+float_t ism6hg256x_from_fs500_to_mdps(int16_t lsb);
 float_t ism6hg256x_from_fs1000_to_mdps(int16_t lsb);
 float_t ism6hg256x_from_fs2000_to_mdps(int16_t lsb);
 float_t ism6hg256x_from_fs4000_to_mdps(int16_t lsb);
@@ -4341,6 +4342,8 @@ float_t ism6hg256x_from_lsb_to_mv(int16_t lsb);
 float_t ism6hg256x_from_gbias_lsb_to_mdps(int16_t lsb);
 float_t ism6hg256x_from_gravity_lsb_to_mg(int16_t lsb);
 float_t ism6hg256x_from_quaternion_lsb_to_float(uint16_t lsb);
+
+uint32_t ism6hg256x_from_f16_to_f32(uint16_t val);
 
 int32_t ism6hg256x_xl_offset_on_out_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t ism6hg256x_xl_offset_on_out_get(const stmdev_ctx_t *ctx, uint8_t *val);
@@ -4361,15 +4364,9 @@ int32_t ism6hg256x_hg_xl_offset_mg_set(const stmdev_ctx_t *ctx,
 int32_t ism6hg256x_hg_xl_offset_mg_get(const stmdev_ctx_t *ctx,
                                        ism6hg256x_xl_offset_mg_t *val);
 
-typedef enum
-{
-  ISM6HG256X_READY             = 0x0,
-  ISM6HG256X_GLOBAL_RST        = 0x1,
-  ISM6HG256X_RESTORE_CAL_PARAM = 0x2,
-  ISM6HG256X_RESTORE_CTRL_REGS = 0x4,
-} ism6hg256x_reset_t;
-int32_t ism6hg256x_reset_set(const stmdev_ctx_t *ctx, ism6hg256x_reset_t val);
-int32_t ism6hg256x_reset_get(const stmdev_ctx_t *ctx, ism6hg256x_reset_t *val);
+int32_t ism6hg256x_reboot(const stmdev_ctx_t *ctx);
+int32_t ism6hg256x_sw_por(const stmdev_ctx_t *ctx);
+int32_t ism6hg256x_sw_reset(const stmdev_ctx_t *ctx);
 
 typedef enum
 {
@@ -4407,21 +4404,33 @@ typedef enum
   ISM6HG256X_ODR_HA01_AT_2000Hz   = 0x1A,
   ISM6HG256X_ODR_HA01_AT_4000Hz   = 0x1B,
   ISM6HG256X_ODR_HA01_AT_8000Hz   = 0x1C,
-  ISM6HG256X_ODR_HA02_AT_13Hz     = 0x23,
-  ISM6HG256X_ODR_HA02_AT_26Hz     = 0x24,
-  ISM6HG256X_ODR_HA02_AT_52Hz     = 0x25,
-  ISM6HG256X_ODR_HA02_AT_104Hz    = 0x26,
-  ISM6HG256X_ODR_HA02_AT_208Hz    = 0x27,
-  ISM6HG256X_ODR_HA02_AT_417Hz    = 0x28,
-  ISM6HG256X_ODR_HA02_AT_833Hz    = 0x29,
-  ISM6HG256X_ODR_HA02_AT_1667Hz   = 0x2A,
-  ISM6HG256X_ODR_HA02_AT_3333Hz   = 0x2B,
-  ISM6HG256X_ODR_HA02_AT_6667Hz   = 0x2C,
+  ISM6HG256X_ODR_HA02_AT_12Hz5    = 0x23,
+  ISM6HG256X_ODR_HA02_AT_25Hz     = 0x24,
+  ISM6HG256X_ODR_HA02_AT_50Hz     = 0x25,
+  ISM6HG256X_ODR_HA02_AT_100Hz    = 0x26,
+  ISM6HG256X_ODR_HA02_AT_200Hz    = 0x27,
+  ISM6HG256X_ODR_HA02_AT_400Hz    = 0x28,
+  ISM6HG256X_ODR_HA02_AT_800Hz    = 0x29,
+  ISM6HG256X_ODR_HA02_AT_1600Hz   = 0x2A,
+  ISM6HG256X_ODR_HA02_AT_3200Hz   = 0x2B,
+  ISM6HG256X_ODR_HA02_AT_6400Hz   = 0x2C,
+  ISM6HG256X_ODR_HA03_AT_13Hz     = 0x33,
+  ISM6HG256X_ODR_HA03_AT_26Hz     = 0x34,
+  ISM6HG256X_ODR_HA03_AT_52Hz     = 0x35,
+  ISM6HG256X_ODR_HA03_AT_104Hz    = 0x36,
+  ISM6HG256X_ODR_HA03_AT_208Hz    = 0x37,
+  ISM6HG256X_ODR_HA03_AT_417Hz    = 0x38,
+  ISM6HG256X_ODR_HA03_AT_833Hz    = 0x39,
+  ISM6HG256X_ODR_HA03_AT_1667Hz   = 0x3A,
+  ISM6HG256X_ODR_HA03_AT_3333Hz   = 0x3B,
+  ISM6HG256X_ODR_HA03_AT_6667Hz   = 0x3C,
 } ism6hg256x_data_rate_t;
+// Deprecated: use xl_setup function instead
 int32_t ism6hg256x_xl_data_rate_set(const stmdev_ctx_t *ctx,
                                     ism6hg256x_data_rate_t val);
 int32_t ism6hg256x_xl_data_rate_get(const stmdev_ctx_t *ctx,
                                     ism6hg256x_data_rate_t *val);
+// Deprecated: use gy_setup function instead
 int32_t ism6hg256x_gy_data_rate_set(const stmdev_ctx_t *ctx,
                                     ism6hg256x_data_rate_t val);
 int32_t ism6hg256x_gy_data_rate_get(const stmdev_ctx_t *ctx,
@@ -4453,6 +4462,7 @@ typedef enum
   ISM6HG256X_XL_LOW_POWER_8_AVG_MD    = 0x6,
   ISM6HG256X_XL_NORMAL_MD             = 0x7,
 } ism6hg256x_xl_mode_t;
+// Deprecated: use xl_setup function instead
 int32_t ism6hg256x_xl_mode_set(const stmdev_ctx_t *ctx, ism6hg256x_xl_mode_t val);
 int32_t ism6hg256x_xl_mode_get(const stmdev_ctx_t *ctx, ism6hg256x_xl_mode_t *val);
 
@@ -4464,6 +4474,7 @@ typedef enum
   ISM6HG256X_GY_SLEEP_MD              = 0x4,
   ISM6HG256X_GY_LOW_POWER_MD          = 0x5,
 } ism6hg256x_gy_mode_t;
+// Deprecated: use gy_setup function instead
 int32_t ism6hg256x_gy_mode_set(const stmdev_ctx_t *ctx, ism6hg256x_gy_mode_t val);
 int32_t ism6hg256x_gy_mode_get(const stmdev_ctx_t *ctx, ism6hg256x_gy_mode_t *val);
 
@@ -4678,13 +4689,10 @@ typedef struct
 {
   uint8_t drdy_xl                      : 1;
   uint8_t drdy_g                       : 1;
-  uint8_t drdy_g_eis                   : 1;
-  uint8_t drdy_temp                    : 1;
   uint8_t fifo_th                      : 1;
   uint8_t fifo_ovr                     : 1;
   uint8_t fifo_full                    : 1;
   uint8_t cnt_bdr                      : 1;
-  uint8_t timestamp                    : 1;
   uint8_t shub                         : 1;
   uint8_t sixd                         : 1;
   uint8_t single_tap                   : 1;
@@ -4692,13 +4700,40 @@ typedef struct
   uint8_t wakeup                       : 1;
   uint8_t freefall                     : 1;
   uint8_t sleep_change                 : 1;
+} ism6hg256x_pin_int1_route_t;
+
+typedef struct
+{
+  uint8_t drdy_xl                      : 1;
+  uint8_t drdy_g                       : 1;
+  uint8_t drdy_g_eis                   : 1;
+  uint8_t drdy_temp                    : 1;
+  uint8_t fifo_th                      : 1;
+  uint8_t fifo_ovr                     : 1;
+  uint8_t fifo_full                    : 1;
+  uint8_t cnt_bdr                      : 1;
+  uint8_t timestamp                    : 1;
+  uint8_t sixd                         : 1;
+  uint8_t single_tap                   : 1;
+  uint8_t double_tap                   : 1;
+  uint8_t wakeup                       : 1;
+  uint8_t freefall                     : 1;
+  uint8_t sleep_change                 : 1;
+  uint8_t emb_func_endop               : 1;
+} ism6hg256x_pin_int2_route_t;
+
+typedef struct
+{
   uint8_t drdy_hg_xl                   : 1; /* High-g */
   uint8_t hg_wakeup                    : 1;
   uint8_t hg_shock_change              : 1;
+} ism6hg256x_pin_int_route_hg_t;
+
+typedef struct
+{
   uint8_t step_detector                : 1; /* Embedded Functions */
   uint8_t tilt                         : 1;
   uint8_t sig_mot                      : 1;
-  uint8_t emb_func_endop               : 1;
   uint8_t fsm1                         : 1; /* FSM */
   uint8_t fsm2                         : 1;
   uint8_t fsm3                         : 1;
@@ -4715,26 +4750,30 @@ typedef struct
   uint8_t mlc6                         : 1;
   uint8_t mlc7                         : 1;
   uint8_t mlc8                         : 1;
-} ism6hg256x_pin_int_route_t;
+} ism6hg256x_pin_int_route_emb_t;
 
-int32_t ism6hg256x_pin_int1_route_set(const stmdev_ctx_t *ctx, ism6hg256x_pin_int_route_t *val);
-int32_t ism6hg256x_pin_int1_route_get(const stmdev_ctx_t *ctx, ism6hg256x_pin_int_route_t *val);
-int32_t ism6hg256x_pin_int2_route_set(const stmdev_ctx_t *ctx, ism6hg256x_pin_int_route_t *val);
-int32_t ism6hg256x_pin_int2_route_get(const stmdev_ctx_t *ctx, ism6hg256x_pin_int_route_t *val);
+int32_t ism6hg256x_pin_int1_route_set(const stmdev_ctx_t *ctx, ism6hg256x_pin_int1_route_t *val);
+int32_t ism6hg256x_pin_int1_route_get(const stmdev_ctx_t *ctx, ism6hg256x_pin_int1_route_t *val);
+int32_t ism6hg256x_pin_int2_route_set(const stmdev_ctx_t *ctx, ism6hg256x_pin_int2_route_t *val);
+int32_t ism6hg256x_pin_int2_route_get(const stmdev_ctx_t *ctx, ism6hg256x_pin_int2_route_t *val);
 
-int32_t ism6hg256x_pin_int1_route_hg_set(const stmdev_ctx_t *ctx, ism6hg256x_pin_int_route_t *val);
-int32_t ism6hg256x_pin_int1_route_hg_get(const stmdev_ctx_t *ctx, ism6hg256x_pin_int_route_t *val);
-int32_t ism6hg256x_pin_int2_route_hg_set(const stmdev_ctx_t *ctx, ism6hg256x_pin_int_route_t *val);
-int32_t ism6hg256x_pin_int2_route_hg_get(const stmdev_ctx_t *ctx, ism6hg256x_pin_int_route_t *val);
+int32_t ism6hg256x_pin_int1_route_hg_set(const stmdev_ctx_t *ctx,
+                                         ism6hg256x_pin_int_route_hg_t *val);
+int32_t ism6hg256x_pin_int1_route_hg_get(const stmdev_ctx_t *ctx,
+                                         ism6hg256x_pin_int_route_hg_t *val);
+int32_t ism6hg256x_pin_int2_route_hg_set(const stmdev_ctx_t *ctx,
+                                         ism6hg256x_pin_int_route_hg_t *val);
+int32_t ism6hg256x_pin_int2_route_hg_get(const stmdev_ctx_t *ctx,
+                                         ism6hg256x_pin_int_route_hg_t *val);
 
 int32_t ism6hg256x_pin_int1_route_embedded_set(const stmdev_ctx_t *ctx,
-                                               ism6hg256x_pin_int_route_t *val);
+                                               ism6hg256x_pin_int_route_emb_t *val);
 int32_t ism6hg256x_pin_int1_route_embedded_get(const stmdev_ctx_t *ctx,
-                                               ism6hg256x_pin_int_route_t *val);
+                                               ism6hg256x_pin_int_route_emb_t *val);
 int32_t ism6hg256x_pin_int2_route_embedded_set(const stmdev_ctx_t *ctx,
-                                               ism6hg256x_pin_int_route_t *val);
+                                               ism6hg256x_pin_int_route_emb_t *val);
 int32_t ism6hg256x_pin_int2_route_embedded_get(const stmdev_ctx_t *ctx,
-                                               ism6hg256x_pin_int_route_t *val);
+                                               ism6hg256x_pin_int_route_emb_t *val);
 
 typedef struct
 {
@@ -4828,6 +4867,23 @@ int32_t ism6hg256x_gy_eis_data_rate_set(const stmdev_ctx_t *ctx,
 int32_t ism6hg256x_gy_eis_data_rate_get(const stmdev_ctx_t *ctx,
                                         ism6hg256x_gy_eis_data_rate_t *val);
 
+int32_t ism6hg256x_haodr_set(
+  const stmdev_ctx_t *ctx,
+  ism6hg256x_data_rate_t xl_odr,
+  ism6hg256x_xl_mode_t xl_mode,
+  ism6hg256x_data_rate_t gy_odr,
+  ism6hg256x_gy_mode_t gy_mode);
+
+int32_t ism6hg256x_xl_setup(
+  const stmdev_ctx_t *ctx,
+  ism6hg256x_data_rate_t xl_odr,
+  ism6hg256x_xl_mode_t xl_mode);
+
+int32_t ism6hg256x_gy_setup(
+  const stmdev_ctx_t *ctx,
+  ism6hg256x_data_rate_t gy_odr,
+  ism6hg256x_gy_mode_t gy_mode);
+
 int32_t ism6hg256x_fifo_watermark_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t ism6hg256x_fifo_watermark_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
@@ -4853,8 +4909,14 @@ int32_t ism6hg256x_fifo_compress_algo_real_time_set(const stmdev_ctx_t *ctx,
 int32_t ism6hg256x_fifo_compress_algo_real_time_get(const stmdev_ctx_t *ctx,
                                                     uint8_t *val);
 
-int32_t ism6hg256x_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t ism6hg256x_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val);
+typedef enum
+{
+  ISM6HG256X_FIFO_EV_WTM             = 0x0,
+  ISM6HG256X_FIFO_EV_FULL            = 0x1,
+} ism6hg256x_fifo_event_t;
+
+int32_t ism6hg256x_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, ism6hg256x_fifo_event_t val);
+int32_t ism6hg256x_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, ism6hg256x_fifo_event_t *val);
 
 typedef enum
 {
@@ -5104,6 +5166,16 @@ int32_t ism6hg256x_filt_xl_lp2_bandwidth_set(const stmdev_ctx_t *ctx,
                                              ism6hg256x_filt_xl_lp2_bandwidth_t val);
 int32_t ism6hg256x_filt_xl_lp2_bandwidth_get(const stmdev_ctx_t *ctx,
                                              ism6hg256x_filt_xl_lp2_bandwidth_t *val);
+typedef enum
+{
+  ISM6HG256X_XL_FILT_LP_LPF2,
+  ISM6HG256X_XL_FILT_LP_LPF1,
+  ISM6HG256X_XL_FILT_HP,
+  ISM6HG256X_XL_FILT_HP_SLOPE
+} ism6hg256x_xl_filter;
+
+int32_t ism6hg256x_filt_xl_setup(const stmdev_ctx_t *ctx, ism6hg256x_xl_filter filter,
+                                 ism6hg256x_filt_xl_lp2_bandwidth_t bw, uint8_t hp_ref_mode_xl);
 
 int32_t ism6hg256x_filt_xl_lp2_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t ism6hg256x_filt_xl_lp2_get(const stmdev_ctx_t *ctx, uint8_t *val);
@@ -5116,8 +5188,9 @@ int32_t ism6hg256x_filt_xl_fast_settling_get(const stmdev_ctx_t *ctx, uint8_t *v
 
 typedef enum
 {
-  ISM6HG256X_HP_MD_NORMAL    = 0x0,
-  ISM6HG256X_HP_MD_REFERENCE = 0x1,
+  ISM6HG256X_HP_MD_NORMAL_SLOPE_ON     = 0x2,
+  ISM6HG256X_HP_MD_NORMAL_SLOPE_OFF    = 0x0,
+  ISM6HG256X_HP_MD_REFERENCE           = 0x3,
 } ism6hg256x_filt_xl_hp_mode_t;
 int32_t ism6hg256x_filt_xl_hp_mode_set(const stmdev_ctx_t *ctx,
                                        ism6hg256x_filt_xl_hp_mode_t val);
@@ -5128,7 +5201,7 @@ typedef enum
 {
   ISM6HG256X_WK_FEED_SLOPE          = 0x0,
   ISM6HG256X_WK_FEED_HIGH_PASS      = 0x1,
-  ISM6HG256X_WK_FEED_LP_WITH_OFFSET = 0x2,
+  ISM6HG256X_WK_FEED_LP_WITH_OFFSET = 0x3,
 } ism6hg256x_filt_wkup_act_feed_t;
 int32_t ism6hg256x_filt_wkup_act_feed_set(const stmdev_ctx_t *ctx,
                                           ism6hg256x_filt_wkup_act_feed_t val);
@@ -5566,12 +5639,13 @@ int32_t ism6hg256x_sh_cfg_write(const stmdev_ctx_t *ctx,
                                 ism6hg256x_sh_cfg_write_t *val);
 typedef enum
 {
-  ISM6HG256X_SH_15Hz  = 0x1,
-  ISM6HG256X_SH_30Hz  = 0x2,
-  ISM6HG256X_SH_60Hz  = 0x3,
-  ISM6HG256X_SH_120Hz = 0x4,
-  ISM6HG256X_SH_240Hz = 0x5,
-  ISM6HG256X_SH_480Hz = 0x6,
+  ISM6HG256X_SH_1Hz875  = 0x0,
+  ISM6HG256X_SH_15Hz    = 0x1,
+  ISM6HG256X_SH_30Hz    = 0x2,
+  ISM6HG256X_SH_60Hz    = 0x3,
+  ISM6HG256X_SH_120Hz   = 0x4,
+  ISM6HG256X_SH_240Hz   = 0x5,
+  ISM6HG256X_SH_480Hz   = 0x6,
 } ism6hg256x_sh_data_rate_t;
 int32_t ism6hg256x_sh_data_rate_set(const stmdev_ctx_t *ctx,
                                     ism6hg256x_sh_data_rate_t val);
@@ -5595,9 +5669,9 @@ int32_t ism6hg256x_ui_sdo_pull_up_get(const stmdev_ctx_t *ctx, uint8_t *val);
 
 typedef enum
 {
-  ISM6HG256X_PAD_LOW_STRENGTH     = 0x1,
-  ISM6HG256X_PAD_MIDDLE_STRENGTH  = 0x2,
-  ISM6HG256X_PAD_HIGH_STRENGTH    = 0x4,
+  ISM6HG256X_PAD_LOW_STRENGTH     = 0x0,
+  ISM6HG256X_PAD_MIDDLE_STRENGTH  = 0x1,
+  ISM6HG256X_PAD_HIGH_STRENGTH    = 0x3,
 } ism6hg256x_pad_strength_t;
 int32_t ism6hg256x_pad_strength_set(const stmdev_ctx_t *ctx, ism6hg256x_pad_strength_t val);
 int32_t ism6hg256x_pad_strength_get(const stmdev_ctx_t *ctx, ism6hg256x_pad_strength_t *val);
@@ -5643,6 +5717,8 @@ int32_t ism6hg256x_stpcnt_period_get(const stmdev_ctx_t *ctx, uint16_t *val);
 
 int32_t ism6hg256x_sflp_game_rotation_set(const stmdev_ctx_t *ctx, uint8_t val);
 int32_t ism6hg256x_sflp_game_rotation_get(const stmdev_ctx_t *ctx, uint8_t *val);
+
+int32_t ism6hg256x_sflp_game_rotation_reset(const stmdev_ctx_t *ctx, uint8_t val);
 
 typedef struct
 {

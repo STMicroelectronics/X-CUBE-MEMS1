@@ -167,6 +167,9 @@ int32_t lis2mdl_mag_user_offset_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_OFFSET_X_REG_L, buff, 6);
+
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -217,6 +220,8 @@ int32_t lis2mdl_operating_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.md)
   {
@@ -278,6 +283,8 @@ int32_t lis2mdl_data_rate_get(const stmdev_ctx_t *ctx, lis2mdl_odr_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.odr)
   {
@@ -344,6 +351,8 @@ int32_t lis2mdl_power_mode_get(const stmdev_ctx_t *ctx, lis2mdl_lp_t *val)
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.lp)
   {
     case LIS2MDL_HIGH_RESOLUTION:
@@ -400,6 +409,9 @@ int32_t lis2mdl_offset_temp_comp_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.comp_temp_en;
 
   return ret;
@@ -445,6 +457,8 @@ int32_t lis2mdl_low_pass_bandwidth_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_B, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.lpf)
   {
@@ -505,6 +519,8 @@ int32_t lis2mdl_set_rst_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_B, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.set_rst)
   {
     case LIS2MDL_SET_SENS_ODR_DIV_63:
@@ -547,6 +563,10 @@ int32_t lis2mdl_set_rst_sensor_single_set(const stmdev_ctx_t *ctx,
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_B, (uint8_t *)&reg, 1);
 
+  if (val == 1 && reg.set_rst != LIS2MDL_SENS_OFF_CANC_EVERY_ODR) {
+    return -1;
+  }
+
   if (ret == 0)
   {
     reg.off_canc_one_shot = val;
@@ -575,6 +595,9 @@ int32_t lis2mdl_set_rst_sensor_single_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_B, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.off_canc_one_shot;
 
   return ret;
@@ -618,6 +641,9 @@ int32_t lis2mdl_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.bdu;
 
   return ret;
@@ -637,6 +663,9 @@ int32_t lis2mdl_mag_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_STATUS_REG, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.zyxda;
 
   return ret;
@@ -656,6 +685,9 @@ int32_t lis2mdl_mag_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_STATUS_REG, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.zyxor;
 
   return ret;
@@ -675,6 +707,9 @@ int32_t lis2mdl_magnetic_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_OUTX_L_REG, buff, 6);
+
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -699,6 +734,9 @@ int32_t lis2mdl_temperature_raw_get(const stmdev_ctx_t *ctx,  int16_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_TEMP_OUT_L_REG, buff, 2);
+
+  if (ret != 0) { return ret; }
+
   *val = (int16_t)buff[1];
   *val = (*val * 256) + (int16_t)buff[0];
 
@@ -737,6 +775,8 @@ int32_t lis2mdl_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 /**
   * @brief  Software reset. Restore the default values in user registers.[set]
   *
+  * Deprecated: Please use sw_reset to align with the AN
+  *
   * @param  ctx   read / write interface definitions.(ptr)
   * @param  val   change the values of soft_rst in reg CFG_REG_A
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
@@ -761,6 +801,8 @@ int32_t lis2mdl_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
 /**
   * @brief  Software reset. Restore the default values in user registers.[get]
   *
+  * Deprecated: Please use sw_reset to align with the AN
+  *
   * @param  ctx   read / write interface definitions.(ptr)
   * @param  val   change the values of soft_rst in reg CFG_REG_A.(ptr)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
@@ -772,6 +814,9 @@ int32_t lis2mdl_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.soft_rst;
 
   return ret;
@@ -779,6 +824,8 @@ int32_t lis2mdl_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
 /**
   * @brief  Reboot memory content. Reload the calibration parameters.[set]
+  *
+  * Deprecated: please use reboot to align with the AN
   *
   * @param  ctx   read / write interface definitions.(ptr)
   * @param  val   change the values of reboot in reg CFG_REG_A
@@ -804,6 +851,8 @@ int32_t lis2mdl_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
 /**
   * @brief  Reboot memory content. Reload the calibration parameters.[get]
   *
+  * Deprecated: please use reboot to align with the AN
+  *
   * @param  ctx   read / write interface definitions.(ptr)
   * @param  val   change the values of reboot in reg CFG_REG_A.(ptr)
   * @retval       interface status.(MANDATORY: return 0 -> no Error)
@@ -815,8 +864,99 @@ int32_t lis2mdl_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.reboot;
 
+  return ret;
+}
+
+/**
+  * @brief  Software reset. Restore the default values in user registers.
+  *
+  * @param  ctx   read / write interface definitions.(ptr)
+  * @retval       interface status.(MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lis2mdl_sw_reset(const stmdev_ctx_t *ctx)
+{
+  lis2mdl_cfg_reg_a_t reg = {0};
+  uint8_t retry = {0};
+  int32_t ret;
+
+  if (ctx->mdelay == NULL)
+  {
+    ret = -1;
+    goto exit;
+  }
+
+  /* 1. Set the SOFT_RST bit of the CFG_REG_A register to 1. */
+  reg.soft_rst = 1;
+  ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
+
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  /* 2. Poll the SOFT_RST bit of the CFG_REG_A register until it returns
+   * to 0. (should require 5us) */
+  do {
+    ret += lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
+
+    if (ret != 0)
+    {
+      goto exit;
+    }
+
+    ctx->mdelay(1);
+  } while (reg.soft_rst == 1 && retry++ < 3);
+
+  return (reg.soft_rst == 0) ? 0 : -1;
+
+exit:
+  return ret;
+}
+
+/**
+  * @brief  Reboot memory content. Reload the calibration paramters.
+  * (20 ms boot procedure)
+  *
+  * @param  ctx   read / write interface definitions.(ptr)
+  * @retval       interface status.(MANDATORY: return 0 -> no Error)
+  *
+  */
+int32_t lis2mdl_reboot(const stmdev_ctx_t *ctx)
+{
+  lis2mdl_cfg_reg_a_t reg;
+  int32_t ret;
+
+  if (ctx->mdelay == NULL) {
+    ret = -1;
+    goto exit;
+  }
+
+  ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
+
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  /* 1. Set the REBOOT bit of the CFG_REG_A register to 1. */
+  reg.reboot = 1;
+  ret = lis2mdl_write_reg(ctx, LIS2MDL_CFG_REG_A, (uint8_t *)&reg, 1);
+
+  if (ret != 0)
+  {
+    goto exit;
+  }
+
+  /* 2. Wait 20 ms for boot time */
+  ctx->mdelay(20);
+
+exit:
   return ret;
 }
 
@@ -858,6 +998,9 @@ int32_t lis2mdl_self_test_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.self_test;
 
   return ret;
@@ -901,6 +1044,8 @@ int32_t lis2mdl_data_format_get(const stmdev_ctx_t *ctx, lis2mdl_ble_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.ble)
   {
@@ -993,6 +1138,8 @@ int32_t lis2mdl_offset_int_conf_get(const stmdev_ctx_t *ctx,
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_B, (uint8_t *)&reg, 1);
 
+  if (ret != 0) { return ret; }
+
   switch (reg.int_on_dataoff)
   {
     case LIS2MDL_CHECK_BEFORE:
@@ -1049,6 +1196,9 @@ int32_t lis2mdl_drdy_on_pin_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.drdy_on_pin;
 
   return ret;
@@ -1092,6 +1242,9 @@ int32_t lis2mdl_int_on_pin_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
+
   *val = reg.int_on_pin;
 
   return ret;
@@ -1189,6 +1342,9 @@ int32_t lis2mdl_int_gen_threshold_get(const stmdev_ctx_t *ctx, uint16_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_INT_THS_L_REG, buff, 2);
+
+  if (ret != 0) { return ret; }
+
   *val = buff[1];
   *val = (*val * 256U) +  buff[0];
 
@@ -1246,6 +1402,8 @@ int32_t lis2mdl_spi_mode_get(const stmdev_ctx_t *ctx, lis2mdl_sim_t *val)
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg._4wspi)
   {
@@ -1305,6 +1463,8 @@ int32_t lis2mdl_i2c_interface_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = lis2mdl_read_reg(ctx, LIS2MDL_CFG_REG_C, (uint8_t *)&reg, 1);
+
+  if (ret != 0) { return ret; }
 
   switch (reg.i2c_dis)
   {

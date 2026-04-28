@@ -3916,15 +3916,9 @@ int32_t lsm6dsv32x_xl_offset_mg_set(const stmdev_ctx_t *ctx,
 int32_t lsm6dsv32x_xl_offset_mg_get(const stmdev_ctx_t *ctx,
                                     lsm6dsv32x_xl_offset_mg_t *val);
 
-typedef enum
-{
-  LSM6DSV32X_READY             = 0x0,
-  LSM6DSV32X_GLOBAL_RST        = 0x1,
-  LSM6DSV32X_RESTORE_CAL_PARAM = 0x2,
-  LSM6DSV32X_RESTORE_CTRL_REGS = 0x4,
-} lsm6dsv32x_reset_t;
-int32_t lsm6dsv32x_reset_set(const stmdev_ctx_t *ctx, lsm6dsv32x_reset_t val);
-int32_t lsm6dsv32x_reset_get(const stmdev_ctx_t *ctx, lsm6dsv32x_reset_t *val);
+int32_t lsm6dsv32x_reboot(const stmdev_ctx_t *ctx);
+int32_t lsm6dsv32x_sw_por(const stmdev_ctx_t *ctx);
+int32_t lsm6dsv32x_sw_reset(const stmdev_ctx_t *ctx);
 
 typedef enum
 {
@@ -4369,8 +4363,14 @@ int32_t lsm6dsv32x_fifo_compress_algo_real_time_set(const stmdev_ctx_t *ctx,
 int32_t lsm6dsv32x_fifo_compress_algo_real_time_get(const stmdev_ctx_t *ctx,
                                                     uint8_t *val);
 
-int32_t lsm6dsv32x_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val);
-int32_t lsm6dsv32x_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val);
+typedef enum
+{
+  LSM6DSV32X_FIFO_EV_WTM             = 0x0,
+  LSM6DSV32X_FIFO_EV_FULL            = 0x1,
+} lsm6dsv32x_fifo_event_t;
+
+int32_t lsm6dsv32x_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, lsm6dsv32x_fifo_event_t val);
+int32_t lsm6dsv32x_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, lsm6dsv32x_fifo_event_t *val);
 
 typedef enum
 {

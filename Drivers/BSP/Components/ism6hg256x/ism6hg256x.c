@@ -3068,7 +3068,7 @@ int32_t ISM6HG256X_FIFO_Set_Watermark_Level(ISM6HG256X_Object_t *pObj, uint8_t W
   */
 int32_t ISM6HG256X_FIFO_Set_Stop_On_Fth(ISM6HG256X_Object_t *pObj, uint8_t Status)
 {
-  if (ism6hg256x_fifo_stop_on_wtm_set(&(pObj->Ctx), Status) != ISM6HG256X_OK)
+  if (ism6hg256x_fifo_stop_on_wtm_set(&(pObj->Ctx), (ism6hg256x_fifo_event_t)Status) != ISM6HG256X_OK)
   {
     return ISM6HG256X_ERROR;
   }

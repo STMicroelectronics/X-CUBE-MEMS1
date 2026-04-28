@@ -565,6 +565,19 @@ int32_t IKS4A1_MOTION_SENSOR_Read_Register(uint32_t Instance, uint8_t Reg, uint8
       break;
 #endif
 
+#if (USE_IKS4A1_MOTION_SENSOR_MIS2DU12_0 == 1)
+    case IKS4A1_MIS2DU12_0:
+      if (MIS2DU12_Read_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
     default:
       ret = BSP_ERROR_WRONG_PARAM;
       break;
@@ -1083,6 +1096,19 @@ int32_t IKS4A1_MOTION_SENSOR_Write_Register(uint32_t Instance, uint8_t Reg, uint
 #if (USE_IKS4A1_MOTION_SENSOR_ST1VAFE6AX_0 == 1)
     case IKS4A1_ST1VAFE6AX_0:
       if (ST1VAFE6AX_Write_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+      break;
+#endif
+
+#if (USE_IKS4A1_MOTION_SENSOR_MIS2DU12_0 == 1)
+    case IKS4A1_MIS2DU12_0:
+      if (MIS2DU12_Write_Reg(MotionCompObj[Instance], Reg, Data) != BSP_ERROR_NONE)
       {
         ret = BSP_ERROR_COMPONENT_FAILURE;
       }
@@ -2708,6 +2734,26 @@ int32_t IKS4A1_MOTION_SENSOR_Get_DRDY_Status(uint32_t Instance, uint32_t Functio
       else if ((Function & MOTION_GYRO) == MOTION_GYRO)
       {
         if (ST1VAFE6AX_GYRO_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
+        {
+          ret = BSP_ERROR_COMPONENT_FAILURE;
+        }
+        else
+        {
+          ret = BSP_ERROR_NONE;
+        }
+      }
+      else
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      break;
+#endif
+
+#if (USE_IKS4A1_MOTION_SENSOR_MIS2DU12_0 == 1)
+    case IKS4A1_MIS2DU12_0:
+      if ((Function & MOTION_ACCELERO) == MOTION_ACCELERO)
+      {
+        if (MIS2DU12_ACC_Get_DRDY_Status(MotionCompObj[Instance], Status) != BSP_ERROR_NONE)
         {
           ret = BSP_ERROR_COMPONENT_FAILURE;
         }

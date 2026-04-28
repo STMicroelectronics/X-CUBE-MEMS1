@@ -107,10 +107,11 @@ typedef enum
 typedef struct
 {
   IIS2DULPX_IO_t         IO;
-  stmdev_ctx_t            Ctx;
-  uint8_t                 is_initialized;
-  uint8_t                 acc_is_enabled;
-  float                   acc_odr;
+  stmdev_ctx_t           Ctx;
+  iis2dulpx_priv_t       priv_data;
+  uint8_t                is_initialized;
+  uint8_t                acc_is_enabled;
+  float                  acc_odr;
   IIS2DULPX_Power_Mode_t power_mode;
 } IIS2DULPX_Object_t;
 

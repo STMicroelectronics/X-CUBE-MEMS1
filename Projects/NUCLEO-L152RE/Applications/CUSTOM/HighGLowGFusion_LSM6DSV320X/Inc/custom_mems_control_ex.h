@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2025 STMicroelectronics.
+  * Copyright (c) 2026 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -55,10 +55,17 @@ void BSP_SENSOR_PRESS_Write_Register(uint8_t Reg, uint8_t Data);
 void BSP_SENSOR_TEMP_Write_Register(uint8_t Reg, uint8_t Data);
 void BSP_SENSOR_HUM_Write_Register(uint8_t Reg, uint8_t Data);
 
-#if ((defined CUSTOM_ALGOBUILDER_FW_TEMPLATE) || (defined CUSTOM_DATALOGFUSION_DEMO) || (defined CUSTOM_TILTSENSING_DEMO) || (defined CUSTOM_GESTURERECOGNITION_DEMO) || (defined CUSTOM_CARRYPOSITION_DEMO) || (defined CUSTOM_ECOMPASS_DEMO) || (defined CUSTOM_DYNAMICINCLINOMETER_DEMO) || (defined CUSTOM_ACTIVITYRECOGNITION_DEMO) || (defined CUSTOM_ACTIVITYRECOGNITIONWRIST_DEMO) || (defined CUSTOM_FITNESSACTIVITIES_DEMO) || (defined CUSTOM_PEDOMETERWRIST_DEMO) || (defined CUSTOM_POSEESTIMATION_DEMO) || (defined CUSTOM_STANDINGSITTINGDESK_DEMO))
+#if ((defined CUSTOM_ALGOBUILDER_FW_TEMPLATE) || (defined CUSTOM_DATALOGFUSION_DEMO) || \
+     (defined CUSTOM_TILTSENSING_DEMO) || (defined CUSTOM_GESTURERECOGNITION_DEMO) || \
+     (defined CUSTOM_CARRYPOSITION_DEMO) || (defined CUSTOM_ECOMPASS_DEMO) || \
+     (defined CUSTOM_DYNAMICINCLINOMETER_DEMO) || (defined CUSTOM_ACTIVITYRECOGNITION_DEMO) || \
+     (defined CUSTOM_ACTIVITYRECOGNITIONWRIST_DEMO) || (defined CUSTOM_FITNESSACTIVITIES_DEMO) || \
+     (defined CUSTOM_PEDOMETERWRIST_DEMO) || (defined CUSTOM_POSEESTIMATION_DEMO) || \
+     (defined CUSTOM_STANDINGSITTINGDESK_DEMO))
 void BSP_SENSOR_ACC_GetOrientation(char *Orientation);
 #endif /* CUSTOM */
-#if ((defined CUSTOM_ALGOBUILDER_FW_TEMPLATE) || (defined CUSTOM_DATALOGFUSION_DEMO) || (defined CUSTOM_DYNAMICINCLINOMETER_DEMO) || (defined CUSTOM_FITNESSACTIVITIES_DEMO))
+#if ((defined CUSTOM_ALGOBUILDER_FW_TEMPLATE) || (defined CUSTOM_DATALOGFUSION_DEMO) || \
+     (defined CUSTOM_DYNAMICINCLINOMETER_DEMO) || (defined CUSTOM_FITNESSACTIVITIES_DEMO))
 void BSP_SENSOR_GYR_GetOrientation(char *Orientation);
 #endif /* CUSTOM */
 #if ((defined CUSTOM_ALGOBUILDER_FW_TEMPLATE) || (defined CUSTOM_DATALOGFUSION_DEMO) || (defined CUSTOM_ECOMPASS_DEMO))

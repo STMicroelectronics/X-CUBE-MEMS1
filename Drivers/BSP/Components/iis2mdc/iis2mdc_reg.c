@@ -169,6 +169,8 @@ int32_t iis2mdc_mag_user_offset_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret =  iis2mdc_read_reg(ctx, IIS2MDC_OFFSET_X_REG_L, buff, 6);
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -219,6 +221,7 @@ int32_t iis2mdc_operating_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.md)
   {
@@ -280,6 +283,7 @@ int32_t iis2mdc_data_rate_get(const stmdev_ctx_t *ctx, iis2mdc_odr_t *val)
   int32_t ret;
 
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.odr)
   {
@@ -345,6 +349,7 @@ int32_t iis2mdc_power_mode_get(const stmdev_ctx_t *ctx, iis2mdc_lp_t *val)
   int32_t ret;
 
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.lp)
   {
@@ -402,6 +407,8 @@ int32_t iis2mdc_offset_temp_comp_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.comp_temp_en;
 
   return ret;
@@ -447,6 +454,7 @@ int32_t iis2mdc_low_pass_bandwidth_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_B, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.lpf)
   {
@@ -507,6 +515,7 @@ int32_t iis2mdc_set_rst_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_B, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.set_rst)
   {
@@ -577,6 +586,8 @@ int32_t iis2mdc_off_canc_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_B, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.off_canc_one_shot;
 
   return ret;
@@ -620,6 +631,8 @@ int32_t iis2mdc_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.bdu;
 
   return ret;
@@ -639,6 +652,8 @@ int32_t iis2mdc_mag_data_ready_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2mdc_read_reg(ctx, IIS2MDC_STATUS_REG, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.zyxda;
 
   return ret;
@@ -658,6 +673,8 @@ int32_t iis2mdc_mag_data_ovr_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2mdc_read_reg(ctx, IIS2MDC_STATUS_REG, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.zyxor;
 
   return ret;
@@ -677,6 +694,8 @@ int32_t iis2mdc_magnetic_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret =  iis2mdc_read_reg(ctx, IIS2MDC_OUTX_L_REG, buff, 6);
+  if (ret != 0) { return ret; }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -701,6 +720,8 @@ int32_t iis2mdc_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret =  iis2mdc_read_reg(ctx, IIS2MDC_TEMP_OUT_L_REG, buff, 2);
+  if (ret != 0) { return ret; }
+
   *val = (int16_t)buff[1];
   *val = (*val * 256) + (int16_t)buff[0];
 
@@ -775,6 +796,8 @@ int32_t iis2mdc_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.soft_rst;
 
   return ret;
@@ -818,6 +841,8 @@ int32_t iis2mdc_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_A, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.reboot;
 
   return ret;
@@ -861,6 +886,8 @@ int32_t iis2mdc_self_test_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.self_test;
 
   return ret;
@@ -904,6 +931,7 @@ int32_t iis2mdc_data_format_get(const stmdev_ctx_t *ctx, iis2mdc_ble_t *val)
   int32_t ret;
 
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.ble)
   {
@@ -998,6 +1026,7 @@ int32_t iis2mdc_offset_int_conf_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_B, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.int_on_dataoff)
   {
@@ -1055,6 +1084,8 @@ int32_t iis2mdc_drdy_on_pin_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.drdy_on_pin;
 
   return ret;
@@ -1098,6 +1129,8 @@ int32_t iis2mdc_int_on_pin_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
+
   *val = reg.int_on_pin;
 
   return ret;
@@ -1195,6 +1228,8 @@ int32_t iis2mdc_int_gen_threshold_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret =  iis2mdc_read_reg(ctx, IIS2MDC_INT_THS_L_REG, buff, 2);
+  if (ret != 0) { return ret; }
+
   *val = (int16_t)buff[1];
   *val = (*val * 256) + (int16_t)buff[0];
 
@@ -1254,6 +1289,7 @@ int32_t iis2mdc_i2c_interface_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = iis2mdc_read_reg(ctx, IIS2MDC_CFG_REG_C, (uint8_t *) &reg, 1);
+  if (ret != 0) { return ret; }
 
   switch (reg.i2c_dis)
   {

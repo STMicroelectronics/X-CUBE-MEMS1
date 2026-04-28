@@ -201,7 +201,11 @@ int32_t ism330is_odr_cal_reg_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism330is_read_reg(ctx, ISM330IS_INTERNAL_FREQ_FINE,
                           (uint8_t *)&internal_freq_fine, 1);
-  *val = internal_freq_fine.freq_fine;
+
+  if (ret == 0)
+  {
+    *val = internal_freq_fine.freq_fine;
+  }
 
   return ret;
 }
@@ -241,6 +245,11 @@ int32_t ism330is_mem_bank_get(const stmdev_ctx_t *ctx, ism330is_mem_bank_t *val)
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   if (func_cfg_access.shub_reg_access == 1U)
   {
@@ -298,6 +307,11 @@ int32_t ism330is_data_ready_mode_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_DRDY_PULSED_REG, (uint8_t *)&drdy_pulsed_reg, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch ((drdy_pulsed_reg.drdy_pulsed))
   {
@@ -402,6 +416,12 @@ int32_t ism330is_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *val = ctrl3_c.boot;
 
   return ret;
@@ -445,6 +465,11 @@ int32_t ism330is_xl_hm_mode_get(const stmdev_ctx_t *ctx, ism330is_hm_mode_t *val
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch ((ctrl6_c.xl_hm_mode))
   {
@@ -503,6 +528,11 @@ int32_t ism330is_xl_full_scale_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch ((ctrl1_xl.fs_xl))
   {
@@ -567,7 +597,13 @@ int32_t ism330is_xl_data_rate_set(const stmdev_ctx_t *ctx,
   * @brief  Accelerometer output data rate (ODR) selection.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      XL_ODR_OFF, XL_ODR_AT_1Hz875, XL_ODR_AT_7Hz5, XL_ODR_AT_15Hz, XL_ODR_AT_30Hz, XL_ODR_AT_60Hz, XL_ODR_AT_120Hz, XL_ODR_AT_240Hz, XL_ODR_AT_480Hz, XL_ODR_AT_960Hz, XL_ODR_AT_1920Hz, XL_ODR_AT_3840Hz, XL_ODR_AT_7680Hz,
+  * @param  val      XL_ODR_OFF, XL_ODR_AT_12Hz5_HP, XL_ODR_AT_26Hz_HP,
+  *                  XL_ODR_AT_52Hz_HP, XL_ODR_AT_104Hz_HP, XL_ODR_AT_208Hz_HP,
+  *                  XL_ODR_AT_416Hz_HP, XL_ODR_AT_833Hz_HP, XL_ODR_AT_1667Hz_HP,
+  *                  XL_ODR_AT_3333Hz_HP, XL_ODR_AT_6667Hz_HP, XL_ODR_AT_12Hz5_LP,
+  *                  XL_ODR_AT_26Hz_LP, XL_ODR_AT_52Hz_LP, XL_ODR_AT_104Hz_LP,
+  *                  XL_ODR_AT_208Hz_LP, XL_ODR_AT_1Hz6_LP
+  *
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -581,93 +617,85 @@ int32_t ism330is_xl_data_rate_get(const stmdev_ctx_t *ctx,
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
   ret += ism330is_read_reg(ctx, ISM330IS_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch ((ctrl6_c.xl_hm_mode << 4) | (ctrl1_xl.odr_xl))
   {
-    case ISM330IS_XL_ODR_OFF:
+    case 0x0:
+    case 0x10:
       *val = ISM330IS_XL_ODR_OFF;
       break;
 
-    case ISM330IS_XL_ODR_AT_12Hz5_HP:
+    case 0x0b:
+    case 0x01:
       *val = ISM330IS_XL_ODR_AT_12Hz5_HP;
       break;
 
-    case ISM330IS_XL_ODR_AT_26H_HP:
-      *val = ISM330IS_XL_ODR_AT_26H_HP;
+    case 0x02:
+      *val = ISM330IS_XL_ODR_AT_26Hz_HP;
       break;
 
-    case ISM330IS_XL_ODR_AT_52Hz_HP:
+    case 0x03:
       *val = ISM330IS_XL_ODR_AT_52Hz_HP;
       break;
 
-    case ISM330IS_XL_ODR_AT_104Hz_HP:
+    case 0x04:
       *val = ISM330IS_XL_ODR_AT_104Hz_HP;
       break;
 
-    case ISM330IS_XL_ODR_AT_208Hz_HP:
+    case 0x05:
       *val = ISM330IS_XL_ODR_AT_208Hz_HP;
       break;
 
-    case ISM330IS_XL_ODR_AT_416Hz_HP:
+    case 0x06:
+    case 0x16:
       *val = ISM330IS_XL_ODR_AT_416Hz_HP;
       break;
 
-    case ISM330IS_XL_ODR_AT_833Hz_HP:
+    case 0x07:
+    case 0x17:
       *val = ISM330IS_XL_ODR_AT_833Hz_HP;
       break;
 
-    case ISM330IS_XL_ODR_AT_1667Hz_HP:
+    case 0x08:
+    case 0x18:
       *val = ISM330IS_XL_ODR_AT_1667Hz_HP;
       break;
 
-    case ISM330IS_XL_ODR_AT_3333Hz_HP:
+    case 0x09:
+    case 0x19:
       *val = ISM330IS_XL_ODR_AT_3333Hz_HP;
       break;
 
-    case ISM330IS_XL_ODR_AT_6667Hz_HP:
+    case 0x0a:
+    case 0x1a:
       *val = ISM330IS_XL_ODR_AT_6667Hz_HP;
       break;
 
-    case ISM330IS_XL_ODR_AT_12Hz5_LP:
+    case 0x11:
       *val = ISM330IS_XL_ODR_AT_12Hz5_LP;
       break;
 
-    case ISM330IS_XL_ODR_AT_26H_LP:
-      *val = ISM330IS_XL_ODR_AT_26H_LP;
+    case 0x12:
+      *val = ISM330IS_XL_ODR_AT_26Hz_LP;
       break;
 
-    case ISM330IS_XL_ODR_AT_52Hz_LP:
+    case 0x13:
       *val = ISM330IS_XL_ODR_AT_52Hz_LP;
       break;
 
-    case ISM330IS_XL_ODR_AT_104Hz_LP:
+    case 0x14:
       *val = ISM330IS_XL_ODR_AT_104Hz_LP;
       break;
 
-    case ISM330IS_XL_ODR_AT_208Hz_LP:
+    case 0x15:
       *val = ISM330IS_XL_ODR_AT_208Hz_LP;
       break;
 
-    case ISM330IS_XL_ODR_AT_416Hz_LP:
-      *val = ISM330IS_XL_ODR_AT_416Hz_LP;
-      break;
-
-    case ISM330IS_XL_ODR_AT_833Hz_LP:
-      *val = ISM330IS_XL_ODR_AT_833Hz_LP;
-      break;
-
-    case ISM330IS_XL_ODR_AT_1667Hz_LP:
-      *val = ISM330IS_XL_ODR_AT_1667Hz_LP;
-      break;
-
-    case ISM330IS_XL_ODR_AT_3333Hz_LP:
-      *val = ISM330IS_XL_ODR_AT_3333Hz_LP;
-      break;
-
-    case ISM330IS_XL_ODR_AT_6667Hz_LP:
-      *val = ISM330IS_XL_ODR_AT_6667Hz_LP;
-      break;
-
-    case ISM330IS_XL_ODR_AT_1Hz6_LP:
+    case 0x1b:
       *val = ISM330IS_XL_ODR_AT_1Hz6_LP;
       break;
 
@@ -717,6 +745,11 @@ int32_t ism330is_gy_hm_mode_get(const stmdev_ctx_t *ctx, ism330is_hm_mode_t *val
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch ((ctrl7_g.g_hm_mode))
   {
@@ -777,6 +810,11 @@ int32_t ism330is_gy_full_scale_get(const stmdev_ctx_t *ctx,
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL2_G, (uint8_t *)&ctrl2_g, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch ((ctrl2_g.fs_125 << 4) | (ctrl2_g.fs_g))
   {
     case ISM330IS_125dps:
@@ -810,7 +848,11 @@ int32_t ism330is_gy_full_scale_get(const stmdev_ctx_t *ctx,
   * @brief  Gyroscope output data rate (ODR) selection.[set]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      GY_ODR_OFF, GY_ODR_AT_7Hz5, GY_ODR_AT_15Hz, GY_ODR_AT_30Hz, GY_ODR_AT_60Hz, GY_ODR_AT_120Hz, GY_ODR_AT_240Hz, GY_ODR_AT_480Hz, GY_ODR_AT_960Hz, GY_ODR_AT_1920Hz, GY_ODR_AT_3840Hz, GY_ODR_AT_7680Hz,
+  * @param  val      GY_ODR_OFF, GY_ODR_AT_12Hz5_HP, GY_ODR_AT_26Hz_HP, GY_ODR_AT_52Hz_HP,
+  *                  GY_ODR_AT_104Hz_HP, GY_ODR_AT_208Hz_HP, GY_ODR_AT_416Hz_HP,
+  *                  GY_ODR_AT_833Hz_HP, GY_ODR_AT_1667Hz_HP, GY_ODR_AT_3333Hz_HP,
+  *                  GY_ODR_AT_6667Hz_HP, GY_ODR_AT_12Hz5_LP, GY_ODR_AT_26Hz_LP,
+  *                  GY_ODR_AT_52Hz_LP, GY_ODR_AT_104Hz_LP, GY_ODR_AT_208Hz_LP
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -844,7 +886,12 @@ int32_t ism330is_gy_data_rate_set(const stmdev_ctx_t *ctx,
   * @brief  Gyroscope output data rate (ODR) selection.[get]
   *
   * @param  ctx      read / write interface definitions
-  * @param  val      GY_ODR_OFF, GY_ODR_AT_7Hz5, GY_ODR_AT_15Hz, GY_ODR_AT_30Hz, GY_ODR_AT_60Hz, GY_ODR_AT_120Hz, GY_ODR_AT_240Hz, GY_ODR_AT_480Hz, GY_ODR_AT_960Hz, GY_ODR_AT_1920Hz, GY_ODR_AT_3840Hz, GY_ODR_AT_7680Hz,
+  * @param  val      GY_ODR_OFF, GY_ODR_AT_12Hz5_HP, GY_ODR_AT_26Hz_HP, GY_ODR_AT_52Hz_HP,
+  *                  GY_ODR_AT_104Hz_HP, GY_ODR_AT_208Hz_HP, GY_ODR_AT_416Hz_HP,
+  *                  GY_ODR_AT_833Hz_HP, GY_ODR_AT_1667Hz_HP, GY_ODR_AT_3333Hz_HP,
+  *                  GY_ODR_AT_6667Hz_HP, GY_ODR_AT_12Hz5_LP, GY_ODR_AT_26Hz_LP,
+  *                  GY_ODR_AT_52Hz_LP, GY_ODR_AT_104Hz_LP, GY_ODR_AT_208Hz_LP
+  *
   * @retval          interface status (MANDATORY: return 0 -> no Error)
   *
   */
@@ -858,90 +905,81 @@ int32_t ism330is_gy_data_rate_get(const stmdev_ctx_t *ctx,
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL2_G, (uint8_t *)&ctrl2_g, 1);
   ret += ism330is_read_reg(ctx, ISM330IS_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch ((ctrl7_g.g_hm_mode << 4) | (ctrl2_g.odr_g))
   {
-    case ISM330IS_GY_ODR_OFF:
+    case 0x00:
+    case 0x10:
       *val = ISM330IS_GY_ODR_OFF;
       break;
 
-    case ISM330IS_GY_ODR_AT_12Hz5_HP:
+    case 0x01:
       *val = ISM330IS_GY_ODR_AT_12Hz5_HP;
       break;
 
-    case ISM330IS_GY_ODR_AT_26H_HP:
-      *val = ISM330IS_GY_ODR_AT_26H_HP;
+    case 0x02:
+      *val = ISM330IS_GY_ODR_AT_26Hz_HP;
       break;
 
-    case ISM330IS_GY_ODR_AT_52Hz_HP:
+    case 0x03:
       *val = ISM330IS_GY_ODR_AT_52Hz_HP;
       break;
 
-    case ISM330IS_GY_ODR_AT_104Hz_HP:
+    case 0x04:
       *val = ISM330IS_GY_ODR_AT_104Hz_HP;
       break;
 
-    case ISM330IS_GY_ODR_AT_208Hz_HP:
+    case 0x05:
       *val = ISM330IS_GY_ODR_AT_208Hz_HP;
       break;
 
-    case ISM330IS_GY_ODR_AT_416Hz_HP:
+    case 0x06:
+    case 0x16:
       *val = ISM330IS_GY_ODR_AT_416Hz_HP;
       break;
 
-    case ISM330IS_GY_ODR_AT_833Hz_HP:
+    case 0x07:
+    case 0x17:
       *val = ISM330IS_GY_ODR_AT_833Hz_HP;
       break;
 
-    case ISM330IS_GY_ODR_AT_1667Hz_HP:
+    case 0x08:
+    case 0x18:
       *val = ISM330IS_GY_ODR_AT_1667Hz_HP;
       break;
 
-    case ISM330IS_GY_ODR_AT_3333Hz_HP:
+    case 0x09:
+    case 0x19:
       *val = ISM330IS_GY_ODR_AT_3333Hz_HP;
       break;
 
-    case ISM330IS_GY_ODR_AT_6667Hz_HP:
+    case 0x0a:
+    case 0x1a:
       *val = ISM330IS_GY_ODR_AT_6667Hz_HP;
       break;
 
-    case ISM330IS_GY_ODR_AT_12Hz5_LP:
+    case 0x11:
       *val = ISM330IS_GY_ODR_AT_12Hz5_LP;
       break;
 
-    case ISM330IS_GY_ODR_AT_26H_LP:
-      *val = ISM330IS_GY_ODR_AT_26H_LP;
+    case 0x12:
+      *val = ISM330IS_GY_ODR_AT_26Hz_LP;
       break;
 
-    case ISM330IS_GY_ODR_AT_52Hz_LP:
+    case 0x13:
       *val = ISM330IS_GY_ODR_AT_52Hz_LP;
       break;
 
-    case ISM330IS_GY_ODR_AT_104Hz_LP:
+    case 0x14:
       *val = ISM330IS_GY_ODR_AT_104Hz_LP;
       break;
 
-    case ISM330IS_GY_ODR_AT_208Hz_LP:
+    case 0x15:
       *val = ISM330IS_GY_ODR_AT_208Hz_LP;
-      break;
-
-    case ISM330IS_GY_ODR_AT_416Hz_LP:
-      *val = ISM330IS_GY_ODR_AT_416Hz_LP;
-      break;
-
-    case ISM330IS_GY_ODR_AT_833Hz_LP:
-      *val = ISM330IS_GY_ODR_AT_833Hz_LP;
-      break;
-
-    case ISM330IS_GY_ODR_AT_1667Hz_LP:
-      *val = ISM330IS_GY_ODR_AT_1667Hz_LP;
-      break;
-
-    case ISM330IS_GY_ODR_AT_3333Hz_LP:
-      *val = ISM330IS_GY_ODR_AT_3333Hz_LP;
-      break;
-
-    case ISM330IS_GY_ODR_AT_6667Hz_LP:
-      *val = ISM330IS_GY_ODR_AT_6667Hz_LP;
       break;
 
     default:
@@ -991,6 +1029,11 @@ int32_t ism330is_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *val = ctrl3_c.if_inc;
 
   return ret;
@@ -1035,6 +1078,11 @@ int32_t ism330is_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *val = ctrl3_c.bdu;
 
   return ret;
@@ -1078,6 +1126,11 @@ int32_t ism330is_sleep_get(const stmdev_ctx_t *ctx, ism330is_sleep_t *val)
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch ((ctrl4_c.sleep_g))
   {
@@ -1136,6 +1189,11 @@ int32_t ism330is_xl_self_test_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch ((ctrl5_c.st_xl))
   {
@@ -1198,6 +1256,11 @@ int32_t ism330is_gy_self_test_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch ((ctrl5_c.st_g))
   {
@@ -1265,6 +1328,11 @@ int32_t ism330is_ui_sdo_pull_up_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism330is_read_reg(ctx, ISM330IS_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *val = pin_ctrl.sdo_pu_en;
 
   return ret;
@@ -1308,6 +1376,11 @@ int32_t ism330is_spi_mode_get(const stmdev_ctx_t *ctx, ism330is_spi_mode_t *val)
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch ((ctrl3_c.sim))
   {
@@ -1364,6 +1437,11 @@ int32_t ism330is_ui_i2c_mode_get(const stmdev_ctx_t *ctx, ism330is_ui_i2c_mode_t
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch ((ctrl4_c.i2c_disable))
   {
@@ -1432,6 +1510,11 @@ int32_t ism330is_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *val = ctrl10_c.timestamp_en;
 
   return ret;
@@ -1451,6 +1534,11 @@ int32_t ism330is_timestamp_raw_get(const stmdev_ctx_t *ctx, uint32_t *val)
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_TIMESTAMP0, &buff[0], 4);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   *val = (uint32_t)buff[3];
   *val = (*val * 256U) + (uint32_t)buff[2];
@@ -1546,6 +1634,12 @@ int32_t ism330is_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330is_read_reg(ctx, ISM330IS_STATUS_REG,
                           (uint8_t *)&status_reg, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *val = status_reg.xlda;
 
   return ret;
@@ -1566,6 +1660,12 @@ int32_t ism330is_gy_flag_data_ready_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330is_read_reg(ctx, ISM330IS_STATUS_REG,
                           (uint8_t *)&status_reg, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *val = status_reg.gda;
 
   return ret;
@@ -1586,6 +1686,12 @@ int32_t ism330is_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
   int32_t ret;
   ret = ism330is_read_reg(ctx, ISM330IS_STATUS_REG,
                           (uint8_t *)&status_reg, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *val = status_reg.tda;
 
   return ret;
@@ -1605,6 +1711,12 @@ int32_t ism330is_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_OUT_TEMP_L, &buff[0], 2);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *val = (int16_t)buff[1];
   *val = (*val * 256) + (int16_t)buff[0];
 
@@ -1625,6 +1737,12 @@ int32_t ism330is_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_OUTX_L_G, buff, 6);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -1649,6 +1767,12 @@ int32_t ism330is_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_OUTX_L_A, buff, 6);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
   val[1] = (int16_t)buff[3];
@@ -1844,6 +1968,11 @@ int32_t ism330is_int_pin_mode_get(const stmdev_ctx_t *ctx,
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch ((ctrl3_c.pp_od))
   {
     case ISM330IS_PUSH_PULL:
@@ -1902,6 +2031,11 @@ int32_t ism330is_pin_polarity_get(const stmdev_ctx_t *ctx,
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   switch ((ctrl3_c.h_lactive))
   {
     case ISM330IS_ACTIVE_HIGH:
@@ -1946,7 +2080,10 @@ int32_t ism330is_sh_read_data_raw_get(const stmdev_ctx_t *ctx, uint8_t *val,
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
-  ret += ism330is_read_reg(ctx, ISM330IS_SENSOR_HUB_1, val, len);
+  if (ret == 0)
+  {
+    ret += ism330is_read_reg(ctx, ISM330IS_SENSOR_HUB_1, val, len);
+  }
   ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
@@ -2074,12 +2211,11 @@ int32_t ism330is_sh_master_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
   ret += ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  if (ret != 0)
-  {
-    return ret;
-  }
 
-  *val = master_config.master_on;
+  if (ret == 0)
+  {
+    *val = master_config.master_on;
+  }
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
@@ -2131,14 +2267,13 @@ int32_t ism330is_sh_master_interface_pull_up_get(const stmdev_ctx_t *ctx,
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
   ret += ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  if (ret != 0)
+
+  if (ret == 0)
   {
-    return ret;
+    *val = master_config.shub_pu_en;
   }
 
-  *val = master_config.shub_pu_en;
-
-  ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -2187,8 +2322,10 @@ int32_t ism330is_sh_pass_through_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
   ret += ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-
-  *val = master_config.pass_through_mode;
+  if (ret == 0)
+  {
+    *val = master_config.pass_through_mode;
+  }
   ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
@@ -2378,12 +2515,11 @@ int32_t ism330is_sh_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
   ret += ism330is_read_reg(ctx, ISM330IS_MASTER_CONFIG, (uint8_t *)&master_config, 1);
-  if (ret != 0)
-  {
-    return ret;
-  }
 
-  *val = master_config.rst_master_regs;
+  if (ret == 0)
+  {
+    *val = master_config.rst_master_regs;
+  }
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
@@ -2410,10 +2546,10 @@ int32_t ism330is_sh_cfg_write(const stmdev_ctx_t *ctx,
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
   if (ret != 0)
   {
-    return ret;
+    goto exit;
   }
 
-  reg.slave0_add = val->slv0_add;
+  reg.slave0_add = (uint8_t)(val->slv0_add >> 1);
   reg.rw_0 = 0;
   ret = ism330is_write_reg(ctx, ISM330IS_SLV0_ADD, (uint8_t *)&reg, 1);
   if (ret != 0)
@@ -2536,10 +2672,10 @@ int32_t ism330is_sh_slv_cfg_read(const stmdev_ctx_t *ctx, uint8_t idx,
   ret = ism330is_mem_bank_set(ctx, ISM330IS_SENSOR_HUB_MEM_BANK);
   if (ret != 0)
   {
-    return ret;
+    goto exit;
   }
 
-  slv_add.slave0_add = val->slv_add;
+  slv_add.slave0_add = (uint8_t)(val->slv_add >> 1);
   slv_add.rw_0 = 1;
   ret = ism330is_write_reg(ctx, ISM330IS_SLV0_ADD + idx * 3U,
                            (uint8_t *)&slv_add, 1);
@@ -2640,6 +2776,11 @@ int32_t ism330is_ispu_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = ism330is_read_reg(ctx, ISM330IS_FUNC_CFG_ACCESS, (uint8_t *)&func_cfg_access, 1);
 
+  if (ret != 0)
+  {
+    return ret;
+  }
+
   *val = func_cfg_access.sw_reset_ispu;
 
 
@@ -2670,6 +2811,11 @@ int32_t ism330is_ispu_clock_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch (ctrl10_c.ispu_clk_sel)
   {
@@ -2729,6 +2875,11 @@ int32_t ism330is_ispu_data_rate_get(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL9_C, (uint8_t *)&ctrl9_c, 1);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   switch ((ctrl9_c.ispu_rate))
   {
@@ -2822,7 +2973,12 @@ int32_t ism330is_ispu_bdu_get(const stmdev_ctx_t *ctx, ism330is_ispu_bdu_t *val)
 
   ret = ism330is_read_reg(ctx, ISM330IS_CTRL9_C, (uint8_t *)&ctrl9_c, 1);
 
-  switch ((ctrl9_c.ispu_rate))
+  if (ret != 0)
+  {
+    return ret;
+  }
+
+  switch ((ctrl9_c.ispu_bdu))
   {
     case ISM330IS_ISPU_BDU_OFF:
       *val = ISM330IS_ISPU_BDU_OFF;
@@ -2861,6 +3017,11 @@ int32_t ism330is_ia_ispu_get(const stmdev_ctx_t *ctx, uint32_t *val)
   int32_t ret;
 
   ret = ism330is_read_reg(ctx, ISM330IS_ISPU_INT_STATUS0_MAINPAGE, &buff[0], 4);
+
+  if (ret != 0)
+  {
+    return ret;
+  }
 
   *val = (uint32_t)buff[3];
   *val = (*val * 256U) + (uint32_t)buff[2];
@@ -2939,7 +3100,7 @@ int32_t ism330is_ispu_boot_set(const stmdev_ctx_t *ctx,
   ret = ism330is_mem_bank_set(ctx, ISM330IS_ISPU_MEM_BANK);
   if (ret != 0)
   {
-    return ret;
+    goto exit;
   }
 
   ret = ism330is_read_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_config, 1);
@@ -2975,7 +3136,7 @@ int32_t ism330is_ispu_boot_get(const stmdev_ctx_t *ctx,
   ret = ism330is_mem_bank_set(ctx, ISM330IS_ISPU_MEM_BANK);
   if (ret != 0)
   {
-    return ret;
+    goto exit;
   }
 
   ret += ism330is_read_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_config, 1);
@@ -2984,10 +3145,10 @@ int32_t ism330is_ispu_boot_get(const stmdev_ctx_t *ctx,
     goto exit;
   }
 
-  *val = ISM330IS_ISPU_TURN_OFF;
+  *val = ISM330IS_ISPU_TURN_ON;
   if (ispu_config.ispu_rst_n == 1U || ispu_config.clk_dis == 1U)
   {
-    *val = ISM330IS_ISPU_TURN_ON;
+    *val = ISM330IS_ISPU_TURN_OFF;
   }
 
 exit:
@@ -3013,7 +3174,7 @@ int32_t ism330is_ispu_int_latched_set(const stmdev_ctx_t *ctx,
   ret = ism330is_mem_bank_set(ctx, ISM330IS_ISPU_MEM_BANK);
   if (ret != 0)
   {
-    return ret;
+    goto exit;
   }
 
   ret += ism330is_read_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_config, 1);
@@ -3086,13 +3247,11 @@ int32_t ism330is_ispu_get_boot_status(const stmdev_ctx_t *ctx,
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_ISPU_MEM_BANK);
-  if (ret != 0)
+  ret += ism330is_read_reg(ctx, ISM330IS_ISPU_STATUS, (uint8_t *)&ispu_boot_status, 1);
+  if (ret == 0)
   {
-    return ret;
+    *val = (ism330is_ispu_boot_end_t)ispu_boot_status.boot_end;
   }
-
-  ret = ism330is_read_reg(ctx, ISM330IS_ISPU_STATUS, (uint8_t *)&ispu_boot_status, 1);
-  *val = (ism330is_ispu_boot_end_t)ispu_boot_status.boot_end;
   ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
@@ -3139,14 +3298,26 @@ int32_t ism330is_ispu_write_memory(const stmdev_ctx_t *ctx,
   {
     /* disable ISPU clock */
     ret = ism330is_read_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_cfg, 1);
+    if (ret != 0)
+    {
+      goto exit;
+    }
     clk_dis = ispu_cfg.clk_dis;
     ispu_cfg.clk_dis = 1;
-    ret += ism330is_write_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_cfg, 1);
+    ret = ism330is_write_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_cfg, 1);
+    if (ret != 0)
+    {
+      goto exit;
+    }
 
     /* select memory to be written */
     ispu_mem_sel.read_mem_en = 0;
     ispu_mem_sel.mem_sel = (uint8_t)mem_sel;
-    ret += ism330is_write_reg(ctx, ISM330IS_ISPU_MEM_SEL, (uint8_t *)&ispu_mem_sel, 1);
+    ret = ism330is_write_reg(ctx, ISM330IS_ISPU_MEM_SEL, (uint8_t *)&ispu_mem_sel, 1);
+    if (ret != 0)
+    {
+      goto exit;
+    }
 
     if (mem_sel == ISM330IS_ISPU_PROGRAM_RAM_MEMORY)
     {
@@ -3184,12 +3355,21 @@ int32_t ism330is_ispu_write_memory(const stmdev_ctx_t *ctx,
       ret += ism330is_ispu_sel_memory_addr(ctx, mem_addr);
       ret += ism330is_write_reg(ctx, ISM330IS_ISPU_MEM_DATA, &mem_data[0], len);
     }
+    if (ret != 0)
+    {
+      goto exit;
+    }
 
     /* set ISPU clock back to previous value */
     ispu_cfg.clk_dis = clk_dis;
     ret += ism330is_write_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_cfg, 1);
+    if (ret != 0)
+    {
+      goto exit;
+    }
   }
 
+exit:
   ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
@@ -3221,27 +3401,52 @@ int32_t ism330is_ispu_read_memory(const stmdev_ctx_t *ctx,
   {
     /* disable ISPU clock */
     ret = ism330is_read_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_cfg, 1);
+    if (ret != 0)
+    {
+      goto exit;
+    }
     clk_dis = ispu_cfg.clk_dis;
     ispu_cfg.clk_dis = 1;
     ret += ism330is_write_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_cfg, 1);
+    if (ret != 0)
+    {
+      goto exit;
+    }
 
     /* select memory to be read */
     ispu_mem_sel.read_mem_en = 1;
     ispu_mem_sel.mem_sel = (uint8_t)mem_sel;
     ret += ism330is_write_reg(ctx, ISM330IS_ISPU_MEM_SEL, (uint8_t *)&ispu_mem_sel, 1);
+    if (ret != 0)
+    {
+      goto exit;
+    }
 
     /* select memory address */
     ret += ism330is_ispu_sel_memory_addr(ctx, mem_addr);
+    if (ret != 0)
+    {
+      goto exit;
+    }
 
     /* read data */
     ret += ism330is_read_reg(ctx, ISM330IS_ISPU_MEM_DATA, &dummy, 1);
+    if (ret != 0)
+    {
+      goto exit;
+    }
     ret += ism330is_read_reg(ctx, ISM330IS_ISPU_MEM_DATA, &mem_data[0], len);
+    if (ret != 0)
+    {
+      goto exit;
+    }
 
     /* set ISPU clock back to previous value */
     ispu_cfg.clk_dis = clk_dis;
     ret += ism330is_write_reg(ctx, ISM330IS_ISPU_CONFIG, (uint8_t *)&ispu_cfg, 1);
   }
 
+exit:
   ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
@@ -3292,10 +3497,11 @@ int32_t ism330is_ispu_read_flags(const stmdev_ctx_t *ctx, uint16_t *data)
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_ISPU_MEM_BANK);
+
+  /* read the flags */
+  ret += ism330is_read_reg(ctx, ISM330IS_ISPU_S2IF_FLAG_L, buff, 2);
   if (ret == 0)
   {
-    /* read the flags */
-    ret += ism330is_read_reg(ctx, ISM330IS_ISPU_S2IF_FLAG_L, buff, 2);
     data[0] = (uint16_t)buff[1];
     data[0] = (data[0] * 256U) + (uint16_t)buff[0];
   }
@@ -3322,8 +3528,9 @@ int32_t ism330is_ispu_clear_flags(const stmdev_ctx_t *ctx)
   if (ret == 0)
   {
     ret += ism330is_write_reg(ctx, ISM330IS_ISPU_S2IF_FLAG_H, &data, 1);
-    ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
   }
+
+  ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
 
   return ret;
 }
@@ -3373,10 +3580,13 @@ int32_t ism330is_ispu_int1_ctrl_get(const stmdev_ctx_t *ctx, uint32_t *val)
     /* read int1_ctrl reg */
     ret += ism330is_read_reg(ctx, ISM330IS_ISPU_INT1_CTRL0, &buff[0], 4);
 
-    *val = (uint32_t)buff[3];
-    *val = (*val * 256U) + (uint32_t)buff[2];
-    *val = (*val * 256U) + (uint32_t)buff[1];
-    *val = (*val * 256U) + (uint32_t)buff[0];
+    if (ret == 0)
+    {
+      *val = (uint32_t)buff[3];
+      *val = (*val * 256U) + (uint32_t)buff[2];
+      *val = (*val * 256U) + (uint32_t)buff[1];
+      *val = (*val * 256U) + (uint32_t)buff[0];
+    }
   }
 
   ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
@@ -3397,14 +3607,14 @@ int32_t ism330is_ispu_int1_ctrl_set(const stmdev_ctx_t *ctx, uint32_t val)
   ism330is_ispu_int1_ctrl0_t int1_ctrl0;
   ism330is_ispu_int1_ctrl1_t int1_ctrl1;
   ism330is_ispu_int1_ctrl2_t int1_ctrl2;
-  ism330is_ispu_int1_ctrl3_t int1_ctrl3;
+  ism330is_ispu_int1_ctrl3_t int1_ctrl3 = {0};
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_ISPU_MEM_BANK);
   if (ret == 0)
   {
     /* write the int1_ctrl reg */
-    int1_ctrl3.ispu_int1_ctrl = (uint8_t)((val >> 24) & 0xffU);
+    int1_ctrl3.ispu_int1_ctrl = (uint8_t)((val >> 24) & 0x3fU);
     ret += ism330is_write_reg(ctx, ISM330IS_ISPU_INT1_CTRL3, (uint8_t *)&int1_ctrl3,
                               1);
 
@@ -3445,10 +3655,13 @@ int32_t ism330is_ispu_int2_ctrl_get(const stmdev_ctx_t *ctx, uint32_t *val)
     /* read int2_ctrl reg */
     ret += ism330is_read_reg(ctx, ISM330IS_ISPU_INT2_CTRL0, &buff[0], 4);
 
-    *val = (uint32_t)buff[3];
-    *val = (*val * 256U) + (uint32_t)buff[2];
-    *val = (*val * 256U) + (uint32_t)buff[1];
-    *val = (*val * 256U) + (uint32_t)buff[0];
+    if (ret == 0)
+    {
+      *val = (uint32_t)buff[3];
+      *val = (*val * 256U) + (uint32_t)buff[2];
+      *val = (*val * 256U) + (uint32_t)buff[1];
+      *val = (*val * 256U) + (uint32_t)buff[0];
+    }
   }
 
   ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
@@ -3469,14 +3682,14 @@ int32_t ism330is_ispu_int2_ctrl_set(const stmdev_ctx_t *ctx, uint32_t val)
   ism330is_ispu_int2_ctrl0_t int2_ctrl0;
   ism330is_ispu_int2_ctrl1_t int2_ctrl1;
   ism330is_ispu_int2_ctrl2_t int2_ctrl2;
-  ism330is_ispu_int2_ctrl3_t int2_ctrl3;
+  ism330is_ispu_int2_ctrl3_t int2_ctrl3 = {0};
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_ISPU_MEM_BANK);
   if (ret == 0)
   {
     /* write the int2_ctrl reg */
-    int2_ctrl3.ispu_int2_ctrl = (uint8_t)((val >> 24) & 0xffU);
+    int2_ctrl3.ispu_int2_ctrl = (uint8_t)((val >> 24) & 0x3fU);
     ret += ism330is_write_reg(ctx, ISM330IS_ISPU_INT2_CTRL3, (uint8_t *)&int2_ctrl3,
                               1);
 
@@ -3517,10 +3730,13 @@ int32_t ism330is_ispu_int_status_get(const stmdev_ctx_t *ctx, uint32_t *val)
     /* read int2_ctrl reg */
     ret += ism330is_read_reg(ctx, ISM330IS_ISPU_INT_STATUS0, &buff[0], 4);
 
-    *val = (uint32_t)buff[3];
-    *val = (*val * 256U) + (uint32_t)buff[2];
-    *val = (*val * 256U) + (uint32_t)buff[1];
-    *val = (*val * 256U) + (uint32_t)buff[0];
+    if (ret == 0)
+    {
+      *val = (uint32_t)buff[3];
+      *val = (*val * 256U) + (uint32_t)buff[2];
+      *val = (*val * 256U) + (uint32_t)buff[1];
+      *val = (*val * 256U) + (uint32_t)buff[0];
+    }
   }
 
   ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
@@ -3547,10 +3763,13 @@ int32_t ism330is_ispu_algo_get(const stmdev_ctx_t *ctx, uint32_t *val)
     /* read int2_ctrl reg */
     ret += ism330is_read_reg(ctx, ISM330IS_ISPU_ALGO0, &buff[0], 4);
 
-    *val = (uint32_t)buff[3];
-    *val = (*val * 256U) + (uint32_t)buff[2];
-    *val = (*val * 256U) + (uint32_t)buff[1];
-    *val = (*val * 256U) + (uint32_t)buff[0];
+    if (ret == 0)
+    {
+      *val = (uint32_t)buff[3];
+      *val = (*val * 256U) + (uint32_t)buff[2];
+      *val = (*val * 256U) + (uint32_t)buff[1];
+      *val = (*val * 256U) + (uint32_t)buff[0];
+    }
   }
 
   ret += ism330is_mem_bank_set(ctx, ISM330IS_MAIN_MEM_BANK);
@@ -3571,14 +3790,14 @@ int32_t ism330is_ispu_algo_set(const stmdev_ctx_t *ctx, uint32_t val)
   ism330is_ispu_algo0_t algo0;
   ism330is_ispu_algo1_t algo1;
   ism330is_ispu_algo2_t algo2;
-  ism330is_ispu_algo3_t algo3;
+  ism330is_ispu_algo3_t algo3 = {0};
   int32_t ret;
 
   ret = ism330is_mem_bank_set(ctx, ISM330IS_ISPU_MEM_BANK);
   if (ret == 0)
   {
     /* write the algo reg */
-    algo3.ispu_algo = (uint8_t)((val >> 24) & 0xffU);
+    algo3.ispu_algo = (uint8_t)((val >> 24) & 0x3fU);
     ret += ism330is_write_reg(ctx, ISM330IS_ISPU_ALGO3, (uint8_t *)&algo3, 1);
 
     algo2.ispu_algo = (uint8_t)((val >> 16) & 0xffU);

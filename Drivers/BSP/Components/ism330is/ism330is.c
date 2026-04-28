@@ -428,8 +428,8 @@ int32_t ISM330IS_ACC_GetOutputDataRate(ISM330IS_Object_t *pObj, float_t *Odr)
       *Odr = 12.5f;
       break;
 
-    case ISM330IS_XL_ODR_AT_26H_LP:
-    case ISM330IS_XL_ODR_AT_26H_HP:
+    case ISM330IS_XL_ODR_AT_26Hz_LP:
+    case ISM330IS_XL_ODR_AT_26Hz_HP:
       *Odr = 26.0f;
       break;
 
@@ -448,27 +448,22 @@ int32_t ISM330IS_ACC_GetOutputDataRate(ISM330IS_Object_t *pObj, float_t *Odr)
       *Odr = 208.0f;
       break;
 
-    case ISM330IS_XL_ODR_AT_416Hz_LP:
     case ISM330IS_XL_ODR_AT_416Hz_HP:
       *Odr = 416.0f;
       break;
 
-    case ISM330IS_XL_ODR_AT_833Hz_LP:
     case ISM330IS_XL_ODR_AT_833Hz_HP:
       *Odr = 833.0f;
       break;
 
-    case ISM330IS_XL_ODR_AT_1667Hz_LP:
     case ISM330IS_XL_ODR_AT_1667Hz_HP:
       *Odr = 1667.0f;
       break;
 
-    case ISM330IS_XL_ODR_AT_3333Hz_LP:
     case ISM330IS_XL_ODR_AT_3333Hz_HP:
       *Odr = 3333.0f;
       break;
 
-    case ISM330IS_XL_ODR_AT_6667Hz_LP:
     case ISM330IS_XL_ODR_AT_6667Hz_HP:
       *Odr = 6667.0f;
       break;
@@ -766,8 +761,8 @@ int32_t ISM330IS_GYRO_GetOutputDataRate(ISM330IS_Object_t *pObj, float_t *Odr)
       *Odr = 12.5f;
       break;
 
-    case ISM330IS_GY_ODR_AT_26H_LP:
-    case ISM330IS_GY_ODR_AT_26H_HP:
+    case ISM330IS_GY_ODR_AT_26Hz_LP:
+    case ISM330IS_GY_ODR_AT_26Hz_HP:
       *Odr = 26.0f;
       break;
 
@@ -786,27 +781,22 @@ int32_t ISM330IS_GYRO_GetOutputDataRate(ISM330IS_Object_t *pObj, float_t *Odr)
       *Odr = 208.0f;
       break;
 
-    case ISM330IS_GY_ODR_AT_416Hz_LP:
     case ISM330IS_GY_ODR_AT_416Hz_HP:
       *Odr = 416.0f;
       break;
 
-    case ISM330IS_GY_ODR_AT_833Hz_LP:
     case ISM330IS_GY_ODR_AT_833Hz_HP:
       *Odr = 833.0f;
       break;
 
-    case ISM330IS_GY_ODR_AT_1667Hz_LP:
     case ISM330IS_GY_ODR_AT_1667Hz_HP:
       *Odr =  1667.0f;
       break;
 
-    case ISM330IS_GY_ODR_AT_3333Hz_LP:
     case ISM330IS_GY_ODR_AT_3333Hz_HP:
       *Odr =  3333.0f;
       break;
 
-    case ISM330IS_GY_ODR_AT_6667Hz_LP:
     case ISM330IS_GY_ODR_AT_6667Hz_HP:
       *Odr =  6667.0f;
       break;
@@ -1264,7 +1254,7 @@ static int32_t ISM330IS_ACC_SetOutputDataRate_When_Enabled(ISM330IS_Object_t *pO
   ism330is_xl_data_rate_t new_odr;
 
   new_odr = (Odr <=   12.5f) ? ISM330IS_XL_ODR_AT_12Hz5_HP
-            : (Odr <=   26.0f) ? ISM330IS_XL_ODR_AT_26H_HP
+            : (Odr <=   26.0f) ? ISM330IS_XL_ODR_AT_26Hz_HP
             : (Odr <=   52.0f) ? ISM330IS_XL_ODR_AT_52Hz_HP
             : (Odr <=  104.0f) ? ISM330IS_XL_ODR_AT_104Hz_HP
             : (Odr <=  208.0f) ? ISM330IS_XL_ODR_AT_208Hz_HP
@@ -1292,7 +1282,7 @@ static int32_t ISM330IS_ACC_SetOutputDataRate_When_Enabled(ISM330IS_Object_t *pO
 static int32_t ISM330IS_ACC_SetOutputDataRate_When_Disabled(ISM330IS_Object_t *pObj, float_t Odr)
 {
   pObj->acc_odr = (Odr <=   12.5f) ? ISM330IS_XL_ODR_AT_12Hz5_HP
-                  : (Odr <=   26.0f) ? ISM330IS_XL_ODR_AT_26H_HP
+                  : (Odr <=   26.0f) ? ISM330IS_XL_ODR_AT_26Hz_HP
                   : (Odr <=   52.0f) ? ISM330IS_XL_ODR_AT_52Hz_HP
                   : (Odr <=  104.0f) ? ISM330IS_XL_ODR_AT_104Hz_HP
                   : (Odr <=  208.0f) ? ISM330IS_XL_ODR_AT_208Hz_HP
@@ -1317,7 +1307,7 @@ static int32_t ISM330IS_GYRO_SetOutputDataRate_When_Enabled(ISM330IS_Object_t *p
   ism330is_gy_data_rate_t new_odr;
 
   new_odr = (Odr <=   12.5f) ? ISM330IS_GY_ODR_AT_12Hz5_HP
-            : (Odr <=   26.0f) ? ISM330IS_GY_ODR_AT_26H_HP
+            : (Odr <=   26.0f) ? ISM330IS_GY_ODR_AT_26Hz_HP
             : (Odr <=   52.0f) ? ISM330IS_GY_ODR_AT_52Hz_HP
             : (Odr <=  104.0f) ? ISM330IS_GY_ODR_AT_104Hz_HP
             : (Odr <=  208.0f) ? ISM330IS_GY_ODR_AT_208Hz_HP
@@ -1345,7 +1335,7 @@ static int32_t ISM330IS_GYRO_SetOutputDataRate_When_Enabled(ISM330IS_Object_t *p
 static int32_t ISM330IS_GYRO_SetOutputDataRate_When_Disabled(ISM330IS_Object_t *pObj, float_t Odr)
 {
   pObj->gyro_odr = (Odr <=   12.5f) ? ISM330IS_GY_ODR_AT_12Hz5_HP
-                   : (Odr <=   26.0f) ? ISM330IS_GY_ODR_AT_26H_HP
+                   : (Odr <=   26.0f) ? ISM330IS_GY_ODR_AT_26Hz_HP
                    : (Odr <=   52.0f) ? ISM330IS_GY_ODR_AT_52Hz_HP
                    : (Odr <=  104.0f) ? ISM330IS_GY_ODR_AT_104Hz_HP
                    : (Odr <=  208.0f) ? ISM330IS_GY_ODR_AT_208Hz_HP
