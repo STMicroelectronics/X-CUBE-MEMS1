@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Release Notes for STM32CubeU3 HAL Drivers Package</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="_htmresc/mini-st_2020.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <link rel="icon" type="image/x-icon" href="_htmresc/favicon.png" />
+</head>
+<body>
+<div class="row">
+<div class="col-sm-12 col-lg-4">
+<center>
+<h1 id="release-notes-for">Release Notes for</h1>
+<h1 id="stm32u3xx-hal-drivers"><mark>STM32U3xx HAL Drivers</mark></h1>
+<p>Copyright © 2024 - 2026 STMicroelectronics</p>
+<a href="https://www.st.com" class="logo"><img src="_htmresc/st_logo_2020.png" alt="ST logo" /></a>
+</center>
+<h1 id="purpose">Purpose</h1>
+<p>The STM32Cube HAL and LL, an STM32 abstraction layer embedded software, ensure maximized portability across STM32 portfolio.</p>
+<p>The portable APIs layer provides a generic, multi instanced and simple set of APIs to interact with the upper layer (application, libraries and stacks). It is composed of native and extended APIs set. It is directly built around a generic architecture and allows the build-upon layers, like the middleware layer, to implement its functions without knowing in-depth the used STM32 device. This improves the library code reusability and guarantees an easy portability on other devices and STM32 families.</p>
+<p>The Low Layer (LL) drivers are part of the STM32Cube firmware HAL that provides a basic set of optimized and one shot services. The Low layer drivers, contrary to the HAL ones are not fully portable across the STM32 families; the availability of some functions depends on the physical availability of the relative features on the product. The Low Layer (LL) drivers are designed to offer the following features:</p>
+<ul>
+<li>New set of inline functions for direct and atomic register access</li>
+<li>One-shot operations that can be used by the HAL drivers or from application level</li>
+<li>Full independence from HAL and standalone usage (without HAL drivers)</li>
+<li>Full features coverage of all the supported peripherals</li>
+</ul>
+</div>
+<div class="col-sm-12 col-lg-8">
+<h1 id="update-history">Update History</h1>
+<div class="collapse">
+<input type="checkbox" id="collapse-section4" checked aria-hidden="true"> <label for="collapse-section4" checked aria-hidden="true"><strong>V1.3.0 / 04-February-2026</strong></label>
+<div>
+<h2 id="official-release">Official release</h2>
+<ul>
+<li>Official Release of STM32CubeU3 HAL/LL Drivers supporting STM32U375xx/STM32U385xx/STM32U3B5xx/STM32U3C5xx devices
+<ul>
+<li>First delivery of HAL HSP driver</li>
+</ul></li>
+</ul>
+<h2 id="contents">Contents</h2>
+<h3 id="hal-drivers-updates"><strong>HAL Drivers</strong> updates</h3>
+<ul>
+<li><strong>HAL CCB</strong> driver
+<ul>
+<li>MISRA-C:2012 issue Rule-12.2 within hal_ccb in U3</li>
+<li>Update support wrap keys from secure domain to be used in non-secure domain</li>
+<li>Update related to STM32U3 2M compile error</li>
+<li>Support wrap keys from secure domain to be used in non-secure domain</li>
+<li>Update related to Coverity and MISRA-C:2012 warnings</li>
+<li>Update to support ccb v2_1</li>
+<li>Update related to doxygen errors</li>
+</ul></li>
+<li><strong>HAL_COMP</strong> driver
+<ul>
+<li>Update COMP2 output-blanking PWM assignment</li>
+</ul></li>
+<li><strong>HAL_CORTEX</strong> driver
+<ul>
+<li>MISRA-C:2012 Fixes</li>
+</ul></li>
+<li><strong>HAL_CRYP</strong> driver
+<ul>
+<li>MISRA-C:2012 Fixes</li>
+<li>Prevent reading outside the boundaries of local array for all data types</li>
+<li>Update related to typo in size of mask</li>
+</ul></li>
+<li><strong>HAL DMA</strong> driver
+<ul>
+<li>Fix MISRA-C:2012 issues for Rule-12.2</li>
+</ul></li>
+<li><strong>HAL EXTI</strong> driver
+<ul>
+<li>Fix MISRA-C:2012 issues for Rule-8.13 and Rule-12.2</li>
+</ul></li>
+<li><strong>HAL FLASH</strong> driver
+<ul>
+<li>Add SRAM3_PE feature</li>
+<li>Fix MISRA-C:2012-Rule-8.13 warning</li>
+</ul></li>
+<li><strong>HAL GENERIC</strong> driver
+<ul>
+<li>Update HAL_DBGMCU Code</li>
+<li>Remove initialisation of undefined member ‘PLL’ of struct RCC_OscInitTypeDef</li>
+<li>Fix MISRA-C:2012 issue Rule-12.2</li>
+<li>Improve code comments for UserManual generation</li>
+</ul></li>
+<li><strong>HAL GPIO </strong> driver
+<ul>
+<li>Update alternate function mappings for peripherals like HSP1, I3C1 and SDMMC1</li>
+<li>Update CPN for GPIO_AF0_MCO macro</li>
+<li>Fix MISRA-C:2012 issue Rule-12.2</li>
+</ul></li>
+<li><strong>HAL GTZC </strong> driver
+<ul>
+<li>Updated value of GTZC_MCPBB_NB_VCTR_REG_MAX</li>
+<li>Fix MISRA-C:2012 Rule-8.13 warnings</li>
+</ul></li>
+<li><strong>HAL HASH </strong> driver
+<ul>
+<li>HASH_WaitOnFlagUntilTimeout optimization TK 171585 in HAL driver</li>
+<li>Update related to TK 180674 Violation of MISRA-C:2012-Rule-10.4_a</li>
+</ul></li>
+<li><strong>HAL HSP </strong> driver
+<ul>
+<li>New driver for signal processing functions</li>
+</ul></li>
+<li><strong>HAL I2C </strong> driver
+<ul>
+<li>Update for I2C4 instance</li>
+</ul></li>
+<li><strong>HAL ICACHE </strong> driver
+<ul>
+<li>Fix MISRA-C:2012 issue Rule-12.2</li>
+</ul></li>
+<li><strong>HAL LCD </strong> driver
+<ul>
+<li>Support IRQHandler in lcd driver</li>
+<li>Fix MISRA-C:2012 issue Rule-12.2</li>
+</ul></li>
+<li><strong>HAL LPTIM </strong> driver
+<ul>
+<li>Update macro LPTIM_IC2SOURCE_MSI to LPTIM_IC2SOURCE_MSIS</li>
+</ul></li>
+<li><strong>HAL PWR </strong> driver
+<ul>
+<li>Correct Frequencies regarding Voltage scaling</li>
+<li>Add conditions when PWR_PKA_STOP_RETENTION not available</li>
+<li>Improve code comments for UserManual generation</li>
+</ul></li>
+<li><strong>HAL RAMCFG </strong> driver
+<ul>
+<li>Improve code comments for UserManual generation</li>
+</ul></li>
+<li><strong>HAL RCC </strong> driver
+<ul>
+<li>Replace SRAM3 &amp; SRAM4 macros with SRAMX_BASE(X=3,4)</li>
+<li>Fix wrong #if defined for __HAL_RCC_HSP1_FORCE_RESET()</li>
+<li>Add #ifdef to remove IPs not present in U3 derivatives</li>
+<li>Update wrong macro RCC_MSIRC1_PLLN_780 to RCC_MSIRC1_PLLN_750 for STM32U3 1M</li>
+<li>Fix doxygen comments</li>
+</ul></li>
+<li><strong>HAL RNG </strong> driver
+<ul>
+<li>Update RNG_CONFIG1 to 8 bit</li>
+</ul></li>
+<li><strong>HAL RTC </strong> driver
+<ul>
+<li>Fix setting bit of TAMP_SECCFGR_BHKLOCK and TAMP_CR2_BKBLOCK to avoid overwriting other bitfields</li>
+<li>Fix HAL_RTC_Init when it resets RTC SSR counter in binary mode on init, thus losing date/time</li>
+</ul></li>
+<li><strong>HAL SAI </strong> driver
+<ul>
+<li>Fix MISRA-C:2012 issue Rule-12.2</li>
+</ul></li>
+<li><strong>HAL SDMMC </strong> driver
+<ul>
+<li>Fix MISRA-C:2012 issue Rule-12.2</li>
+</ul></li>
+<li><strong>HAL SPI </strong> driver
+<ul>
+<li>Add Trigger Group for SPI3 and SPI4</li>
+</ul></li>
+<li><strong>HAL TIM </strong> driver
+<ul>
+<li>Fix MISRA-C:2012 issue Rule-12.2</li>
+<li>Add TIM Break Trigger source for HSP</li>
+</ul></li>
+<li><strong>HAL TSC </strong> driver
+<ul>
+<li>Add TSC_GROUP7_IDX for STM32U3 2M</li>
+</ul></li>
+<li><strong>HAL USB </strong> driver
+<ul>
+<li>Fix Misra-C:2012 warnings Rule-12.2</li>
+<li>Rework port device connect/Disconnect should use ISTR_DCON_STAT to detect device connection/disconnection</li>
+<li>Correct pcd and hcd HS phy define</li>
+<li>__HAL_LOCK() removal from HAL_Callback()</li>
+</ul></li>
+<li><strong>HAL XSPI </strong> driver
+<ul>
+<li>Add IsMemoryMapped() API</li>
+</ul></li>
+</ul>
+<h3 id="ll-drivers-updates"><strong>LL Drivers</strong> updates</h3>
+<ul>
+<li><strong>LL COMP</strong> driver
+<ul>
+<li>Update COMP2 output-blanking PWM assignment</li>
+<li>Updated comment for tim8 in ll_comp</li>
+</ul></li>
+<li><strong>LL CORTEX</strong> driver
+<ul>
+<li>MISRA-C:2012 Fixes</li>
+</ul></li>
+<li><strong>LL GENERIC</strong> driver
+<ul>
+<li>Update LL_SYSTEM Generic driver</li>
+</ul></li>
+<li><strong>LL I2C </strong> driver
+<ul>
+<li>Update for I2C4 instance</li>
+</ul></li>
+<li><strong>LL I3C </strong> driver
+<ul>
+<li>Remove Deprecated register Keyword from STM32U3 HAL for C++ Compatibility</li>
+</ul></li>
+<li><strong>LL LPTIM </strong> driver
+<ul>
+<li>Fix for Misra-C:2012 warnings Rule-10.3</li>
+</ul></li>
+<li><strong>LL PWR </strong> driver
+<ul>
+<li>Removed SRAM powerdown disable APIs</li>
+<li>Improve code comments for UserManual generation</li>
+</ul></li>
+<li><strong>LL RCC </strong> driver
+<ul>
+<li>Add LL_RCC_ADF1_CLKSOURCE_HCLK and update LL_RCC_ADF1_CLKSOURCE_SAI1</li>
+<li>Update placeholder for LL_RCC_SPI4_CLKSOURCE check for compilation error fix</li>
+<li>Fix MISRA-C:2012 Rule-12.2</li>
+<li>Replace SRAM3 &amp; SRAM4 macros with SRAMX_BASE(X=3,4)</li>
+</ul></li>
+<li><strong>LL SPI </strong> driver
+<ul>
+<li>Add Trigger Group for SPI3 and SPI4</li>
+</ul></li>
+<li><strong>LL TIM </strong> driver
+<ul>
+<li>Fix MISRA-C:2012 issue Rule-12.2</li>
+<li>Add TIM Break Trigger source for HSP</li>
+</ul></li>
+<li><strong>LL USB </strong> driver
+<ul>
+<li>Use phy_ch_num instead of ch_num for DRD IP</li>
+<li>Fix Misra-C:2012 warnings Rule-12.2</li>
+</ul></li>
+</ul>
+<h2 id="backward-compatibility">Backward compatibility</h2>
+<ul>
+<li>Not applicable</li>
+</ul>
+<h2 id="known-limitations">Known Limitations</h2>
+<ul>
+<li>Not applicable</li>
+</ul>
+<p><br />
+</p>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section3"  aria-hidden="true"> <label for="collapse-section3"  aria-hidden="true"><strong>V1.2.0 / 04-June-2025</strong></label>
+<div>
+<h2 id="maintenance-release">Maintenance release</h2>
+<ul>
+<li>Maintenance Release of STM32CubeU3 HAL/LL Drivers supporting STM32U375xx/STM32U385xx devices</li>
+</ul>
+<h2 id="contents-1">Contents</h2>
+<h3 id="hal-drivers-updates-1"><strong>HAL Drivers</strong> updates</h3>
+<ul>
+<li><strong>HAL FLASH</strong> driver
+<ul>
+<li>Fix usage of IS_FLASH_SECURE_OPERATION()</li>
+<li>Fix FLASH_WaitForLastOperation timeout issue</li>
+</ul></li>
+<li><strong>HAL GPIO</strong> driver
+<ul>
+<li>Fix Pull down capability missing in analog mode</li>
+</ul></li>
+<li><strong>HAL GTZC</strong> driver
+<ul>
+<li>Add preprocessors for crypto PN</li>
+</ul></li>
+<li><strong>HAL PWR</strong> driver
+<ul>
+<li>Removed SRAM powerdown disable APIs</li>
+<li>Comments enhancement</li>
+</ul></li>
+<li><strong>HAL RCC</strong> driver
+<ul>
+<li>Fix the inversion between RCC_DAC1SHCLKSOURCE_LSE and RCC_DAC1SHCLKSOURCE_LSI</li>
+<li>Comments enhancement</li>
+</ul></li>
+</ul>
+<h3 id="ll-drivers-updates-1"><strong>LL Drivers</strong> updates</h3>
+<ul>
+<li><strong>LL PWR</strong> driver
+<ul>
+<li>Comments enhancement</li>
+</ul></li>
+<li><strong>LL RCC</strong> driver
+<ul>
+<li>Comments enhancement</li>
+</ul></li>
+</ul>
+<h2 id="backward-compatibility-1">Backward compatibility</h2>
+<ul>
+<li>Not applicable</li>
+</ul>
+<h2 id="known-limitations-1">Known Limitations</h2>
+<ul>
+<li>Not applicable</li>
+</ul>
+<p><br />
+</p>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section2"  aria-hidden="true"> <label for="collapse-section2"  aria-hidden="true"><strong>V1.1.0 / 05-February-2025</strong></label>
+<div>
+<h2 id="maintenance-release-1">Maintenance release</h2>
+<ul>
+<li>Maintenance Release of STM32CubeU3 HAL/LL Drivers supporting STM32U375xx/STM32U385xx devices</li>
+</ul>
+<h2 id="contents-2">Contents</h2>
+<h3 id="hal-drivers-updates-2"><strong>HAL Drivers</strong> updates</h3>
+<ul>
+<li><strong>HAL CCB</strong> driver
+<ul>
+<li>Update related to wrap/unwrap symmetric key algo</li>
+</ul></li>
+<li><strong>HAL DMA</strong> driver
+<ul>
+<li>DMA Callbacks to be initialized to NULL in RESET state</li>
+</ul></li>
+<li><strong>HAL GPIO</strong> driver
+<ul>
+<li>Add pull down capability missing in analog mode</li>
+</ul></li>
+<li><strong>HAL I3C</strong> driver
+<ul>
+<li>Remove extra parenthesis in function HAL_I3C_Tgt_IBIReq</li>
+</ul></li>
+<li><strong>HAL IWDG</strong> driver
+<ul>
+<li>Fix Timeout computation method</li>
+</ul></li>
+<li><strong>HAL PWR</strong> driver
+<ul>
+<li>Fix doxygen comments<br />
+</li>
+</ul></li>
+<li><strong>HAL SPI</strong> driver
+<ul>
+<li>Add protection against wrong transfer size during transmission</li>
+<li>Check coherence between data size and DMA TX configuration<br />
+</li>
+<li>Clear auto suspend flag in HAL_SPI_Receive()</li>
+<li>Ensure DMA RX aborts after DMA TX in HAL_SPI_Abort_IT()</li>
+<li>Fix CRC computation to fit with standard CRC16-CCITT (XMODEM)</li>
+<li>Fix a bug reception when FIFO threshold is set</li>
+<li>Improve file aspect</li>
+</ul></li>
+<li><strong>HAL TIM</strong> driver
+<ul>
+<li>Fix update flag (UIF) clearing in TIM_Base_SetConfig.</li>
+</ul></li>
+<li><strong>HAL UART</strong> driver
+<ul>
+<li>Correct references to HAL_UARTEx_WakeupCallback and to HAL_UART_WAKEUP_CB_ID define, according to series capabilities</li>
+<li>Provide accurate position in RxEventCallback when ReceptionToIdle mode is used with DMA, when UART and DMA interrupts process is delayed.</li>
+</ul></li>
+<li><strong>HAL USB</strong>
+<ul>
+<li>Fix SA0035</li>
+</ul></li>
+<li><strong>HAL XSPI</strong> driver
+<ul>
+<li>Check BUSY flag instead of TC flag in indirect mode to be sure that command is well completed (FIFO flush)</li>
+</ul></li>
+</ul>
+<h3 id="ll-drivers-updates-2"><strong>LL Drivers</strong> updates</h3>
+<ul>
+<li><strong>LL LPUART</strong> driver
+<ul>
+<li>Solve Coverity out-of-bound memory access warning in use of LPUART_PRESCALER_TAB array</li>
+</ul></li>
+<li><strong>LL USART</strong> driver
+<ul>
+<li>Solve Coverity out-of-bound memory access warning in use of USART_PRESCALER_TAB array</li>
+</ul></li>
+</ul>
+<h2 id="backward-compatibility-2">Backward compatibility</h2>
+<ul>
+<li>Not applicable</li>
+</ul>
+<h2 id="known-limitations-2">Known Limitations</h2>
+<ul>
+<li>Not applicable</li>
+</ul>
+<p><br />
+</p>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section1"  aria-hidden="true"> <label for="collapse-section1"  aria-hidden="true"><strong>V1.0.0 / 30-October-2024</strong></label>
+<div>
+<h2 id="first-release">First Release</h2>
+<ul>
+<li>First Official Release of STM32CubeU3 HAL/LL Drivers supporting STM32U375xx/STM32U385xx devices</li>
+</ul>
+<h2 id="contents-3">Contents</h2>
+<ul>
+<li>STM32CubeU3 HAL/LL Drivers supporting STM32U375xx/STM32U385xx devices :
+<ul>
+<li><p><strong>HAL</strong>: ADC, CCB, COMP, CORTEX, CRC, CRS, CRYP, DAC, DLB, DMA, EXTI, FDCAN, FLASH, GPIO, GTZC, HASH, I2C, I3C, ICACHE, IRDA, IWDG, LPTIM, MDF, OPAMP, PKA, PWR, RAMCFG, RCC, RNG, RTC, SAI, SDMMC, SMARTCARD, SMBUS, SPI, TIM, TSC, UART, USART, USB, WWDG, XSPI</p></li>
+<li><p><strong>LL</strong>: ADC, COMP, CRC, CRS, DAC, DLB, DMA, EXTI, GPIO, I2C, I3C, ICACHE, LPTIM, LPUART, OPAMP, PKA, PWR, RCC, RNG, RTC, SDMMC, SPI, TIM, USART, UTILS</p></li>
+</ul></li>
+</ul>
+<h2 id="supported-devices-and-boards">Supported Devices and boards</h2>
+<ul>
+<li>STM32U375xx/STM32U385xx devices</li>
+<li>NUCLEO-U385RG-Q (Rev.E) board</li>
+</ul>
+<h2 id="backward-compatibility-3">Backward compatibility</h2>
+<ul>
+<li>Not applicable</li>
+</ul>
+<h2 id="known-limitations-3">Known Limitations</h2>
+<ul>
+<li>None</li>
+</ul>
+<h2 id="dependencies">Dependencies</h2>
+<ul>
+<li>None</li>
+</ul>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>None</li>
+</ul>
+<p><br />
+</p>
+</div>
+</div>
+</div>
+</div>
+<footer class="sticky">
+<div class="columns">
+<div class="column" style="width:95%;">
+<p>For complete documentation on STM32 Microcontrollers </mark>, visit: <span style="font-color: blue;"><a href="http://www.st.com/stm32">www.st.com/stm32</a></span></p>
+<p><em>This release note uses up to date web standards and, for this reason, should not be opened with Internet Explorer but preferably with popular browsers such as Google Chrome, Mozilla Firefox, Opera or Microsoft Edge.</em></p>
+</div><div class="column" style="width:5%;">
+<p><abbr title="Based on template cx566953 version 2.0">Info</abbr></p>
+</div>
+</div>
+</footer>
+</body>
+</html>

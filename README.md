@@ -14,7 +14,7 @@ The X-CUBE-MEMS1 expansion software package for STM32Cube runs on the STM32 and 
 
 - Compatible with the MEMS Studio graphical user interface to display sensor data and configure outputs
 
-- Sample implementation available on the X-NUCLEO-IKS4A1, X-NUCLEO-IKS5A1 and X-NUCLEO-IKS02A1 boards connected to a NUCLEO-F401RE, NUCLEO-L152RE, NUCLEO-L073RZ or NUCLEO-U575ZI-Q development board
+- Sample implementation available on the X-NUCLEO-IKS4A1, X-NUCLEO-IKS5A1 and X-NUCLEO-IKS02A1 boards connected to a NUCLEO-F401RE, NUCLEO-G0B1RE, NUCLEO-U385RG-Q or NUCLEO-U575ZI-Q development board
 
 - Advanced motion libraries with sample applications
 

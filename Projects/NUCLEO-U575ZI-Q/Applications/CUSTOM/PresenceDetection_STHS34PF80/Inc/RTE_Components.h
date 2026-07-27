@@ -22,7 +22,7 @@
 #define  __RTE_COMPONENTS_H__
 
 /* Defines ------------------------------------------------------------------*/
-/* STMicroelectronics.X-CUBE-MEMS1.12.1.0 */
+/* STMicroelectronics.X-CUBE-MEMS1.13.0.0 */
 #define BSP_ENV_SENSORS
 #define STHS34PF80_TEMP_I2C
 #define PRESENCEDETECTION_STHS34PF80_DEMO

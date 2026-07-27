@@ -22,7 +22,7 @@
 #define  __RTE_COMPONENTS_H__
 
 /* Defines ------------------------------------------------------------------*/
-/* STMicroelectronics.X-CUBE-MEMS1.12.1.0 */
+/* STMicroelectronics.X-CUBE-MEMS1.13.0.0 */
 #define BSP_MOTION_SENSORS
 #define LSM6DSV320X_ACCGYR_I2C
 #define HIGHGLOWGFUSION_LSM6DSV320X_DEMO

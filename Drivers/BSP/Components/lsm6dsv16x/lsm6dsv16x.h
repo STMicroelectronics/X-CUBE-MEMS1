@@ -376,6 +376,7 @@ int32_t LSM6DSV16X_GYRO_Get_DRDY_Status(LSM6DSV16X_Object_t *pObj, uint8_t *Stat
 int32_t LSM6DSV16X_ACC_Set_Power_Mode(LSM6DSV16X_Object_t *pObj, uint8_t PowerMode);
 int32_t LSM6DSV16X_GYRO_Set_Power_Mode(LSM6DSV16X_Object_t *pObj, uint8_t PowerMode);
 int32_t LSM6DSV16X_ACC_Set_Filter_Mode(LSM6DSV16X_Object_t *pObj, uint8_t LowHighPassFlag, uint8_t FilterMode);
+int32_t LSM6DSV16X_ACC_Set_Filter_Mode_Slope(LSM6DSV16X_Object_t *pObj, uint8_t SlopeHighPassEnable, lsm6dsv16x_filt_xl_lp2_bandwidth_t Bandwidth);
 int32_t LSM6DSV16X_GYRO_Set_Filter_Mode(LSM6DSV16X_Object_t *pObj, uint8_t LowHighPassFlag, uint8_t FilterMode);
 
 int32_t LSM6DSV16X_QVAR_GetData(LSM6DSV16X_Object_t *pObj, int16_t *Data);

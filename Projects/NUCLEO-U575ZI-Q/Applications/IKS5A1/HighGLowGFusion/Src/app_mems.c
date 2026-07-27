@@ -2,7 +2,7 @@
   ******************************************************************************
   * File Name          : app_mems.c
   * Description        : This file provides code for the configuration
-  *                      of the STMicroelectronics.X-CUBE-MEMS1.12.1.0 instances.
+  *                      of the STMicroelectronics.X-CUBE-MEMS1.13.0.0 instances.
   ******************************************************************************
   * @attention
   *
@@ -44,6 +44,8 @@ extern "C" {
 #define FROM_S_TO_MS  1000U
 #define CLOCK_4KHZ    4000 /* TIM counter clock 4 kHz */
 #define CLOCK_2KHZ    2000 /* TIM counter clock 2 kHz */
+#define FSM_THRESHOLD1_DEFAULT  0x4880 /* Low-g value to turn on high-g sensor as IEEE 754 half-precision, set to 9g */
+#define FSM_THRESHOLD2_DEFAULT  0x4840 /* Low-g value to turn off high-g sensor as IEEE 754 half-precision, set to 8.5g */
 
 /* Public variables ----------------------------------------------------------*/
 volatile uint8_t DataLoggerActive = 0;
@@ -61,9 +63,10 @@ int8_t HighGEnable = 1;
 uint16_t LowGODR = ACCEL_FUSION_ODR_TEMP;
 uint16_t HighGODR = ACCEL_FUSION_ODR_TEMP;
 uint8_t FSM_OUT1 = 0;
-uint8_t FSM_OUT2 = 0;
 uint16_t ReportRate = 30;
 int32_t ContinuousTracking = 1;
+static uint16_t FsmThreshold1 = FSM_THRESHOLD1_DEFAULT;
+static uint16_t FsmThreshold2 = FSM_THRESHOLD2_DEFAULT;
 
 /* Extern variables ----------------------------------------------------------*/
 extern void *MotionCompObj[IKS5A1_MOTION_INSTANCES_NBR];
@@ -83,9 +86,9 @@ static void TIM_Config(uint32_t Freq);
 static void DWT_Init(void);
 static void DWT_Start(void);
 static uint64_t DWT_GetTickUS(void);
-static void Disable_HighG(void);
-static void Enable_HighG(void);
 static void FSM_Init(void);
+static uint8_t FSM_GetConfigData(int index);
+static void FSM_UpdateThresholds(void);
 static void FSM_Handler(void);
 static int32_t ISM6HG256X_HG_GetAxes(IKS5A1_MOTION_SENSOR_Axes_t *Axes);
 
@@ -176,7 +179,7 @@ static void MX_HighGLowGFusion_Init(void)
   Init_Sensors();
 
   /* HighGLowGFusion API initialization function */
-  MotionXLF_manager_init();
+  MotionXLF_manager_init(NULL);
 
   /* OPTIONAL */
   /* Get library version */
@@ -264,21 +267,16 @@ static void Init_Sensors(void)
   BSP_SENSOR_TEMP_Init();
   BSP_SENSOR_HUM_Init();
 
-  FSM_Init();
-
   BSP_SENSOR_ACC_SetFullScale(ACC_FS);
-
-  ISM6HG256X_ACC_HG_SetOutputDataRate(MotionCompObj[IKS5A1_ISM6HG256X_0], HighGODR);
-  ISM6HG256X_ACC_HG_SetFullScale(MotionCompObj[IKS5A1_ISM6HG256X_0], ACC_HG_FS);
   ISM6HG256X_ACC_SetOutputDataRate_With_Mode(MotionCompObj[IKS5A1_ISM6HG256X_0], LowGODR,
                                              ISM6HG256X_ACC_HIGH_PERFORMANCE_MODE);
+  ISM6HG256X_ACC_HG_SetFullScale(MotionCompObj[IKS5A1_ISM6HG256X_0], ACC_HG_FS);
+  ISM6HG256X_ACC_HG_Disable(MotionCompObj[IKS5A1_ISM6HG256X_0]);
 
-  ISM6HG256X_Write_Reg(MotionCompObj[IKS5A1_ISM6HG256X_0], ISM6HG256X_MD1_CFG, 0x02);
-  ISM6HG256X_Write_Reg(MotionCompObj[IKS5A1_ISM6HG256X_0], ISM6HG256X_FUNC_CFG_ACCESS, ISM6HG256X_EMBED_FUNC_MEM_BANK << 7);
-  ISM6HG256X_Write_Reg(MotionCompObj[IKS5A1_ISM6HG256X_0], ISM6HG256X_FSM_INT1, 0x01);
-  ISM6HG256X_Write_Reg(MotionCompObj[IKS5A1_ISM6HG256X_0], ISM6HG256X_FUNC_CFG_ACCESS, ISM6HG256X_MAIN_MEM_BANK << 7);
+  FSM_UpdateThresholds();
+  FSM_Init();
 
-  Enable_HighG();
+  ISM6HG256X_Write_Reg(MotionCompObj[IKS5A1_ISM6HG256X_0], ISM6HG256X_FUNC_CFG_ACCESS, 0x08);
 }
 
 /**
@@ -305,7 +303,6 @@ static void XLF_Data_Handler(Msg_t *Msg)
   uint64_t elapsed_time_us = 0U;
   XLF_in_t data_in;
   XLF_out_t data_out;
-  XLF_algo_settings algo_set;
 
   if ((SensorsEnabled & ACCELEROMETER_SENSOR) == ACCELEROMETER_SENSOR)
   {
@@ -319,20 +316,11 @@ static void XLF_Data_Handler(Msg_t *Msg)
     data_in.high_g_data_mg.z = (float)HGAccValue.z;
 
     data_in.FSM_OUT1 = FSM_OUT1;
-    data_in.FSM_OUT2 = FSM_OUT2;
-
-    algo_set.ACCEL_FUSION_CALIB_WINDOW_SIZE = 50;
-    algo_set.ACCEL_FUSION_DIGITAL_OUTPUT = 0;
-    algo_set.ACCEL_FUSION_ENABLE_NOISE_REMOVAL = 1;
-    algo_set.ACCEL_FUSION_ENABLE_DISCONTINUITY_REMOVAL = 1;
-    algo_set.ACCEL_FUSION_ENABLE_OFFSET_CALCULATOR = 1;
-    algo_set.ACCEL_FUSION_CONTINUOUS_TRACKING = ContinuousTracking;
-    algo_set.ACCEL_FUSION_LOWER_THRESHOLD = 16000;
 
     /* Run High-g Low-g Fusion algorithm */
     BSP_LED_On(LED2);
     start_time_us = DWT_GetTickUS();
-    MotionXLF_manager_run(&data_in, &data_out, Enable_HighG, Disable_HighG, &algo_set);
+    MotionXLF_manager_run(&data_in, &data_out);
     elapsed_time_us = DWT_GetTickUS() - start_time_us;
     BSP_LED_Off(LED2);
 
@@ -346,9 +334,8 @@ static void XLF_Data_Handler(Msg_t *Msg)
     Serialize_s32(&Msg->Data[46], (int32_t)HighGODR, 2);
 
     Msg->Data[48] = (uint8_t)FSM_OUT1;
-    Msg->Data[49] = (uint8_t)FSM_OUT2;
 
-    Serialize_s32(&Msg->Data[50], (int32_t)elapsed_time_us, 4);
+    Serialize_s32(&Msg->Data[49], (int32_t)elapsed_time_us, 4);
   }
 }
 
@@ -368,7 +355,7 @@ static void Acc_Sensor_Handler(Msg_t *Msg)
     FloatToArray(&Msg->Data[11], (float)((MOTION_SENSOR_Axes_t *)&AccValue)->y / 1000.0f);
     FloatToArray(&Msg->Data[15], (float)((MOTION_SENSOR_Axes_t *)&AccValue)->z / 1000.0f);
 
-    if (HighGEnable == 1)
+    if (HighGEnable == 1 || ContinuousTracking == 1)
     {
       FloatToArray(&Msg->Data[19], (float)((MOTION_SENSOR_Axes_t *)&HGAccValue)->x / 1000.0f);
       FloatToArray(&Msg->Data[23], (float)((MOTION_SENSOR_Axes_t *)&HGAccValue)->y / 1000.0f);
@@ -455,29 +442,6 @@ static uint64_t DWT_GetTickUS(void)
 }
 
 /**
-  * @brief  Enable High-g in the sensor
-  * @param  None
-  * @retval None
-  */
-static void Enable_HighG(void)
-{
-  (void)ISM6HG256X_ACC_HG_Enable(MotionCompObj[IKS5A1_ISM6HG256X_0]);
-  (void)ISM6HG256X_ACC_HG_SetOutputDataRate(MotionCompObj[IKS5A1_ISM6HG256X_0], HighGODR);
-  HighGEnable = 1; //external flag to signal high-g sensor has been enabled
-}
-
-/**
-  * @brief  Disable High-g in the sensor
-  * @param  None
-  * @retval None
-  */
-static void Disable_HighG(void)
-{
-  (void)ISM6HG256X_ACC_HG_Disable(MotionCompObj[IKS5A1_ISM6HG256X_0]);
-  HighGEnable = 0; //external flag to signal high-g sensor has been disabled
-}
-
-/**
   * @brief  Initialize FSM in the sensor
   * @param  None
   * @retval None
@@ -489,7 +453,42 @@ static void FSM_Init(void)
   length = sizeof(highglowg_fsm) / sizeof(ucf_line_ext_t);
   for (i = 0; i < length; i++)
   {
-    (void)ISM6HG256X_Write_Reg(MotionCompObj[IKS5A1_ISM6HG256X_0], highglowg_fsm[i].address, highglowg_fsm[i].data);
+    (void)ISM6HG256X_Write_Reg(MotionCompObj[IKS5A1_ISM6HG256X_0], highglowg_fsm[i].address, FSM_GetConfigData(i));
+  }
+}
+
+static uint8_t FSM_GetConfigData(int index)
+{
+  switch ((uint32_t)index)
+  {
+    case HIGHGLOWG_FSM_THRESH1_LSB_INDEX:
+      return (uint8_t)(FsmThreshold1 & 0xFFU);
+
+    case HIGHGLOWG_FSM_THRESH1_MSB_INDEX:
+      return (uint8_t)((FsmThreshold1 >> 8) & 0xFFU);
+
+    case HIGHGLOWG_FSM_THRESH2_LSB_INDEX:
+      return (uint8_t)(FsmThreshold2 & 0xFFU);
+
+    case HIGHGLOWG_FSM_THRESH2_MSB_INDEX:
+      return (uint8_t)((FsmThreshold2 >> 8) & 0xFFU);
+
+    default:
+      return highglowg_fsm[index].data;
+  }
+}
+
+static void FSM_UpdateThresholds(void)
+{
+  if (ContinuousTracking == 1)
+  {
+    FsmThreshold1 = 0x0000;
+    FsmThreshold2 = 0x0000;
+  }
+  else
+  {
+    FsmThreshold1 = FSM_THRESHOLD1_DEFAULT;
+    FsmThreshold2 = FSM_THRESHOLD2_DEFAULT;
   }
 }
 
@@ -503,8 +502,8 @@ static void FSM_Handler(void)
   (void)ISM6HG256X_Write_Reg(MotionCompObj[IKS5A1_ISM6HG256X_0], ISM6HG256X_FUNC_CFG_ACCESS,
                              ISM6HG256X_EMBED_FUNC_MEM_BANK << 7);
   (void)ISM6HG256X_Read_Reg(MotionCompObj[IKS5A1_ISM6HG256X_0], ISM6HG256X_FSM_OUTS1, &FSM_OUT1); //output of FSM 1
-  (void)ISM6HG256X_Read_Reg(MotionCompObj[IKS5A1_ISM6HG256X_0], ISM6HG256X_FSM_OUTS2, &FSM_OUT2); //output of FSM 2
-  (void)ISM6HG256X_Write_Reg(MotionCompObj[IKS5A1_ISM6HG256X_0], ISM6HG256X_FUNC_CFG_ACCESS, ISM6HG256X_MAIN_MEM_BANK << 7);
+  (void)ISM6HG256X_Write_Reg(MotionCompObj[IKS5A1_ISM6HG256X_0], ISM6HG256X_FUNC_CFG_ACCESS, ISM6HG256X_EMBED_FUNC_MEM_BANK << 3);
+  HighGEnable = (int8_t)((FSM_OUT1 != 0U) ? 1 : 0);
 }
 
 /**
@@ -561,17 +560,11 @@ void Set_Sensor_Report_Rate(uint8_t index)
   */
 void Set_Continuous_Mode(uint8_t index)
 {
-  if (index <= 1)
+  if (index <= 1U)
   {
     ContinuousTracking = index;
-    if (ContinuousTracking == 1)
-    {
-    	Enable_HighG();
-    }
-    else
-    {
-    	Disable_HighG();
-    }
+    FSM_UpdateThresholds();
+    FSM_Init();
   }
 }
 

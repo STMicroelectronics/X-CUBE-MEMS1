@@ -45,8 +45,6 @@ extern "C"
 
 #define ACCEL_FUSION_ODR_TEMP 960  /* Initial ODR of the library */
 
-typedef void *XLF_Instance_t;
-
 typedef enum
 {
   MOTION_XLF_MCU_STM32 = 0,
@@ -82,8 +80,7 @@ typedef struct
 {
 	XLF_imu_data_t low_g_data_mg;    /* Data from low-g sensor in mg */
 	XLF_imu_data_t high_g_data_mg;   /* Data from high-g sensor in mg */
-	char FSM_OUT1;                   /* Value in FSM_OUTS1 register (output of FSM1) */
-	char FSM_OUT2;                   /* Value in FSM_OUTS2 register (output of FSM2) */
+	char FSM_OUT1;                   /* Boolean state (1 = threshold crossed, 0 = normal low-g)) */
 } XLF_in_t;
 
 typedef struct
@@ -92,19 +89,15 @@ typedef struct
 	XLF_imu_data_digital_t fused_imu_digital; /* Output of the library in 20-bit binary */
 } XLF_out_t;
 
-typedef struct XLF_algo_settings
-{
-	int32_t ACCEL_FUSION_CALIB_WINDOW_SIZE;             /* number of samples to use for initial calibration */
-	int32_t ACCEL_FUSION_DIGITAL_OUTPUT;                /* enable (1) or disable (0) 20-bit output (if disabled, output is float) */
-	int32_t ACCEL_FUSION_ENABLE_NOISE_REMOVAL;          /* enable (1) or disable (0) noise handling for high-g data */
-	int32_t ACCEL_FUSION_ENABLE_DISCONTINUITY_REMOVAL;  /* enable (1) or disable discontinuity removal module */
-	int32_t ACCEL_FUSION_ENABLE_OFFSET_CALCULATOR;      /* enable (1) or disable (0) real-time offset compensation module */
-	int32_t ACCEL_FUSION_CONTINUOUS_TRACKING;           /* if enabled (1), then high-g sensor won't be turned off when not needed */
-	int32_t ACCEL_FUSION_LOWER_THRESHOLD;
-} XLF_algo_settings;
-
-typedef void (*XLF_high_g_enable_disable_pointer_t)(void); /* Function pointer type definition to be used
- 	 	 	                    to pass functions that enable or disable the high-g sensor to the library */
+typedef struct {
+    uint8_t digital_output_enable;
+    uint8_t noise_removal_enable;
+    uint8_t offset_calculator_enable;
+    float   lower_threshold_mg;
+    int     quant_output_min;
+    int     quant_output_max;
+    int     high_g_range;
+} XLF_accel_fusion_config_t;
 
 /**
   * @}
@@ -135,19 +128,18 @@ XLF_return_t MotionXLF_Reset(void);
 
 /**
   * @brief  Start the MotionXLF engine
+  * @param  config Pointer to configuration struct (pass NULL for defaults)
   * @retval Error code
   */
-XLF_return_t MotionXLF_Start(void);
+XLF_return_t MotionXLF_Start(XLF_accel_fusion_config_t *config);
 
 /**
   * @brief  Execute one step of the algorithms
   * @param  data_in  algorithm input data
   * @param  data_out  algorithm output data
-  * @param  enable_high_g  function pointer for enabling high-g sensor
-  * @param  disable_high_g  function pointer for disabling high-g sensor
   * @retval Error code
   */
-XLF_return_t MotionXLF_Update(XLF_in_t *data_in, XLF_out_t *data_out, XLF_high_g_enable_disable_pointer_t enable_high_g, XLF_high_g_enable_disable_pointer_t disable_high_g, XLF_algo_settings *algo_set);
+XLF_return_t MotionXLF_Update(XLF_in_t *data_in, XLF_out_t *data_out);
 
 /**
   * @brief  Get the library version

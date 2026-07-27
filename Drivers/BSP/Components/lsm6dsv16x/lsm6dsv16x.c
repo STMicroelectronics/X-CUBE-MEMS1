@@ -79,10 +79,10 @@ LSM6DSV16X_GYRO_Drv_t LSM6DSV16X_GYRO_Driver =
 
 static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
 static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
-static int32_t LSM6DSV16X_ACC_SetOutputDataRate_When_Enabled(LSM6DSV16X_Object_t *pObj, float Odr);
-static int32_t LSM6DSV16X_ACC_SetOutputDataRate_When_Disabled(LSM6DSV16X_Object_t *pObj, float Odr);
-static int32_t LSM6DSV16X_GYRO_SetOutputDataRate_When_Enabled(LSM6DSV16X_Object_t *pObj, float Odr);
-static int32_t LSM6DSV16X_GYRO_SetOutputDataRate_When_Disabled(LSM6DSV16X_Object_t *pObj, float Odr);
+static int32_t LSM6DSV16X_ACC_SetOutputDataRate_When_Enabled(LSM6DSV16X_Object_t *pObj, float_t Odr);
+static int32_t LSM6DSV16X_ACC_SetOutputDataRate_When_Disabled(LSM6DSV16X_Object_t *pObj, float_t Odr);
+static int32_t LSM6DSV16X_GYRO_SetOutputDataRate_When_Enabled(LSM6DSV16X_Object_t *pObj, float_t Odr);
+static int32_t LSM6DSV16X_GYRO_SetOutputDataRate_When_Disabled(LSM6DSV16X_Object_t *pObj, float_t Odr);
 
 /**
   * @}
@@ -367,7 +367,7 @@ int32_t LSM6DSV16X_ACC_Disable(LSM6DSV16X_Object_t *pObj)
   * @param  Sensitivity pointer
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LSM6DSV16X_ACC_GetSensitivity(LSM6DSV16X_Object_t *pObj, float *Sensitivity)
+int32_t LSM6DSV16X_ACC_GetSensitivity(LSM6DSV16X_Object_t *pObj, float_t *Sensitivity)
 {
   int32_t ret = LSM6DSV16X_OK;
   lsm6dsv16x_xl_full_scale_t full_scale;
@@ -411,7 +411,7 @@ int32_t LSM6DSV16X_ACC_GetSensitivity(LSM6DSV16X_Object_t *pObj, float *Sensitiv
   * @param  Odr pointer where the output data rate is written
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LSM6DSV16X_ACC_GetOutputDataRate(LSM6DSV16X_Object_t *pObj, float *Odr)
+int32_t LSM6DSV16X_ACC_GetOutputDataRate(LSM6DSV16X_Object_t *pObj, float_t *Odr)
 {
   int32_t ret = LSM6DSV16X_OK;
   lsm6dsv16x_data_rate_t odr_low_level;
@@ -570,7 +570,7 @@ int32_t LSM6DSV16X_ACC_GetOutputDataRate(LSM6DSV16X_Object_t *pObj, float *Odr)
   * @param  Odr the output data rate value to be set
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LSM6DSV16X_ACC_SetOutputDataRate(LSM6DSV16X_Object_t *pObj, float Odr)
+int32_t LSM6DSV16X_ACC_SetOutputDataRate(LSM6DSV16X_Object_t *pObj, float_t Odr)
 {
   if (pObj->acc_is_enabled == 1U)
   {
@@ -590,98 +590,98 @@ int32_t LSM6DSV16X_ACC_SetOutputDataRate(LSM6DSV16X_Object_t *pObj, float Odr)
   * @note   This function switches off the gyroscope if Ultra Low Power Mode is set
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LSM6DSV16X_ACC_SetOutputDataRate_With_Mode(LSM6DSV16X_Object_t *pObj, float Odr,
+int32_t LSM6DSV16X_ACC_SetOutputDataRate_With_Mode(LSM6DSV16X_Object_t *pObj, float_t Odr,
                                                    LSM6DSV16X_ACC_Operating_Mode_t Mode)
 {
+  int32_t ret = LSM6DSV16X_OK;
+  float_t odr_local = 0.0f;
+
   switch (Mode)
   {
     case LSM6DSV16X_ACC_HIGH_PERFORMANCE_MODE:
-    {
       if (lsm6dsv16x_xl_mode_set(&(pObj->Ctx), LSM6DSV16X_XL_HIGH_PERFORMANCE_MD) != LSM6DSV16X_OK)
       {
         return LSM6DSV16X_ERROR;
       }
 
       /* Valid ODR: 7.5Hz <= Odr <= 7.68kHz */
-      Odr = (Odr <    7.5f) ?    7.5f
-            : (Odr > 7680.0f) ? 7680.0f
-            :                       Odr;
+      odr_local = (Odr <    7.5f) ?    7.5f
+                : (Odr > 7680.0f) ? 7680.0f
+                :                       Odr;
       break;
-    }
 
     case LSM6DSV16X_ACC_HIGH_ACCURACY_MODE:
-      return LSM6DSV16X_ERROR;
+      ret = LSM6DSV16X_ERROR;
+      break;
 
     case LSM6DSV16X_ACC_NORMAL_MODE:
-    {
       if (lsm6dsv16x_xl_mode_set(&(pObj->Ctx), LSM6DSV16X_XL_NORMAL_MD) != LSM6DSV16X_OK)
       {
         return LSM6DSV16X_ERROR;
       }
 
       /* Valid ODR: 7.5Hz <= Odr <= 1.92kHz */
-      Odr = (Odr <    7.5f) ?    7.5f
-            : (Odr > 1920.0f) ? 1920.0f
-            :                       Odr;
+      odr_local = (Odr <    7.5f) ?    7.5f
+                : (Odr > 1920.0f) ? 1920.0f
+                :                       Odr;
       break;
-    }
 
     case LSM6DSV16X_ACC_LOW_POWER_MODE1:
-    {
       if (lsm6dsv16x_xl_mode_set(&(pObj->Ctx), LSM6DSV16X_XL_LOW_POWER_2_AVG_MD) != LSM6DSV16X_OK)
       {
         return LSM6DSV16X_ERROR;
       }
 
       /* Valid ODR: 1.875Hz;  15Hz <= Odr <= 240kHz */
-      Odr = (Odr ==  1.875f) ?      Odr
-            : (Odr <  15.000f) ?  15.0f
-            : (Odr > 240.000f) ? 240.0f
-            :                       Odr;
+      odr_local = (Odr ==  1.875f) ?    Odr
+                : (Odr <  15.000f) ?  15.0f
+                : (Odr > 240.000f) ? 240.0f
+                :                       Odr;
       break;
-    }
 
     case LSM6DSV16X_ACC_LOW_POWER_MODE2:
-    {
       if (lsm6dsv16x_xl_mode_set(&(pObj->Ctx), LSM6DSV16X_XL_LOW_POWER_4_AVG_MD) != LSM6DSV16X_OK)
       {
         return LSM6DSV16X_ERROR;
       }
 
       /* Valid ODR: 1.875Hz;  15Hz <= Odr <= 240kHz */
-      Odr = (Odr ==  1.875f) ?      Odr
-            : (Odr <  15.000f) ?  15.0f
-            : (Odr > 240.000f) ? 240.0f
-            :                       Odr;
+      odr_local = (Odr ==  1.875f) ?    Odr
+                : (Odr <  15.000f) ?  15.0f
+                : (Odr > 240.000f) ? 240.0f
+                :                       Odr;
       break;
-    }
 
     case LSM6DSV16X_ACC_LOW_POWER_MODE3:
-    {
       if (lsm6dsv16x_xl_mode_set(&(pObj->Ctx), LSM6DSV16X_XL_LOW_POWER_8_AVG_MD) != LSM6DSV16X_OK)
       {
         return LSM6DSV16X_ERROR;
       }
 
       /* Valid ODR: 1.875Hz;  15Hz <= Odr <= 240kHz */
-      Odr = (Odr ==  1.875f) ?      Odr
-            : (Odr <  15.000f) ?  15.0f
-            : (Odr > 240.000f) ? 240.0f
-            :                       Odr;
+      odr_local = (Odr ==  1.875f) ?    Odr
+                : (Odr <  15.000f) ?  15.0f
+                : (Odr > 240.000f) ? 240.0f
+                :                       Odr;
       break;
-    }
 
     default:
-      return LSM6DSV16X_ERROR;
+      ret = LSM6DSV16X_ERROR;
+      break;
+  }
+
+  if (ret != LSM6DSV16X_OK)
+  {
+    return ret;
   }
 
   if (pObj->acc_is_enabled == 1U)
   {
-    return LSM6DSV16X_ACC_SetOutputDataRate_When_Enabled(pObj, Odr);
+    return LSM6DSV16X_ACC_SetOutputDataRate_When_Enabled(pObj, odr_local);
   }
   else
   {
-    return LSM6DSV16X_ACC_SetOutputDataRate_When_Disabled(pObj, Odr);
+    return LSM6DSV16X_ACC_SetOutputDataRate_When_Disabled(pObj, odr_local);
   }
 }
 
@@ -786,7 +786,7 @@ int32_t LSM6DSV16X_ACC_GetAxesRaw(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_AxesRaw_
 int32_t LSM6DSV16X_ACC_GetAxes(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_Axes_t *Acceleration)
 {
   lsm6dsv16x_axis3bit16_t data_raw;
-  float sensitivity = 0.0f;
+  float_t sensitivity = 0.0f;
 
   /* Read raw data values */
   if (lsm6dsv16x_acceleration_raw_get(&(pObj->Ctx), data_raw.i16bit) != LSM6DSV16X_OK)
@@ -801,9 +801,9 @@ int32_t LSM6DSV16X_ACC_GetAxes(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_Axes_t *Acc
   }
 
   /* Calculate the data */
-  Acceleration->x = (int32_t)((float)((float)data_raw.i16bit[0] * sensitivity));
-  Acceleration->y = (int32_t)((float)((float)data_raw.i16bit[1] * sensitivity));
-  Acceleration->z = (int32_t)((float)((float)data_raw.i16bit[2] * sensitivity));
+  Acceleration->x = (int32_t)((float_t)((float_t)data_raw.i16bit[0] * sensitivity));
+  Acceleration->y = (int32_t)((float_t)((float_t)data_raw.i16bit[1] * sensitivity));
+  Acceleration->z = (int32_t)((float_t)((float_t)data_raw.i16bit[2] * sensitivity));
 
   return LSM6DSV16X_OK;
 }
@@ -930,7 +930,7 @@ int32_t LSM6DSV16X_ACC_Get_Event_Status(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_Ev
     }
   }
 
-  if (int1_ctrl.int1_step_detector == 1U || int2_ctrl.int2_step_detector == 1U)
+  if ((int1_ctrl.int1_step_detector == 1U) || (int2_ctrl.int2_step_detector == 1U))
   {
     if (func_src.step_detected == 1U)
     {
@@ -1836,7 +1836,7 @@ int32_t LSM6DSV16X_ACC_Set_Wake_Up_Threshold(LSM6DSV16X_Object_t *pObj, uint32_t
     return LSM6DSV16X_ERROR;
   }
 
-  wake_up_ths.threshold = Threshold;
+  wake_up_ths.threshold = (uint8_t)Threshold;
 
   if (lsm6dsv16x_act_thresholds_set(&(pObj->Ctx), &wake_up_ths) != LSM6DSV16X_OK)
   {
@@ -2848,7 +2848,7 @@ int32_t LSM6DSV16X_FIFO_Set_Stop_On_Fth(LSM6DSV16X_Object_t *pObj, uint8_t Statu
 {
   lsm6dsv16x_fifo_event_t val;
 
-  val = (Status == 1) ? LSM6DSV16X_FIFO_EV_WTM : LSM6DSV16X_FIFO_EV_FULL;
+  val = (Status == 1U) ? LSM6DSV16X_FIFO_EV_WTM : LSM6DSV16X_FIFO_EV_FULL;
 
   if (lsm6dsv16x_fifo_stop_on_wtm_set(&(pObj->Ctx), val) != LSM6DSV16X_OK)
   {
@@ -3132,7 +3132,7 @@ int32_t LSM6DSV16X_GYRO_Disable(LSM6DSV16X_Object_t *pObj)
   * @param  Sensitivity pointer
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LSM6DSV16X_GYRO_GetSensitivity(LSM6DSV16X_Object_t *pObj, float *Sensitivity)
+int32_t LSM6DSV16X_GYRO_GetSensitivity(LSM6DSV16X_Object_t *pObj, float_t *Sensitivity)
 {
   int32_t ret = LSM6DSV16X_OK;
   lsm6dsv16x_gy_full_scale_t full_scale;
@@ -3184,7 +3184,7 @@ int32_t LSM6DSV16X_GYRO_GetSensitivity(LSM6DSV16X_Object_t *pObj, float *Sensiti
   * @param  Odr pointer where the output data rate is written
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LSM6DSV16X_GYRO_GetOutputDataRate(LSM6DSV16X_Object_t *pObj, float *Odr)
+int32_t LSM6DSV16X_GYRO_GetOutputDataRate(LSM6DSV16X_Object_t *pObj, float_t *Odr)
 {
   int32_t ret = LSM6DSV16X_OK;
   lsm6dsv16x_data_rate_t odr_low_level;
@@ -3343,7 +3343,7 @@ int32_t LSM6DSV16X_GYRO_GetOutputDataRate(LSM6DSV16X_Object_t *pObj, float *Odr)
   * @param  Odr the output data rate value to be set
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LSM6DSV16X_GYRO_SetOutputDataRate(LSM6DSV16X_Object_t *pObj, float Odr)
+int32_t LSM6DSV16X_GYRO_SetOutputDataRate(LSM6DSV16X_Object_t *pObj, float_t Odr)
 {
   if (pObj->gyro_is_enabled == 1U)
   {
@@ -3362,56 +3362,60 @@ int32_t LSM6DSV16X_GYRO_SetOutputDataRate(LSM6DSV16X_Object_t *pObj, float Odr)
   * @param  Mode the gyroscope operating mode
   * @retval 0 in case of success, an error code otherwise
   */
-int32_t LSM6DSV16X_GYRO_SetOutputDataRate_With_Mode(LSM6DSV16X_Object_t *pObj, float Odr,
+int32_t LSM6DSV16X_GYRO_SetOutputDataRate_With_Mode(LSM6DSV16X_Object_t *pObj, float_t Odr,
                                                     LSM6DSV16X_GYRO_Operating_Mode_t Mode)
 {
+  int32_t ret = LSM6DSV16X_OK;
+  float_t odr_local = 0.0f;
+
   switch (Mode)
   {
     case LSM6DSV16X_GYRO_HIGH_PERFORMANCE_MODE:
-    {
       if (lsm6dsv16x_gy_mode_set(&(pObj->Ctx), LSM6DSV16X_GY_HIGH_PERFORMANCE_MD) != LSM6DSV16X_OK)
       {
         return LSM6DSV16X_ERROR;
       }
 
       /* Valid ODR: 7.5Hz <= Odr <= 7.68kHz */
-      Odr = (Odr <    7.5f) ?    7.5f
-            : (Odr > 7680.0f) ? 7680.0f
-            :                       Odr;
+      odr_local = (Odr <    7.5f) ?    7.5f
+                : (Odr > 7680.0f) ? 7680.0f
+                :                       Odr;
       break;
-    }
 
     case LSM6DSV16X_GYRO_HIGH_ACCURACY_MODE:
-      return LSM6DSV16X_ERROR;
-
     case LSM6DSV16X_GYRO_SLEEP_MODE:
-      return LSM6DSV16X_ERROR;
+      ret = LSM6DSV16X_ERROR;
+      break;
 
     case LSM6DSV16X_GYRO_LOW_POWER_MODE:
-    {
       if (lsm6dsv16x_gy_mode_set(&(pObj->Ctx), LSM6DSV16X_GY_LOW_POWER_MD) != LSM6DSV16X_OK)
       {
         return LSM6DSV16X_ERROR;
       }
 
       /* Valid ODR: 7.5Hz <= Odr <= 240kHz */
-      Odr = (Odr <   7.5f) ?   7.5f
-            : (Odr > 240.0f) ? 240.0f
-            :                     Odr;
+      odr_local = (Odr <   7.5f) ?   7.5f
+                : (Odr > 240.0f) ? 240.0f
+                :                     Odr;
       break;
-    }
 
     default:
-      return LSM6DSV16X_ERROR;
+      ret = LSM6DSV16X_ERROR;
+      break;
+  }
+
+  if (ret != LSM6DSV16X_OK)
+  {
+    return ret;
   }
 
   if (pObj->gyro_is_enabled == 1U)
   {
-    return LSM6DSV16X_GYRO_SetOutputDataRate_When_Enabled(pObj, Odr);
+    return LSM6DSV16X_GYRO_SetOutputDataRate_When_Enabled(pObj, odr_local);
   }
   else
   {
-    return LSM6DSV16X_GYRO_SetOutputDataRate_When_Disabled(pObj, Odr);
+    return LSM6DSV16X_GYRO_SetOutputDataRate_When_Disabled(pObj, odr_local);
   }
 }
 
@@ -3524,7 +3528,7 @@ int32_t LSM6DSV16X_GYRO_GetAxesRaw(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_AxesRaw
 int32_t LSM6DSV16X_GYRO_GetAxes(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_Axes_t *AngularRate)
 {
   lsm6dsv16x_axis3bit16_t data_raw;
-  float sensitivity = 0.0f;
+  float_t sensitivity = 0.0f;
 
   /* Read raw data values */
   if (lsm6dsv16x_angular_rate_raw_get(&(pObj->Ctx), data_raw.i16bit) != LSM6DSV16X_OK)
@@ -3539,9 +3543,9 @@ int32_t LSM6DSV16X_GYRO_GetAxes(LSM6DSV16X_Object_t *pObj, LSM6DSV16X_Axes_t *An
   }
 
   /* Calculate the data */
-  AngularRate->x = (int32_t)((float)((float)data_raw.i16bit[0] * sensitivity));
-  AngularRate->y = (int32_t)((float)((float)data_raw.i16bit[1] * sensitivity));
-  AngularRate->z = (int32_t)((float)((float)data_raw.i16bit[2] * sensitivity));
+  AngularRate->x = (int32_t)((float_t)((float_t)data_raw.i16bit[0] * sensitivity));
+  AngularRate->y = (int32_t)((float_t)((float_t)data_raw.i16bit[1] * sensitivity));
+  AngularRate->z = (int32_t)((float_t)((float_t)data_raw.i16bit[2] * sensitivity));
 
   return LSM6DSV16X_OK;
 }
@@ -3651,15 +3655,15 @@ int32_t LSM6DSV16X_GYRO_Set_Power_Mode(LSM6DSV16X_Object_t *pObj, uint8_t PowerM
 }
 
 /**
-  * @brief  Set the LSM6DSV16X accelerometer filter mode
+  * @brief  Set the LSM6DSV16X accelerometer filter mode (HP_SLOPE_XL_EN = 0)
   * @param  pObj the device pObj
-  * @param  LowHighPassFlag 0/1 for setting low-pass/high-pass filter mode
+  * @param  LowHighPassFlag 0/1 for setting low-pass / high-pass filter mode
   * @param  FilterMode Value of the filter Mode
   * @retval 0 in case of success, an error code otherwise
   */
 int32_t LSM6DSV16X_ACC_Set_Filter_Mode(LSM6DSV16X_Object_t *pObj, uint8_t LowHighPassFlag, uint8_t FilterMode)
 {
-  if (LowHighPassFlag == 0)
+  if (LowHighPassFlag == 0U)
   {
     /* Set accelerometer low_pass filter-mode */
     if (lsm6dsv16x_filt_xl_lp2_set(&(pObj->Ctx), 1) != LSM6DSV16X_OK)
@@ -3687,6 +3691,41 @@ int32_t LSM6DSV16X_ACC_Set_Filter_Mode(LSM6DSV16X_Object_t *pObj, uint8_t LowHig
 }
 
 /**
+  * @brief  Set the LSM6DSV16X accelerometer filter mode (HP_SLOPE_XL_EN = 1)
+  * @param  pObj the device pObj
+  * @param  SlopeHighPassEnable  0/1 for Enable/Disable accelerometer slope filter / high-pass filter mode
+  * @param  Bandwidth  value of the bandwidth
+  * @retval 0 in case of success, an error code otherwise
+  */
+int32_t LSM6DSV16X_ACC_Set_Filter_Mode_Slope(LSM6DSV16X_Object_t *pObj, uint8_t SlopeHighPassEnable, lsm6dsv16x_filt_xl_lp2_bandwidth_t Bandwidth)
+{
+  if (SlopeHighPassEnable == 1U)
+  {
+    /* Enable accelerometer slope filter / high-pass filter mode */
+    if (lsm6dsv16x_filt_xl_hp_set(&(pObj->Ctx), 1) != LSM6DSV16X_OK)
+    {
+      return LSM6DSV16X_ERROR;
+    }
+
+    /* Select bandwidth */
+    if (lsm6dsv16x_filt_xl_lp2_bandwidth_set(&(pObj->Ctx), Bandwidth) != LSM6DSV16X_OK)
+    {
+      return LSM6DSV16X_ERROR;
+    }
+  }
+  else
+  {
+    /* Disable accelerometer slope filter / high-pass filter mode */
+    if (lsm6dsv16x_filt_xl_hp_set(&(pObj->Ctx), 0) != LSM6DSV16X_OK)
+    {
+      return LSM6DSV16X_ERROR;
+    }
+  }
+
+  return LSM6DSV16X_OK;
+}
+
+/**
   * @brief  Set the LSM6DSV16X gyroscope filter mode
   * @param  pObj the device pObj
   * @param  LowHighPassFlag 0/1 for setting low-pass/high-pass filter mode
@@ -3695,7 +3734,7 @@ int32_t LSM6DSV16X_ACC_Set_Filter_Mode(LSM6DSV16X_Object_t *pObj, uint8_t LowHig
   */
 int32_t LSM6DSV16X_GYRO_Set_Filter_Mode(LSM6DSV16X_Object_t *pObj, uint8_t LowHighPassFlag, uint8_t FilterMode)
 {
-  if (LowHighPassFlag == 0)
+  if (LowHighPassFlag == 0U)
   {
     /* Set gyroscope low_pass 1 filter-mode */
     if (lsm6dsv16x_filt_gy_lp1_set(&(pObj->Ctx), 1) != LSM6DSV16X_OK)
@@ -3791,10 +3830,10 @@ int32_t LSM6DSV16X_QVAR_SetZIn(LSM6DSV16X_Object_t *pObj, uint16_t ZInMOhm)
 {
   lsm6dsv16x_ah_qvar_zin_t val;
 
-  val = (ZInMOhm <= 255)  ? LSM6DSV16X_255MOhm
-        : (ZInMOhm <= 300)  ? LSM6DSV16X_300MOhm
-        : (ZInMOhm <= 730)  ? LSM6DSV16X_730MOhm
-        :                     LSM6DSV16X_2400MOhm;
+  val = (ZInMOhm <= 255U)  ? LSM6DSV16X_255MOhm
+      : (ZInMOhm <= 300U)  ? LSM6DSV16X_300MOhm
+      : (ZInMOhm <= 730U)  ? LSM6DSV16X_730MOhm
+      :                      LSM6DSV16X_2400MOhm;
 
   if (lsm6dsv16x_ah_qvar_zin_set(&(pObj->Ctx), val) != LSM6DSV16X_OK)
   {
@@ -3974,7 +4013,7 @@ int32_t LSM6DSV16X_Set_Mem_Bank(LSM6DSV16X_Object_t *pObj, uint8_t Val)
   * @param  Odr the functional output data rate to be set
   * @retval 0 in case of success, an error code otherwise
   */
-static int32_t LSM6DSV16X_ACC_SetOutputDataRate_When_Enabled(LSM6DSV16X_Object_t *pObj, float Odr)
+static int32_t LSM6DSV16X_ACC_SetOutputDataRate_When_Enabled(LSM6DSV16X_Object_t *pObj, float_t Odr)
 {
   lsm6dsv16x_data_rate_t new_odr;
 
@@ -4006,7 +4045,7 @@ static int32_t LSM6DSV16X_ACC_SetOutputDataRate_When_Enabled(LSM6DSV16X_Object_t
   * @param  Odr the functional output data rate to be set
   * @retval 0 in case of success, an error code otherwise
   */
-static int32_t LSM6DSV16X_ACC_SetOutputDataRate_When_Disabled(LSM6DSV16X_Object_t *pObj, float Odr)
+static int32_t LSM6DSV16X_ACC_SetOutputDataRate_When_Disabled(LSM6DSV16X_Object_t *pObj, float_t Odr)
 {
   pObj->acc_odr = (Odr <=  1.875f) ? LSM6DSV16X_ODR_AT_1Hz875
                   : (Odr <=    7.5f) ? LSM6DSV16X_ODR_AT_7Hz5
@@ -4030,7 +4069,7 @@ static int32_t LSM6DSV16X_ACC_SetOutputDataRate_When_Disabled(LSM6DSV16X_Object_
   * @param  Odr the functional output data rate to be set
   * @retval 0 in case of success, an error code otherwise
   */
-static int32_t LSM6DSV16X_GYRO_SetOutputDataRate_When_Enabled(LSM6DSV16X_Object_t *pObj, float Odr)
+static int32_t LSM6DSV16X_GYRO_SetOutputDataRate_When_Enabled(LSM6DSV16X_Object_t *pObj, float_t Odr)
 {
   lsm6dsv16x_data_rate_t new_odr;
 
@@ -4061,7 +4100,7 @@ static int32_t LSM6DSV16X_GYRO_SetOutputDataRate_When_Enabled(LSM6DSV16X_Object_
   * @param  Odr the functional output data rate to be set
   * @retval 0 in case of success, an error code otherwise
   */
-static int32_t LSM6DSV16X_GYRO_SetOutputDataRate_When_Disabled(LSM6DSV16X_Object_t *pObj, float Odr)
+static int32_t LSM6DSV16X_GYRO_SetOutputDataRate_When_Disabled(LSM6DSV16X_Object_t *pObj, float_t Odr)
 {
   pObj->gyro_odr = (Odr <=    7.5f) ? LSM6DSV16X_ODR_AT_7Hz5
                    : (Odr <=   15.0f) ? LSM6DSV16X_ODR_AT_15Hz

@@ -36,11 +36,11 @@
   * @param  None
   * @retval None
   */
-void MotionXLF_manager_init(void)
+void MotionXLF_manager_init(XLF_accel_fusion_config_t *config)
 {
   MotionXLF_Initialize(MOTION_XLF_MCU_STM32);
 
-  if (MotionXLF_Start() != MOTION_XLF_ALGO_OK)
+  if (MotionXLF_Start(config) != MOTION_XLF_ALGO_OK)
   {
     for (;;)
     {
@@ -57,10 +57,9 @@ void MotionXLF_manager_init(void)
   * @param  disable_high_g  function pointer for disabling high-g sensor
   * @retval None
   */
-void MotionXLF_manager_run(XLF_in_t *data_in, XLF_out_t *data_out, XLF_high_g_enable_disable_pointer_t enable_high_g,
-                           XLF_high_g_enable_disable_pointer_t disable_high_g, XLF_algo_settings *algo_set)
+void MotionXLF_manager_run(XLF_in_t *data_in, XLF_out_t *data_out)
 {
-  MotionXLF_Update(data_in, data_out, enable_high_g, disable_high_g, algo_set);
+  MotionXLF_Update(data_in, data_out);
 }
 
 /**

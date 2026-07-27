@@ -357,9 +357,9 @@ int32_t lsm6dsv80x_xl_offset_mg_set(const stmdev_ctx_t *ctx,
   else // out of limit
   {
     ctrl9.usr_off_w = 1;
-    z_ofs_usr.z_ofs_usr = 0xFFU;
-    y_ofs_usr.y_ofs_usr = 0xFFU;
-    x_ofs_usr.x_ofs_usr = 0xFFU;
+    z_ofs_usr.z_ofs_usr = (int8_t)-1;
+    y_ofs_usr.y_ofs_usr = (int8_t)-1;
+    x_ofs_usr.x_ofs_usr = (int8_t)-1;
   }
 
   ret = lsm6dsv80x_write_reg(ctx, LSM6DSV80X_Z_OFS_USR, (uint8_t *)&z_ofs_usr, 1);
@@ -454,9 +454,9 @@ int32_t lsm6dsv80x_hg_xl_offset_mg_set(const stmdev_ctx_t *ctx,
   else // out of limit
   {
     ctrl1_xl_hg.hg_usr_off_on_out = 0;
-    z_ofs_usr.xl_hg_z_ofs_usr = 0xFFU;
-    y_ofs_usr.xl_hg_y_ofs_usr = 0xFFU;
-    x_ofs_usr.xl_hg_x_ofs_usr = 0xFFU;
+    z_ofs_usr.xl_hg_z_ofs_usr = (int8_t)-1;
+    y_ofs_usr.xl_hg_y_ofs_usr = (int8_t)-1;
+    x_ofs_usr.xl_hg_x_ofs_usr = (int8_t)-1;
   }
 
   ret = lsm6dsv80x_write_reg(ctx, LSM6DSV80X_XL_HG_Z_OFS_USR, (uint8_t *)&z_ofs_usr, 1);

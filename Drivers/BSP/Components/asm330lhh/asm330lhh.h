@@ -172,7 +172,7 @@ typedef union
 {
   int32_t i32bit[3];
   uint8_t u8bit[12];
-} axis3bit32_t;
+} asm330lhh_axis3bit32_t;
 
 typedef union
 {

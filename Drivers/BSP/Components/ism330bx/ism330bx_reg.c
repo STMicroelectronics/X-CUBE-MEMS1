@@ -7123,7 +7123,7 @@ int32_t ism330bx_sflp_game_gbias_set(const stmdev_ctx_t *ctx,
   ism330bx_sflp_data_rate_t sflp_odr;
   ism330bx_emb_func_exec_status_t emb_func_sts;
   ism330bx_data_ready_t drdy;
-  ism330bx_xl_full_scale_t xl_fs;
+  ism330bx_xl_full_scale_t xl_fs = ISM330BX_2g;
   ism330bx_ctrl10_t ctrl10;
   uint8_t master_config;
   uint8_t emb_func_en_saved[2];

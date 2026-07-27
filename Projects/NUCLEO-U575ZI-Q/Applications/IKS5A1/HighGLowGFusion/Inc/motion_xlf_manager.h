@@ -34,9 +34,8 @@ extern "C" {
 /* Exported Types ------------------------------------------------------------*/
 /* Imported Variables --------------------------------------------------------*/
 /* Exported Functions Prototypes ---------------------------------------------*/
-void MotionXLF_manager_init(void);
-void MotionXLF_manager_run(XLF_in_t *data_in, XLF_out_t *data_out, XLF_high_g_enable_disable_pointer_t enable_high_g,
-                           XLF_high_g_enable_disable_pointer_t disable_high_g, XLF_algo_settings *algo_set);
+void MotionXLF_manager_init(XLF_accel_fusion_config_t *config);
+void MotionXLF_manager_run(XLF_in_t *data_in, XLF_out_t *data_out);
 void MotionXLF_manager_get_version(char *version, int32_t *length);
 
 #ifdef __cplusplus

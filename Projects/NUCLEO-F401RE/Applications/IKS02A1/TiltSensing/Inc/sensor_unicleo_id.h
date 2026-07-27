@@ -76,6 +76,8 @@ extern "C" {
 #define ST1VAFE3BX_UNICLEO_ID       46
 #define ISM6HG256X_UNICLEO_ID       47
 #define MIS2DU12_UNICLEO_ID         48
+#define ASM330LHB_UNICLEO_ID        49
+#define IIS3DWB10IS_UNICLEO_ID      50
 
 /* MAG */
 #define LIS3MDL_UNICLEO_ID          1

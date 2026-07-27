@@ -70,7 +70,7 @@ typedef struct
 #define MAGNETIC_SENSOR       0x00000040U
 #define GAS_SENSOR            0x00000080U
 
-#define STREAMING_MSG_LENGTH  55
+#define STREAMING_MSG_LENGTH  54
 
 #define REQUIRED_DATA  (ACCELEROMETER_SENSOR)
 
